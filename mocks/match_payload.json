@@ -1,0 +1,48 @@
+{
+  "vaga_id": "job_001",
+  "total_analisados": 120,
+  "total_retorno": 3,
+  "metrica_diversidade": {
+    "percentual_shortlist_diversa": 66.7,
+    "meta_diversidade": 40,
+    "meta_atingida": true
+  },
+  "candidatos": [
+    {
+      "candidato_id": "cand_001",
+      "nome": "Ana Souza",
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "TRINDADE",
+      "score_match": 91,
+      "skills": ["sql", "python", "power bi", "excel"],
+      "badge_diversidade": "Mulher negra em tecnologia",
+      "explicacao": "Alta aderencia nas skills principais e residencia em regiao compativel com a vaga."
+    },
+    {
+      "candidato_id": "cand_002",
+      "nome": "Bruno Martins",
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Sao Jose",
+      "cluster_residencia": "SAO_JOSE_KOBRASOL",
+      "score_match": 86,
+      "skills": ["sql", "python", "excel"],
+      "badge_diversidade": "Talento de regiao com menor acesso",
+      "explicacao": "Boa aderencia tecnica, nivel compativel e localizacao proxima ao polo da vaga."
+    },
+    {
+      "candidato_id": "cand_003",
+      "nome": "Carla Oliveira",
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "UFSC",
+      "score_match": 84,
+      "skills": ["power bi", "sql", "estatistica"],
+      "badge_diversidade": "Perfil junior em formacao tecnica",
+      "explicacao": "Perfil aderente para vaga junior, com boa combinacao entre dados, BI e regiao."
+    }
+  ]
+}
