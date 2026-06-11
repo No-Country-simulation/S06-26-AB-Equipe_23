@@ -10,6 +10,8 @@ Nesta fase, os dados podem ser simulados.
 
 Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e badge de diversidade.
 
+Por privacidade e redução de vieses, a primeira resposta do matching deve ser anonimizada. Nome e contato do candidato ficam para uma etapa posterior, após aprovação/seleção.
+
 ### Request
 
 ```json
@@ -45,7 +47,8 @@ Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e b
   "candidatos": [
     {
       "candidato_id": "cand_001",
-      "nome": "Ana Souza",
+      "apelido_exibicao": "Candidato 1",
+      "status_identificacao": "anonimizado",
       "nivel": "junior",
       "regiao": "Florianopolis",
       "score_match": 91,
@@ -56,6 +59,26 @@ Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e b
   ]
 }
 ```
+
+## Endpoint futuro `GET /candidatos/:id/contato`
+
+Endpoint sugerido para etapa posterior. Deve ser usado somente quando o candidato for aprovado/selecionado para avanço no processo.
+
+### Response
+
+```json
+{
+  "candidato_id": "cand_001",
+  "nome": "Ana Souza",
+  "email": "ana.souza@email.com",
+  "telefone": "+55 48 99999-0000",
+  "linkedin": "https://linkedin.com/in/anasouza"
+}
+```
+
+Observação:
+
+Este endpoint não precisa entrar no MVP inicial se o time preferir manter apenas dados simulados e anonimizados na primeira entrega.
 
 ## Endpoint `GET /insights`
 
@@ -98,7 +121,8 @@ score_match =
 ## Campos mínimos para frontend - MVP
 
 - `candidato_id`
-- `nome`
+- `apelido_exibicao`
+- `status_identificacao`
 - `nivel`
 - `regiao`
 - `score_match`

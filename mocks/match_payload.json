@@ -10,7 +10,8 @@
   "candidatos": [
     {
       "candidato_id": "cand_001",
-      "nome": "Ana Souza",
+      "apelido_exibicao": "Candidato 1",
+      "status_identificacao": "anonimizado",
       "cargo_alvo": "Analista de Dados Junior",
       "nivel": "junior",
       "regiao": "Florianopolis",
@@ -22,7 +23,8 @@
     },
     {
       "candidato_id": "cand_002",
-      "nome": "Bruno Martins",
+      "apelido_exibicao": "Candidato 2",
+      "status_identificacao": "anonimizado",
       "cargo_alvo": "Analista de Dados Junior",
       "nivel": "junior",
       "regiao": "Sao Jose",
@@ -34,7 +36,8 @@
     },
     {
       "candidato_id": "cand_003",
-      "nome": "Carla Oliveira",
+      "apelido_exibicao": "Candidato 3",
+      "status_identificacao": "anonimizado",
       "cargo_alvo": "Analista de Dados Junior",
       "nivel": "junior",
       "regiao": "Florianopolis",
