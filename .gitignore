@@ -141,3 +141,16 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Project local/raw data
+external/
+tmp_large/
+data/raw/
+data/staging/
+*.sqlite
+*.db
+*.xlsx
+tensor_mobilidade.csv
+tensor_sequencias.csv
+__pycache__/
+*.py[cod]
