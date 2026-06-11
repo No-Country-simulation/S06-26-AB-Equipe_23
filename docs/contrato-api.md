@@ -57,9 +57,9 @@ Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e b
 }
 ```
 
-## Endpoint `GET /insights/regioes`
+## Endpoint `GET /insights`
 
-Retorna indicadores regionais derivados do dataset Vísent.
+Retorna indicadores para o dashboard. Nesta primeira versão, o bloco principal é `regioes`, derivado do dataset Vísent.
 
 ### Response
 
@@ -81,6 +81,10 @@ Retorna indicadores regionais derivados do dataset Vísent.
 }
 ```
 
+Observação:
+
+`/insights` foi mantido como rota principal para simplificar o backend. O conteúdo regional fica dentro da chave `regioes`.
+
 ## Regra inicial de score
 
 ```text
@@ -91,7 +95,7 @@ score_match =
   0.10 * score_diversidade
 ```
 
-## Campos mínimos para frontend
+## Campos mínimos para frontend - MVP
 
 - `candidato_id`
 - `nome`
@@ -102,7 +106,7 @@ score_match =
 - `badge_diversidade`
 - `explicacao`
 
-## Campos mínimos para dashboard
+## Campos mínimos para dashboard - MVP
 
 - `total_analisados`
 - `total_retorno`
@@ -111,3 +115,14 @@ score_match =
 - `meta_atingida`
 - `media_score_match`
 - `distribuicao_por_regiao`
+
+## Campos opcionais para evolução
+
+Estes campos podem ser usados depois, se frontend e backend quiserem evoluir o dashboard:
+
+- `cluster_residencia`
+- `score_componentes`
+- `perfil_regiao`
+- `indicador_acessibilidade`
+- `periodo_pico`
+- `uso_no_produto`

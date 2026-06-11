@@ -63,7 +63,7 @@ database/
 
 mocks/
   match_payload.json
-  insights_regioes_payload.json
+  insights_payload.json
 ```
 
 ## Arquivos
@@ -72,10 +72,10 @@ mocks/
 |---|---|
 | `docs/dicionario-dados.md` | Explica os principais arquivos e campos do dataset |
 | `docs/modelagem-sql-server.md` | Descreve a modelagem conceitual proposta |
-| `docs/contrato-api.md` | Define os formatos iniciais de `/match` e `/insights/regioes` |
+| `docs/contrato-api.md` | Define os formatos iniciais de `/match` e `/insights` |
 | `database/modelagem_sql_server.sql` | Script SQL inicial para SQL Server |
 | `mocks/match_payload.json` | Exemplo de retorno simulado do endpoint `/match` |
-| `mocks/insights_regioes_payload.json` | Exemplo de retorno simulado de insights regionais |
+| `mocks/insights_payload.json` | Exemplo de retorno simulado do endpoint `/insights` com bloco regional |
 
 ## Próximo passo
 
@@ -90,4 +90,3 @@ Validar com backend e frontend:
 ## Status
 
 Versão inicial para validação do time.
-
