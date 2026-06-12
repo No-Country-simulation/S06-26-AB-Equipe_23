@@ -2,7 +2,7 @@ export interface Job {
     id: string;
     titulo: string;
     skills: string[];
-    nivel: 'junior' | 'pleno' | 'senior';
+    nivel: 'estagio' | 'junior' | 'pleno' | 'senior' | 'especialista';
     regiao: string
 }
 
