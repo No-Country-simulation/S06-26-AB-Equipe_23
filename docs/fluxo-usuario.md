@@ -17,6 +17,8 @@ Este documento especifica o fluxo do usuário (Recrutador/RH) no ecossistema do 
 ├──► (Botão: Insights de Rede) ────► [ Painel de Conectividade Anatel ]   |
 └──► (Botão: Aprovar Entrevista) ──► [ Informações Ocultas Reveladas ]  ◄─┘
 
+Segue o link do fluxo desenhado: https://excalidraw.com/
+
 ## 📋 Detalhamento das Etapas e Regras Técnicas
 
 ### 1. Entrada e Autenticação
