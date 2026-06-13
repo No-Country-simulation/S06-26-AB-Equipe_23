@@ -62,7 +62,7 @@ Este documento especifica o fluxo do usuário (Recrutador/RH) no ecossistema do 
 ### 4. Tomada de Decisão e Insights
   Tela 7: Painel de Conectividade (Insights Geográficos)
     Objetivo: Mitigar barreiras digitais de infraestrutura através dos dados da Anatel.
-    Componentes:Mapa interativo ou gráficos por cluster (derivados do endpoint `GET /api/v1/insights/regioes`) mostrando a densidade demográfica, período de pico de uso da rede e a cobertura local (3G/4G/5G).
+    Componentes:Mapa interativo ou gráficos por cluster (derivados do endpoint `GET /insights/regioes`) mostrando a densidade demográfica, período de pico de uso da rede e a cobertura local (3G/4G/5G).
     Regra de Negócio:Permite ao RH avaliar se o profissional precisará de apoio logístico de infraestrutura ou auxílio-conectividade para o trabalho híbrido/remoto.
     Ação (Botão "Voltar"):Retorna o usuário exatamente para a **Lista de Triagem** mantendo o estado da busca.
 
