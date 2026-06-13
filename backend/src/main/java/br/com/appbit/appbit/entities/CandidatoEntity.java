@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Candidato {
+public class CandidatoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +54,5 @@ public class Candidato {
     @ManyToOne(optional = false)
     @JoinColumn(name = "regiao_id", nullable = false)
     @NotNull(message = "A região é obrigatória")
-    private  Regiao regiao;
+    private RegiaoEntity regiao;
 }

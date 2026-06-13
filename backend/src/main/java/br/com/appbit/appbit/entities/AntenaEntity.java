@@ -2,6 +2,7 @@ package br.com.appbit.appbit.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,16 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "dim_regiao")
+@Table(name = "dim_antena")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Regiao {
+public class AntenaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "regiao_id")
-    private Integer id;
+    @Column(name = "ecgi")
+    private String ecgi;
 
     @NotBlank(message = "O cluster é obrigatório")
     @Column(name = "cluster", nullable = false)
@@ -30,15 +30,16 @@ public class Regiao {
     @Column(name = "municipio", nullable = false)
     private String municipio;
 
-    @Column(name = "lat" )
+
+    @NotNull(message = "O latitude é obrigatória")
+    @Column(name = "lat", nullable = false )
     private BigDecimal latitude;
 
-    @Column(name = "lon" )
+    @NotNull(message = "O longitude é obrigatória")
+    @Column(name = "lon", nullable = false )
     private BigDecimal longitude;
 
-    @Column(name = "perfil_regiao")
-    private String perfil;
-
-    @Column(name = "fonte", nullable = false)
-    private String fonte;
+    @ManyToOne()
+    @JoinColumn(name = "regiao_id", nullable = true)
+    private RegiaoEntity regiao;
 }

@@ -6,29 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
-@Table(name = "bridge_vaga_skill")
+@Table(name = "bridge_candidato_skill")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VagaSkill {
+public class CandidateSkillEntity {
 
     @EmbeddedId
-    private VagaSkillId id = new VagaSkillId();
+    private CandidatoSkillId id = new CandidatoSkillId();
 
     @ManyToOne
-    @MapsId("vagaId")
-    @JoinColumn(name = "vaga_id")
-    private Vaga vaga;
+    @MapsId("candidatoId")
+    @JoinColumn(name = "candidato_id")
+    private CandidatoEntity candidato;
 
     @ManyToOne
     @MapsId("skillId")
     @JoinColumn(name = "skill_id")
-    private Skill skill;
+    private SkillEntity skill;
 
-    @Column(name = "peso")
-    private BigDecimal peso = BigDecimal.valueOf(1.00);
+    @Column(name = "nivel_skill")
+    private String nivel;
 }

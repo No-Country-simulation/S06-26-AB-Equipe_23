@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Concentracao {
+public class ConcentracaoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,5 +65,5 @@ public class Concentracao {
     @NotNull(message = "A antema é obrigatoria")
     @ManyToOne()
     @JoinColumn(name = "ecgi", referencedColumnName = "ecgi", nullable = false)
-    private  Antena antena;
+    private AntenaEntity antena;
 }

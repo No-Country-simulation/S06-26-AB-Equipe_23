@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Match {
+public class MatchEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,10 +55,10 @@ public class Match {
     @ManyToOne(optional = false)
     @JoinColumn(name = "vaga_id", nullable = false)
     @NotNull(message = "A vaga é obrigatória")
-    private  Vaga vaga;
+    private VagaEntity vaga;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "candidato_id", nullable = false)
     @NotNull(message = "O candidato é obrigatório")
-    private  Candidato candidato;
+    private CandidatoEntity candidato;
 }

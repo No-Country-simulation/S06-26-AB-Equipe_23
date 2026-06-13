@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vaga {
+public class VagaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
