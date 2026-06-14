@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping(("/candidato-skills"))
 public class CandidatoSkillController {
 
-
     private final CandidatoSkillService service;
 
     @PostMapping
