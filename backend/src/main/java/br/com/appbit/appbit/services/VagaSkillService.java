@@ -74,7 +74,7 @@ public class VagaSkillService {
         VagaSkillEntity vagaSkill  = repository.findById(id).orElse(null);
 
         if (vagaSkill  == null) {
-            throw new RuntimeException("Vaga Skill não encontrado");
+            throw new RuntimeException("Vaga Skill não encontrados");
         }
 
         return mapper.toResponseDTO(vagaSkill );
@@ -87,7 +87,7 @@ public class VagaSkillService {
         VagaSkillEntity vagaSkill = repository.findById(id).orElse(null);
 
         if (vagaSkill == null) {
-            throw new RuntimeException("Vaga Skill não encontrado");
+            throw new RuntimeException("Vaga Skill não encontrados");
         }
 
         vagaSkill.setPeso(updateDTO.peso());
@@ -103,7 +103,7 @@ public class VagaSkillService {
         VagaSkillEntity vagaSkill = repository.findById(id).orElse(null);
 
         if (vagaSkill == null) {
-            throw new RuntimeException("Vaga Skill não encontrado");
+            throw new RuntimeException("Vaga Skill não encontrados");
         }
 
         repository.delete(vagaSkill);
