@@ -46,7 +46,10 @@ public class VagaEntity {
     @Column(name = "anti_vies", nullable = false)
     private Boolean antiVies ;
 
-    @NotNull(message = "A Data é obrigatória")
-    @Column(name = "criada_em", nullable = false)
+    @Column(name = "criada_em",
+            nullable = false,
+            insertable = false,
+            updatable = false
+    )
     private LocalDateTime criacao;
 }
