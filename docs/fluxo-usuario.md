@@ -74,3 +74,5 @@ Segue o link do fluxo desenhado: https://excalidraw.com/
     Ações de Navegação (Retornos):
       Botão "Voltar para Vaga": Retorna para a **Lista de Triagem** para que o recrutador possa avaliar os demais candidatos na fila.
       Botão "Voltar para Dashboard Inicial": Finaliza a operação e retorna ao painel corporativo principal.
+
+

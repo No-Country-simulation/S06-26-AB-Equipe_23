@@ -1,0 +1,77 @@
+{
+  "fonte": "Visent CDRView / Anatel",
+  "endpoint_sugerido": "GET /insights/regioes",
+  "conectividade": {
+    "resumo": {
+      "total_antenas": 132,
+      "tecnologia_predominante_geral": "4G",
+      "municipios_mapeados": [
+        "Biguacu",
+        "Florianopolis"
+      ],
+      "uso_no_produto": "Apoiar a leitura de barreiras digitais no processo seletivo remoto ou hibrido."
+    },
+    "legenda_mapa": {
+      "3G": {
+        "cor": "azul",
+        "descricao": "Conectividade basica ou legada"
+      },
+      "4G": {
+        "cor": "verde",
+        "descricao": "Conectividade movel predominante"
+      },
+      "5G": {
+        "cor": "roxo",
+        "descricao": "Conectividade avancada"
+      }
+    },
+    "pontos_mapa": [
+      {
+        "ecgi": "7240501003962715",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "lat": -27.508108,
+        "lon": -48.654131,
+        "sessoes_3g": 86272,
+        "sessoes_4g": 303756,
+        "sessoes_5g": 115292,
+        "sessoes_outros": 0,
+        "total_sessoes": 505320,
+        "tecnologia_predominante": "4G",
+        "indicador_conectividade": "alta",
+        "recomendacao_rh": "Regiao com uso relevante de 4G e presenca de 5G. Sem alerta critico para trabalho hibrido/remoto."
+      },
+      {
+        "ecgi": "7240501005162538",
+        "cluster": "AEROPORTO_HLZ",
+        "municipio": "Florianopolis",
+        "lat": -27.66,
+        "lon": -48.543331,
+        "sessoes_3g": 69387,
+        "sessoes_4g": 244302,
+        "sessoes_5g": 91746,
+        "sessoes_outros": 0,
+        "total_sessoes": 405435,
+        "tecnologia_predominante": "4G",
+        "indicador_conectividade": "alta",
+        "recomendacao_rh": "Regiao com predominancia 4G e volume relevante de sessoes. Usar como apoio para leitura regional."
+      },
+      {
+        "ecgi": "7240501005938420",
+        "cluster": "AEROPORTO_HLZ",
+        "municipio": "Florianopolis",
+        "lat": -27.722875,
+        "lon": -48.563117,
+        "sessoes_3g": 69627,
+        "sessoes_4g": 243358,
+        "sessoes_5g": 92943,
+        "sessoes_outros": 0,
+        "total_sessoes": 405928,
+        "tecnologia_predominante": "4G",
+        "indicador_conectividade": "alta",
+        "recomendacao_rh": "Ponto adequado para visualizacao no mapa e comparacao entre tecnologias."
+      }
+    ]
+  }
+}
+

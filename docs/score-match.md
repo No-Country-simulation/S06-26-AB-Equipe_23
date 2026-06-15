@@ -54,6 +54,42 @@ score_match =
 score_match = 78
 ```
 
+## Evolucao com conectividade regional
+
+Como o fluxo do produto agora inclui um painel de conectividade Anatel, o score pode evoluir para uma versao explicativa com contexto regional.
+
+```text
+score_match_v2 =
+  0.55 * score_skills +
+  0.20 * score_nivel +
+  0.10 * score_regiao +
+  0.10 * score_diversidade +
+  0.05 * score_conectividade
+```
+
+## Componente `score_conectividade`
+
+Esse componente nao deve eliminar candidatos. Ele serve para indicar se a regiao do candidato pode exigir apoio adicional para trabalho remoto ou hibrido.
+
+Regra inicial:
+
+| Condicao regional | Score sugerido |
+|---|---:|
+| Predominancia 5G | 100 |
+| Predominancia 4G com alto volume de sessoes | 90 |
+| Predominancia 4G | 80 |
+| Predominancia 3G | 50 |
+| Sem dado | 40 |
+
+Exemplo de uso:
+
+```text
+score_conectividade = 90
+motivo = "Regiao com predominancia 4G e presenca relevante de sessoes 5G."
+```
+
+Esse campo deve aparecer como explicacao, nao como criterio eliminatorio.
+
 ## Regra de privacidade
 
 Na primeira resposta do `/match`, os candidatos devem aparecer anonimizados:
@@ -67,7 +103,7 @@ Nome e contato só entram em etapa posterior de aprovação/seleção.
 ## Cuidados
 
 - Diversidade não deve ser usada como critério de exclusão.
+- Conectividade regional tambem nao deve ser usada como criterio de exclusao.
 - O score deve ser explicável.
 - O backend deve conseguir retornar os componentes do score.
 - O frontend deve mostrar a explicação de forma simples.
-

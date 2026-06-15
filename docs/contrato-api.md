@@ -6,6 +6,20 @@ Definir o formato inicial dos dados que a API deve entregar para o frontend e pa
 
 Nesta fase, os dados podem ser simulados.
 
+## Padrao de rotas do MVP
+
+Para manter backend e frontend alinhados, a versao do MVP deve usar rotas diretas e simples.
+
+Rotas principais:
+
+- `POST /match`
+- `GET /insights/regioes`
+- `GET /candidatos/:id/contato` como rota futura, apenas apos aprovacao para entrevista.
+
+Observacao:
+
+O painel de conectividade fica dentro de `GET /insights/regioes`, na chave `conectividade`.
+
 ## Endpoint `POST /match`
 
 Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e badge de diversidade.
@@ -80,7 +94,7 @@ Observação:
 
 Este endpoint não precisa entrar no MVP inicial se o time preferir manter apenas dados simulados e anonimizados na primeira entrega.
 
-## Endpoint `GET /insights`
+## Endpoint `GET /insights/regioes`
 
 Retorna indicadores para o dashboard. Nesta primeira versão, o bloco principal é `regioes`, derivado do dataset Vísent.
 
@@ -106,7 +120,37 @@ Retorna indicadores para o dashboard. Nesta primeira versão, o bloco principal 
 
 Observação:
 
-`/insights` foi mantido como rota principal para simplificar o backend. O conteúdo regional fica dentro da chave `regioes`.
+`/insights/regioes` foi mantido como rota principal para simplificar o backend. O conteudo regional fica dentro da chave `regioes`, e o mapa de conectividade fica dentro da chave `conectividade`.
+
+### Bloco de conectividade para mapa
+
+```json
+{
+  "conectividade": {
+    "fonte": "Vísent CDRView / Anatel",
+    "resumo": {
+      "total_antenas": 132,
+      "tecnologia_predominante_geral": "4G",
+      "municipios_mapeados": ["Biguacu", "Florianopolis"]
+    },
+    "pontos_mapa": [
+      {
+        "ecgi": "7240501003962715",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "lat": -27.508108,
+        "lon": -48.654131,
+        "sessoes_3g": 86272,
+        "sessoes_4g": 303756,
+        "sessoes_5g": 115292,
+        "tecnologia_predominante": "4G",
+        "indicador_conectividade": "alta",
+        "uso_no_produto": "Apoiar RH na leitura de barreiras digitais por regiao."
+      }
+    ]
+  }
+}
+```
 
 ## Regra inicial de score
 
@@ -117,6 +161,21 @@ score_match =
   0.10 * score_regiao +
   0.10 * score_diversidade
 ```
+
+## Evolucao sugerida do score com conectividade
+
+Quando o fluxo do produto passar a usar o painel Anatel como apoio a decisao, o score pode considerar conectividade regional como componente explicativo:
+
+```text
+score_match_v2 =
+  0.55 * score_skills +
+  0.20 * score_nivel +
+  0.10 * score_regiao +
+  0.10 * score_diversidade +
+  0.05 * score_conectividade
+```
+
+Esse componente nao deve eliminar candidatos. Ele serve para sinalizar risco operacional ou necessidade de apoio de infraestrutura no trabalho remoto/hibrido.
 
 ## Campos mínimos para frontend - MVP
 
@@ -150,3 +209,4 @@ Estes campos podem ser usados depois, se frontend e backend quiserem evoluir o d
 - `indicador_acessibilidade`
 - `periodo_pico`
 - `uso_no_produto`
+
