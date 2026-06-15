@@ -20,6 +20,11 @@ Observacao:
 
 O painel de conectividade fica dentro de `GET /insights/regioes`, na chave `conectividade`.
 
+Separacao de escopo:
+
+- Dashboard inicial: turnover, metas ESG, vagas, shortlist e metricas gerais.
+- Insights regionais: dados geograficos, antenas, 3G/4G/5G e conectividade Anatel/Vísent.
+
 ## Endpoint `POST /match`
 
 Recebe uma vaga e retorna candidatos compatíveis com score, skills, região e badge de diversidade.
@@ -93,6 +98,12 @@ Endpoint sugerido para etapa posterior. Deve ser usado somente quando o candidat
 Observação:
 
 Este endpoint não precisa entrar no MVP inicial se o time preferir manter apenas dados simulados e anonimizados na primeira entrega.
+
+Detalhe do fluxo:
+
+- Antes da aprovacao, o frontend deve exibir apenas `apelido_exibicao`.
+- Depois da aprovacao, a rota futura de contato pode retornar `nome`, `email`, `telefone` e `linkedin`.
+- Ver tambem `docs/fluxo-aprovacao-candidato.md`.
 
 ## Endpoint `GET /insights/regioes`
 
@@ -198,6 +209,10 @@ Esse componente nao deve eliminar candidatos. Ele serve para sinalizar risco ope
 - `meta_atingida`
 - `media_score_match`
 - `distribuicao_por_regiao`
+
+Observacao:
+
+Metricas como turnover e metas ESG pertencem ao dashboard inicial. Dados de antenas e conectividade ficam restritos a `GET /insights/regioes`.
 
 ## Campos opcionais para evolução
 
