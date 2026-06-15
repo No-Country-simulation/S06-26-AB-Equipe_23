@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/matches"))
+@RequestMapping(("/api/v1/matches"))
 public class MatchController {
 
 

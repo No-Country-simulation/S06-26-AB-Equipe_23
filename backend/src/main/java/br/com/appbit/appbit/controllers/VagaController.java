@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/vagas"))
+@RequestMapping(("/api/v1/vagas"))
 public class VagaController {
 
 

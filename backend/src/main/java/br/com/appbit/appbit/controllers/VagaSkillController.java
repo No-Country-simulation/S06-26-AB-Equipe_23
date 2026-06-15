@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/vaga-skills"))
+@RequestMapping(("/api/v1/vaga-skills"))
 public class VagaSkillController {
 
     private final VagaSkillService service;

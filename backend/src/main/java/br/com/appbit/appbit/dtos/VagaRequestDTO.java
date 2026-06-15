@@ -1,5 +1,7 @@
 package br.com.appbit.appbit.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public record VagaRequestDTO(
@@ -11,6 +13,7 @@ public record VagaRequestDTO(
 
         String regiao,
 
+        @JsonProperty("modelo_trabalho")
         String modeloTrabalho
 ) {
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/candidato-skills"))
+@RequestMapping(("/api/v1/candidato-skills"))
 public class CandidatoSkillController {
 
     private final CandidatoSkillService service;
