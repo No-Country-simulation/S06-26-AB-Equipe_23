@@ -20,6 +20,7 @@ A camada de BI/Dados organiza as informacoes que sustentam o produto:
 | `docs/score-match.md` | Formula matematica do match |
 | `docs/contrato-api.md` | Contratos de resposta para backend/frontend |
 | `docs/painel-conectividade-anatel.md` | Proposta do mapa/painel Anatel |
+| `docs/base-agregada-insights-regioes.md` | Documentacao da base agregada para `/insights/regioes` |
 | `docs/separacao-metricas-dashboard.md` | Separacao entre dashboard inicial e insights regionais |
 | `docs/fluxo-aprovacao-candidato.md` | Fluxo de anonimização e liberação de contato após aprovação |
 | `docs/entrega-para-andre.md` | Orientacao para continuidade da frente de dados/ETL |
@@ -30,7 +31,9 @@ A camada de BI/Dados organiza as informacoes que sustentam o produto:
 | `mocks/insights_payload.json` | Mock de insights gerais |
 | `mocks/insights_conectividade_payload.json` | Mock do mapa de conectividade |
 | `data/processed/antenas_sinal_tratadas.csv` | Base leve tratada para mapa |
+| `data/processed/insights_regioes_agregado.csv` | Base agregada por municipio/cluster |
 | `scripts/processa_dataset_visent_local.py` | Script de tratamento do dataset |
+| `scripts/gera_insights_regioes.py` | Script que gera a base agregada de regioes |
 
 ## Como a equipe deve usar
 
@@ -59,6 +62,6 @@ Dados/BI:
 
 1. Backend ler `mocks/match_payload.json` e `mocks/insights_conectividade_payload.json`.
 2. Frontend criar tela de shortlist e painel de conectividade.
-3. André usar `docs/entrega-para-andre.md` e `mocks/candidatos_teste.json` para validar a frente de dados.
+3. André usar `docs/entrega-para-andre.md`, `mocks/candidatos_teste.json` e `data/processed/insights_regioes_agregado.csv` para validar a frente de dados.
 4. Dados revisar score match v2 com conectividade como componente explicativo.
 
