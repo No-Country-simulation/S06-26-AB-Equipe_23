@@ -30,6 +30,10 @@ Arquivo:
 data/processed/antenas_sinal_tratadas.csv
 ```
 
+Uso principal:
+
+Esta e a base detalhada, no nivel de antena/celula. Deve ser usada pelo Andre para calcular distancia entre candidato e antenas proximas.
+
 Campos principais:
 
 - `ecgi`: identificador técnico da antena/célula;
@@ -89,6 +93,13 @@ mocks/insights_conectividade_payload.json
 7. Sugerir métricas regionais simples para o MVP.
 8. Usar `mocks/candidatos_teste.json` como massa inicial para testar distancia ate antenas e regra de qualidade de rede.
 9. Usar `data/processed/insights_regioes_agregado.csv` para validar a primeira versao de insights regionais.
+
+## Alinhamento sobre as duas bases
+
+| Base | Melhor uso |
+|---|---|
+| `data/processed/antenas_sinal_tratadas.csv` | Calculo de distancia ate antenas proximas, por conter latitude/longitude de cada antena/celula |
+| `data/processed/insights_regioes_agregado.csv` | Dashboard, mapa resumido e retorno de `GET /insights/regioes`, por estar agregada por municipio/cluster |
 
 ## Sugestão de agregações
 

@@ -64,11 +64,18 @@ scripts/gera_insights_regioes.py
 
 O Andre pode usar esta base para:
 
-- calcular distancia do candidato ate regioes/antenas;
 - validar a regra de qualidade da rede;
 - cruzar candidatos ficticios com clusters;
 - criar alertas de exclusao digital;
 - evoluir a funcao de score regional.
+
+Para calculo de distancia ate antenas proximas, a base correta e a detalhada:
+
+```text
+data/processed/antenas_sinal_tratadas.csv
+```
+
+A base agregada deve ser usada para a visao regional, dashboard e retorno de `GET /insights/regioes`.
 
 ## Uso para backend e frontend
 

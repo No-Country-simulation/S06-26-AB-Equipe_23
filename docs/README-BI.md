@@ -30,8 +30,8 @@ A camada de BI/Dados organiza as informacoes que sustentam o produto:
 | `mocks/candidatos_teste.json` | Massa ficticia de candidatos para testes |
 | `mocks/insights_payload.json` | Mock de insights gerais |
 | `mocks/insights_conectividade_payload.json` | Mock do mapa de conectividade |
-| `data/processed/antenas_sinal_tratadas.csv` | Base leve tratada para mapa |
-| `data/processed/insights_regioes_agregado.csv` | Base agregada por municipio/cluster |
+| `data/processed/antenas_sinal_tratadas.csv` | Base detalhada por antena/celula, indicada para calculo de distancia |
+| `data/processed/insights_regioes_agregado.csv` | Base agregada por municipio/cluster, indicada para dashboard e `/insights/regioes` |
 | `scripts/processa_dataset_visent_local.py` | Script de tratamento do dataset |
 | `scripts/gera_insights_regioes.py` | Script que gera a base agregada de regioes |
 
