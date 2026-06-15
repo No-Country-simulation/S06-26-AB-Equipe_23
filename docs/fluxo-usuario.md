@@ -5,19 +5,7 @@ Este documento especifica o fluxo do usuário (Recrutador/RH) no ecossistema do 
 
 ## Visão Geral do Fluxo
 
-[ Início ] ──► [ Login ] ──► [ Perfil/Metas ESG ]
-
-┌─────────────────────────┴────────────────────────┐
-▼ (Criar Vaga)                                     ▼ (não criar)
-[ Forms de Vagas ]                                  [ Dashboard Inicial ]
-│                                                    │                     |
-▼                                                    │                     |
-[ Lista de Triagem ] ◄──────────────────────────┘                     |
-│                                                                          | 
-├──► (Botão: Insights de Rede) ────► [ Painel de Conectividade Anatel ]   |
-└──► (Botão: Aprovar Entrevista) ──► [ Informações Ocultas Reveladas ]  ◄─┘
-
-Segue o link do fluxo desenhado: https://excalidraw.com/
+Segue o link do fluxo desenhado:[ https://excalidraw.com/](https://excalidraw.com/#json=rfyDzWzFzjULLKe_2FhWg,7_ZLcWPi42-17Eta4b9ZFA)
 
 ## 📋 Detalhamento das Etapas e Regras Técnicas
 
