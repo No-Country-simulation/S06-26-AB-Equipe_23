@@ -50,7 +50,7 @@ Segue o link do fluxo desenhado: https://excalidraw.com/
     Objetivo:Entrada de requisitos para o motor de match.
     Componentes:Formulário contendo cargo, nível, hard skills exigidas e localização.
       Controles Especiais (Mecanismo Anti-Viés): Chave seletora (*toggle switch*) para ativar o **Filtro Anti-Viés** e campo numérico para definir o percentual de diversidade mínima para a Shortlist.
-    Ação:Ao clicar em "Buscar Candidatos", dispara um `POST /api/v1/match` e envia o usuário para a próxima página.
+    Ação:Ao clicar em "Buscar Candidatos", dispara um `POST /match` e envia o usuário para a próxima página.
 
   Tela 6: Lista de Triagem (Shortlist Fabric)
     Objetivo:Apresentar os profissionais compatíveis de forma justa.
