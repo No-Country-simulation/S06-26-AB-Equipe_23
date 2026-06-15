@@ -5,7 +5,8 @@ Este documento especifica o fluxo do usuário (Recrutador/RH) no ecossistema do 
 
 ## Visão Geral do Fluxo
 
-Segue o link do fluxo desenhado:[ https://excalidraw.com/](https://excalidraw.com/#json=rfyDzWzFzjULLKe_2FhWg,7_ZLcWPi42-17Eta4b9ZFA)
+Segue o link do fluxo desenhado: [https://excalidraw.com/#json=rfyDzWzFzjULLKe_2FhWg,7_ZLcWPi42-17Eta4b9ZFA]
+
 
 ## 📋 Detalhamento das Etapas e Regras Técnicas
 
