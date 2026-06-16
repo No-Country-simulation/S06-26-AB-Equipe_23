@@ -46,5 +46,4 @@ O backend pode começar lendo JSON da pasta `mocks`. A modelagem SQL Server fica
 O frontend não precisa conhecer todas as tabelas. Ele precisa consumir os campos finais dos endpoints:
 
 - `/match`: candidatos anonimizados, score, skills, região, badge e explicação.
-- `/insights`: regiões, coordenadas, concentração e indicadores.
-
+- `/insights/regioes`: regiões, coordenadas, concentração e indicadores.

@@ -72,10 +72,10 @@ mocks/
 |---|---|
 | `docs/dicionario-dados.md` | Explica os principais arquivos e campos do dataset |
 | `docs/modelagem-sql-server.md` | Descreve a modelagem conceitual proposta |
-| `docs/contrato-api.md` | Define os formatos iniciais de `/match` e `/insights` |
+| `docs/contrato-api.md` | Define os formatos iniciais de `/match` e `/insights/regioes` |
 | `database/modelagem_sql_server.sql` | Script SQL inicial para SQL Server |
 | `mocks/match_payload.json` | Exemplo de retorno simulado do endpoint `/match` |
-| `mocks/insights_payload.json` | Exemplo de retorno simulado do endpoint `/insights` com bloco regional |
+| `mocks/insights_payload.json` | Exemplo de retorno simulado do endpoint `/insights/regioes` com bloco regional |
 
 ## Próximo passo
 
