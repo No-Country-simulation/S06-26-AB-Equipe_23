@@ -3,7 +3,8 @@
 
 """
 Script de BI / Dados - Avaliação de Conectividade do Candidato
-Calcula a distância em km até as antenas mais próximas e aplica regras de Exclusão Digital.
+Calcula a distância em km até as antenas mais próximas e aplica uma regra híbrida
+de score de conectividade regional.
 """
 
 from __future__ import annotations
@@ -160,40 +161,84 @@ def buscar_antenas_proximas(
 
 def avaliar_qualidade_rede(antenas_proximas: list[dict]) -> tuple[int, str, str | None, str]:
     """
-    Aplica a regra de avaliação de rede baseado nas antenas mais próximas.
-    Regra:
-      - Se a antena mais próxima tiver predomínio de 5G ou 4G, distância <= 5.0 km e
-        volume total de sessões >= 10.000, a nota de conectividade é 100 (máxima),
-        qualidade é 'Alta' e alerta é None.
-      - Se a antena mais próxima for 3G, ou se estiver a mais de 5.0 km (sinal fraco),
-        ou se tiver volume de sessões < 10.000 (sinal fraco/cobertura ruim),
-        gera nota 30, qualidade 'Baixa' e o alerta de 'Exclusão Digital'.
+    Aplica a regra híbrida de conectividade.
+
+    A tecnologia predominante define a escala-base documentada:
+      - 5G: 100
+      - 4G com alto volume e boa proximidade: 90
+      - 4G: 80
+      - 3G: 50
+      - Sem dado: 40
+
+    Distância e volume refinam a leitura operacional:
+      - distância > 5 km reduz 10 pontos;
+      - volume < 10.000 sessões reduz 10 pontos;
+      - a nota mínima permanece 40 para manter consistência com a documentação.
     """
     if not antenas_proximas:
-        return 0, "Sem Cobertura", "Exclusão Digital", "Nenhuma antena encontrada nas proximidades."
+        return 40, "Sem Dados", "Exclusão Digital", "Nenhuma antena encontrada nas proximidades."
 
     antena = antenas_proximas[0]
-    dist = antena["distancia_km"]
-    tech = antena["tecnologia_predominante"]
-    total = antena["total_sessoes"]
+    dist = float(antena["distancia_km"])
+    tech = str(antena.get("tecnologia_predominante", "")).strip().upper()
+    total = int(antena.get("total_sessoes", 0))
 
-    # Critérios para Sinal Fraco
-    motivo_fraqueza = []
-    if dist > 5.0:
-        motivo_fraqueza.append(f"distância excessiva até a antena ({dist:.2f} km, limite de 5.0 km)")
-    if total < 10000:
-        motivo_fraqueza.append(f"baixo volume de tráfego/sinal fraco ({total} sessões registradas)")
-    if tech == "3G":
-        motivo_fraqueza.append("tecnologia obsoleta predominante (3G)")
+    alto_volume = total >= 10000
+    boa_proximidade = dist <= 5.0
 
-    if tech in ("4G", "5G") and not motivo_fraqueza:
-        detalhes = f"Conexão estável via antena mais próxima ({dist:.2f} km) com tecnologia predominante {tech}."
-        return 100, "Alta", None, detalhes
+    if tech == "5G":
+        score_base = 100
+    elif tech == "4G" and alto_volume and boa_proximidade:
+        score_base = 90
+    elif tech == "4G":
+        score_base = 80
+    elif tech == "3G":
+        score_base = 50
     else:
+        score_base = 40
+
+    ajustes = []
+    if dist > 5.0:
+        ajustes.append(f"distância acima de 5 km ({dist:.2f} km)")
+    if total < 10000:
+        ajustes.append(f"baixo volume de sessões ({total})")
+    if tech == "3G":
+        ajustes.append("predominância 3G")
+    if score_base == 40 and tech not in ("3G", "4G", "5G"):
+        ajustes.append("tecnologia predominante sem dado válido")
+
+    penalidade = 0
+    if dist > 5.0:
+        penalidade += 10
+    if total < 10000:
+        penalidade += 10
+
+    score = max(40, score_base - penalidade)
+
+    if score >= 90:
+        qualidade = "Alta"
+    elif score >= 70:
+        qualidade = "Média"
+    elif score >= 50:
+        qualidade = "Baixa"
+    else:
+        qualidade = "Sem Dados"
+
+    if score <= 50 or tech == "3G":
         alerta = "Exclusão Digital"
-        motivos_str = " e ".join(motivo_fraqueza) if motivo_fraqueza else "sinal fraco geral"
-        detalhes = f"Alerta de Exclusão Digital devido a: {motivos_str}."
-        return 30, "Baixa", alerta, detalhes
+    elif ajustes:
+        alerta = "Atenção de Conectividade"
+    else:
+        alerta = None
+
+    detalhes = (
+        f"Score {score} calculado por tecnologia predominante {tech or 'sem dado'}, "
+        f"distância de {dist:.2f} km e volume de {total} sessões."
+    )
+    if ajustes:
+        detalhes += " Pontos de atenção: " + "; ".join(ajustes) + "."
+
+    return score, qualidade, alerta, detalhes
 
 
 def processar_candidato_por_id(

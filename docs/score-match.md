@@ -81,6 +81,15 @@ Regra inicial:
 | Predominancia 3G | 50 |
 | Sem dado | 40 |
 
+Regra hibrida para validacao local:
+
+- A tecnologia predominante define a escala-base do `score_conectividade`.
+- Para 4G com alto volume, considerar alto volume quando a antena mais proxima tiver pelo menos 10.000 sessoes e distancia ate 5 km.
+- Distancia acima de 5 km reduz 10 pontos.
+- Volume abaixo de 10.000 sessoes reduz 10 pontos.
+- A nota minima fica em 40 para manter consistencia com o caso "Sem dado".
+- Quando houver 3G predominante, distancia elevada ou baixo volume, o retorno deve trazer alerta explicativo, sem eliminar o candidato.
+
 Exemplo de uso:
 
 ```text
