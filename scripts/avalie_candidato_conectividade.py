@@ -218,10 +218,10 @@ def processar_candidato_por_id(
     if not candidato:
         raise ValueError(f"Candidato com ID '{candidato_id}' não encontrado no arquivo de mocks.")
 
-    # Tenta usar as coordenadas/CEP fictícios do mock
-    lat = cand.get("lat_ficticia")
-    lon = cand.get("lon_ficticia")
-    cep = cand.get("cep_ficticio")
+    # Tenta usar as coordenadas/CEP do mock de candidatos.
+    lat = cand.get("lat")
+    lon = cand.get("lon")
+    cep = cand.get("cep")
 
     fonte_coordenadas = "Dados do Candidato (Mock)"
 
