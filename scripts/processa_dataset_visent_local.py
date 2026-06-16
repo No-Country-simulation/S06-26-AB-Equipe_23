@@ -33,6 +33,13 @@ def to_float(value) -> float:
         return 0.0
 
 
+def to_optional_float(value) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def load_antenas(dataset_root: Path) -> dict[str, dict]:
     path = dataset_root / "referencias" / "antenas_flp.csv"
     antenas = {}
@@ -82,6 +89,7 @@ def process_concentracao(dataset_root: Path, out_dir: Path) -> None:
                 "upload_total_bytes": 0,
                 "lat_media": 0.0,
                 "lon_media": 0.0,
+                "coords_validas": 0,
             },
         )
         item["n_registros"] += 1
@@ -89,14 +97,19 @@ def process_concentracao(dataset_root: Path, out_dir: Path) -> None:
         item["sessoes_total"] += to_int(row.get("n_sessoes"))
         item["download_total_bytes"] += to_int(row.get("download_bytes"))
         item["upload_total_bytes"] += to_int(row.get("upload_bytes"))
-        item["lat_media"] += to_float(row.get("lat"))
-        item["lon_media"] += to_float(row.get("lon"))
+        lat = to_optional_float(row.get("lat"))
+        lon = to_optional_float(row.get("lon"))
+        if lat is not None and lon is not None:
+            item["lat_media"] += lat
+            item["lon_media"] += lon
+            item["coords_validas"] += 1
 
     rows = []
     for item in grouped.values():
-        n = max(item["n_registros"], 1)
+        n = max(item["coords_validas"], 1)
         item["lat_media"] = round(item["lat_media"] / n, 6)
         item["lon_media"] = round(item["lon_media"] / n, 6)
+        item.pop("coords_validas", None)
         rows.append(item)
     rows.sort(key=lambda r: r["usuarios_total"], reverse=True)
 

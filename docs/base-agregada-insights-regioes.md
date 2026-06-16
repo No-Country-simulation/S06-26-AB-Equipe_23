@@ -54,11 +54,15 @@ scripts/gera_insights_regioes.py
 
 | Condicao | Indicador |
 |---|---|
-| 5G >= 20% ou 4G >= 65% com 5G >= 10% | `alta` |
-| 4G >= 60% | `media` |
-| 3G >= 50% | `alerta_exclusao_digital` |
+| 5G >= 20% ou 4G + 5G >= 75% com 4G >= 50% | `alta` |
+| 4G + 5G >= 60% | `media` |
+| 3G >= 50% e 4G + 5G < 50% | `alerta_exclusao_digital` |
 | Sem sessoes | `sem_dado` |
 | Demais casos | `baixa` |
+
+Para evitar classificar como baixa uma regiao com conectividade util relevante, a regra considera 4G e 5G em conjunto nas faixas de `alta` e `media`.
+
+As coordenadas medias (`lat_media` e `lon_media`) devem ser calculadas apenas com registros que tenham latitude e longitude validas. Linhas sem coordenadas ou com valores corrompidos nao devem entrar na divisao da media.
 
 ## Uso para o Andre
 
