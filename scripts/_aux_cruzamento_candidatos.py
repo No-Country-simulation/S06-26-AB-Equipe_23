@@ -3,25 +3,30 @@
 """Script auxiliar para cruzamento de candidatos com regioes (tarefas 6 e 8)."""
 
 import json
+import os
 import pathlib
 import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+MATCH_PAYLOAD = ROOT / "mocks" / "match_payload.json"
 OUTPUT = ROOT / "data" / "processed" / "cruzamento_candidatos_regioes.json"
 
-CANDIDATOS = [
-    "cand_001", "cand_002", "cand_003", "cand_004",
-    "cand_005", "cand_006", "cand_007", "cand_008",
-]
+with MATCH_PAYLOAD.open("r", encoding="utf-8") as file:
+    payload = json.load(file)
+
+CANDIDATOS = [candidato["candidato_id"] for candidato in payload["candidatos"]]
 
 resultados = []
 for cid in CANDIDATOS:
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
     r = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "avalie_candidato_conectividade.py"),
-         "--candidato", cid],
+         "--candidato", cid,
+         "--candidatos-json", str(MATCH_PAYLOAD)],
         capture_output=True, text=True, encoding="utf-8", errors="replace",
-        cwd=str(ROOT),
+        cwd=str(ROOT), env=env,
     )
     if r.returncode == 0:
         resultados.append(json.loads(r.stdout))

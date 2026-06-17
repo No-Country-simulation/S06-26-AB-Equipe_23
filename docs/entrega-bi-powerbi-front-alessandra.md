@@ -99,7 +99,7 @@ Esta entrega cobre:
 
 - Candidato deve aparecer como `Candidato 1`, `Candidato 2` etc.
 - Nome, email, telefone e LinkedIn nao aparecem antes da aprovacao.
-- A massa de 200 candidatos e para analise visual/Power BI; o retorno do `/match` continua sendo uma shortlist filtrada.
+- A massa de 200 candidatos aparece tanto no mock `/match` quanto em `data/powerbi/candidatos_powerbi.csv`, sempre anonimizada.
 - ESG nao elimina candidato.
 - Conectividade nao elimina candidato.
 - Turnover e ESG ficam no dashboard executivo.

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data" / "powerbi" / "candidatos_powerbi.csv"
+MATCH_OUTPUT = ROOT / "mocks" / "match_payload.json"
 
 CARGOS = [
     "Analista de Dados Junior",
@@ -32,6 +34,19 @@ REGIOES = [
     ("Palhoca", "PALHOCA_PEDRA_BRANCA"),
     ("Biguacu", "BIGUACU_BR101_NORTE"),
 ]
+COORDENADAS_CLUSTER = {
+    "TRINDADE": (-27.596111, -48.525528),
+    "UFSC": (-27.593478, -48.552089),
+    "CBD_BEIRAMAR": (-27.586028, -48.547444),
+    "CAMPECHE": (-27.693087, -48.503058),
+    "INGLESES": (-27.44702, -48.395133),
+    "SAO_JOSE_KOBRASOL": (-27.594458, -48.619528),
+    "SAO_JOSE_CENTRO": (-27.609003, -48.62332),
+    "SAO_JOSE_ROCADO": (-27.569376, -48.640131),
+    "PALHOCA_CENTRO": (-27.637456, -48.666794),
+    "PALHOCA_PEDRA_BRANCA": (-27.632075, -48.690179),
+    "BIGUACU_BR101_NORTE": (-27.508108, -48.654131),
+}
 SKILLS = [
     "sql",
     "python",
@@ -92,6 +107,7 @@ def main() -> None:
     rows = []
     for index in range(1, 201):
         municipio, cluster = pick(REGIOES, index, step=5)
+        lat, lon = COORDENADAS_CLUSTER[cluster]
         cargo = pick(CARGOS, index, step=3)
         nivel = pick(NIVEIS, index, step=2)
         badge = pick(BADGES, index, step=4)
@@ -109,6 +125,8 @@ def main() -> None:
                 "nivel": nivel,
                 "municipio": municipio,
                 "cluster_residencia": cluster,
+                "lat": lat,
+                "lon": lon,
                 "score_match": score,
                 "score_diversidade": diversidade,
                 "skills": ", ".join(skills),
@@ -127,7 +145,58 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(rows)
 
+    candidatos_match = []
+    for row in rows:
+        candidatos_match.append(
+            {
+                "candidato_id": row["candidato_id"],
+                "apelido_exibicao": row["apelido_exibicao"],
+                "status_identificacao": row["status_identificacao"],
+                "status_funil": row["status_funil"],
+                "cargo_alvo": row["cargo_alvo"],
+                "nivel": row["nivel"],
+                "regiao": row["municipio"],
+                "cluster_residencia": row["cluster_residencia"],
+                "lat": row["lat"],
+                "lon": row["lon"],
+                "score_match": row["score_match"],
+                "score_diversidade": row["score_diversidade"],
+                "skills": [skill.strip() for skill in row["skills"].split(",")],
+                "qtd_skills": row["qtd_skills"],
+                "badge_diversidade": row["badge_diversidade"],
+                "modelo_trabalho_preferido": row["modelo_trabalho_preferido"],
+                "disponibilidade": row["disponibilidade"],
+                "indicador_conectividade": row["indicador_conectividade"],
+                "contato_liberado": row["contato_liberado"],
+                "explicacao": (
+                    "Perfil anonimizado para triagem inicial, com score de match, "
+                    "skills e contexto regional prontos para dashboard e validacao."
+                ),
+            }
+        )
+
+    candidatos_diversos = [
+        row for row in rows if row["badge_diversidade"] != "Sem badge declarado"
+    ]
+    percentual_diversidade = round((len(candidatos_diversos) / len(rows)) * 100, 1)
+    match_payload = {
+        "vaga_id": "job_001",
+        "total_analisados": len(rows),
+        "total_retorno": len(rows),
+        "metrica_diversidade": {
+            "percentual_shortlist_diversa": percentual_diversidade,
+            "meta_diversidade": 40,
+            "meta_atingida": percentual_diversidade >= 40,
+        },
+        "candidatos": candidatos_match,
+    }
+    MATCH_OUTPUT.write_text(
+        json.dumps(match_payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
     print(f"Arquivo gerado: {OUTPUT}")
+    print(f"Mock gerado: {MATCH_OUTPUT}")
     print(f"Candidatos exportados: {len(rows)}")
 
 

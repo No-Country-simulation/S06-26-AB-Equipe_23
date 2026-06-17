@@ -125,10 +125,10 @@ Atualizar o arquivo `mocks/insights_conectividade_payload.json` gerando os ponto
 
 ## Tarefas 6 e 8 — Cruzamento de Candidatos Fictícios e Regiões
 
-✅ **Concluído**. O script `scripts/avalie_candidato_conectividade.py` foi executado para a massa de testes completa (`mocks/candidatos_teste.json`).
+✅ **Concluído**. O script `scripts/avalie_candidato_conectividade.py` foi executado para a massa ampliada de 200 candidatos (`mocks/match_payload.json`).
 
 **Resultado do Cruzamento:**
-Foram processados com sucesso todos os 8 candidatos. Como todos residem na Grande Florianópolis, as antenas mais próximas indicaram predominância de tecnologia **4G** com alto volume de sessões, garantindo um score de conectividade de **90 (Alta)** para todos.
+Foram processados com sucesso todos os 200 candidatos. Como todos residem na Grande Florianópolis, as antenas mais próximas indicaram predominância de tecnologia **4G** com alto volume de sessões, garantindo score de conectividade **90 (Alta)** para a massa validada.
 
 Os detalhes do cruzamento e as antenas de referência foram exportados para o arquivo `data/processed/cruzamento_candidatos_regioes.json`. Este arquivo apoia a evolução do ETL, servindo de base para atualizar os mocks.
 
@@ -155,7 +155,7 @@ Os detalhes do cruzamento e as antenas de referência foram exportados para o ar
 | 3. Verificar lat/lon | ✅ Feito | Todas as coordenadas válidas. |
 | 4. Criar agregações | ✅ Feito | Base `insights_regioes_agregado.csv` gerada. |
 | 5. Avaliar payload do mock | ⚠️ Pendente | Mock tem só 2 clusters de 23. Precisa de update. |
-| 6. Evolução ETL (Candidatos x Regiões) | ✅ Feito | `cruzamento_candidatos_regioes.json` gerado. |
+| 6. Evolução ETL (Candidatos x Regiões) | ✅ Feito | `cruzamento_candidatos_regioes.json` gerado com 200 candidatos. |
 | 7. Métricas regionais | ✅ Feito | Documentadas em `separacao-metricas-dashboard.md`. |
-| 8. Testar distância até antenas | ✅ Feito | Teste realizado com sucesso para 8 candidatos. |
+| 8. Testar distância até antenas | ✅ Feito | Teste realizado com sucesso para 200 candidatos. |
 | 9. Validar base de insights regionais | ✅ Feito | Base validada como fonte principal do endpoint. |

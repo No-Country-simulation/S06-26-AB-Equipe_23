@@ -76,7 +76,7 @@ No backend remoto:
 
 Na entrega BI:
 
-- `mocks/match_payload.json` retorna 3 candidatos.
+- `mocks/match_payload.json` retorna 200 candidatos anonimizados.
 - `data/processed/insights_regioes_agregado.csv` tem 24 regioes.
 - `data/powerbi/insights_regioes_powerbi.csv` tem 24 regioes.
 

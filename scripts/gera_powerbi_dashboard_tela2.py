@@ -48,31 +48,41 @@ def main() -> None:
 
     candidato_rows = []
     for candidato in candidatos:
+        skills = candidato.get("skills", [])
+        if isinstance(skills, str):
+            skills = [skill.strip() for skill in skills.split(",") if skill.strip()]
+
         candidato_rows.append(
             {
                 "vaga_id": payload["vaga_id"],
                 "candidato_id": candidato["candidato_id"],
                 "apelido_exibicao": candidato["apelido_exibicao"],
                 "status_identificacao": candidato["status_identificacao"],
+                "status_funil": candidato.get("status_funil", ""),
                 "cargo_alvo": candidato.get("cargo_alvo", ""),
                 "nivel": candidato["nivel"],
                 "regiao": candidato["regiao"],
                 "cluster_residencia": candidato.get("cluster_residencia", ""),
                 "score_match": candidato["score_match"],
-                "skills": ", ".join(candidato["skills"]),
-                "qtd_skills": len(candidato["skills"]),
+                "score_diversidade": candidato.get("score_diversidade", ""),
+                "skills": ", ".join(skills),
+                "qtd_skills": candidato.get("qtd_skills", len(skills)),
                 "badge_diversidade": candidato["badge_diversidade"],
+                "modelo_trabalho_preferido": candidato.get("modelo_trabalho_preferido", ""),
+                "disponibilidade": candidato.get("disponibilidade", ""),
+                "indicador_conectividade": candidato.get("indicador_conectividade", ""),
+                "contato_liberado": candidato.get("contato_liberado", "Nao"),
                 "explicacao": candidato["explicacao"],
             }
         )
 
     OUTPUT_DASHBOARD.parent.mkdir(parents=True, exist_ok=True)
-    with OUTPUT_DASHBOARD.open("w", encoding="utf-8", newline="") as file:
+    with OUTPUT_DASHBOARD.open("w", encoding="utf-8-sig", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=list(dashboard_row.keys()))
         writer.writeheader()
         writer.writerow(dashboard_row)
 
-    with OUTPUT_CANDIDATOS.open("w", encoding="utf-8", newline="") as file:
+    with OUTPUT_CANDIDATOS.open("w", encoding="utf-8-sig", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=list(candidato_rows[0].keys()))
         writer.writeheader()
         writer.writerows(candidato_rows)

@@ -49,16 +49,16 @@ Estrutura da tela:
 Exemplo com o mock atual:
 
 ```text
-Candidatos analisados: 120
-Shortlist: 3
-Shortlist diversa: 66,7%
+Candidatos analisados: 200
+Candidatos retornados: 200
+Shortlist diversa: 88,5%
 Meta ESG: atingida
-Score medio: 87
+Score medio: 77,5
 ```
 
 Observacao:
 
-O numero de 120 candidatos analisados vem do mock de retorno do `/match`. A massa de 200 candidatos em `data/powerbi/candidatos_powerbi.csv` e uma base sintetica complementar para filtros, graficos e validacao visual no Power BI/front. Ela nao muda a regra do endpoint `/match`, que continua retornando uma shortlist filtrada e anonimizada.
+O mock atual do `/match` retorna 200 candidatos anonimizados. A mesma massa tambem fica disponivel em `data/powerbi/candidatos_powerbi.csv` para filtros, graficos e validacao visual no Power BI/front.
 
 ## Bloco ESG e diversidade
 
@@ -97,7 +97,7 @@ Campos sugeridos:
 
 | Campo | Tipo | Exemplo | Observacao |
 |---|---|---|---|
-| `turnover_estimado_percentual` | number | 18.5 | Indicador simulado |
+| `turnover_estimado_percentual` | number | 24.0 | Indicador simulado |
 | `risco_turnover` | string | medio | baixo, medio ou alto |
 | `fatores_turnover` | array | ["modelo hibrido", "nivel junior"] | Explicacao curta |
 
@@ -164,16 +164,16 @@ Esses dados pertencem a tela de insights regionais.
 {
   "dashboard": {
     "total_vagas_abertas": 4,
-    "total_candidatos_analisados": 120,
-    "total_shortlist": 3,
-    "media_score_match": 87,
+    "total_candidatos_analisados": 200,
+    "total_shortlist": 200,
+    "media_score_match": 77.5,
     "metrica_diversidade": {
-      "percentual_shortlist_diversa": 66.7,
+      "percentual_shortlist_diversa": 88.5,
       "meta_diversidade": 40,
       "meta_atingida": true
     },
     "turnover": {
-      "turnover_estimado_percentual": 18.5,
+      "turnover_estimado_percentual": 24.0,
       "risco_turnover": "medio",
       "fatores_turnover": ["modelo hibrido", "nivel junior", "mercado competitivo"]
     }

@@ -46,7 +46,7 @@ Por privacidade e redução de vieses, a primeira resposta do matching deve ser 
   "filtros": {
     "anti_vies": true,
     "diversidade_minima": 40,
-    "limite_resultados": 10
+    "limite_resultados": 200
   }
 }
 ```
@@ -56,10 +56,10 @@ Por privacidade e redução de vieses, a primeira resposta do matching deve ser 
 ```json
 {
   "vaga_id": "job_001",
-  "total_analisados": 120,
-  "total_retorno": 3,
+  "total_analisados": 200,
+  "total_retorno": 200,
   "metrica_diversidade": {
-    "percentual_shortlist_diversa": 66.7,
+    "percentual_shortlist_diversa": 88.5,
     "meta_diversidade": 40,
     "meta_atingida": true
   },
@@ -68,12 +68,21 @@ Por privacidade e redução de vieses, a primeira resposta do matching deve ser 
       "candidato_id": "cand_001",
       "apelido_exibicao": "Candidato 1",
       "status_identificacao": "anonimizado",
+      "status_funil": "base",
+      "cargo_alvo": "Desenvolvedor Frontend Junior",
       "nivel": "junior",
-      "regiao": "Florianopolis",
-      "score_match": 91,
-      "skills": ["sql", "python", "power bi", "excel"],
-      "badge_diversidade": "Mulher negra em tecnologia",
-      "explicacao": "Alta aderencia nas skills principais e residencia em regiao compativel com a vaga."
+      "regiao": "Sao Jose",
+      "cluster_residencia": "SAO_JOSE_KOBRASOL",
+      "score_match": 65,
+      "score_diversidade": 46,
+      "skills": ["excel", "java", "suporte", "dashboards"],
+      "qtd_skills": 4,
+      "badge_diversidade": "Primeira geracao no ensino superior",
+      "modelo_trabalho_preferido": "presencial",
+      "disponibilidade": "15 dias",
+      "indicador_conectividade": "alta",
+      "contato_liberado": "Nao",
+      "explicacao": "Perfil anonimizado para triagem inicial, com score de match, skills e contexto regional prontos para dashboard e validacao."
     }
   ]
 }

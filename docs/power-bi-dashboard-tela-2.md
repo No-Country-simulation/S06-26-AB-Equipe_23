@@ -54,11 +54,11 @@ Visao executiva de shortlist, ESG e risco de turnover
 
 Com o mock atual, esperado:
 
-- Candidatos analisados: 120
-- Shortlist: 3
-- Score medio: 87
+- Candidatos analisados: 200
+- Candidatos retornados: 200
+- Score medio: 77,5
 - Meta ESG: atingida
-- Turnover estimado: 18,5%
+- Turnover estimado: 24,0%
 
 ### Grafico - Score por candidato
 
@@ -104,7 +104,7 @@ Graficos recomendados:
 
 Observacao:
 
-A base de 200 candidatos e sintetica e serve para validacao visual, filtros e graficos. O endpoint `/match` deve continuar retornando uma shortlist filtrada.
+A base de 200 candidatos e sintetica e serve para validacao visual, filtros e graficos. No mock atual, o endpoint `/match` tambem retorna os 200 candidatos anonimizados para permitir teste completo do front, Power BI e cruzamentos regionais.
 
 ### Bloco ESG
 
@@ -123,7 +123,7 @@ Campos:
 Mensagem esperada com mock atual:
 
 ```text
-Meta ESG atingida: 66,7% da shortlist contempla perfis diversos, acima da meta de 40%.
+Meta ESG atingida: 88,5% da shortlist contempla perfis diversos, acima da meta de 40%.
 ```
 
 ### Bloco Turnover
