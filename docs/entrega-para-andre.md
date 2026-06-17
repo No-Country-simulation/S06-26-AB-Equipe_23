@@ -16,6 +16,7 @@ A ideia não é refazer a base do zero. A base inicial já foi tratada e documen
 | `scripts/processa_dataset_visent_local.py` | Script usado para gerar a base tratada a partir do dataset Vísent/Anatel |
 | `mocks/insights_conectividade_payload.json` | Exemplo de resposta para o endpoint de insights regionais |
 | `mocks/candidatos_teste.json` | Massa ficticia de candidatos para testes de match e cruzamento regional |
+| `data/powerbi/candidatos_powerbi.csv` | Massa ampliada de 200 candidatos anonimizados para validacao visual, filtros e cruzamentos regionais |
 | `data/processed/insights_regioes_agregado.csv` | Base agregada por municipio/cluster para `GET /insights/regioes` |
 | `docs/contrato-api.md` | Contratos de API usados pelo backend/frontend |
 | `docs/score-match.md` | Fórmula inicial do score match |
@@ -92,7 +93,8 @@ mocks/insights_conectividade_payload.json
 6. Apoiar a evolução do ETL para cruzar candidatos fictícios com regiões.
 7. Sugerir métricas regionais simples para o MVP.
 8. Usar `mocks/candidatos_teste.json` como massa inicial para testar distancia ate antenas e regra de qualidade de rede.
-9. Usar `data/processed/insights_regioes_agregado.csv` para validar a primeira versao de insights regionais.
+9. Usar `data/powerbi/candidatos_powerbi.csv` quando precisar de uma massa maior, com 200 candidatos anonimizados, para validar filtros e cruzamentos por municipio/cluster.
+10. Usar `data/processed/insights_regioes_agregado.csv` para validar a primeira versao de insights regionais.
 
 ## Alinhamento sobre as duas bases
 

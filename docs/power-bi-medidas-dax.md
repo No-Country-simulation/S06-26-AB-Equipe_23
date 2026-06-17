@@ -167,6 +167,44 @@ Qtd Regioes Candidatos = DISTINCTCOUNT(shortlist_candidatos_powerbi[regiao])
 Qtd Skills Mapeadas = SUM(shortlist_candidatos_powerbi[qtd_skills])
 ```
 
+## Tabela `candidatos_powerbi`
+
+Arquivo:
+
+```text
+data/powerbi/candidatos_powerbi.csv
+```
+
+### Medidas principais
+
+```DAX
+Total Candidatos Base = COUNTROWS(candidatos_powerbi)
+```
+
+```DAX
+Score Medio Base = AVERAGE(candidatos_powerbi[score_match])
+```
+
+```DAX
+Score Diversidade Medio = AVERAGE(candidatos_powerbi[score_diversidade])
+```
+
+```DAX
+Candidatos Shortlist Funil =
+CALCULATE(
+    COUNTROWS(candidatos_powerbi),
+    candidatos_powerbi[status_funil] = "shortlist"
+)
+```
+
+```DAX
+Candidatos Aprovados para Contato =
+CALCULATE(
+    COUNTROWS(candidatos_powerbi),
+    candidatos_powerbi[contato_liberado] = "Sim"
+)
+```
+
 ## Observacoes
 
 - As medidas foram escritas para nomes de tabelas iguais aos nomes dos CSVs sem extensao.

@@ -33,6 +33,7 @@ Registrar a checagem cruzada da branch `bi-dados-inicial` com as frentes de fron
 - `data/powerbi/insights_regioes_powerbi.csv` tem 24 regioes.
 - `data/powerbi/dashboard_tela2_mvp.csv` tem o resumo executivo da Tela 2.
 - `data/powerbi/shortlist_candidatos_powerbi.csv` tem candidatos anonimizados.
+- `data/powerbi/candidatos_powerbi.csv` tem 200 candidatos anonimizados para Power BI, filtros e cruzamentos regionais.
 - Scripts de geracao foram executados localmente.
 - Scripts compilaram com `py_compile`.
 
@@ -40,6 +41,7 @@ Registrar a checagem cruzada da branch `bi-dados-inicial` com as frentes de fron
 
 - `data/processed/antenas_sinal_tratadas.csv` segue como base detalhada para calculo de distancia ate antenas.
 - `data/processed/insights_regioes_agregado.csv` segue como base agregada para mapa e `GET /insights/regioes`.
+- `data/powerbi/candidatos_powerbi.csv` fica disponivel como massa ampliada de candidatos anonimizados para testes e validacao de cruzamentos, sem exigir mudanca no codigo do Andre.
 - `scripts/avalie_candidato_conectividade.py` usa a base detalhada, adequada para cruzamento candidato-antena.
 - `scripts/gera_insights_regioes.py` usa regra 4G+5G e ignora coordenadas invalidas no calculo da media.
 

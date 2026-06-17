@@ -16,6 +16,7 @@ Como o backend ainda esta em fase de mock, a Tela 2 pode ser alimentada por dado
 
 - `mocks/match_payload.json`
 - `mocks/candidatos_teste.json`
+- `data/powerbi/candidatos_powerbi.csv`, quando a tela/Power BI precisar de volume visual com 200 candidatos anonimizados
 - regras documentadas em `docs/separacao-metricas-dashboard.md`
 
 Quando o backend estiver pronto, os dados devem vir principalmente de:
@@ -54,6 +55,10 @@ Shortlist diversa: 66,7%
 Meta ESG: atingida
 Score medio: 87
 ```
+
+Observacao:
+
+O numero de 120 candidatos analisados vem do mock de retorno do `/match`. A massa de 200 candidatos em `data/powerbi/candidatos_powerbi.csv` e uma base sintetica complementar para filtros, graficos e validacao visual no Power BI/front. Ela nao muda a regra do endpoint `/match`, que continua retornando uma shortlist filtrada e anonimizada.
 
 ## Bloco ESG e diversidade
 

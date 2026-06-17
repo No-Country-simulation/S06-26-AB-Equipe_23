@@ -19,6 +19,7 @@ Esta entrega cobre:
 | Arquivo | Uso |
 |---|---|
 | `data/powerbi/insights_regioes_powerbi.csv` | Base principal da pagina de Insights Regionais |
+| `data/powerbi/candidatos_powerbi.csv` | Massa sintetica de 200 candidatos para filtros, graficos e validacao visual |
 | `data/powerbi/dashboard_tela2_mvp.csv` | Indicadores executivos da Tela 2 |
 | `data/powerbi/shortlist_candidatos_powerbi.csv` | Tabela anonima de candidatos para Tela 2 |
 
@@ -39,6 +40,7 @@ Esta entrega cobre:
 |---|---|
 | `scripts/gera_insights_regioes.py` | `data/processed/insights_regioes_agregado.csv` |
 | `scripts/gera_powerbi_insights_regioes.py` | `data/powerbi/insights_regioes_powerbi.csv` |
+| `scripts/gera_powerbi_candidatos.py` | `data/powerbi/candidatos_powerbi.csv` |
 | `scripts/gera_powerbi_dashboard_tela2.py` | CSVs da Tela 2 |
 | `scripts/gera_validacao_mapa_regioes.py` | Relatorio e HTML local complementar |
 
@@ -80,6 +82,7 @@ Esta entrega cobre:
 - Cards de vagas, candidatos analisados, shortlist, score medio, turnover e meta ESG.
 - Grafico de score por candidato anonimizado.
 - Grafico de shortlist por regiao.
+- Graficos de distribuicao da massa sintetica de 200 candidatos por regiao, nivel, skills e status do funil.
 - Bloco ESG com meta atual vs meta esperada.
 - Bloco turnover com percentual, risco e fatores.
 - Tabela de shortlist anonima.
@@ -96,6 +99,7 @@ Esta entrega cobre:
 
 - Candidato deve aparecer como `Candidato 1`, `Candidato 2` etc.
 - Nome, email, telefone e LinkedIn nao aparecem antes da aprovacao.
+- A massa de 200 candidatos e para analise visual/Power BI; o retorno do `/match` continua sendo uma shortlist filtrada.
 - ESG nao elimina candidato.
 - Conectividade nao elimina candidato.
 - Turnover e ESG ficam no dashboard executivo.

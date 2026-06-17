@@ -11,6 +11,7 @@ Essa pagina serve como referencia para a tela que a Alessandra vai estruturar no
 ```text
 data/powerbi/dashboard_tela2_mvp.csv
 data/powerbi/shortlist_candidatos_powerbi.csv
+data/powerbi/candidatos_powerbi.csv
 ```
 
 ## Conceito visual
@@ -86,6 +87,24 @@ Campos:
 |---|---|
 | Eixo X | `regiao` |
 | Valores | contagem de `candidato_id` |
+
+### Graficos - Base sintetica de candidatos
+
+Usar `data/powerbi/candidatos_powerbi.csv` para dar volume visual ao dashboard.
+
+Graficos recomendados:
+
+| Grafico | Campos |
+|---|---|
+| Candidatos por municipio | `municipio` x contagem de `candidato_id` |
+| Candidatos por nivel | `nivel` x contagem de `candidato_id` |
+| Funil de candidatos | `status_funil` x contagem de `candidato_id` |
+| Score medio por regiao | `municipio` x media de `score_match` |
+| Diversidade por badge | `badge_diversidade` x contagem de `candidato_id` |
+
+Observacao:
+
+A base de 200 candidatos e sintetica e serve para validacao visual, filtros e graficos. O endpoint `/match` deve continuar retornando uma shortlist filtrada.
 
 ### Bloco ESG
 
