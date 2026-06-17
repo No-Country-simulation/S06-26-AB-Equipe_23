@@ -1,0 +1,338 @@
+[
+  {
+    "candidato_id": "cand_001",
+    "apelido_exibicao": "Candidato 1",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "TRINDADE",
+    "cep": "88036-000",
+    "geolocalizacao": {
+      "lat": -27.596111,
+      "lon": -48.525528,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 505823 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003495238",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 505823
+      },
+      {
+        "ecgi": "724050699654432",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.488,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 506509
+      },
+      {
+        "ecgi": "724050683898841",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.509,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 498222
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_002",
+    "apelido_exibicao": "Candidato 2",
+    "regiao": "Sao Jose",
+    "cluster_residencia": "SAO_JOSE_KOBRASOL",
+    "cep": "88102-000",
+    "geolocalizacao": {
+      "lat": -27.594458,
+      "lon": -48.619528,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.57 km e volume de 423604 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "724050699925282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "distancia_km": 0.575,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 423604
+      },
+      {
+        "ecgi": "724050699844282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "distancia_km": 0.683,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 416055
+      },
+      {
+        "ecgi": "7240501000087309",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "distancia_km": 1.156,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 417582
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_003",
+    "apelido_exibicao": "Candidato 3",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "UFSC",
+    "cep": "88040-000",
+    "geolocalizacao": {
+      "lat": -27.593478,
+      "lon": -48.552089,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 526902 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003495564",
+        "cluster": "UFSC",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 526902
+      },
+      {
+        "ecgi": "724050683983270",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.227,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 488538
+      },
+      {
+        "ecgi": "724050697792102",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.243,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 487298
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_004",
+    "apelido_exibicao": "Candidato 4",
+    "regiao": "Biguacu",
+    "cluster_residencia": "BIGUACU_BR101_NORTE",
+    "cep": "88160-000",
+    "geolocalizacao": {
+      "lat": -27.508108,
+      "lon": -48.654131,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 505320 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003962715",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 505320
+      },
+      {
+        "ecgi": "7240501004978224",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 503974
+      },
+      {
+        "ecgi": "724050699844231",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "distancia_km": 1.832,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 504147
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_005",
+    "apelido_exibicao": "Candidato 5",
+    "regiao": "Palhoca",
+    "cluster_residencia": "PALHOCA_CENTRO",
+    "cep": "88130-000",
+    "geolocalizacao": {
+      "lat": -27.637456,
+      "lon": -48.666794,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 796339 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "724050698410289",
+        "cluster": "PALHOCA_CENTRO",
+        "municipio": "Palhoca",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 796339
+      },
+      {
+        "ecgi": "724050685015130",
+        "cluster": "PALHOCA_PEDRA_BRANCA",
+        "municipio": "Palhoca",
+        "distancia_km": 1.804,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 615508
+      },
+      {
+        "ecgi": "724050699871808",
+        "cluster": "SAO_JOSE_CENTRO",
+        "municipio": "Sao Jose",
+        "distancia_km": 3.772,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 827373
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_006",
+    "apelido_exibicao": "Candidato 6",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "CBD_BEIRAMAR",
+    "cep": "88015-000",
+    "geolocalizacao": {
+      "lat": -27.586028,
+      "lon": -48.547444,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 495284 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003862800",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 495284
+      },
+      {
+        "ecgi": "724050684142457",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.292,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 483964
+      },
+      {
+        "ecgi": "7240501005162600",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.369,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 486719
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_007",
+    "apelido_exibicao": "Candidato 7",
+    "regiao": "Sao Jose",
+    "cluster_residencia": "CAMPINAS_SAO_JOSE",
+    "cep": "88101-000",
+    "geolocalizacao": {
+      "lat": -27.608008,
+      "lon": -48.62685,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 824670 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "724050684646269",
+        "cluster": "SAO_JOSE_CENTRO",
+        "municipio": "Sao Jose",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 824670
+      },
+      {
+        "ecgi": "724050698586638",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "distancia_km": 0.776,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 422690
+      },
+      {
+        "ecgi": "724050699925282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "distancia_km": 1.139,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 423604
+      }
+    ]
+  },
+  {
+    "candidato_id": "cand_008",
+    "apelido_exibicao": "Candidato 8",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "CONTINENTE",
+    "cep": "88070-000",
+    "geolocalizacao": {
+      "lat": -27.597667,
+      "lon": -48.585108,
+      "fonte": "Dados do Candidato (Mock)"
+    },
+    "nota_conectividade": 90,
+    "qualidade_rede": "Alta",
+    "alerta": null,
+    "detalhes": "Score 90 calculado por tecnologia predominante 4G, dist�ncia de 0.00 km e volume de 371535 sess�es.",
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501005162759",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.0,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 371535
+      },
+      {
+        "ecgi": "7240501004011684",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.392,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 369410
+      },
+      {
+        "ecgi": "724050683793381",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "distancia_km": 0.546,
+        "tecnologia_predominante": "4G",
+        "total_sessoes": 371586
+      }
+    ]
+  }
+]
