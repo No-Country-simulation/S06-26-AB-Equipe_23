@@ -64,7 +64,7 @@ frontend/lib/appbitMocks.ts
 
 Inclui:
 
-- 3 candidatos anonimizados;
+- 200 candidatos anonimizados;
 - 24 regioes;
 - indicadores de conectividade;
 - percentuais 3G/4G/5G;
@@ -161,12 +161,12 @@ Isso precisa ser resolvido antes da integracao.
 
 Front/BI esperam:
 
-- 3 candidatos no mock de match;
+- 200 candidatos no mock de match;
 - 24 regioes em insights.
 
 Backend atual retorna:
 
-- 2 candidatos;
+- 200 candidatos quando o mock local de match estiver ativo;
 - 2 regioes.
 
 ## Validacao local

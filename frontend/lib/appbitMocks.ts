@@ -1,57 +1,82 @@
 import type { InsightsRegioesResponse, MatchResponse } from './appbitTypes';
 
 const recomendacaoAlta = 'Regiao com conectividade adequada para apoiar trabalho remoto ou hibrido.';
+const cargos = [
+  'Analista de Dados Junior',
+  'Analista de BI Junior',
+  'Assistente de Dados',
+  'Desenvolvedor Frontend Junior',
+  'Analista de Suporte Junior',
+  'Estagiario em Dados',
+  'Analista de Operacoes',
+  'Assistente de Projetos',
+];
+const niveis = ['estagio', 'junior', 'pleno'];
+const regioesCandidatos = [
+  ['Florianopolis', 'TRINDADE'],
+  ['Florianopolis', 'UFSC'],
+  ['Florianopolis', 'CBD_BEIRAMAR'],
+  ['Florianopolis', 'CAMPECHE'],
+  ['Florianopolis', 'INGLESES'],
+  ['Sao Jose', 'SAO_JOSE_KOBRASOL'],
+  ['Sao Jose', 'SAO_JOSE_CENTRO'],
+  ['Sao Jose', 'SAO_JOSE_ROCADO'],
+  ['Palhoca', 'PALHOCA_CENTRO'],
+  ['Palhoca', 'PALHOCA_PEDRA_BRANCA'],
+  ['Biguacu', 'BIGUACU_BR101_NORTE'],
+];
+const skillsBase = ['sql', 'python', 'power bi', 'excel', 'react', 'typescript', 'java', 'spring boot', 'atendimento', 'suporte', 'estatistica', 'etl', 'dashboards', 'comunicacao'];
+const badgesDiversidade = [
+  'Mulher em tecnologia',
+  'Pessoa negra em tecnologia',
+  'Talento de baixa renda',
+  'Perfil junior em formacao tecnica',
+  'Primeira geracao no ensino superior',
+  'Pessoa com deficiencia',
+  'Comunidade LGBTQIA+',
+  'Talento de regiao com menor acesso',
+  'Sem badge declarado',
+];
+
+function pick<T>(items: T[], index: number, step = 1): T {
+  return items[(index * step) % items.length];
+}
+
+function gerarCandidatosMock() {
+  return Array.from({ length: 200 }, (_, itemIndex) => {
+    const index = itemIndex + 1;
+    const [regiao, cluster] = pick(regioesCandidatos, index, 5);
+    const totalSkills = 3 + (index % 4);
+    const skills = Array.from({ length: totalSkills }, (_, offset) => pick(skillsBase, index + offset, 3));
+
+    return {
+      candidato_id: `cand_${String(index).padStart(3, '0')}`,
+      apelido_exibicao: `Candidato ${index}`,
+      status_identificacao: 'anonimizado' as const,
+      cargo_alvo: pick(cargos, index, 3),
+      nivel: pick(niveis, index, 2),
+      regiao,
+      cluster_residencia: cluster,
+      score_match: 58 + ((index * 7) % 40),
+      skills,
+      badge_diversidade: pick(badgesDiversidade, index, 4),
+      explicacao: 'Perfil anonimizado para triagem inicial, com score de match, skills e contexto regional prontos para dashboard e validacao.',
+    };
+  });
+}
+
+const candidatosMatchMock = gerarCandidatosMock();
 
 export const matchMock: MatchResponse = {
   vaga_id: 'job_001',
-  total_analisados: 120,
-  total_retorno: 3,
+  total_analisados: candidatosMatchMock.length,
+  total_retorno: candidatosMatchMock.length,
   metrica_diversidade: {
-    percentual_shortlist_diversa: 66.7,
+    percentual_shortlist_diversa: 88.5,
     meta_diversidade: 40,
     meta_atingida: true,
   },
-  candidatos: [
-    {
-      candidato_id: 'cand_001',
-      apelido_exibicao: 'Candidato 1',
-      status_identificacao: 'anonimizado',
-      cargo_alvo: 'Analista de Dados Junior',
-      nivel: 'junior',
-      regiao: 'Florianopolis',
-      cluster_residencia: 'TRINDADE',
-      score_match: 91,
-      skills: ['sql', 'python', 'power bi', 'excel'],
-      badge_diversidade: 'Mulher negra em tecnologia',
-      explicacao: 'Alta aderencia nas skills principais e residencia em regiao compativel com a vaga.',
-    },
-    {
-      candidato_id: 'cand_002',
-      apelido_exibicao: 'Candidato 2',
-      status_identificacao: 'anonimizado',
-      cargo_alvo: 'Analista de Dados Junior',
-      nivel: 'junior',
-      regiao: 'Sao Jose',
-      cluster_residencia: 'SAO_JOSE_KOBRASOL',
-      score_match: 86,
-      skills: ['sql', 'python', 'excel'],
-      badge_diversidade: 'Talento de regiao com menor acesso',
-      explicacao: 'Boa aderencia tecnica, nivel compativel e localizacao proxima ao polo da vaga.',
-    },
-    {
-      candidato_id: 'cand_003',
-      apelido_exibicao: 'Candidato 3',
-      status_identificacao: 'anonimizado',
-      cargo_alvo: 'Analista de Dados Junior',
-      nivel: 'junior',
-      regiao: 'Florianopolis',
-      cluster_residencia: 'UFSC',
-      score_match: 84,
-      skills: ['power bi', 'sql', 'estatistica'],
-      badge_diversidade: 'Perfil junior em formacao tecnica',
-      explicacao: 'Perfil aderente para vaga junior, com boa combinacao entre dados, BI e regiao.',
-    },
-  ],
+  candidatos: candidatosMatchMock,
 };
 
 function regiao(
