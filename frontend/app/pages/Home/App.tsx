@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from '../../../components/ui/Header.tsx';
 import Sidebar from '../../../components/ui/Sidebar.tsx';
 import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilidade';
+import PainelInsightsRegionais from '../../../components/charts/PainelInsightsRegionais';
+import DashboardExecutivo from '../../../components/charts/DashboardExecutivo';
 
 export default function App() {
   const [activeNav, setActiveNav] = useState('Empregabilidade');
@@ -15,20 +17,27 @@ export default function App() {
         <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
 
         <main style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
-          {activeNav === 'Empregabilidade' && activeSidebarItem === 'Minhas vagas' ? (
-            <PainelEmpregabilidade />
-          ) : (
-            <div style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexDirection: 'column', gap: 12, color: '#9ca3af',
-            }}>
-              <span style={{ fontSize: 40 }}>🚧</span>
-              <p style={{ fontSize: 14, fontWeight: 500 }}>{activeSidebarItem}</p>
-              <p style={{ fontSize: 13 }}>Módulo em desenvolvimento</p>
-            </div>
+          {activeSidebarItem === 'Minhas vagas' && <PainelEmpregabilidade />}
+          {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
+          {activeSidebarItem === 'Insights regionais' && <PainelInsightsRegionais />}
+          {!['Minhas vagas', 'Dashboard executivo', 'Insights regionais'].includes(activeSidebarItem) && (
+            <EmptyState label={activeSidebarItem} />
           )}
         </main>
       </div>
+    </div>
+  );
+}
+
+function EmptyState({ label }: { label: string }) {
+  return (
+    <div style={{
+      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexDirection: 'column', gap: 12, color: '#9ca3af',
+    }}>
+      <span style={{ fontSize: 40 }}>🚧</span>
+      <p style={{ fontSize: 14, fontWeight: 500 }}>{label}</p>
+      <p style={{ fontSize: 13 }}>Módulo em desenvolvimento</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { NovaVagaForm } from '../../features/jobs/components/type/index.ts';
-import { FiltrosDiversidade } from '../../features/jobs/components/type/index.ts';
+import { useState } from 'react';
+import type { CSSProperties } from 'react';
+import type { NovaVagaForm } from '../../features/jobs/components/type/index.ts';
+import type { FiltrosDiversidade } from '../../features/jobs/components/type/index.ts';
 import { AREAS, NIVEIS, MODALIDADES } from '../../stores/data/vagasMock';
 import Toggle from '../ui/Toggle';
 
@@ -9,7 +10,7 @@ interface ModalNovaVagaProps {
   onPublicar: (form: NovaVagaForm) => void;
 }
 
-const INPUT_STYLE: React.CSSProperties = {
+const INPUT_STYLE: CSSProperties = {
   width: '100%',
   padding: '8px 12px',
   border: '0.5px solid #d1d5db',
@@ -21,7 +22,7 @@ const INPUT_STYLE: React.CSSProperties = {
   outline: 'none',
 };
 
-const LABEL_STYLE: React.CSSProperties = {
+const LABEL_STYLE: CSSProperties = {
   display: 'block',
   fontSize: 12,
   fontWeight: 500,

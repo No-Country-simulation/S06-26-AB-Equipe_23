@@ -1,31 +1,32 @@
 import api from '../../../lib/axios';
 import { useState } from 'react';
-import LoginData from './type';
+import type { ChangeEvent, FormEvent } from 'react';
+import type LoginData from './type';
 
 export default function LoginForm() {
 
     const [formData, setFormData] = useState<LoginData>({
-        user: '',
+        email: '',
         password: '',
     });
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData((prev) => ({
             ...prev, [name]: value,
         }));
     };
-    const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (formData.user === '' || formData.password === '') {
+        if (formData.email === '' || formData.password === '') {
             alert('Preencha todos os campos');
             return;
         }
-        if (formData.user.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) === null) {
+        if (formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) === null) {
             alert('Digite um email válido');
             return;
         }
-        if (formData.user === '\' OR 1=1 --' || formData.password === '\' OR 1=1 --' || formData.user.includes('\'') || formData.password.includes('\'')) {
+        if (formData.email === '\' OR 1=1 --' || formData.password === '\' OR 1=1 --' || formData.email.includes('\'') || formData.password.includes('\'')) {
             alert('SQL Injection detectado! Não faça novamente ou será alertado as autoridades competentes com informações pessoais sobre seu ip.');
             return;
         }
@@ -50,7 +51,7 @@ export default function LoginForm() {
                         id="user"
                         type="text"
                         name="email"
-                        value={formData.user}
+                        value={formData.email}
                         onChange={handleInputChange}
                         placeholder="seu-email@dominio.com"
                         required

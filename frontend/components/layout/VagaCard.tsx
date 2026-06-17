@@ -1,5 +1,4 @@
-import React from 'react';
-import { Vaga } from '../../features/jobs/components/type/index.ts'
+import type { Vaga } from '../../features/jobs/components/type/index.ts'
 import Badge from '../ui/Badge';
 import ScoreBar from './ScoreBar';
 

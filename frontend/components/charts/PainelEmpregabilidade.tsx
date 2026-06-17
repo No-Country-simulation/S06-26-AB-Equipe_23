@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useVagas from '../../hooks/useVagas';
 import VagaCard from '../layout/VagaCard';
 import VagaDetalhe from '../layout/VagaDetalhe';
