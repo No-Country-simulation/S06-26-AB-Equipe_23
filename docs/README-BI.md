@@ -22,6 +22,13 @@ A camada de BI/Dados organiza as informacoes que sustentam o produto:
 | `docs/painel-conectividade-anatel.md` | Proposta do mapa/painel Anatel |
 | `docs/base-agregada-insights-regioes.md` | Documentacao da base agregada para `/insights/regioes` |
 | `docs/separacao-metricas-dashboard.md` | Separacao entre dashboard inicial e insights regionais |
+| `docs/especificacao-front-insights-regioes.md` | Especificacao dos filtros, mapa, tooltip e clique para a tela de insights |
+| `docs/especificacao-dashboard-tela-2.md` | Especificacao dos cards e graficos de Turnover/ESG para o dashboard |
+| `docs/guia-power-bi-validacao-regioes.md` | Guia para validar as 24 regioes no Power BI |
+| `docs/power-bi-dashboard-insights-regioes.md` | Layout completo da pagina de Insights Regionais no Power BI |
+| `docs/power-bi-dashboard-tela-2.md` | Layout completo da Tela 2 no Power BI |
+| `docs/power-bi-medidas-dax.md` | Medidas DAX para Insights Regionais e Tela 2 |
+| `docs/entrega-bi-powerbi-front-alessandra.md` | Checklist consolidado da entrega BI para Power BI e front |
 | `docs/fluxo-aprovacao-candidato.md` | Fluxo de anonimização e liberação de contato após aprovação |
 | `docs/entrega-para-andre.md` | Orientacao para continuidade da frente de dados/ETL |
 | `database/modelagem_sql_server.sql` | Modelo fisico inicial em SQL Server |
@@ -32,8 +39,16 @@ A camada de BI/Dados organiza as informacoes que sustentam o produto:
 | `mocks/insights_conectividade_payload.json` | Mock do mapa de conectividade |
 | `data/processed/antenas_sinal_tratadas.csv` | Base detalhada por antena/celula, indicada para calculo de distancia |
 | `data/processed/insights_regioes_agregado.csv` | Base agregada por municipio/cluster, indicada para dashboard e `/insights/regioes` |
+| `data/powerbi/insights_regioes_powerbi.csv` | Base tratada e enriquecida para Power BI - Insights Regionais |
+| `data/powerbi/dashboard_tela2_mvp.csv` | Indicadores executivos para Power BI - Tela 2 |
+| `data/powerbi/shortlist_candidatos_powerbi.csv` | Shortlist anonimizada para Power BI - Tela 2 |
 | `scripts/processa_dataset_visent_local.py` | Script de tratamento do dataset |
 | `scripts/gera_insights_regioes.py` | Script que gera a base agregada de regioes |
+| `scripts/gera_powerbi_insights_regioes.py` | Script que prepara a base de Insights Regionais para Power BI |
+| `scripts/gera_powerbi_dashboard_tela2.py` | Script que prepara os CSVs da Tela 2 para Power BI |
+| `scripts/gera_validacao_mapa_regioes.py` | Script que gera validacao local do mapa das 24 regioes |
+| `reports/validacao-mapa-regioes.md` | Relatorio de conferencia das coordenadas e indicadores |
+| `exports/validacao_mapa_regioes.html` | Previa local complementar dos pontos do mapa, sem substituir o Power BI |
 
 ## Como a equipe deve usar
 
@@ -60,8 +75,12 @@ Dados/BI:
 
 ## Proximo passo recomendado
 
-1. Backend ler `mocks/match_payload.json` e `mocks/insights_conectividade_payload.json`.
-2. Frontend criar tela de shortlist e painel de conectividade.
-3. André usar `docs/entrega-para-andre.md`, `mocks/candidatos_teste.json` e `data/processed/insights_regioes_agregado.csv` para validar a frente de dados.
-4. Dados revisar score match v2 com conectividade como componente explicativo.
+1. Revisar `docs/entrega-bi-powerbi-front-alessandra.md`.
+2. Validar as 24 regioes no Power BI usando `docs/guia-power-bi-validacao-regioes.md`.
+3. Montar a pagina de Insights com `docs/power-bi-dashboard-insights-regioes.md`.
+4. Montar a Tela 2 com `docs/power-bi-dashboard-tela-2.md`.
+5. Usar `docs/power-bi-medidas-dax.md` para cards e indicadores.
+6. Frontend usar `docs/especificacao-front-insights-regioes.md` e `docs/especificacao-dashboard-tela-2.md`.
+7. Backend ler `mocks/match_payload.json` e `mocks/insights_conectividade_payload.json`.
+8. André usar `docs/entrega-para-andre.md`, `mocks/candidatos_teste.json` e `data/processed/insights_regioes_agregado.csv` para validar a frente de dados.
 

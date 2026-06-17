@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Validacao Mapa Regioes - App BiT</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111827; background: #f8fafc; }
+    h1 { margin-bottom: 4px; }
+    .summary { display: flex; gap: 16px; flex-wrap: wrap; margin: 18px 0; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px; }
+    .filters { display: grid; grid-template-columns: repeat(4, minmax(170px, 1fr)); gap: 12px; margin: 18px 0; max-width: 1100px; }
+    .filter-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+    .filter-card label, .filter-card span { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    select, input[type="search"] { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; }
+    .checks { display: flex; flex-direction: column; gap: 4px; }
+    .checks label { display: flex; align-items: center; gap: 6px; font-weight: 400; margin: 0; }
+    button { border: 1px solid #111827; background: #111827; color: #fff; border-radius: 6px; padding: 9px 12px; cursor: pointer; }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+    .legend-item span { width: 12px; height: 12px; display: inline-block; border-radius: 50%; }
+    svg { background: #fff; border: 1px solid #d1d5db; border-radius: 8px; width: 100%; max-width: 1100px; height: auto; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; background: #fff; }
+    th, td { border: 1px solid #e5e7eb; padding: 8px; font-size: 13px; text-align: left; }
+    th { background: #f3f4f6; }
+    .hidden { display: none; }
+    @media (max-width: 900px) { .filters { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <h1>Validacao grafica das regioes</h1>
+  <p>Arquivo gerado a partir de <code>data/processed/insights_regioes_agregado.csv</code>.</p>
+  <div class="summary">
+    <div class="card"><strong>Regioes:</strong> 24</div>
+    <div class="card"><strong>Municipios:</strong> 4</div>
+    <div class="card"><strong>Lat:</strong> -27.693087 a -27.432597</div>
+    <div class="card"><strong>Lon:</strong> -48.690179 a -48.395133</div>
+    <div class="card"><strong>Pontos visiveis:</strong> <span id="visible-count">24</span></div>
+  </div>
+  <div class="filters" aria-label="Filtros do mapa">
+    <div class="filter-card">
+      <label for="municipio-filter">Municipio</label>
+      <select id="municipio-filter">
+        <option value="">Todos</option>
+        <option value="Biguacu">Biguacu</option><option value="Florianopolis">Florianopolis</option><option value="Palhoca">Palhoca</option><option value="Sao Jose">Sao Jose</option>
+      </select>
+    </div>
+    <div class="filter-card">
+      <label for="tecnologia-filter">Tecnologia predominante</label>
+      <select id="tecnologia-filter">
+        <option value="">Todas</option>
+        <option value="4G">4G</option>
+      </select>
+    </div>
+    <div class="filter-card">
+      <label for="cluster-filter">Buscar cluster</label>
+      <input id="cluster-filter" type="search" placeholder="Ex: TRINDADE">
+    </div>
+    <div class="filter-card">
+      <span>Indicador</span>
+      <div class="checks"><label><input type="checkbox" name="indicador" value="alta" checked> alta</label><label><input type="checkbox" name="indicador" value="media" checked> media</label><label><input type="checkbox" name="indicador" value="baixa" checked> baixa</label><label><input type="checkbox" name="indicador" value="alerta_exclusao_digital" checked> alerta_exclusao_digital</label><label><input type="checkbox" name="indicador" value="sem_dado" checked> sem_dado</label></div>
+    </div>
+  </div>
+  <button id="clear-filters" type="button">Limpar filtros</button>
+  <div class="legend"><span class="legend-item"><span style="background:#16a34a"></span>alta: 24</span><span class="legend-item"><span style="background:#f59e0b"></span>media: 0</span><span class="legend-item"><span style="background:#ef4444"></span>baixa: 0</span><span class="legend-item"><span style="background:#7f1d1d"></span>alerta_exclusao_digital: 0</span><span class="legend-item"><span style="background:#6b7280"></span>sem_dado: 0</span></div>
+  <svg viewBox="0 0 1100 760" role="img" aria-label="Distribuicao das 24 regioes por coordenadas medias">
+    <rect x="40" y="40" width="1020" height="680" fill="#f9fafb" stroke="#e5e7eb" />
+    <g class="map-point" data-municipio="Biguacu" data-cluster="BIGUACU_BR101_NORTE" data-indicador="alta" data-tecnologia="4G"><circle cx="213.91" cy="270.23" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Biguacu / BIGUACU_BR101_NORTE | alta | 3G 17.34% | 4G 60.18% | 5G 22.48%</title></circle><text x="224.91" y="274.23" font-size="10" fill="#111827">BIGUACU_BR101_NORTE</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="AEROPORTO_HLZ" data-indicador="alta" data-tecnologia="4G"><circle cx="521.71" cy="680.51" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / AEROPORTO_HLZ | alta | 3G 17.14% | 4G 60.25% | 5G 22.61%</title></circle><text x="532.71" y="684.51" font-size="10" fill="#111827">AEROPORTO_HLZ</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="CAMPECHE" data-indicador="alta" data-tecnologia="4G"><circle cx="678.84" cy="690.00" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / CAMPECHE | alta | 3G 17.12% | 4G 60.16% | 5G 22.72%</title></circle><text x="689.84" y="694.00" font-size="10" fill="#111827">CAMPECHE</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="CANASVIEIRAS" data-indicador="alta" data-tecnologia="4G"><circle cx="819.05" cy="70.00" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / CANASVIEIRAS | alta | 3G 17.04% | 4G 60.24% | 5G 22.72%</title></circle><text x="830.05" y="74.00" font-size="10" fill="#111827">CANASVIEIRAS</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="CBD_BEIRAMAR" data-indicador="alta" data-tecnologia="4G"><circle cx="536.31" cy="440.97" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / CBD_BEIRAMAR | alta | 3G 17.11% | 4G 60.19% | 5G 22.7%</title></circle><text x="547.31" y="444.97" font-size="10" fill="#111827">CBD_BEIRAMAR</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="CENTRO_HISTORICO" data-indicador="alta" data-tecnologia="4G"><circle cx="538.33" cy="477.84" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / CENTRO_HISTORICO | alta | 3G 17.14% | 4G 60.23% | 5G 22.62%</title></circle><text x="549.33" y="481.84" font-size="10" fill="#111827">CENTRO_HISTORICO</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="COQUEIROS" data-indicador="alta" data-tecnologia="4G"><circle cx="455.92" cy="454.44" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / COQUEIROS | alta | 3G 17.28% | 4G 60.14% | 5G 22.57%</title></circle><text x="466.92" y="458.44" font-size="10" fill="#111827">COQUEIROS</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="ESTREITO_CAPOEIRAS" data-indicador="alta" data-tecnologia="4G"><circle cx="398.23" cy="460.52" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / ESTREITO_CAPOEIRAS | alta | 3G 17.07% | 4G 60.19% | 5G 22.73%</title></circle><text x="409.23" y="464.52" font-size="10" fill="#111827">ESTREITO_CAPOEIRAS</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="INGLESES" data-indicador="alta" data-tecnologia="4G"><circle cx="1030.00" cy="104.33" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / INGLESES | alta | 3G 17.01% | 4G 60.2% | 5G 22.79%</title></circle><text x="1041.00" y="108.33" font-size="10" fill="#111827">INGLESES</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="JURERE" data-indicador="alta" data-tecnologia="4G"><circle cx="665.69" cy="113.83" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / JURERE | alta | 3G 17.07% | 4G 60.4% | 5G 22.53%</title></circle><text x="676.69" y="117.83" font-size="10" fill="#111827">JURERE</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="LAGOA_CONCEICAO" data-indicador="alta" data-tecnologia="4G"><circle cx="827.46" cy="477.46" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / LAGOA_CONCEICAO | alta | 3G 16.98% | 4G 60.31% | 5G 22.71%</title></circle><text x="838.46" y="481.46" font-size="10" fill="#111827">LAGOA_CONCEICAO</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="NORTE_ILHA" data-indicador="alta" data-tecnologia="4G"><circle cx="819.73" cy="177.17" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / NORTE_ILHA | alta | 3G 17.17% | 4G 60.22% | 5G 22.61%</title></circle><text x="830.73" y="181.17" font-size="10" fill="#111827">NORTE_ILHA</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="RESIDENCIAL_NORTE" data-indicador="alta" data-tecnologia="4G"><circle cx="663.30" cy="320.58" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / RESIDENCIAL_NORTE | alta | 3G 16.96% | 4G 60.26% | 5G 22.78%</title></circle><text x="674.30" y="324.58" font-size="10" fill="#111827">RESIDENCIAL_NORTE</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="SC401_CORREDOR" data-indicador="alta" data-tecnologia="4G"><circle cx="634.93" cy="394.20" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / SC401_CORREDOR | alta | 3G 17.14% | 4G 60.25% | 5G 22.61%</title></circle><text x="645.93" y="398.20" font-size="10" fill="#111827">SC401_CORREDOR</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="TRINDADE" data-indicador="alta" data-tecnologia="4G"><circle cx="610.99" cy="461.36" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / TRINDADE | alta | 3G 17.13% | 4G 60.27% | 5G 22.6%</title></circle><text x="621.99" y="465.36" font-size="10" fill="#111827">TRINDADE</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="UFSC" data-indicador="alta" data-tecnologia="4G"><circle cx="512.76" cy="453.21" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / UFSC | alta | 3G 17.12% | 4G 60.25% | 5G 22.63%</title></circle><text x="523.76" y="457.21" font-size="10" fill="#111827">UFSC</text></g><g class="map-point" data-municipio="Florianopolis" data-cluster="VIA_EXPRESSA_CORREDOR" data-indicador="alta" data-tecnologia="4G"><circle cx="412.21" cy="490.51" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Florianopolis / VIA_EXPRESSA_CORREDOR | alta | 3G 17.05% | 4G 60.0% | 5G 22.95%</title></circle><text x="423.21" y="494.51" font-size="10" fill="#111827">VIA_EXPRESSA_CORREDOR</text></g><g class="map-point" data-municipio="Palhoca" data-cluster="PALHOCA_CENTRO" data-indicador="alta" data-tecnologia="4G"><circle cx="146.09" cy="557.59" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Palhoca / PALHOCA_CENTRO | alta | 3G 17.28% | 4G 60.14% | 5G 22.58%</title></circle><text x="157.09" y="561.59" font-size="10" fill="#111827">PALHOCA_CENTRO</text></g><g class="map-point" data-municipio="Palhoca" data-cluster="PALHOCA_PEDRA_BRANCA" data-indicador="alta" data-tecnologia="4G"><circle cx="70.00" cy="544.78" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Palhoca / PALHOCA_PEDRA_BRANCA | alta | 3G 17.14% | 4G 60.03% | 5G 22.82%</title></circle><text x="81.00" y="548.78" font-size="10" fill="#111827">PALHOCA_PEDRA_BRANCA</text></g><g class="map-point" data-municipio="Palhoca" data-cluster="SAO_JOSE_BARREIROS" data-indicador="alta" data-tecnologia="4G"><circle cx="178.97" cy="643.04" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Palhoca / SAO_JOSE_BARREIROS | alta | 3G 17.17% | 4G 60.16% | 5G 22.67%</title></circle><text x="189.97" y="647.04" font-size="10" fill="#111827">SAO_JOSE_BARREIROS</text></g><g class="map-point" data-municipio="Sao Jose" data-cluster="ESTREITO_CAPOEIRAS" data-indicador="alta" data-tecnologia="4G"><circle cx="342.48" cy="423.77" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Sao Jose / ESTREITO_CAPOEIRAS | alta | 3G 17.12% | 4G 60.23% | 5G 22.65%</title></circle><text x="353.48" y="427.77" font-size="10" fill="#111827">ESTREITO_CAPOEIRAS</text></g><g class="map-point" data-municipio="Sao Jose" data-cluster="SAO_JOSE_CENTRO" data-indicador="alta" data-tecnologia="4G"><circle cx="287.54" cy="489.87" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Sao Jose / SAO_JOSE_CENTRO | alta | 3G 17.23% | 4G 60.2% | 5G 22.56%</title></circle><text x="298.54" y="493.87" font-size="10" fill="#111827">SAO_JOSE_CENTRO</text></g><g class="map-point" data-municipio="Sao Jose" data-cluster="SAO_JOSE_KOBRASOL" data-indicador="alta" data-tecnologia="4G"><circle cx="276.85" cy="454.53" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Sao Jose / SAO_JOSE_KOBRASOL | alta | 3G 17.08% | 4G 60.23% | 5G 22.69%</title></circle><text x="287.85" y="458.53" font-size="10" fill="#111827">SAO_JOSE_KOBRASOL</text></g><g class="map-point" data-municipio="Sao Jose" data-cluster="SAO_JOSE_ROÇADO" data-indicador="alta" data-tecnologia="4G"><circle cx="232.84" cy="395.55" r="8" fill="#16a34a" stroke="#111827" stroke-width="1.5"><title>Sao Jose / SAO_JOSE_ROÇADO | alta | 3G 17.08% | 4G 60.2% | 5G 22.72%</title></circle><text x="243.84" y="399.55" font-size="10" fill="#111827">SAO_JOSE_ROÇADO</text></g>
+  </svg>
+  <table>
+    <thead>
+      <tr>
+        <th>Municipio</th><th>Cluster</th><th>Lat media</th><th>Lon media</th>
+        <th>Indicador</th><th>4G</th><th>5G</th>
+      </tr>
+    </thead>
+    <tbody><tr data-municipio="Biguacu" data-cluster="BIGUACU_BR101_NORTE" data-indicador="alta" data-tecnologia="4G"><td>Biguacu</td><td>BIGUACU_BR101_NORTE</td><td>-27.516721</td><td>-48.645949</td><td>alta</td><td>60.18%</td><td>22.48%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="AEROPORTO_HLZ" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>AEROPORTO_HLZ</td><td>-27.689101</td><td>-48.55135</td><td>alta</td><td>60.25%</td><td>22.61%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="CAMPECHE" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>CAMPECHE</td><td>-27.693087</td><td>-48.503058</td><td>alta</td><td>60.16%</td><td>22.72%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="CANASVIEIRAS" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>CANASVIEIRAS</td><td>-27.432597</td><td>-48.459966</td><td>alta</td><td>60.24%</td><td>22.72%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="CBD_BEIRAMAR" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>CBD_BEIRAMAR</td><td>-27.588457</td><td>-48.546862</td><td>alta</td><td>60.19%</td><td>22.7%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="CENTRO_HISTORICO" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>CENTRO_HISTORICO</td><td>-27.60395</td><td>-48.546242</td><td>alta</td><td>60.23%</td><td>22.62%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="COQUEIROS" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>COQUEIROS</td><td>-27.594117</td><td>-48.571572</td><td>alta</td><td>60.14%</td><td>22.57%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="ESTREITO_CAPOEIRAS" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>ESTREITO_CAPOEIRAS</td><td>-27.596671</td><td>-48.589301</td><td>alta</td><td>60.19%</td><td>22.73%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="INGLESES" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>INGLESES</td><td>-27.44702</td><td>-48.395133</td><td>alta</td><td>60.2%</td><td>22.79%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="JURERE" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>JURERE</td><td>-27.451011</td><td>-48.507101</td><td>alta</td><td>60.4%</td><td>22.53%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="LAGOA_CONCEICAO" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>LAGOA_CONCEICAO</td><td>-27.603791</td><td>-48.457382</td><td>alta</td><td>60.31%</td><td>22.71%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="NORTE_ILHA" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>NORTE_ILHA</td><td>-27.477624</td><td>-48.459756</td><td>alta</td><td>60.22%</td><td>22.61%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="RESIDENCIAL_NORTE" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>RESIDENCIAL_NORTE</td><td>-27.537876</td><td>-48.507835</td><td>alta</td><td>60.26%</td><td>22.78%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="SC401_CORREDOR" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>SC401_CORREDOR</td><td>-27.568806</td><td>-48.516554</td><td>alta</td><td>60.25%</td><td>22.61%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="TRINDADE" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>TRINDADE</td><td>-27.597023</td><td>-48.52391</td><td>alta</td><td>60.27%</td><td>22.6%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="UFSC" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>UFSC</td><td>-27.593599</td><td>-48.5541</td><td>alta</td><td>60.25%</td><td>22.63%</td></tr>
+<tr data-municipio="Florianopolis" data-cluster="VIA_EXPRESSA_CORREDOR" data-indicador="alta" data-tecnologia="4G"><td>Florianopolis</td><td>VIA_EXPRESSA_CORREDOR</td><td>-27.609272</td><td>-48.585003</td><td>alta</td><td>60.0%</td><td>22.95%</td></tr>
+<tr data-municipio="Palhoca" data-cluster="PALHOCA_CENTRO" data-indicador="alta" data-tecnologia="4G"><td>Palhoca</td><td>PALHOCA_CENTRO</td><td>-27.637456</td><td>-48.666794</td><td>alta</td><td>60.14%</td><td>22.58%</td></tr>
+<tr data-municipio="Palhoca" data-cluster="PALHOCA_PEDRA_BRANCA" data-indicador="alta" data-tecnologia="4G"><td>Palhoca</td><td>PALHOCA_PEDRA_BRANCA</td><td>-27.632075</td><td>-48.690179</td><td>alta</td><td>60.03%</td><td>22.82%</td></tr>
+<tr data-municipio="Palhoca" data-cluster="SAO_JOSE_BARREIROS" data-indicador="alta" data-tecnologia="4G"><td>Palhoca</td><td>SAO_JOSE_BARREIROS</td><td>-27.673358</td><td>-48.656689</td><td>alta</td><td>60.16%</td><td>22.67%</td></tr>
+<tr data-municipio="Sao Jose" data-cluster="ESTREITO_CAPOEIRAS" data-indicador="alta" data-tecnologia="4G"><td>Sao Jose</td><td>ESTREITO_CAPOEIRAS</td><td>-27.581231</td><td>-48.606435</td><td>alta</td><td>60.23%</td><td>22.65%</td></tr>
+<tr data-municipio="Sao Jose" data-cluster="SAO_JOSE_CENTRO" data-indicador="alta" data-tecnologia="4G"><td>Sao Jose</td><td>SAO_JOSE_CENTRO</td><td>-27.609003</td><td>-48.62332</td><td>alta</td><td>60.2%</td><td>22.56%</td></tr>
+<tr data-municipio="Sao Jose" data-cluster="SAO_JOSE_KOBRASOL" data-indicador="alta" data-tecnologia="4G"><td>Sao Jose</td><td>SAO_JOSE_KOBRASOL</td><td>-27.594154</td><td>-48.626605</td><td>alta</td><td>60.23%</td><td>22.69%</td></tr>
+<tr data-municipio="Sao Jose" data-cluster="SAO_JOSE_ROÇADO" data-indicador="alta" data-tecnologia="4G"><td>Sao Jose</td><td>SAO_JOSE_ROÇADO</td><td>-27.569376</td><td>-48.640131</td><td>alta</td><td>60.2%</td><td>22.72%</td></tr></tbody>
+  </table>
+  <script>
+    const municipioFilter = document.querySelector('#municipio-filter');
+    const tecnologiaFilter = document.querySelector('#tecnologia-filter');
+    const clusterFilter = document.querySelector('#cluster-filter');
+    const indicadorInputs = Array.from(document.querySelectorAll('input[name="indicador"]'));
+    const clearButton = document.querySelector('#clear-filters');
+    const visibleCount = document.querySelector('#visible-count');
+    const points = Array.from(document.querySelectorAll('.map-point'));
+    const tableRows = Array.from(document.querySelectorAll('tbody tr'));
+
+    function selectedIndicators() {
+      return new Set(indicadorInputs.filter((input) => input.checked).map((input) => input.value));
+    }
+
+    function matchesFilters(element) {
+      const municipio = municipioFilter.value;
+      const tecnologia = tecnologiaFilter.value;
+      const cluster = clusterFilter.value.trim().toLowerCase();
+      const indicadores = selectedIndicators();
+
+      if (municipio && element.dataset.municipio !== municipio) return false;
+      if (tecnologia && element.dataset.tecnologia !== tecnologia) return false;
+      if (cluster && !element.dataset.cluster.toLowerCase().includes(cluster)) return false;
+      if (!indicadores.has(element.dataset.indicador)) return false;
+      return true;
+    }
+
+    function applyFilters() {
+      let count = 0;
+      points.forEach((point) => {
+        const visible = matchesFilters(point);
+        point.classList.toggle('hidden', !visible);
+        if (visible) count += 1;
+      });
+      tableRows.forEach((row) => row.classList.toggle('hidden', !matchesFilters(row)));
+      visibleCount.textContent = String(count);
+    }
+
+    [municipioFilter, tecnologiaFilter, clusterFilter, ...indicadorInputs].forEach((control) => {
+      control.addEventListener('input', applyFilters);
+      control.addEventListener('change', applyFilters);
+    });
+
+    clearButton.addEventListener('click', () => {
+      municipioFilter.value = '';
+      tecnologiaFilter.value = '';
+      clusterFilter.value = '';
+      indicadorInputs.forEach((input) => input.checked = true);
+      applyFilters();
+    });
+  </script>
+</body>
+</html>

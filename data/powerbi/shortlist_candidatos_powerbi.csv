@@ -1,0 +1,4 @@
+vaga_id,candidato_id,apelido_exibicao,status_identificacao,cargo_alvo,nivel,regiao,cluster_residencia,score_match,skills,qtd_skills,badge_diversidade,explicacao
+job_001,cand_001,Candidato 1,anonimizado,Analista de Dados Junior,junior,Florianopolis,TRINDADE,91,"sql, python, power bi, excel",4,Mulher negra em tecnologia,Alta aderencia nas skills principais e residencia em regiao compativel com a vaga.
+job_001,cand_002,Candidato 2,anonimizado,Analista de Dados Junior,junior,Sao Jose,SAO_JOSE_KOBRASOL,86,"sql, python, excel",3,Talento de regiao com menor acesso,"Boa aderencia tecnica, nivel compativel e localizacao proxima ao polo da vaga."
+job_001,cand_003,Candidato 3,anonimizado,Analista de Dados Junior,junior,Florianopolis,UFSC,84,"power bi, sql, estatistica",3,Perfil junior em formacao tecnica,"Perfil aderente para vaga junior, com boa combinacao entre dados, BI e regiao."
