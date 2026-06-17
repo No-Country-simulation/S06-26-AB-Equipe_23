@@ -1,6 +1,6 @@
 import api from '../../../lib/axios';
 import { useState } from 'react';
-
+/* ! INCOMPLETO: Necessário formatação completa como mudar o api para pegar token do localStorage e enviar no header da requisição para pegar trabalhos mais pertos.
 interface LoginData {
     user: string;
     password: string;
@@ -59,3 +59,4 @@ export default function JobPostForm() {
 
 
 
+*/

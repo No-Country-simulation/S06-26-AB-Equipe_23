@@ -2,7 +2,7 @@ import.meta.env.VITE_API_URL;
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5173',
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -10,10 +10,10 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+    const TOKEN = localStorage.getItem('token');
     // TODO: Alterar para onde colocar no banco de dados
-    if (token && config.headers) {
-        config.headers.Authorization = `Bearer ${token}`;
+    if (TOKEN && config.headers) {  
+        config.headers.Authorization = `Bearer ${TOKEN}`;
     }
     return config;
 }, (error) => {

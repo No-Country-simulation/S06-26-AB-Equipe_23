@@ -1,11 +1,37 @@
-export interface Job {
-    id: string;
-    titulo: string;
-    nivel: 'estagio' | 'junior' | 'pleno' | 'senior' | 'especialista';
-    skills: string[];
-    regiao_alvo: string;
-    diversidade_minina: 'estagio' | 'junior' | 'pleno' | 'senior' | 'especialista';
-    anti_vies: boolean;
+export interface FiltrosDiversidade {
+  antivies: boolean;
+  mulheres: boolean;
+  pessoasNegras: boolean;
+  pcd: boolean;
+  lgbtqia: boolean;
+}
+
+export interface Vaga {
+  id: number;
+  titulo: string;
+  area: string;
+  nivel: 'Júnior' | 'Pleno' | 'Sênior' | 'Liderança';
+  modalidade: 'Remoto' | 'Híbrido' | 'Presencial';
+  regiao: string;
+  descricao: string;
+  skills: string[];
+  filtrosDiversidade: FiltrosDiversidade;
+  scoreMinDiversidade: number;
+  esgMatch: number;
+  publicadaEm: string;
+}
+
+
+export interface NovaVagaForm {
+  titulo: string;
+  area: string;
+  nivel: "Júnior" | "Pleno" | "Sênior" | "Liderança";
+  modalidade: "Remoto" | "Híbrido" | "Presencial";
+  regiao: string;
+  skills: string[];
+  descricao: string;
+  filtros: FiltrosDiversidade;
+  scoreMin: number;
 }
 
 /*     vaga_id INT IDENTITY(1,1) PRIMARY KEY,
