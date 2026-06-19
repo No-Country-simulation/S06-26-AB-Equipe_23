@@ -9,13 +9,16 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-MATCH_PAYLOAD = ROOT / "mocks" / "match_payload.json"
 OUTPUT = ROOT / "data" / "processed" / "cruzamento_candidatos_regioes.json"
+MOCK_FILE = ROOT / "mocks" / "match_payload.json"
 
-with MATCH_PAYLOAD.open("r", encoding="utf-8") as file:
-    payload = json.load(file)
-
-CANDIDATOS = [candidato["candidato_id"] for candidato in payload["candidatos"]]
+try:
+    with MOCK_FILE.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+        CANDIDATOS = [c["candidato_id"] for c in data.get("candidatos", [])]
+except Exception as e:
+    print(f"Erro lendo {MOCK_FILE}: {e}")
+    CANDIDATOS = []
 
 resultados = []
 for cid in CANDIDATOS:
@@ -24,7 +27,7 @@ for cid in CANDIDATOS:
     r = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "avalie_candidato_conectividade.py"),
          "--candidato", cid,
-         "--candidatos-json", str(MATCH_PAYLOAD)],
+         "--candidatos-json", str(MOCK_FILE)],
         capture_output=True, text=True, encoding="utf-8", errors="replace",
         cwd=str(ROOT), env=env,
     )

@@ -111,15 +111,9 @@ Valores encontrados: `4G`
 
 ## Tarefa 5 — Avaliação do payload de conectividade
 
-Foi analisado o arquivo `mocks/insights_conectividade_payload.json` frente à base agregada real.
+✅ **Concluído**. O arquivo `mocks/insights_conectividade_payload.json` foi atualizado a partir dos dados reais de `data/processed/insights_regioes_agregado.csv` e `data/processed/antenas_sinal_tratadas.csv` usando o script `scripts/update_insights_conectividade_mock.py`.
 
-**Divergência Encontrada:**
-- O mock atual possui apenas **3 pontos de mapa** cobrindo **2 clusters** (AEROPORTO_HLZ e BIGUACU_BR101_NORTE).
-- A base agregada real (e a base de antenas) cobre **23 clusters** e **132 antenas**.
-- Faltam 21 clusters no mock, o que o torna muito limitado para testes de frontend.
-
-**Recomendação:**
-Atualizar o arquivo `mocks/insights_conectividade_payload.json` gerando os pontos diretamente da base `insights_regioes_agregado.csv` para garantir que o frontend consiga testar o mapa completo com dados coerentes.
+O mock agora possui todos os 24 pontos de mapa correspondentes às regiões agregadas reais da Grande Florianópolis (abrangendo os 4 municípios e 23 clusters), fornecendo dados de sessões, coordenadas médias, tecnologia predominante e recomendações operacionais condizentes com a base final para consumo direto do frontend.
 
 ---
 
@@ -154,7 +148,7 @@ Os detalhes do cruzamento e as antenas de referência foram exportados para o ar
 | 2. Conferir colunas vs dicionário | ✅ Feito | 100% de coerência. |
 | 3. Verificar lat/lon | ✅ Feito | Todas as coordenadas válidas. |
 | 4. Criar agregações | ✅ Feito | Base `insights_regioes_agregado.csv` gerada. |
-| 5. Avaliar payload do mock | ⚠️ Pendente | Mock tem só 2 clusters de 23. Precisa de update. |
+| 5. Avaliar payload do mock | ✅ Feito | Mock atualizado com as 24 regiões/clusters reais. |
 | 6. Evolução ETL (Candidatos x Regiões) | ✅ Feito | `cruzamento_candidatos_regioes.json` gerado com 200 candidatos. |
 | 7. Métricas regionais | ✅ Feito | Documentadas em `separacao-metricas-dashboard.md`. |
 | 8. Testar distância até antenas | ✅ Feito | Teste realizado com sucesso para 200 candidatos. |
