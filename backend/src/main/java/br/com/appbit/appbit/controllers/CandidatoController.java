@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/api/v1/candidatos"))
+@RequestMapping(("/candidatos"))
 public class CandidatoController {
 
 

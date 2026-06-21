@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/api/v1/skills"))
+@RequestMapping(("/skills"))
 public class SkillController {
 
 
