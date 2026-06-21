@@ -1,60 +1,50 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.*;
-import br.com.appbit.appbit.services.MatchService;
+import br.com.appbit.appbit.dtos.request.CriteriosTriagemRequestDTO;
+import br.com.appbit.appbit.dtos.response.CandidatoCompletoDTO;
+import br.com.appbit.appbit.dtos.response.CandidatoResumidoDTO;
+import br.com.appbit.appbit.exception.CandidatoNaoEncontradoException;
+import br.com.appbit.appbit.mappers.CandidatoMapper;
+import br.com.appbit.appbit.services.CandidatoMockService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping(("/api/v1/matches"))
+@RequestMapping("/match")
 public class MatchController {
 
+    private final CandidatoMockService candidatoMockService;
 
-    private final MatchService matchService;
+    public MatchController(CandidatoMockService candidatoMockService) {
+        this.candidatoMockService = candidatoMockService;
+    }
 
     @PostMapping
-    public ResponseEntity<MatchResponseDTO> createMatch(@Valid @RequestBody MatchCreateDTO createDTO) {
-        MatchResponseDTO responseDTO = matchService.createMatch(createDTO);
+    public ResponseEntity<List<CandidatoResumidoDTO>> triarCandidatos(
+            @Valid @RequestBody CriteriosTriagemRequestDTO criterios) {
+        // Fase mock: os critérios já são validados pelo contrato estrito (@Valid),
+        // mas a filtragem efetiva sobre a lista será aplicada quando o script
+        // Python de matching/triagem for integrado a este endpoint.
+        List<CandidatoResumidoDTO> candidatosResumidos = candidatoMockService.listarTodosCompletos()
+                .stream()
+                .map(CandidatoMapper::paraResumido)
+                .toList();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return ResponseEntity.ok(candidatosResumidos);
     }
 
+    @PostMapping("/{id}/aprovar")
+    public ResponseEntity<CandidatoCompletoDTO> aprovarCandidato(@PathVariable("id") String candidatoId) {
+        CandidatoCompletoDTO candidato = candidatoMockService.buscarPorId(candidatoId)
+                .orElseThrow(() -> new CandidatoNaoEncontradoException(candidatoId));
 
-    @GetMapping
-    public ResponseEntity<List<MatchResponseDTO>> getAllMatch() {
-
-        List<MatchResponseDTO> matchDtoList = matchService.listAllMatch();
-
-        return ResponseEntity.ok(matchDtoList);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<MatchResponseDTO> getMatchById(@PathVariable(name = "id") Long id) {
-
-        MatchResponseDTO responseDTO = matchService.getMatchById(id);
-
-        return ResponseEntity.ok(responseDTO);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<MatchResponseDTO> updateMatchById(@Valid @RequestBody MatchUpdateDTO updateDTO, @PathVariable(name = "id") Long id) {
-
-        MatchResponseDTO responseDTO = matchService.updateMatchById(updateDTO, id);
-
-        return  ResponseEntity.ok(responseDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMatchById(@PathVariable Long id){
-
-        matchService.deleteMatchById(id);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(candidato);
     }
 }

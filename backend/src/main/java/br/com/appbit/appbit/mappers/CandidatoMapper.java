@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.mappers;
 
 
-import br.com.appbit.appbit.dtos.CandidatoCreateDTO;
-import br.com.appbit.appbit.dtos.CandidatoResponseDTO;
+import br.com.appbit.appbit.dtos.create.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.response.CandidatoResumidoDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,10 +15,7 @@ public interface CandidatoMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "regiao", ignore = true)
     CandidatoEntity toEntity(CandidatoCreateDTO dto);
-
-
-    @Mapping(target = "regiaoId", source = "regiao.id")
-    CandidatoResponseDTO toResponseDTO(CandidatoEntity entity);
+    CandidatoResumidoDTO toResumidoDTO(CandidatoEntity entity);
 
 
 }

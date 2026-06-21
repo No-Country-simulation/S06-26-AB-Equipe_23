@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoSkillCreateDTO;
-import br.com.appbit.appbit.dtos.CandidatoSkillResponseDTO;
-import br.com.appbit.appbit.dtos.CandidatoSkillUpdateDTO;
+import br.com.appbit.appbit.dtos.create.CandidatoSkillCreateDTO;
+import br.com.appbit.appbit.dtos.response.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.update.CandidatoSkillUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.CandidatoSkillEntity;
 import br.com.appbit.appbit.entities.CandidatoSkillId;
@@ -30,7 +30,7 @@ public class CandidatoSkillService {
 
     private final CandidatoSkillMapper mapper;
 
-    public CandidatoSkillResponseDTO createCandidatoSkill(CandidatoSkillCreateDTO createDTO) {
+    public SkillResponseDTO createCandidatoSkill(CandidatoSkillCreateDTO createDTO) {
 
         CandidatoEntity candidato =
                 candidatoRepository.findById(createDTO.candidatoId()).orElse(null);
@@ -56,14 +56,14 @@ public class CandidatoSkillService {
         return mapper.toResponseDTO(candidatoSkillSave);
     }
 
-    public List<CandidatoSkillResponseDTO> listAllCandidatoSkill() {
+    public List<SkillResponseDTO> listAllCandidatoSkill() {
 
         List<CandidatoSkillEntity> candidatoSkills = repository.findAll();
-        List<CandidatoSkillResponseDTO> responseDTOS = new ArrayList<>();
+        List<SkillResponseDTO> responseDTOS = new ArrayList<>();
 
         for (CandidatoSkillEntity candidatoSkill : candidatoSkills) {
 
-            CandidatoSkillResponseDTO responseDTO =
+            SkillResponseDTO responseDTO =
                     mapper.toResponseDTO(candidatoSkill);
 
             responseDTOS.add(responseDTO);
@@ -72,7 +72,7 @@ public class CandidatoSkillService {
         return responseDTOS;
     }
 
-    public CandidatoSkillResponseDTO getCandidatoSkillById(CandidatoSkillId id) {
+    public SkillResponseDTO getCandidatoSkillById(CandidatoSkillId id) {
 
         CandidatoSkillEntity candidatoSkill = repository.findById(id).orElse(null);
 
@@ -83,7 +83,7 @@ public class CandidatoSkillService {
         return mapper.toResponseDTO(candidatoSkill);
     }
 
-    public CandidatoSkillResponseDTO updateCandidatoSkillById(
+    public SkillResponseDTO updateCandidatoSkillById(
             CandidatoSkillUpdateDTO updateDTO,
             CandidatoSkillId id) {
 

@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.MatchingRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.request.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.response.MatchingResponseDTO;
 import br.com.appbit.appbit.services.MatchingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,10 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
-import br.com.appbit.appbit.dtos.MatchingRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingResponseDTO;
 import br.com.appbit.appbit.dtos.MetricaDiversidadeDTO;
+import br.com.appbit.appbit.dtos.request.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.response.MatchingResponseDTO;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoUpdateDTO;
+import br.com.appbit.appbit.dtos.create.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.response.RegiaoInsightDTO;
+import br.com.appbit.appbit.dtos.update.RegiaoUpdateDTO;
 import br.com.appbit.appbit.services.RegiaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,34 +21,34 @@ public class RegiaoController {
     private final RegiaoService regiaoService;
 
     @PostMapping
-    public ResponseEntity<RegiaoResponseDTO> createRegiao(@Valid @RequestBody RegiaoCreateDTO createDTO) {
-        RegiaoResponseDTO responseDTO = regiaoService.createRegiao(createDTO);
+    public ResponseEntity<RegiaoInsightDTO> createRegiao(@Valid @RequestBody RegiaoCreateDTO createDTO) {
+        RegiaoInsightDTO responseDTO = regiaoService.createRegiao(createDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
 
     @GetMapping
-    public ResponseEntity<List<RegiaoResponseDTO>> getAllRegiao() {
+    public ResponseEntity<List<RegiaoInsightDTO>> getAllRegiao() {
 
-        List<RegiaoResponseDTO> regiaoDtoList = regiaoService.listAllRegiao();
+        List<RegiaoInsightDTO> regiaoDtoList = regiaoService.listAllRegiao();
 
         return ResponseEntity.ok(regiaoDtoList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegiaoResponseDTO> getRegiaoById(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<RegiaoInsightDTO> getRegiaoById(@PathVariable(name = "id") Integer id) {
 
-        RegiaoResponseDTO responseDTO = regiaoService.getRegiaoById(id);
+        RegiaoInsightDTO responseDTO = regiaoService.getRegiaoById(id);
 
         return ResponseEntity.ok(responseDTO);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<RegiaoResponseDTO> updateRegiaoById(@Valid @RequestBody RegiaoUpdateDTO updateDTO, @PathVariable(name = "id") Integer id) {
+    public ResponseEntity<RegiaoInsightDTO> updateRegiaoById(@Valid @RequestBody RegiaoUpdateDTO updateDTO, @PathVariable(name = "id") Integer id) {
 
-        RegiaoResponseDTO responseDTO = regiaoService.updateRegiaoById(updateDTO, id);
+        RegiaoInsightDTO responseDTO = regiaoService.updateRegiaoById(updateDTO, id);
 
         return  ResponseEntity.ok(responseDTO);
     }

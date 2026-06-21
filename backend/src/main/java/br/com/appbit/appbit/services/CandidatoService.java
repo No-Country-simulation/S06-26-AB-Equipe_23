@@ -1,6 +1,9 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.create.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.response.CandidatoCompletoDTO;
+import br.com.appbit.appbit.dtos.update.CandidatoUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
@@ -23,7 +26,7 @@ public class CandidatoService {
 
     private final CandidatoMapper candidatoMapper;
 
-    public CandidatoResponseDTO createCandidato(CandidatoCreateDTO createDTO){
+    public CandidatoCompletoDTO createCandidato(CandidatoCreateDTO createDTO){
 
 
         RegiaoEntity regiao = regiaoRepository.findById(createDTO.regiaoId()).orElse(null);
@@ -42,20 +45,20 @@ public class CandidatoService {
         return candidatoMapper.toResponseDTO(candidatoSave);
     }
 
-    public List<CandidatoResponseDTO> listAllCandidato(){
+    public List<CandidatoCompletoDTO> listAllCandidato(){
         List<CandidatoEntity> candidatoList = candidatoRepository.findAll();
-        List<CandidatoResponseDTO> candidatoResponseDTOS = new ArrayList<>();
+        List<CandidatoCompletoDTO> candidatoCompletoDTOS = new ArrayList<>();
 
         for (CandidatoEntity candidato : candidatoList) {
 
-            CandidatoResponseDTO responseDTO= candidatoMapper.toResponseDTO(candidato);
+            CandidatoCompletoDTO responseDTO= candidatoMapper.toResponseDTO(candidato);
 
-            candidatoResponseDTOS.add(responseDTO);
+            candidatoCompletoDTOS.add(responseDTO);
         }
-        return candidatoResponseDTOS;
+        return candidatoCompletoDTOS;
     }
 
-    public CandidatoResponseDTO getCandidatoById(Integer candidatoId){
+    public CandidatoCompletoDTO getCandidatoById(Integer candidatoId){
 
         CandidatoEntity candidato = candidatoRepository.findById(candidatoId).orElse(null);
 
@@ -63,12 +66,12 @@ public class CandidatoService {
             throw  new RuntimeException("Candidato não encontrado");
         }
 
-        CandidatoResponseDTO responseDTO = candidatoMapper.toResponseDTO(candidato);
+        CandidatoCompletoDTO responseDTO = candidatoMapper.toResponseDTO(candidato);
 
         return responseDTO;
     }
 
-    public CandidatoResponseDTO updateCandidatoById(CandidatoUpdateDTO updateDTO, Integer candidatoId){
+    public CandidatoCompletoDTO updateCandidatoById(CandidatoUpdateDTO updateDTO, Integer candidatoId){
 
         CandidatoEntity candidato = candidatoRepository.findById(candidatoId).orElse(null);
 

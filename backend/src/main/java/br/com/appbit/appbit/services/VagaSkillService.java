@@ -1,6 +1,9 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.create.VagaSkillCreateDTO;
+import br.com.appbit.appbit.dtos.response.VagaSkillResponseDTO;
+import br.com.appbit.appbit.dtos.update.VagaSkillUpdateDTO;
 import br.com.appbit.appbit.entities.*;
 import br.com.appbit.appbit.mappers.CandidatoSkillMapper;
 import br.com.appbit.appbit.mappers.VagaSkillMapper;

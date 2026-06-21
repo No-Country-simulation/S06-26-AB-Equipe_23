@@ -1,6 +1,9 @@
 package br.com.appbit.appbit.controllers;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.create.SkillCreateDTO;
+import br.com.appbit.appbit.dtos.response.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.update.SkillUpdateDTO;
 import br.com.appbit.appbit.services.SkillService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

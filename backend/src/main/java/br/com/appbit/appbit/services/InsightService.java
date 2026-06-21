@@ -1,7 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.InsightResponseDTO;
 import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
+import br.com.appbit.appbit.dtos.response.InsightResponseDTO;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

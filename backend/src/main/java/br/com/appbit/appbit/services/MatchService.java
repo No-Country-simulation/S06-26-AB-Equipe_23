@@ -1,6 +1,9 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.create.MatchCreateDTO;
+import br.com.appbit.appbit.dtos.response.MatchResponseDTO;
+import br.com.appbit.appbit.dtos.update.MatchUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.MatchEntity;
 import br.com.appbit.appbit.entities.VagaEntity;

@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.VagaCreateDTO;
-import br.com.appbit.appbit.dtos.VagaResponseDTO;
-import br.com.appbit.appbit.dtos.VagaUpdateDTO;
+import br.com.appbit.appbit.dtos.create.VagaCreateDTO;
+import br.com.appbit.appbit.dtos.response.VagaResponseDTO;
+import br.com.appbit.appbit.dtos.update.VagaUpdateDTO;
 import br.com.appbit.appbit.entities.VagaEntity;
 import br.com.appbit.appbit.mappers.VagaMapper;
 import br.com.appbit.appbit.repositories.VagaRepository;

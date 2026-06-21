@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.SkillCreateDTO;
-import br.com.appbit.appbit.dtos.SkillResponseDTO;
-import br.com.appbit.appbit.dtos.SkillUpdateDTO;
+import br.com.appbit.appbit.dtos.create.SkillCreateDTO;
+import br.com.appbit.appbit.dtos.response.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.update.SkillUpdateDTO;
 import br.com.appbit.appbit.entities.SkillEntity;
 import br.com.appbit.appbit.mappers.SkillMapper;
 import br.com.appbit.appbit.repositories.SkillRepository;

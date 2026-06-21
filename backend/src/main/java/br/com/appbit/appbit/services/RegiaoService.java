@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoUpdateDTO;
+import br.com.appbit.appbit.dtos.create.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.response.RegiaoInsightDTO;
+import br.com.appbit.appbit.dtos.update.RegiaoUpdateDTO;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.mappers.RegiaoMapper;
 import br.com.appbit.appbit.repositories.RegiaoRepository;
@@ -21,7 +21,7 @@ public class RegiaoService {
 
     private final RegiaoMapper regiaoMapper;
 
-    public RegiaoResponseDTO createRegiao(RegiaoCreateDTO regiaoCreateDTO){
+    public RegiaoInsightDTO createRegiao(RegiaoCreateDTO regiaoCreateDTO){
 
          RegiaoEntity regiaoEntity = regiaoMapper.toEntity(regiaoCreateDTO);
 
@@ -30,20 +30,20 @@ public class RegiaoService {
         return regiaoMapper.toResponseDTO(regiaoSave);
     }
 
-    public List<RegiaoResponseDTO> listAllRegiao(){
+    public List<RegiaoInsightDTO> listAllRegiao(){
         List<RegiaoEntity> regiaoList = regiaoRepository.findAll();
-        List<RegiaoResponseDTO> regiaoResponseDTOS = new ArrayList<>();
+        List<RegiaoInsightDTO> regiaoResponseDTOS = new ArrayList<>();
 
         for (RegiaoEntity regiao : regiaoList) {
 
-            RegiaoResponseDTO responseDTO= regiaoMapper.toResponseDTO(regiao);
+            RegiaoInsightDTO responseDTO= regiaoMapper.toResponseDTO(regiao);
 
             regiaoResponseDTOS.add(responseDTO);
         }
         return regiaoResponseDTOS;
     }
 
-    public RegiaoResponseDTO getRegiaoById(Integer regiaoId){
+    public RegiaoInsightDTO getRegiaoById(Integer regiaoId){
 
         RegiaoEntity regiao = regiaoRepository.findById(regiaoId).orElse(null);
 
@@ -51,12 +51,12 @@ public class RegiaoService {
             throw  new RuntimeException("Região não encontrada");
         }
 
-        RegiaoResponseDTO responseDTO = regiaoMapper.toResponseDTO(regiao);
+        RegiaoInsightDTO responseDTO = regiaoMapper.toResponseDTO(regiao);
 
         return responseDTO;
     }
 
-    public RegiaoResponseDTO updateRegiaoById(RegiaoUpdateDTO updateDTO, Integer regiaoId){
+    public RegiaoInsightDTO updateRegiaoById(RegiaoUpdateDTO updateDTO, Integer regiaoId){
 
         RegiaoEntity regiao = regiaoRepository.findById(regiaoId).orElse(null);
 

@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.mappers;
 
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
+import br.com.appbit.appbit.dtos.create.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.response.RegiaoInsightDTO;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -11,8 +11,6 @@ import org.mapstruct.MappingConstants;
 public interface RegiaoMapper {
 
     RegiaoEntity toEntity(RegiaoCreateDTO dto);
-
-
-    RegiaoResponseDTO toResponseDTO(RegiaoEntity entity);
+    RegiaoInsightDTO toResponseDTO(RegiaoEntity entity);
 
 }

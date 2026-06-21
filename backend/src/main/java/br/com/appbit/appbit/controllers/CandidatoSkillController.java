@@ -1,6 +1,9 @@
 package br.com.appbit.appbit.controllers;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.create.CandidatoSkillCreateDTO;
+import br.com.appbit.appbit.dtos.response.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.update.CandidatoSkillUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoSkillId;
 import br.com.appbit.appbit.services.CandidatoSkillService;
 import jakarta.validation.Valid;
@@ -19,23 +22,23 @@ public class CandidatoSkillController {
     private final CandidatoSkillService service;
 
     @PostMapping
-    public ResponseEntity<CandidatoSkillResponseDTO> createCandidatoSkill(@Valid @RequestBody CandidatoSkillCreateDTO createDTO) {
-        CandidatoSkillResponseDTO responseDTO = service.createCandidatoSkill(createDTO);
+    public ResponseEntity<SkillResponseDTO> createCandidatoSkill(@Valid @RequestBody CandidatoSkillCreateDTO createDTO) {
+        SkillResponseDTO responseDTO = service.createCandidatoSkill(createDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
 
     @GetMapping
-    public ResponseEntity<List<CandidatoSkillResponseDTO>> getAllCandidatoSkill() {
+    public ResponseEntity<List<SkillResponseDTO>> getAllCandidatoSkill() {
 
-        List<CandidatoSkillResponseDTO> candidatoSkillDtoList = service.listAllCandidatoSkill();
+        List<SkillResponseDTO> candidatoSkillDtoList = service.listAllCandidatoSkill();
 
         return ResponseEntity.ok(candidatoSkillDtoList);
     }
 
     @GetMapping("/{candidatoId}/{skillId}")
-    public ResponseEntity<CandidatoSkillResponseDTO> getCandidatoSkillById(
+    public ResponseEntity<SkillResponseDTO> getCandidatoSkillById(
             @PathVariable Integer candidatoId,
             @PathVariable Integer skillId) {
 
@@ -45,14 +48,14 @@ public class CandidatoSkillController {
         );
 
 
-        CandidatoSkillResponseDTO responseDTO = service.getCandidatoSkillById(id);
+        SkillResponseDTO responseDTO = service.getCandidatoSkillById(id);
 
         return ResponseEntity.ok(responseDTO);
     }
 
 
     @PutMapping("/{candidatoId}/{skillId}")
-    public ResponseEntity<CandidatoSkillResponseDTO> updateCandidatoSkillById(
+    public ResponseEntity<SkillResponseDTO> updateCandidatoSkillById(
             @Valid @RequestBody CandidatoSkillUpdateDTO updateDTO,
             @PathVariable Integer candidatoId,
             @PathVariable Integer skillId) {
@@ -62,7 +65,7 @@ public class CandidatoSkillController {
                 skillId
         );
 
-        CandidatoSkillResponseDTO responseDTO = service.updateCandidatoSkillById(updateDTO, id);
+        SkillResponseDTO responseDTO = service.updateCandidatoSkillById(updateDTO, id);
 
         return  ResponseEntity.ok(responseDTO);
     }
