@@ -1,0 +1,25 @@
+[
+  {
+    "candidato_id": "cand_008",
+    "apelido_exibicao": "Candidato 8",
+    "status_identificacao": "anonimizado",
+    "contato_pos_aprovacao": {
+      "nome": "Henrique Barros",
+      "email": "henrique.barros@example.com",
+      "telefone": "+55 48 99999-0008",
+      "linkedin": "https://linkedin.com/in/henrique-barros"
+    },
+    "cargo_alvo": "Analista de Dados Junior",
+    "nivel": "junior",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "CONTINENTE",
+    "cep": "88070-000",
+    "lat": -27.597667,
+    "lon": -48.585108,
+    "modelo_trabalho_preferido": "hibrido",
+    "skills": ["excel", "power bi", "sql"],
+    "anos_experiencia": 0,
+    "badge_diversidade": "Talento de baixa renda",
+    "score_match": 76
+  }
+]

@@ -1,26 +1,25 @@
 package br.com.appbit.appbit.dtos;
 
 public record CandidatoResponseDTO(
-        Integer id,
+                String id,
 
-        String nome,
+                String nome,
 
-        String cargo,
+                String cargo,
 
-        String nivel,
+                String nivel,
 
-        String cluster,
+                String cluster,
 
-        String municipio,
+                String municipio,
 
-        String grupo,
+                String grupo,
 
-        String diversidade,
+                String diversidade,
 
-        String disponibilidade,
+                String disponibilidade,
 
-        Boolean ativo,
+                Boolean ativo,
 
-        Integer regiaoId
-) {
+                Integer regiaoId) {
 }
