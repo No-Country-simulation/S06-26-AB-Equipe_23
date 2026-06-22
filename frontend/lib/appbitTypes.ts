@@ -1,18 +1,4 @@
-export interface MatchRequest {
-  empresa_id: string;
-  vaga: {
-    titulo: string;
-    skills: string[];
-    nivel: string;
-    regiao: string;
-    modelo_trabalho: string;
-  };
-  filtros: {
-    anti_vies: boolean;
-    diversidade_minima: number;
-    limite_resultados: number;
-  };
-}
+export type MatchRequest = Record<string, unknown>;
 
 export interface CandidatoMatch {
   candidato_id: string;
@@ -22,21 +8,21 @@ export interface CandidatoMatch {
   nivel: string;
   regiao: string;
   cluster_residencia: string;
-  score_match: number;
+  cep?: string;
+  lat?: number;
+  lon?: number;
+  modelo_trabalho_preferido?: string;
   skills: string[];
-  badge_diversidade: string;
-  explicacao: string;
+  anos_experiencia?: number;
+  badge_diversidade?: string;
+  score_match: number;
 }
 
 export interface MatchResponse {
-  vaga_id: string;
+  fonte_candidatos: string;
   total_analisados: number;
   total_retorno: number;
-  metrica_diversidade: {
-    percentual_shortlist_diversa: number;
-    meta_diversidade: number;
-    meta_atingida: boolean;
-  };
+  regra_privacidade: string;
   candidatos: CandidatoMatch[];
 }
 
@@ -46,21 +32,23 @@ export interface RegiaoInsight {
   lat_media: number;
   lon_media: number;
   qtd_antenas: number;
+  total_sessoes_3g: number;
+  total_sessoes_4g: number;
+  total_sessoes_5g: number;
+  total_sessoes_outros: number;
   total_sessoes: number;
   percentual_3g: number;
   percentual_4g: number;
   percentual_5g: number;
-  percentual_4g_5g: number;
-  tecnologia_predominante_regiao: string;
-  indicador_conectividade: 'alta' | 'media' | 'baixa' | 'alerta_exclusao_digital' | 'sem_dado';
-  indicador_label: string;
-  faixa_antenas: string;
-  faixa_sessoes: string;
-  possui_alerta: 'Sim' | 'Nao';
-  recomendacao_rh: string;
+  percentual_outros: number;
+  tecnologia_predominante_regiao: '3G' | '4G' | '5G' | 'OUTROS' | 'SEM_DADO';
+  fonte_antenas: string;
+  fonte_sessoes: string;
 }
 
 export interface InsightsRegioesResponse {
-  fonte: string;
+  fontes: { antenas: string; sessoes: string };
+  metodologia: string;
+  total_regioes: number;
   regioes: RegiaoInsight[];
 }
