@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Script auxiliar para cruzamento de candidatos com regioes (tarefas 6 e 8)."""
+"""Cruza os oito candidatos do input oficial do projeto com dados Vísent."""
+
+from __future__ import annotations
 
 import json
 import os
@@ -9,61 +10,44 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+CANDIDATES_INPUT = ROOT / "mocks" / "candidatos_teste.json"
 OUTPUT = ROOT / "data" / "processed" / "cruzamento_candidatos_regioes.json"
-MOCK_FILE = ROOT / "mocks" / "match_payload.json"
 
-try:
-    with MOCK_FILE.open("r", encoding="utf-8") as f:
-        data = json.load(f)
-        CANDIDATOS = [c["candidato_id"] for c in data.get("candidatos", [])]
-except Exception as e:
-    print(f"Erro lendo {MOCK_FILE}: {e}")
-    CANDIDATOS = []
 
-resultados = []
-for cid in CANDIDATOS:
-    env = os.environ.copy()
-    env["PYTHONIOENCODING"] = "utf-8"
-    r = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "avalie_candidato_conectividade.py"),
-         "--candidato", cid,
-         "--candidatos-json", str(MOCK_FILE)],
-        capture_output=True, text=True, encoding="utf-8", errors="replace",
-        cwd=str(ROOT), env=env,
-    )
-    if r.returncode == 0:
-        resultados.append(json.loads(r.stdout))
-    else:
-        print(f"ERRO em {cid}: {r.stderr[:80]}", file=sys.stderr)
+def main() -> None:
+    payload = json.loads(CANDIDATES_INPUT.read_text(encoding="utf-8"))
+    candidate_ids = [item["candidato_id"] for item in payload.get("candidatos", [])]
+    if not candidate_ids:
+        raise RuntimeError(f"Nenhum candidato encontrado em {CANDIDATES_INPUT}")
 
-OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-with OUTPUT.open("w", encoding="utf-8") as f:
-    json.dump(resultados, f, indent=2, ensure_ascii=False)
+    resultados = []
+    for candidate_id in candidate_ids:
+        process = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts" / "avalie_candidato_conectividade.py"),
+                "--candidato",
+                candidate_id,
+                "--candidatos-json",
+                str(CANDIDATES_INPUT),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="strict",
+            env={**os.environ, "PYTHONUTF8": "1"},
+            cwd=str(ROOT),
+            check=False,
+        )
+        if process.returncode != 0:
+            raise RuntimeError(f"Falha ao processar {candidate_id}: {process.stderr.strip()}")
+        resultados.append(json.loads(process.stdout))
 
-print(f"Cruzamento concluido. {len(resultados)} candidatos processados.")
-print(f"Arquivo salvo em: {OUTPUT}")
-print()
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT.write_text(json.dumps(resultados, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Cruzamento concluído: {len(resultados)} candidatos")
+    print(f"Arquivo salvo: {OUTPUT}")
 
-header = "{:<12} {:<14} {:<16} {:<24} {:>5} {:<8} {:<26} {}".format(
-    "ID", "Apelido", "Regiao", "Cluster", "Score", "Qual.", "Alerta", "Antena mais proxima"
-)
-print(header)
-print("-" * 120)
-for d in resultados:
-    ant = d["antenas_proximas"][0] if d["antenas_proximas"] else {}
-    antena_info = "{} - {} ({} km)".format(
-        ant.get("municipio", "?"),
-        ant.get("tecnologia_predominante", "?"),
-        ant.get("distancia_km", "?"),
-    )
-    row = "{:<12} {:<14} {:<16} {:<24} {:>5} {:<8} {:<26} {}".format(
-        d["candidato_id"],
-        d["apelido_exibicao"],
-        d.get("regiao", "?"),
-        d.get("cluster_residencia", "?"),
-        d["nota_conectividade"],
-        d["qualidade_rede"],
-        str(d["alerta"]),
-        antena_info,
-    )
-    print(row)
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,7 @@
-# Relatório de Validação — Entrega para André
+# Relatório de Validação — Base de Antenas e Sinal
 
-> Referência: `docs/entrega-para-andre.md`
-> Cobre as 9 tarefas listadas na seção "Tarefas sugeridas para o André"
+> Gerado automaticamente por `scripts/valida_base_antenas.py`
+> Referência: `docs/entrega-para-andre.md` — Tarefas 1, 2 e 3
 
 ---
 
@@ -101,55 +101,12 @@ Valores encontrados: `4G`
 
 ---
 
----
+## Critério de aceite (entrega-para-andre.md)
 
-## Tarefa 4 — Agregações por município, cluster e tecnologia
-
-✅ **Concluído**. As agregações foram implementadas no script `scripts/gera_insights_regioes.py` e geraram com sucesso a base `data/processed/insights_regioes_agregado.csv`, contendo as totalizações por município e cluster.
-
----
-
-## Tarefa 5 — Avaliação do payload de conectividade
-
-✅ **Concluído**. O arquivo `mocks/insights_conectividade_payload.json` foi atualizado a partir dos dados reais de `data/processed/insights_regioes_agregado.csv` e `data/processed/antenas_sinal_tratadas.csv` usando o script `scripts/update_insights_conectividade_mock.py`.
-
-O mock agora possui todos os 24 pontos de mapa correspondentes às regiões agregadas reais da Grande Florianópolis (abrangendo os 4 municípios e 23 clusters), fornecendo dados de sessões, coordenadas médias, tecnologia predominante e recomendações operacionais condizentes com a base final para consumo direto do frontend.
-
----
-
-## Tarefas 6 e 8 — Cruzamento de Candidatos Fictícios e Regiões
-
-✅ **Concluído**. O script `scripts/avalie_candidato_conectividade.py` foi executado para a massa ampliada de 200 candidatos (`mocks/match_payload.json`).
-
-**Resultado do Cruzamento:**
-Foram processados com sucesso todos os 200 candidatos. Como todos residem na Grande Florianópolis, as antenas mais próximas indicaram predominância de tecnologia **4G** com alto volume de sessões, garantindo score de conectividade **90 (Alta)** para a massa validada.
-
-Os detalhes do cruzamento e as antenas de referência foram exportados para o arquivo `data/processed/cruzamento_candidatos_regioes.json`. Este arquivo apoia a evolução do ETL, servindo de base para atualizar os mocks.
-
----
-
-## Tarefa 7 — Sugestão de métricas regionais para o MVP
-
-✅ **Concluído**. As métricas já foram bem definidas e isoladas das métricas de RH no documento `docs/separacao-metricas-dashboard.md`. Foram sugeridas métricas como: Quantidade de antenas, Sessões por tecnologia (3G/4G/5G) e o Indicador de conectividade. 
-
----
-
-## Tarefa 9 — Validação da primeira versão de insights regionais
-
-✅ **Concluído**. A base `data/processed/insights_regioes_agregado.csv` está íntegra e contém todas as totalizações requeridas (24 regiões agregadas). Este arquivo já pode ser considerado o "Golden Dataset" para fornecer os dados reais do endpoint `GET /insights/regioes`.
-
----
-
-## Sumário Final de Aceite
-
-| Tarefa | Status | Observação |
-|---|---|---|
-| 1. Validar a estrutura da base | ✅ Feito | Estrutura íntegra (132 registros). |
-| 2. Conferir colunas vs dicionário | ✅ Feito | 100% de coerência. |
-| 3. Verificar lat/lon | ✅ Feito | Todas as coordenadas válidas. |
-| 4. Criar agregações | ✅ Feito | Base `insights_regioes_agregado.csv` gerada. |
-| 5. Avaliar payload do mock | ✅ Feito | Mock atualizado com as 24 regiões/clusters reais. |
-| 6. Evolução ETL (Candidatos x Regiões) | ✅ Feito | `cruzamento_candidatos_regioes.json` gerado com 200 candidatos. |
-| 7. Métricas regionais | ✅ Feito | Documentadas em `separacao-metricas-dashboard.md`. |
-| 8. Testar distância até antenas | ✅ Feito | Teste realizado com sucesso para 200 candidatos. |
-| 9. Validar base de insights regionais | ✅ Feito | Base validada como fonte principal do endpoint. |
+| Critério | Status |
+|---|---|
+| Base tratada validada | ✅ |
+| Dicionário coerente com o arquivo | ✅ |
+| Lat/lon preenchidas e em faixa plausível | ✅ |
+| Tecnologias válidas | ✅ |
+| Sem sessões negativas | ✅ |

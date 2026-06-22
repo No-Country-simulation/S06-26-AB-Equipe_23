@@ -26,6 +26,15 @@ def to_int(value) -> int:
         return 0
 
 
+def to_required_int(value, field: str, source: Path) -> int:
+    if value in (None, ""):
+        raise ValueError(f"Campo obrigatório ausente: {field} em {source}")
+    try:
+        return int(float(value))
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Valor inválido para {field} em {source}: {value!r}") from exc
+
+
 def to_float(value) -> float:
     try:
         return float(value)
@@ -93,10 +102,10 @@ def process_concentracao(dataset_root: Path, out_dir: Path) -> None:
             },
         )
         item["n_registros"] += 1
-        item["usuarios_total"] += to_int(row.get("n_usuarios"))
-        item["sessoes_total"] += to_int(row.get("n_sessoes"))
-        item["download_total_bytes"] += to_int(row.get("download_bytes"))
-        item["upload_total_bytes"] += to_int(row.get("upload_bytes"))
+        item["usuarios_total"] += to_required_int(row.get("n_usuarios"), "n_usuarios", path)
+        item["sessoes_total"] += to_required_int(row.get("n_sessoes"), "n_sessoes", path)
+        item["download_total_bytes"] += to_required_int(row.get("download_bytes"), "download_bytes", path)
+        item["upload_total_bytes"] += to_required_int(row.get("upload_bytes"), "upload_bytes", path)
         lat = to_optional_float(row.get("lat"))
         lon = to_optional_float(row.get("lon"))
         if lat is not None and lon is not None:
@@ -141,8 +150,8 @@ def process_fluxos(dataset_root: Path, out_dir: Path) -> None:
                 "municipio_origem": row["municipio_origem"],
                 "cluster_destino": row["cluster_destino"],
                 "municipio_destino": row["municipio_destino"],
-                "n_usuarios": to_int(row["n_usuarios"]),
-                "n_viagens": to_int(row["n_viagens"]),
+                "n_usuarios": to_required_int(row.get("n_usuarios"), "n_usuarios", path),
+                "n_viagens": to_required_int(row.get("n_viagens"), "n_viagens", path),
                 "dist_media_km": row["dist_media_km"],
                 "periodo_predominante": row["periodo_predominante"],
             }
@@ -177,7 +186,9 @@ def process_sinal(dataset_root: Path, out_dir: Path, antenas: dict[str, dict], m
         ecgi = row.get("ecgi", "")
         rat = row.get("rat_type", "")
         bucket = rat_map.get(rat, "sessoes_outros")
-        counts[ecgi][bucket] += to_int(row.get("n_sessoes", 1))
+        if ecgi not in antenas:
+            continue
+        counts[ecgi][bucket] += to_required_int(row.get("n_sessoes"), "n_sessoes", mobility_path)
 
     rows = []
     for ecgi, item in antenas.items():

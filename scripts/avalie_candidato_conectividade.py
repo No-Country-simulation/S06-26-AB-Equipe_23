@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+"""Cruza coordenadas informadas com antenas e sessões observadas no Vísent.
 
-"""
-Script de BI / Dados - Avaliação de Conectividade do Candidato
-Calcula a distância em km até as antenas mais próximas e aplica uma regra híbrida
-de score de conectividade regional.
+O script não cria coordenadas, não geocodifica CEP e não atribui nota subjetiva de
+qualidade. Ele retorna somente distância e distribuição de sessões 3G/4G/5G
+presentes na base processada do Vísent.
 """
 
 from __future__ import annotations
@@ -14,391 +13,176 @@ import csv
 import json
 import math
 import pathlib
-import re
 import sys
-import urllib.request
 
 
-def normalizar_cep(cep_str: str) -> str:
-    """Remove caracteres não numéricos de um CEP e valida seu tamanho."""
-    cep_limpo = re.sub(r"\D", "", str(cep_str))
-    if len(cep_limpo) != 8:
-        raise ValueError(f"CEP '{cep_str}' inválido. Deve conter exatamente 8 dígitos.")
-    return cep_limpo
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+DEFAULT_ANTENNAS = ROOT / "data" / "processed" / "antenas_sinal_tratadas.csv"
+DEFAULT_CANDIDATES = ROOT / "mocks" / "candidatos_teste.json"
+SOURCE_ANTENNAS = "Vísent CDRView: referencias/antenas_flp.csv"
+SOURCE_SESSIONS = "Vísent CDRView: tensores/tensor_mobilidade.csv"
 
 
-def obter_coordenadas_por_cep(cep: str) -> tuple[float, float, str]:
-    """
-    Retorna latitude e longitude para o CEP fornecido.
-    Busca primeiro na base de dados de fallbacks locais (Grande Florianópolis)
-    e depois tenta consultar uma API pública de geocodificação de CEP.
-    Retorna (latitude, longitude, fonte_da_informacao).
-    """
-    cep_limpo = normalizar_cep(cep)
-    
-    # 1. Fallback local para agilizar desenvolvimento e garantir funcionamento offline
-    # Mapeia prefixos ou CEPs específicos para clusters da Região Metropolitana de Florianópolis
-    fallbacks_locais = {
-        "88036000": (-27.596111, -48.525528, "Tabela Local (Trindade)"),
-        "88040000": (-27.593478, -48.552089, "Tabela Local (UFSC)"),
-        "88102000": (-27.594458, -48.619528, "Tabela Local (São José Kobrasol)"),
-        "88160000": (-27.508108, -48.654131, "Tabela Local (Biguaçu BR-101)"),
-        "88130000": (-27.637456, -48.666794, "Tabela Local (Palhoça Centro)"),
-        "88015000": (-27.586028, -48.547444, "Tabela Local (Centro Beiramar)"),
-        "88101000": (-27.608008, -48.626850, "Tabela Local (Campinas São José)"),
-        "88070000": (-27.597667, -48.585108, "Tabela Local (Continente)"),
-    }
-    
-    if cep_limpo in fallbacks_locais:
-        return fallbacks_locais[cep_limpo]
-
-    # Mapeamento por faixa de CEP se não for um CEP exato
-    if cep_limpo.startswith("880"): # Florianópolis
-        return -27.5969, -48.5495, "Centróide Municipal (Florianópolis)"
-    elif cep_limpo.startswith("8810") or cep_limpo.startswith("8811"): # São José
-        return -27.6080, -48.6347, "Centróide Municipal (São José)"
-    elif cep_limpo.startswith("8813"): # Palhoça
-        return -27.6415, -48.6743, "Centróide Municipal (Palhoça)"
-    elif cep_limpo.startswith("8816"): # Biguaçu
-        return -27.5081, -48.6541, "Centróide Municipal (Biguaçu)"
-
-    # 2. Consulta via API AwesomeAPI (gratuita e sem chave)
+def to_int(value: str | None) -> int:
     try:
-        url = f"https://cep.awesomeapi.com.br/json/{cep_limpo}"
-        req = urllib.request.Request(url, headers={'User-Agent': 'AppBit-BI-Agent/1.0'})
-        with urllib.request.urlopen(req, timeout=5) as response:
-            data = json.loads(response.read().decode('utf-8'))
-            lat = float(data.get('lat'))
-            lon = float(data.get('lng'))
-            return lat, lon, "AwesomeAPI Geocoding"
-    except Exception:
-        pass
-
-    # 3. Consulta secundária via ViaCEP + Centroide fallback
-    try:
-        url_viacep = f"https://viacep.com.br/ws/{cep_limpo}/json/"
-        req = urllib.request.Request(url_viacep, headers={'User-Agent': 'AppBit-BI-Agent/1.0'})
-        with urllib.request.urlopen(req, timeout=5) as response:
-            data = json.loads(response.read().decode('utf-8'))
-            cidade = data.get('localidade', '').lower()
-            if 'florian' in cidade:
-                return -27.5969, -48.5495, "ViaCEP Fallback (Florianópolis)"
-            elif 'são josé' in cidade or 'sao jose' in cidade:
-                return -27.6080, -48.6347, "ViaCEP Fallback (São José)"
-            elif 'palhoça' in cidade or 'palhoca' in cidade:
-                return -27.6415, -48.6743, "ViaCEP Fallback (Palhoça)"
-            elif 'biguaçu' in cidade or 'biguacu' in cidade:
-                return -27.5081, -48.6541, "ViaCEP Fallback (Biguaçu)"
-    except Exception:
-        pass
-
-    # Fallback genérico para a Grande Florianópolis se começar com 88
-    if cep_limpo.startswith("88"):
-        return -27.5969, -48.5495, "Fallback Geral Grande Florianópolis"
-        
-    raise RuntimeError(f"Não foi possível geocodificar o CEP '{cep_limpo}' via APIs ou fallbacks locais.")
+        return int(float(value))
+    except (TypeError, ValueError):
+        return 0
 
 
 def calcular_distancia_haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    """Calcula a distância em quilômetros entre dois pontos geográficos."""
-    R = 6371.0  # Raio médio da Terra em km
-    
+    raio_terra_km = 6371.0
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
     delta_phi = math.radians(lat2 - lat1)
     delta_lambda = math.radians(lon2 - lon1)
-    
-    a = math.sin(delta_phi / 2.0) ** 2 + \
-        math.cos(phi1) * math.cos(phi2) * \
-        math.sin(delta_lambda / 2.0) ** 2
-    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
-    
-    return round(R * c, 3)
+    a = (
+        math.sin(delta_phi / 2.0) ** 2
+        + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2.0) ** 2
+    )
+    return round(raio_terra_km * 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a)), 3)
 
 
 def buscar_antenas_proximas(
-    lat: float, lon: float, antenas_csv_path: pathlib.Path, top_n: int = 3
-) -> list[dict]:
-    """
-    Carrega as antenas de antenas_sinal_tratadas.csv, calcula a distância
-    de cada uma até (lat, lon) e retorna as top_n antenas mais próximas.
-    """
+    lat: float, lon: float, antenas_csv_path: pathlib.Path, top_n: int
+) -> list[dict[str, object]]:
     if not antenas_csv_path.exists():
-        raise FileNotFoundError(f"Base de antenas não encontrada em: {antenas_csv_path}")
+        raise FileNotFoundError(f"Base processada de antenas não encontrada: {antenas_csv_path}")
 
-    antenas_com_distancia = []
+    antenas: list[dict[str, object]] = []
     with antenas_csv_path.open("r", encoding="utf-8-sig", newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
+        for row in csv.DictReader(file):
             a_lat = float(row["lat"])
             a_lon = float(row["lon"])
-            dist = calcular_distancia_haversine(lat, lon, a_lat, a_lon)
-            
-            sessoes_3g = int(float(row.get("sessoes_3g", 0)))
-            sessoes_4g = int(float(row.get("sessoes_4g", 0)))
-            sessoes_5g = int(float(row.get("sessoes_5g", 0)))
-            sessoes_outros = int(float(row.get("sessoes_outros", 0)))
-            total_sessoes = sessoes_3g + sessoes_4g + sessoes_5g + sessoes_outros
-            
-            antenas_com_distancia.append({
-                "ecgi": row["ecgi"],
-                "cluster": row["cluster"],
-                "municipio": row["municipio"],
-                "latitude": a_lat,
-                "longitude": a_lon,
-                "distancia_km": dist,
-                "sessoes_3g": sessoes_3g,
-                "sessoes_4g": sessoes_4g,
-                "sessoes_5g": sessoes_5g,
-                "total_sessoes": total_sessoes,
-                "tecnologia_predominante": row["tecnologia_predominante"]
-            })
-
-    # Ordenar por distância ascendente
-    antenas_com_distancia.sort(key=lambda x: x["distancia_km"])
-    return antenas_com_distancia[:top_n]
-
-
-def avaliar_qualidade_rede(antenas_proximas: list[dict]) -> tuple[int, str, str | None, str]:
-    """
-    Aplica a regra híbrida de conectividade.
-
-    A tecnologia predominante define a escala-base documentada:
-      - 5G: 100
-      - 4G com alto volume e boa proximidade: 90
-      - 4G: 80
-      - 3G: 50
-      - Sem dado: 40
-
-    Distância e volume refinam a leitura operacional:
-      - distância > 5 km reduz 10 pontos;
-      - volume < 10.000 sessões reduz 10 pontos;
-      - a nota mínima permanece 40 para manter consistência com a documentação.
-    """
-    if not antenas_proximas:
-        return 40, "Sem Dados", "Exclusão Digital", "Nenhuma antena encontrada nas proximidades."
-
-    antena = antenas_proximas[0]
-    dist = float(antena["distancia_km"])
-    tech = str(antena.get("tecnologia_predominante", "")).strip().upper()
-    total = int(antena.get("total_sessoes", 0))
-
-    alto_volume = total >= 10000
-    boa_proximidade = dist <= 5.0
-
-    if tech == "5G":
-        score_base = 100
-    elif tech == "4G" and alto_volume and boa_proximidade:
-        score_base = 90
-    elif tech == "4G":
-        score_base = 80
-    elif tech == "3G":
-        score_base = 50
-    else:
-        score_base = 40
-
-    ajustes = []
-    if dist > 5.0:
-        ajustes.append(f"distância acima de 5 km ({dist:.2f} km)")
-    if total < 10000:
-        ajustes.append(f"baixo volume de sessões ({total})")
-    if tech == "3G":
-        ajustes.append("predominância 3G")
-    if score_base == 40 and tech not in ("3G", "4G", "5G"):
-        ajustes.append("tecnologia predominante sem dado válido")
-
-    penalidade = 0
-    if dist > 5.0:
-        penalidade += 10
-    if total < 10000:
-        penalidade += 10
-
-    score = max(40, score_base - penalidade)
-
-    if score >= 90:
-        qualidade = "Alta"
-    elif score >= 70:
-        qualidade = "Média"
-    elif score >= 50:
-        qualidade = "Baixa"
-    else:
-        qualidade = "Sem Dados"
-
-    if score <= 50 or tech == "3G":
-        alerta = "Exclusão Digital"
-    elif ajustes:
-        alerta = "Atenção de Conectividade"
-    else:
-        alerta = None
-
-    detalhes = (
-        f"Score {score} calculado por tecnologia predominante {tech or 'sem dado'}, "
-        f"distância de {dist:.2f} km e volume de {total} sessões."
-    )
-    if ajustes:
-        detalhes += " Pontos de atenção: " + "; ".join(ajustes) + "."
-
-    return score, qualidade, alerta, detalhes
-
-
-def processar_candidato_por_id(
-    candidato_id: str,
-    candidatos_json_path: pathlib.Path,
-    antenas_csv_path: pathlib.Path,
-    top_n: int = 3
-) -> dict:
-    """Busca o candidato no mock JSON, resolve suas coordenadas e avalia sua rede."""
-    if not candidatos_json_path.exists():
-        raise FileNotFoundError(f"Mock de candidatos não encontrado em: {candidatos_json_path}")
-
-    with candidatos_json_path.open("r", encoding="utf-8") as file:
-        data = json.load(file)
-
-    candidato = None
-    for cand in data.get("candidatos", []):
-        if cand["candidato_id"] == candidato_id:
-            candidato = cand
-            break
-
-    if not candidato:
-        raise ValueError(f"Candidato com ID '{candidato_id}' não encontrado no arquivo de mocks.")
-
-    # Tenta usar as coordenadas/CEP do mock de candidatos.
-    lat = cand.get("lat")
-    lon = cand.get("lon")
-    cep = cand.get("cep")
-
-    fonte_coordenadas = "Dados do Candidato (Mock)"
-
-    if lat is None or lon is None:
-        if cep:
-            lat, lon, fonte_coordenadas = obter_coordenadas_por_cep(cep)
-        else:
-            # Fallback conceitual baseado no cluster de residência se lat/lon/cep não existirem
-            cluster = cand.get("cluster_residencia", "")
-            fallbacks_por_cluster = {
-                "TRINDADE": (-27.596111, -48.525528, "Fallback por Cluster"),
-                "SAO_JOSE_KOBRASOL": (-27.594458, -48.619528, "Fallback por Cluster"),
-                "UFSC": (-27.593478, -48.552089, "Fallback por Cluster"),
-                "BIGUACU_BR101_NORTE": (-27.508108, -48.654131, "Fallback por Cluster"),
-                "PALHOCA_CENTRO": (-27.637456, -48.666794, "Fallback por Cluster"),
-                "CBD_BEIRAMAR": (-27.586028, -48.547444, "Fallback por Cluster"),
-                "CAMPINAS_SAO_JOSE": (-27.608008, -48.626850, "Fallback por Cluster"),
-                "CONTINENTE": (-27.597667, -48.585108, "Fallback por Cluster"),
+            sessoes = {
+                "sessoes_3g": to_int(row.get("sessoes_3g")),
+                "sessoes_4g": to_int(row.get("sessoes_4g")),
+                "sessoes_5g": to_int(row.get("sessoes_5g")),
+                "sessoes_outros": to_int(row.get("sessoes_outros")),
             }
-            if cluster in fallbacks_por_cluster:
-                lat, lon, fonte_coordenadas = fallbacks_por_cluster[cluster]
-            else:
-                raise ValueError(f"Candidato '{candidato_id}' sem informações de localização válidas.")
+            antenas.append(
+                {
+                    "ecgi": row["ecgi"],
+                    "cluster": row["cluster"],
+                    "municipio": row["municipio"],
+                    "lat": a_lat,
+                    "lon": a_lon,
+                    "distancia_km": calcular_distancia_haversine(lat, lon, a_lat, a_lon),
+                    **sessoes,
+                    "total_sessoes": sum(sessoes.values()),
+                    "tecnologia_predominante": row["tecnologia_predominante"],
+                }
+            )
 
-    antenas_proximas = buscar_antenas_proximas(lat, lon, antenas_csv_path, top_n)
-    nota, qualidade, alerta, detalhes = avaliar_qualidade_rede(antenas_proximas)
+    antenas.sort(key=lambda item: float(item["distancia_km"]))
+    return antenas[:top_n]
 
-    # Limpar as chaves das antenas próximas para saída resumida
-    antenas_saida = []
-    for a in antenas_proximas:
-        antenas_saida.append({
-            "ecgi": a["ecgi"],
-            "cluster": a["cluster"],
-            "municipio": a["municipio"],
-            "distancia_km": a["distancia_km"],
-            "tecnologia_predominante": a["tecnologia_predominante"],
-            "total_sessoes": a["total_sessoes"]
-        })
 
+def resumir_sessoes(antenas: list[dict[str, object]]) -> dict[str, object]:
+    totais = {
+        campo: sum(int(item[campo]) for item in antenas)
+        for campo in ("sessoes_3g", "sessoes_4g", "sessoes_5g", "sessoes_outros")
+    }
+    total = sum(totais.values())
+    percentuais = {
+        campo.replace("sessoes", "percentual"): round(valor / total * 100, 4) if total else 0.0
+        for campo, valor in totais.items()
+    }
+    tecnologias = {
+        "3G": totais["sessoes_3g"],
+        "4G": totais["sessoes_4g"],
+        "5G": totais["sessoes_5g"],
+        "OUTROS": totais["sessoes_outros"],
+    }
+    predominante = max(tecnologias, key=tecnologias.get) if total else "SEM_DADO"
     return {
-        "candidato_id": candidato_id,
-        "apelido_exibicao": cand.get("apelido_exibicao"),
-        "regiao": cand.get("regiao"),
-        "cluster_residencia": cand.get("cluster_residencia"),
-        "cep": cep,
-        "geolocalizacao": {"lat": lat, "lon": lon, "fonte": fonte_coordenadas},
-        "nota_conectividade": nota,
-        "qualidade_rede": qualidade,
-        "alerta": alerta,
-        "detalhes": detalhes,
-        "antenas_proximas": antenas_saida
+        **totais,
+        "total_sessoes": total,
+        **percentuais,
+        "tecnologia_predominante": predominante,
     }
 
 
-def processar_por_localizacao(
-    lat: float, lon: float, cep: str | None, antenas_csv_path: pathlib.Path, top_n: int = 3
-) -> dict:
-    """Processa coordenadas e/ou CEP e avalia a qualidade da rede."""
-    antenas_proximas = buscar_antenas_proximas(lat, lon, antenas_csv_path, top_n)
-    nota, qualidade, alerta, detalhes = avaliar_qualidade_rede(antenas_proximas)
-
-    antenas_saida = []
-    for a in antenas_proximas:
-        antenas_saida.append({
-            "ecgi": a["ecgi"],
-            "cluster": a["cluster"],
-            "municipio": a["municipio"],
-            "distancia_km": a["distancia_km"],
-            "tecnologia_predominante": a["tecnologia_predominante"],
-            "total_sessoes": a["total_sessoes"]
-        })
-
-    return {
-        "candidato_id": None,
-        "cep": cep,
-        "geolocalizacao": {"lat": lat, "lon": lon, "fonte": "Input Geocodificado" if cep else "Input Direto"},
-        "nota_conectividade": nota,
-        "qualidade_rede": qualidade,
-        "alerta": alerta,
-        "detalhes": detalhes,
-        "antenas_proximas": antenas_saida
+def processar_localizacao(
+    lat: float,
+    lon: float,
+    antenas_csv_path: pathlib.Path,
+    top_n: int,
+    candidato: dict[str, object] | None = None,
+) -> dict[str, object]:
+    antenas = buscar_antenas_proximas(lat, lon, antenas_csv_path, top_n)
+    resultado: dict[str, object] = {
+        "coordenadas_entrada": {"lat": lat, "lon": lon},
+        "fontes": {
+            "coordenadas": "mocks/candidatos_teste.json" if candidato else "argumento --coordenadas",
+            "antenas": SOURCE_ANTENNAS,
+            "sessoes": SOURCE_SESSIONS,
+        },
+        "resumo_sessoes_antenas_proximas": resumir_sessoes(antenas),
+        "antenas_proximas": antenas,
+        "limitacao": (
+            "Sessões por tecnologia descrevem uso observado no dataset. "
+            "Não equivalem a teste de velocidade nem garantem cobertura no endereço."
+        ),
     }
+    if candidato:
+        resultado.update(
+            {
+                "candidato_id": candidato["candidato_id"],
+                "apelido_exibicao": candidato.get("apelido_exibicao"),
+                "regiao": candidato.get("regiao"),
+                "cluster_residencia": candidato.get("cluster_residencia"),
+            }
+        )
+    return resultado
+
+
+def carregar_candidato(candidato_id: str, candidatos_json_path: pathlib.Path) -> dict[str, object]:
+    if not candidatos_json_path.exists():
+        raise FileNotFoundError(f"Arquivo de candidatos não encontrado: {candidatos_json_path}")
+    payload = json.loads(candidatos_json_path.read_text(encoding="utf-8"))
+    candidato = next(
+        (item for item in payload.get("candidatos", []) if item.get("candidato_id") == candidato_id),
+        None,
+    )
+    if candidato is None:
+        raise ValueError(f"Candidato não encontrado: {candidato_id}")
+    if candidato.get("lat") is None or candidato.get("lon") is None:
+        raise ValueError(
+            f"Candidato {candidato_id} não possui lat/lon na fonte. "
+            "O script não inventa nem geocodifica coordenadas ausentes."
+        )
+    return candidato
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Avalia qualidade de rede e distância de antenas para candidatos."
-    )
+    parser = argparse.ArgumentParser(description="Cruza localização com dados observados no Vísent.")
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--candidato", help="ID do candidato fictício (ex: cand_001)")
-    group.add_argument("--cep", help="CEP do candidato (ex: 88036-000)")
-    group.add_argument("--coordenadas", nargs=2, type=float, metavar=("LAT", "LON"),
-                       help="Latitude e Longitude do candidato")
-
-    parser.add_argument("--top-n", type=int, default=3, help="Número de antenas mais próximas a buscar")
-    parser.add_argument("--antenas-csv", default="data/processed/antenas_sinal_tratadas.csv",
-                        help="Caminho da base tratada de antenas")
-    parser.add_argument("--candidatos-json", default="mocks/candidatos_teste.json",
-                        help="Caminho do mock JSON de candidatos")
-
+    group.add_argument("--candidato", help="ID presente em mocks/candidatos_teste.json")
+    group.add_argument("--coordenadas", nargs=2, type=float, metavar=("LAT", "LON"))
+    parser.add_argument("--top-n", type=int, default=3)
+    parser.add_argument("--antenas-csv", type=pathlib.Path, default=DEFAULT_ANTENNAS)
+    parser.add_argument("--candidatos-json", type=pathlib.Path, default=DEFAULT_CANDIDATES)
     args = parser.parse_args()
-
-    root_dir = pathlib.Path(__file__).resolve().parents[1]
-    antenas_path = root_dir / args.antenas_csv
-    candidatos_path = root_dir / args.candidatos_json
 
     try:
         if args.candidato:
-            resultado = processar_candidato_por_id(
-                args.candidato, candidatos_path, antenas_path, args.top_n
+            candidato = carregar_candidato(args.candidato, args.candidatos_json)
+            resultado = processar_localizacao(
+                float(candidato["lat"]),
+                float(candidato["lon"]),
+                args.antenas_csv,
+                args.top_n,
+                candidato,
             )
-        elif args.cep:
-            lat, lon, fonte = obter_coordenadas_por_cep(args.cep)
-            resultado = processar_por_localizacao(
-                lat, lon, args.cep, antenas_path, args.top_n
+        else:
+            resultado = processar_localizacao(
+                args.coordenadas[0], args.coordenadas[1], args.antenas_csv, args.top_n
             )
-            resultado["geolocalizacao"]["fonte"] = fonte
-        elif args.coordenadas:
-            lat, lon = args.coordenadas
-            resultado = processar_por_localizacao(
-                lat, lon, None, antenas_path, args.top_n
-            )
-            
         print(json.dumps(resultado, indent=2, ensure_ascii=False))
-        sys.exit(0)
-    except Exception as e:
-        erro_json = {
-            "status": "erro",
-            "mensagem": str(e)
-        }
-        print(json.dumps(erro_json, indent=2, ensure_ascii=False), file=sys.stderr)
-        sys.exit(1)
+    except Exception as exc:
+        print(json.dumps({"status": "erro", "mensagem": str(exc)}, ensure_ascii=False), file=sys.stderr)
+        raise SystemExit(1) from exc
 
 
 if __name__ == "__main__":

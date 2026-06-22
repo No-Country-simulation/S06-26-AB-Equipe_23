@@ -1,25 +1,25 @@
-municipio,cluster,qtd_antenas,lat_media,lon_media,total_sessoes_3g,total_sessoes_4g,total_sessoes_5g,total_sessoes_outros,total_sessoes,percentual_3g,percentual_4g,percentual_5g,tecnologia_predominante_regiao,indicador_conectividade
-Biguacu,BIGUACU_BR101_NORTE,4,-27.516721,-48.645949,349530,1212844,453095,0,2015469,17.34,60.18,22.48,4G,alta
-Florianopolis,AEROPORTO_HLZ,6,-27.689101,-48.55135,419958,1476037,553932,0,2449927,17.14,60.25,22.61,4G,alta
-Florianopolis,CAMPECHE,8,-27.693087,-48.503058,570269,2004426,756963,0,3331658,17.12,60.16,22.72,4G,alta
-Florianopolis,CANASVIEIRAS,3,-27.432597,-48.459966,257040,908764,342647,0,1508451,17.04,60.24,22.72,4G,alta
-Florianopolis,CBD_BEIRAMAR,13,-27.588457,-48.546862,1084873,3816414,1439686,0,6340973,17.11,60.19,22.7,4G,alta
-Florianopolis,CENTRO_HISTORICO,1,-27.60395,-48.546242,181699,638320,239769,0,1059788,17.14,60.23,22.62,4G,alta
-Florianopolis,COQUEIROS,1,-27.594117,-48.571572,149747,521036,195578,0,866361,17.28,60.14,22.57,4G,alta
-Florianopolis,ESTREITO_CAPOEIRAS,10,-27.596671,-48.589301,634543,2237148,844970,0,3716661,17.07,60.19,22.73,4G,alta
-Florianopolis,INGLESES,7,-27.44702,-48.395133,462714,1637215,619709,0,2719638,17.01,60.2,22.79,4G,alta
-Florianopolis,JURERE,5,-27.451011,-48.507101,336925,1192274,444816,0,1974015,17.07,60.4,22.53,4G,alta
-Florianopolis,LAGOA_CONCEICAO,7,-27.603791,-48.457382,491752,1746087,657478,0,2895317,16.98,60.31,22.71,4G,alta
-Florianopolis,NORTE_ILHA,7,-27.477624,-48.459756,432996,1518252,570016,0,2521264,17.17,60.22,22.61,4G,alta
-Florianopolis,RESIDENCIAL_NORTE,6,-27.537876,-48.507835,474931,1686946,637651,0,2799528,16.96,60.26,22.78,4G,alta
-Florianopolis,SC401_CORREDOR,11,-27.568806,-48.516554,676406,2378491,892594,0,3947491,17.14,60.25,22.61,4G,alta
-Florianopolis,TRINDADE,8,-27.597023,-48.52391,688693,2422670,908629,0,4019992,17.13,60.27,22.6,4G,alta
-Florianopolis,UFSC,5,-27.593599,-48.5541,448112,1576674,592272,0,2617058,17.12,60.25,22.63,4G,alta
-Florianopolis,VIA_EXPRESSA_CORREDOR,4,-27.609272,-48.585003,318270,1119713,428205,0,1866188,17.05,60.0,22.95,4G,alta
-Palhoca,PALHOCA_CENTRO,1,-27.637456,-48.666794,137645,478905,179789,0,796339,17.28,60.14,22.58,4G,alta
-Palhoca,PALHOCA_PEDRA_BRANCA,2,-27.632075,-48.690179,211280,739819,281235,0,1232334,17.14,60.03,22.82,4G,alta
-Palhoca,SAO_JOSE_BARREIROS,1,-27.673358,-48.656689,151226,529911,199682,0,880819,17.17,60.16,22.67,4G,alta
-Sao Jose,ESTREITO_CAPOEIRAS,3,-27.581231,-48.606435,192093,675870,254207,0,1122170,17.12,60.23,22.65,4G,alta
-Sao Jose,SAO_JOSE_CENTRO,3,-27.609003,-48.62332,426189,1488930,558014,0,2473133,17.23,60.2,22.56,4G,alta
-Sao Jose,SAO_JOSE_KOBRASOL,9,-27.594154,-48.626605,644906,2274199,856820,0,3775925,17.08,60.23,22.69,4G,alta
-Sao Jose,SAO_JOSE_ROÇADO,7,-27.569376,-48.640131,318510,1122800,423658,0,1864968,17.08,60.2,22.72,4G,alta
+municipio,cluster,qtd_antenas,lat_media,lon_media,total_sessoes_3g,total_sessoes_4g,total_sessoes_5g,total_sessoes_outros,total_sessoes,percentual_3g,percentual_4g,percentual_5g,percentual_outros,tecnologia_predominante_regiao,fonte_antenas,fonte_sessoes
+Biguacu,BIGUACU_BR101_NORTE,4,-27.516721,-48.645949,349530,1212844,453095,0,2015469,17.3424,60.1768,22.4809,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,AEROPORTO_HLZ,6,-27.689101,-48.55135,419958,1476037,553932,0,2449927,17.1417,60.2482,22.6101,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,CAMPECHE,8,-27.693087,-48.503058,570269,2004426,756963,0,3331658,17.1167,60.163,22.7203,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,CANASVIEIRAS,3,-27.432597,-48.459966,257040,908764,342647,0,1508451,17.04,60.2448,22.7152,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,CBD_BEIRAMAR,13,-27.588457,-48.546862,1084873,3816414,1439686,0,6340973,17.1089,60.1866,22.7045,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,CENTRO_HISTORICO,1,-27.60395,-48.546242,181699,638320,239769,0,1059788,17.1448,60.2309,22.6242,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,COQUEIROS,1,-27.594117,-48.571572,149747,521036,195578,0,866361,17.2846,60.1407,22.5747,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,ESTREITO_CAPOEIRAS,10,-27.596671,-48.589301,634543,2237148,844970,0,3716661,17.0729,60.1924,22.7347,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,INGLESES,7,-27.44702,-48.395133,462714,1637215,619709,0,2719638,17.0138,60.1997,22.7865,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,JURERE,5,-27.451011,-48.507101,336925,1192274,444816,0,1974015,17.068,60.3984,22.5336,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,LAGOA_CONCEICAO,7,-27.603791,-48.457382,491752,1746087,657478,0,2895317,16.9844,60.3073,22.7083,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,NORTE_ILHA,7,-27.477624,-48.459756,432996,1518252,570016,0,2521264,17.1738,60.2179,22.6083,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,RESIDENCIAL_NORTE,6,-27.537876,-48.507835,474931,1686946,637651,0,2799528,16.9647,60.2582,22.7771,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,SC401_CORREDOR,11,-27.568806,-48.516554,676406,2378491,892594,0,3947491,17.1351,60.2532,22.6117,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,TRINDADE,8,-27.597023,-48.52391,688693,2422670,908629,0,4019992,17.1317,60.2655,22.6028,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,UFSC,5,-27.593599,-48.5541,448112,1576674,592272,0,2617058,17.1227,60.246,22.6312,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Florianopolis,VIA_EXPRESSA_CORREDOR,4,-27.609272,-48.585003,318270,1119713,428205,0,1866188,17.0546,60.0,22.9454,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Palhoca,PALHOCA_CENTRO,1,-27.637456,-48.666794,137645,478905,179789,0,796339,17.2847,60.1383,22.5769,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Palhoca,PALHOCA_PEDRA_BRANCA,2,-27.632075,-48.690179,211280,739819,281235,0,1232334,17.1447,60.034,22.8213,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Palhoca,SAO_JOSE_BARREIROS,1,-27.673358,-48.656689,151226,529911,199682,0,880819,17.1688,60.1612,22.67,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Sao Jose,ESTREITO_CAPOEIRAS,3,-27.581231,-48.606435,192093,675870,254207,0,1122170,17.118,60.2288,22.6532,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Sao Jose,SAO_JOSE_CENTRO,3,-27.609003,-48.62332,426189,1488930,558014,0,2473133,17.2328,60.2042,22.563,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Sao Jose,SAO_JOSE_KOBRASOL,9,-27.594154,-48.626605,644906,2274199,856820,0,3775925,17.0794,60.2289,22.6917,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
+Sao Jose,SAO_JOSE_ROÇADO,7,-27.569376,-48.640131,318510,1122800,423658,0,1864968,17.0786,60.2048,22.7166,0.0,4G,Vísent CDRView: referencias/antenas_flp.csv,Vísent CDRView: tensores/tensor_mobilidade.csv
