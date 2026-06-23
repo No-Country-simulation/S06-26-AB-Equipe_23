@@ -12,9 +12,18 @@ Fonte: `data/powerbi/insights_regioes_powerbi.csv`, derivada das antenas Anatel 
 
 Exibir regiões, municípios, antenas, sessões, percentuais por tecnologia, tecnologia predominante, filtros e mapa por coordenadas.
 
+## Saúde do Time e ESG
+
+- Base demonstrativa: `data/powerbi/metricas_empresa_demo.csv`.
+- Medidas: `docs/power-bi-medidas-dax.md`.
+- Layout: `docs/especificacao-dashboard-tela-2.md`.
+- Protótipo: `exports/mock_dashboard_metricas_empresa.html`.
+
+O frontend deve reservar espaço nas telas `Relatório ESG` e `Saúde do time` para futura incorporação via iframe ou componentes nativos. Até a conexão empresarial, a tela permanece identificada como demonstrativa.
+
 ## Limites
 
 - O Vísent não contém candidatos.
-- Não existe fonte corporativa atual para turnover, headcount, desligamentos ou metas ESG.
+- A base de Turnover/ESG é propositalmente fictícia para prototipação e deve ser substituída pela fonte corporativa.
 - Sessões observadas não garantem qualidade ou cobertura de rede.
 - A indisponibilidade da API deve ser explícita; o frontend não deve fabricar fallback.

@@ -18,6 +18,6 @@ Fontes: antenas Anatel e sessões do Vísent.
 - sessões e percentuais 3G, 4G, 5G e outros;
 - tecnologia predominante por volume observado.
 
-## Indisponível
+## Estrutura demonstrativa
 
-Turnover, headcount, desligamentos, vagas empresariais e metas ESG exigem uma fonte corporativa ainda não entregue. Esses valores não devem ser calculados a partir de score de candidato nem exibidos como reais.
+Turnover, headcount, desligamentos e metas ESG usam `metricas_empresa_demo.csv` somente para travar layout e fórmulas. Esses valores não devem ser calculados a partir de score de candidato nem exibidos como reais. A produção dependerá da fonte corporativa cadastrada pela empresa.

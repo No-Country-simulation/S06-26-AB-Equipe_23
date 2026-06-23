@@ -17,13 +17,15 @@
 
 Nome, e-mail, telefone e LinkedIn ficam em `contato_pos_aprovacao` no input e não são exportados para o Power BI nem retornados no `POST /match` inicial.
 
-## Métricas indisponíveis
+## Métricas demonstrativas
 
-Turnover corporativo, evolução temporal, headcount, desligamentos e metas ESG da empresa não existem nos arquivos oficiais atuais. Esses visuais devem permanecer como espaço reservado até a entrada de uma fonte empresarial validada.
+Turnover corporativo, evolução temporal, headcount, desligamentos e metas ESG usam massa empresarial fictícia apenas para estruturar o relatório. Os visuais devem permanecer identificados como demonstrativos até a entrada de uma fonte empresarial validada.
+
+Consulte `docs/especificacao-dashboard-tela-2.md`, `docs/power-bi-medidas-dax.md` e `data/powerbi/metricas_empresa_demo.csv`.
 
 ## Critério de aceite
 
 - exatamente oito registros provenientes do input oficial;
 - nenhum contato pessoal na shortlist;
-- nenhuma massa artificial para preencher gráficos;
+- nenhuma massa artificial de candidatos para preencher gráficos;
 - toda medida deve ser reproduzível a partir do CSV ou JSON de origem.

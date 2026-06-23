@@ -41,5 +41,7 @@ O dataset Vísent não contém candidatos de recrutamento. O arquivo `assinantes
 - inventar coordenadas ou geocodificar por fallback;
 - classificar conectividade como alta, média ou baixa com limites não fornecidos;
 - afirmar velocidade ou cobertura a partir de volume de sessões;
-- inventar turnover, headcount, desligamentos ou metas ESG;
+- apresentar turnover, headcount, desligamentos ou metas ESG demonstrativos como dados reais;
 - recalcular `score_match` sem fórmula oficial validada pelo time.
+
+É permitido usar massa empresarial fictícia e genérica para prototipar o dashboard, desde que esteja identificada como demonstrativa e separada dos candidatos e do Vísent.

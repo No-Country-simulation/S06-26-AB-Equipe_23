@@ -1,27 +1,40 @@
-# Especificação do frontend - Shortlist e métricas disponíveis
+# Especificação — Dashboard Saúde do Time e ESG
 
-## Endpoint
+## Objetivo
 
-`POST /match`
+Travar o layout e as fórmulas antes da chegada dos dados corporativos reais. A massa `data/powerbi/metricas_empresa_demo.csv` é fictícia, genérica e não contém candidatos.
 
-## Fonte atual
+## Estrutura do relatório
 
-`mocks/candidatos_teste.json`, com oito candidatos. O backend deve devolver apenas os campos não sensíveis presentes em `mocks/match_payload.json`.
+### Filtros
 
-## Componentes permitidos
+- empresa;
+- competência;
+- departamento;
+- grupo de diversidade.
 
-- card com total analisado e total retornado;
-- tabela de shortlist anonimizada;
-- filtros por região, nível, cargo e skills;
-- score informado no input;
-- link para a tela separada de insights regionais Vísent.
+### Cards
 
-## Não implementar com dados inventados
+- turnover geral;
+- turnover de saída;
+- desligamentos;
+- participação de grupos de diversidade;
+- status da meta ESG.
 
-- turnover;
-- série histórica;
-- metas ESG corporativas;
-- headcount por departamento;
-- candidatos extras.
+### Gráficos
 
-Esses componentes podem ter somente placeholders sem números até existir uma fonte oficial.
+- linha: evolução mensal do turnover;
+- barras: turnover por departamento;
+- colunas agrupadas: admissões e desligamentos por período;
+- barras: turnover por grupo de diversidade;
+- indicador: participação atual versus meta de diversidade.
+
+## Integração futura
+
+A empresa fornecerá esses dados ao cadastrar ou editar seu perfil. O backend deverá disponibilizar uma tabela com o mesmo contrato da massa demonstrativa. O frontend reservará uma área para iframe do Power BI ou implementação nativa.
+
+## Identificação obrigatória
+
+Enquanto a fonte real não estiver conectada, todo visual deve exibir `DADOS DEMONSTRATIVOS — EMPRESAS GENÉRICAS`.
+
+Protótipo navegável: `exports/mock_dashboard_metricas_empresa.html`.

@@ -1,29 +1,88 @@
-# Medidas DAX com fonte disponível
+# Medidas DAX — Saúde do Time e ESG
 
-Tabela regional: `insights_regioes_powerbi`.
+Tabela: `metricas_empresa_demo`. A massa atual é fictícia e serve somente para montar e testar o relatório. Na integração, substituir pela tabela corporativa mantendo as mesmas colunas.
 
-```DAX
-Total Regioes = COUNTROWS(insights_regioes_powerbi)
-
-Total Antenas = SUM(insights_regioes_powerbi[qtd_antenas])
-
-Total Sessoes = SUM(insights_regioes_powerbi[total_sessoes])
-
-Total Sessoes 3G = SUM(insights_regioes_powerbi[total_sessoes_3g])
-
-Total Sessoes 4G = SUM(insights_regioes_powerbi[total_sessoes_4g])
-
-Total Sessoes 5G = SUM(insights_regioes_powerbi[total_sessoes_5g])
-
-Percentual 5G = DIVIDE([Total Sessoes 5G], [Total Sessoes], 0)
-```
-
-Tabela de shortlist: `shortlist_candidatos_powerbi`.
+## Turnover
 
 ```DAX
-Candidatos Analisados = DISTINCTCOUNT(shortlist_candidatos_powerbi[candidato_id])
+Headcount Inicial =
+VAR PrimeiraCompetencia = MIN(metricas_empresa_demo[competencia])
+RETURN
+    CALCULATE(
+        SUM(metricas_empresa_demo[headcount_inicio]),
+        metricas_empresa_demo[competencia] = PrimeiraCompetencia
+    )
 
-Score Medio = AVERAGE(shortlist_candidatos_powerbi[score_match])
+Headcount Final =
+VAR UltimaCompetencia = MAX(metricas_empresa_demo[competencia])
+RETURN
+    CALCULATE(
+        SUM(metricas_empresa_demo[headcount_fim]),
+        metricas_empresa_demo[competencia] = UltimaCompetencia
+    )
+
+Headcount Medio =
+AVERAGEX(
+    VALUES(metricas_empresa_demo[competencia]),
+    DIVIDE(
+        CALCULATE(SUM(metricas_empresa_demo[headcount_inicio]))
+            + CALCULATE(SUM(metricas_empresa_demo[headcount_fim])),
+        2,
+        0
+    )
+)
+
+Total Admissoes = SUM(metricas_empresa_demo[admissoes])
+
+Total Desligamentos = SUM(metricas_empresa_demo[desligamentos])
+
+Turnover Geral % =
+DIVIDE(
+    DIVIDE([Total Admissoes] + [Total Desligamentos], 2, 0),
+    [Headcount Medio],
+    0
+)
+
+Turnover Saida % = DIVIDE([Total Desligamentos], [Headcount Medio], 0)
+
+Turnover Entrada % = DIVIDE([Total Admissoes], [Headcount Medio], 0)
 ```
 
-Não há fonte atual para medidas corporativas de quadro de funcionários ou rotatividade.
+As medidas respondem automaticamente aos filtros de empresa, competência, departamento e grupo de diversidade.
+
+## Recortes de diversidade e ESG
+
+```DAX
+Headcount Diversidade =
+CALCULATE(
+    [Headcount Final],
+    metricas_empresa_demo[grupo_diversidade] <> "Outros colaboradores"
+)
+
+Participacao Diversidade % = DIVIDE([Headcount Diversidade], [Headcount Final], 0)
+
+Meta Diversidade % = MAX(metricas_empresa_demo[meta_diversidade_percentual]) / 100
+
+Gap Meta Diversidade pp = ([Participacao Diversidade %] - [Meta Diversidade %]) * 100
+
+Status Meta ESG =
+IF(
+    [Participacao Diversidade %] >= [Meta Diversidade %],
+    "Meta atingida",
+    "Abaixo da meta"
+)
+
+Turnover Diversidade % =
+CALCULATE(
+    [Turnover Geral %],
+    metricas_empresa_demo[grupo_diversidade] <> "Outros colaboradores"
+)
+```
+
+Para analisar um grupo específico, usar `grupo_diversidade` como segmentador ou legenda. Não relacionar essa tabela com candidatos individuais: ela representa métricas agregadas da empresa.
+
+## Formatação
+
+- `Turnover Geral %`, `Turnover Saida %`, `Turnover Entrada %`, `Participacao Diversidade %`, `Meta Diversidade %` e `Turnover Diversidade %`: percentual, uma casa decimal.
+- `Gap Meta Diversidade pp`: número decimal, uma casa.
+- Valores reais somente após conexão com a fonte corporativa cadastrada pela empresa.
