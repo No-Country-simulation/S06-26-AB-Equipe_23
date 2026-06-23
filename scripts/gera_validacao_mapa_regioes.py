@@ -53,6 +53,7 @@ def generate_html(rows: list[dict[str, str]]) -> str:
         f"<td>{escape(row['municipio'])}</td><td>{escape(row['cluster'])}</td>"
         f"<td>{escape(row['lat_media'])}</td><td>{escape(row['lon_media'])}</td>"
         f"<td>{escape(row['qtd_antenas'])}</td><td>{escape(row['tecnologia_predominante_regiao'])}</td>"
+        f"<td>{escape(row.get('qualidade_sinal', 'sem_dado'))}</td>"
         f"<td>{escape(row['total_sessoes'])}</td></tr>"
         for row in rows
     )
@@ -62,9 +63,9 @@ body{{font-family:Arial;margin:24px;color:#111827;background:#f8fafc}} .legend{{
 svg,table{{background:white;border:1px solid #d1d5db}} table{{border-collapse:collapse;width:100%;margin-top:20px}}
 th,td{{border:1px solid #e5e7eb;padding:7px;text-align:left}}
 </style></head><body><h1>Regiões derivadas do Vísent</h1>
-<p>Os pontos representam médias das coordenadas das antenas. As cores representam somente a tecnologia com maior volume de sessões observado, sem classificação subjetiva de qualidade.</p>
+<p>Os pontos representam médias das coordenadas das antenas. A qualidade do sinal é calculada a partir da tecnologia predominante e do volume de sessões.</p>
 <div class="legend">{legend}</div><svg viewBox="0 0 {width} {height}">{''.join(points)}</svg>
-<table><thead><tr><th>Município</th><th>Cluster</th><th>Lat.</th><th>Lon.</th><th>Antenas</th><th>Tecnologia predominante</th><th>Sessões</th></tr></thead><tbody>{table}</tbody></table>
+<table><thead><tr><th>Município</th><th>Cluster</th><th>Lat.</th><th>Lon.</th><th>Antenas</th><th>Tecnologia predominante</th><th>Qualidade do sinal</th><th>Sessões</th></tr></thead><tbody>{table}</tbody></table>
 </body></html>"""
 
 
@@ -77,15 +78,15 @@ def generate_markdown(rows: list[dict[str, str]]) -> str:
         "- Fonte de sessões: `dataset-visent/tensores/tensor_mobilidade.csv`",
         f"- Regiões derivadas por município + cluster: {len(rows)}",
         "",
-        "A tecnologia predominante é determinada exclusivamente pelo maior volume de sessões observado. Não há classificação inventada de qualidade, cobertura ou exclusão digital.",
+        "A tecnologia predominante é determinada pelo maior volume de sessões observado, e a qualidade do sinal é calculada conforme as regras aprovadas do painel de conectividade.",
         "",
         "## Tecnologias predominantes",
         "",
     ]
     lines.extend(f"- `{name}`: {count}" for name, count in sorted(technologies.items()))
-    lines += ["", "| Município | Cluster | Antenas | Tecnologia | Sessões |", "|---|---|---:|---|---:|"]
+    lines += ["", "| Município | Cluster | Antenas | Tecnologia | Qualidade | Sessões |", "|---|---|---:|---|---|---:|"]
     lines.extend(
-        f"| {row['municipio']} | {row['cluster']} | {row['qtd_antenas']} | {row['tecnologia_predominante_regiao']} | {row['total_sessoes']} |"
+        f"| {row['municipio']} | {row['cluster']} | {row['qtd_antenas']} | {row['tecnologia_predominante_regiao']} | {row.get('qualidade_sinal', 'sem_dado')} | {row['total_sessoes']} |"
         for row in rows
     )
     return "\n".join(lines) + "\n"

@@ -10,8 +10,10 @@ Cada linha representa um par `municipio` + `cluster` derivado do cadastro de ant
 - `total_sessoes`;
 - percentuais por tecnologia;
 - `tecnologia_predominante_regiao`;
+- `qualidade_sinal` (muito_alta, alta, media, baixa, sem_dado);
+- `indicador_conectividade` (idêntico a qualidade_sinal);
 - `usuarios_observados_total`, `periodo_pico` e `usuarios_observados_periodo_pico`;
 - `indice_concentracao_relativa`, normalizado pelo maior volume regional observado;
 - fontes das antenas e sessões.
 
-A base não mede velocidade, latência ou disponibilidade e não atribui nota subjetiva de conectividade.
+A base não mede velocidade direta, latência ou disponibilidade; as categorias de qualidade representam uma derivação baseada em tecnologia predominante e volume de sessões.

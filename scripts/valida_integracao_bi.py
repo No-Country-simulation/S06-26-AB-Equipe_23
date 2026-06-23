@@ -36,6 +36,16 @@ def main() -> None:
     assert all(int(item["usuarios_observados_total"]) > 0 for item in regioes)
     assert all(item["periodo_pico"] != "SEM_DADO" for item in regioes)
     assert max(float(item["indice_concentracao_relativa"]) for item in regioes) == 100.0
+
+    valid_qualities = {"muito_alta", "alta", "media", "baixa", "sem_dado"}
+    assert all(item.get("qualidade_sinal") in valid_qualities for item in regioes)
+    assert all(item.get("indicador_conectividade") in valid_qualities for item in regioes)
+    assert all(item.get("qualidade_sinal") in valid_qualities for item in payload["regioes"])
+    assert all(item.get("indicador_conectividade") in valid_qualities for item in payload["regioes"])
+    qualidades_encontradas = {item.get("qualidade_sinal") for item in regioes}
+    assert "alta" in qualidades_encontradas
+    assert "media" in qualidades_encontradas
+
     for tecnologia in ("3g", "4g", "5g", "outros"):
         assert sum(int(item[f"sessoes_{tecnologia}"]) for item in antenas) == sum(
             int(item[f"total_sessoes_{tecnologia}"]) for item in regioes

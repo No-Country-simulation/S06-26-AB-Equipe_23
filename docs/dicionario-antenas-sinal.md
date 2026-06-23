@@ -36,6 +36,18 @@ Mapeamento usado no tratamento:
 | `LTE` | `4G` |
 | `NR` | `5G` |
 
+## Regra de Qualidade do Sinal (Regiões)
+
+Para o painel regional de conectividade, a qualidade do sinal/conectividade é categorizada como:
+
+- `muito_alta`: predominância de tecnologia `5G`.
+- `alta`: predominância de tecnologia `4G` e volume total de sessões regional de pelo menos `2.000.000` (alto volume observado).
+- `media`: predominância de tecnologia `4G` e volume total de sessões menor que `2.000.000`.
+- `baixa`: predominância de tecnologia `3G`.
+- `sem_dado`: outros casos ou regiões sem sessões observadas.
+
+Esse mapeamento é exportado nos campos `qualidade_sinal` e `indicador_conectividade`.
+
 ## Uso recomendado no mapa
 
 - Marcador azul: predominancia `3G`.

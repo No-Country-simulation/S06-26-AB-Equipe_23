@@ -40,6 +40,21 @@ def tecnologia_predominante(row: dict[str, int]) -> str:
     return max(sessoes, key=sessoes.get) if sum(sessoes.values()) else "SEM_DADO"
 
 
+def obter_qualidade_sinal(tecnologia: str, sessoes: int) -> str:
+    if tecnologia == "5G":
+        return "muito_alta"
+    elif tecnologia == "4G":
+        if sessoes >= 2000000:
+            return "alta"
+        else:
+            return "media"
+    elif tecnologia == "3G":
+        return "baixa"
+    else:
+        return "sem_dado"
+
+
+
 def main() -> None:
     if not INPUT.exists():
         raise FileNotFoundError(f"Base de antenas processada não encontrada: {INPUT}")
@@ -138,13 +153,19 @@ def main() -> None:
             "percentual_5g": round(totais["total_sessoes_5g"] / total * 100, 4) if total else 0.0,
             "percentual_outros": round(totais["total_sessoes_outros"] / total * 100, 4) if total else 0.0,
             "tecnologia_predominante_regiao": "",
+            "qualidade_sinal": "",
+            "indicador_conectividade": "",
             **dados_concentracao,
             "indice_concentracao_relativa": 0.0,
             "fonte_antenas": SOURCE_ANTENNAS,
             "fonte_sessoes": SOURCE_SESSIONS,
             "fonte_concentracao": SOURCE_CONCENTRATION,
         }
-        output["tecnologia_predominante_regiao"] = tecnologia_predominante(totais)
+        pred = tecnologia_predominante(totais)
+        output["tecnologia_predominante_regiao"] = pred
+        qualidade = obter_qualidade_sinal(pred, total)
+        output["qualidade_sinal"] = qualidade
+        output["indicador_conectividade"] = qualidade
         output_rows.append(output)
 
     max_usuarios = max(int(item["usuarios_observados_total"]) for item in output_rows)
