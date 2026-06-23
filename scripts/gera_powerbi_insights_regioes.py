@@ -55,8 +55,14 @@ def main() -> None:
                 "percentual_outros": to_float(row.get("percentual_outros")),
                 "percentual_4g_5g": round(pct_4g + pct_5g, 4),
                 "tecnologia_predominante_regiao": row["tecnologia_predominante_regiao"],
+                "usuarios_observados_total": to_int(row.get("usuarios_observados_total")),
+                "sessoes_concentracao_total": to_int(row.get("sessoes_concentracao_total")),
+                "periodo_pico": row.get("periodo_pico", "SEM_DADO"),
+                "usuarios_observados_periodo_pico": to_int(row.get("usuarios_observados_periodo_pico")),
+                "indice_concentracao_relativa": to_float(row.get("indice_concentracao_relativa")),
                 "fonte_antenas": row["fonte_antenas"],
                 "fonte_sessoes": row["fonte_sessoes"],
+                "fonte_concentracao": row["fonte_concentracao"],
             }
         )
 

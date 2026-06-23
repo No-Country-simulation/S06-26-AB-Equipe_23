@@ -50,13 +50,36 @@ Turnover Entrada % = DIVIDE([Total Admissoes], [Headcount Medio], 0)
 
 As medidas respondem automaticamente aos filtros de empresa, competência, departamento e grupo de diversidade.
 
+```DAX
+Turnover Ultima Competencia % =
+VAR UltimaCompetencia = MAX(metricas_empresa_demo[competencia])
+RETURN
+    CALCULATE(
+        [Turnover Geral %],
+        metricas_empresa_demo[competencia] = UltimaCompetencia
+    )
+
+Desligamentos Ultima Competencia =
+VAR UltimaCompetencia = MAX(metricas_empresa_demo[competencia])
+RETURN
+    CALCULATE(
+        [Total Desligamentos],
+        metricas_empresa_demo[competencia] = UltimaCompetencia
+    )
+```
+
 ## Recortes de diversidade e ESG
 
 ```DAX
 Headcount Diversidade =
 CALCULATE(
     [Headcount Final],
-    metricas_empresa_demo[grupo_diversidade] <> "Outros colaboradores"
+    FILTER(
+        metricas_empresa_demo,
+        metricas_empresa_demo[genero_demo] = "Mulher"
+            || metricas_empresa_demo[raca_cor_demo] = "Negra"
+            || metricas_empresa_demo[pcd_demo] = "Sim"
+    )
 )
 
 Participacao Diversidade % = DIVIDE([Headcount Diversidade], [Headcount Final], 0)
@@ -75,14 +98,21 @@ IF(
 Turnover Diversidade % =
 CALCULATE(
     [Turnover Geral %],
-    metricas_empresa_demo[grupo_diversidade] <> "Outros colaboradores"
+    FILTER(
+        metricas_empresa_demo,
+        metricas_empresa_demo[genero_demo] = "Mulher"
+            || metricas_empresa_demo[raca_cor_demo] = "Negra"
+            || metricas_empresa_demo[pcd_demo] = "Sim"
+    )
 )
 ```
 
-Para analisar um grupo específico, usar `grupo_diversidade` como segmentador ou legenda. Não relacionar essa tabela com candidatos individuais: ela representa métricas agregadas da empresa.
+Para recortes e interseções, usar `genero_demo`, `raca_cor_demo` e `pcd_demo` como segmentadores. As combinações são mutuamente exclusivas na tabela, evitando dupla contagem. Não relacionar essa tabela com candidatos individuais: ela representa métricas agregadas da empresa.
+
+No Power Query, definir `competencia` como Data e as colunas de headcount, admissões e desligamentos como Número inteiro.
 
 ## Formatação
 
-- `Turnover Geral %`, `Turnover Saida %`, `Turnover Entrada %`, `Participacao Diversidade %`, `Meta Diversidade %` e `Turnover Diversidade %`: percentual, uma casa decimal.
+- `Turnover Geral %`, `Turnover Ultima Competencia %`, `Turnover Saida %`, `Turnover Entrada %`, `Participacao Diversidade %`, `Meta Diversidade %` e `Turnover Diversidade %`: percentual, uma casa decimal.
 - `Gap Meta Diversidade pp`: número decimal, uma casa.
 - Valores reais somente após conexão com a fonte corporativa cadastrada pela empresa.

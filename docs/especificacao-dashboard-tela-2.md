@@ -11,7 +11,7 @@ Travar o layout e as fórmulas antes da chegada dos dados corporativos reais. A 
 - empresa;
 - competência;
 - departamento;
-- grupo de diversidade.
+- gênero, raça/cor e indicador PcD demonstrativos, permitindo recortes interseccionais sem dupla contagem.
 
 ### Cards
 

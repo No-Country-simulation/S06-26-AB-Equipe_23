@@ -1,9 +1,10 @@
 {
   "fontes": {
     "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-    "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+    "concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
   },
-  "metodologia": "Agregação por município e cluster. Percentuais representam distribuição observada de sessões por tecnologia; não representam medição de velocidade ou garantia de cobertura.",
+  "metodologia": "Agregação por município e cluster. Percentuais representam distribuição observada de sessões por tecnologia; não representam medição de velocidade ou garantia de cobertura. O índice de concentração é relativo ao maior volume observado entre as regiões.",
   "total_regioes": 24,
   "regioes": [
     {
@@ -22,8 +23,14 @@
       "percentual_5g": 22.4809,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 442903,
+      "sessoes_concentracao_total": 2015469,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 151154,
+      "indice_concentracao_relativa": 30.8526,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -41,8 +48,14 @@
       "percentual_5g": 22.6101,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 548987,
+      "sessoes_concentracao_total": 2449927,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 188169,
+      "indice_concentracao_relativa": 38.2424,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -60,8 +73,14 @@
       "percentual_5g": 22.7203,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 750644,
+      "sessoes_concentracao_total": 3331658,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 256887,
+      "indice_concentracao_relativa": 52.2898,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -79,8 +98,14 @@
       "percentual_5g": 22.7152,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 330261,
+      "sessoes_concentracao_total": 1508451,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 112436,
+      "indice_concentracao_relativa": 23.0059,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -98,8 +123,14 @@
       "percentual_5g": 22.7045,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 1435547,
+      "sessoes_concentracao_total": 6340973,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 492709,
+      "indice_concentracao_relativa": 100.0,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -117,8 +148,14 @@
       "percentual_5g": 22.6242,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 246244,
+      "sessoes_concentracao_total": 1059788,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 84859,
+      "indice_concentracao_relativa": 17.1533,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -136,8 +173,14 @@
       "percentual_5g": 22.5747,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 200813,
+      "sessoes_concentracao_total": 866361,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 69017,
+      "indice_concentracao_relativa": 13.9886,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -155,8 +198,14 @@
       "percentual_5g": 22.7347,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 847014,
+      "sessoes_concentracao_total": 3716661,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 290748,
+      "indice_concentracao_relativa": 59.0029,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -174,8 +223,14 @@
       "percentual_5g": 22.7865,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 611531,
+      "sessoes_concentracao_total": 2719638,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 209203,
+      "indice_concentracao_relativa": 42.5992,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -193,8 +248,14 @@
       "percentual_5g": 22.5336,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 441413,
+      "sessoes_concentracao_total": 1974015,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 151036,
+      "indice_concentracao_relativa": 30.7488,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -212,8 +273,14 @@
       "percentual_5g": 22.7083,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 649450,
+      "sessoes_concentracao_total": 2895317,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 222841,
+      "indice_concentracao_relativa": 45.2406,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -231,8 +298,14 @@
       "percentual_5g": 22.6083,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 570401,
+      "sessoes_concentracao_total": 2521264,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 195124,
+      "indice_concentracao_relativa": 39.7341,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -250,8 +323,14 @@
       "percentual_5g": 22.7771,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 623298,
+      "sessoes_concentracao_total": 2799528,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 213149,
+      "indice_concentracao_relativa": 43.4189,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -269,8 +348,14 @@
       "percentual_5g": 22.6117,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 898394,
+      "sessoes_concentracao_total": 3947491,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 308046,
+      "indice_concentracao_relativa": 62.582,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -288,8 +373,14 @@
       "percentual_5g": 22.6028,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 899373,
+      "sessoes_concentracao_total": 4019992,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 307423,
+      "indice_concentracao_relativa": 62.6502,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -307,8 +398,14 @@
       "percentual_5g": 22.6312,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 577835,
+      "sessoes_concentracao_total": 2617058,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 196886,
+      "indice_concentracao_relativa": 40.2519,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Florianopolis",
@@ -326,8 +423,14 @@
       "percentual_5g": 22.9454,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 411600,
+      "sessoes_concentracao_total": 1866188,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 140682,
+      "indice_concentracao_relativa": 28.672,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Palhoca",
@@ -345,8 +448,14 @@
       "percentual_5g": 22.5769,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 184639,
+      "sessoes_concentracao_total": 796339,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 63493,
+      "indice_concentracao_relativa": 12.8619,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Palhoca",
@@ -364,8 +473,14 @@
       "percentual_5g": 22.8213,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 268727,
+      "sessoes_concentracao_total": 1232334,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 91602,
+      "indice_concentracao_relativa": 18.7195,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Palhoca",
@@ -383,8 +498,14 @@
       "percentual_5g": 22.67,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 204273,
+      "sessoes_concentracao_total": 880819,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 70465,
+      "indice_concentracao_relativa": 14.2296,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Sao Jose",
@@ -402,8 +523,14 @@
       "percentual_5g": 22.6532,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 255650,
+      "sessoes_concentracao_total": 1122170,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 87565,
+      "indice_concentracao_relativa": 17.8085,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Sao Jose",
@@ -421,8 +548,14 @@
       "percentual_5g": 22.563,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 531214,
+      "sessoes_concentracao_total": 2473133,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 180162,
+      "indice_concentracao_relativa": 37.0043,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Sao Jose",
@@ -440,8 +573,14 @@
       "percentual_5g": 22.6917,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 851084,
+      "sessoes_concentracao_total": 3775925,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 291975,
+      "indice_concentracao_relativa": 59.2864,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     },
     {
       "municipio": "Sao Jose",
@@ -459,8 +598,14 @@
       "percentual_5g": 22.7166,
       "percentual_outros": 0.0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 428700,
+      "sessoes_concentracao_total": 1864968,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 147481,
+      "indice_concentracao_relativa": 29.8632,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     }
   ]
 }

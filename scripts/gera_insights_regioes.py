@@ -8,10 +8,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "data" / "processed" / "antenas_sinal_tratadas.csv"
+INPUT_CONCENTRACAO = ROOT / "data" / "processed" / "concentracao_regional.csv"
 OUTPUT_CSV = ROOT / "data" / "processed" / "insights_regioes_agregado.csv"
 OUTPUT_JSON = ROOT / "mocks" / "insights_conectividade_payload.json"
 SOURCE_ANTENNAS = "Vísent CDRView: referencias/antenas_flp.csv"
 SOURCE_SESSIONS = "Vísent CDRView: tensores/tensor_mobilidade.csv"
+SOURCE_CONCENTRATION = "Vísent CDRView: tensores/tensor_concentracao.csv"
 
 
 def to_optional_float(value: str | None) -> float | None:
@@ -41,6 +43,28 @@ def tecnologia_predominante(row: dict[str, int]) -> str:
 def main() -> None:
     if not INPUT.exists():
         raise FileNotFoundError(f"Base de antenas processada não encontrada: {INPUT}")
+    if not INPUT_CONCENTRACAO.exists():
+        raise FileNotFoundError(f"Base de concentração processada não encontrada: {INPUT_CONCENTRACAO}")
+
+    concentracao: dict[tuple[str, str], dict[str, object]] = {}
+    with INPUT_CONCENTRACAO.open("r", encoding="utf-8-sig", newline="") as file:
+        for item in csv.DictReader(file):
+            chave = (item["municipio"].strip(), item["cluster"].strip())
+            atual = concentracao.setdefault(
+                chave,
+                {
+                    "usuarios_observados_total": 0,
+                    "sessoes_concentracao_total": 0,
+                    "periodo_pico": "SEM_DADO",
+                    "usuarios_observados_periodo_pico": 0,
+                },
+            )
+            usuarios = to_int(item.get("usuarios_total"))
+            atual["usuarios_observados_total"] = int(atual["usuarios_observados_total"]) + usuarios
+            atual["sessoes_concentracao_total"] = int(atual["sessoes_concentracao_total"]) + to_int(item.get("sessoes_total"))
+            if usuarios > int(atual["usuarios_observados_periodo_pico"]):
+                atual["periodo_pico"] = item["periodo"].strip()
+                atual["usuarios_observados_periodo_pico"] = usuarios
 
     grupos: dict[tuple[str, str], dict[str, float | int | str]] = defaultdict(
         lambda: {
@@ -92,6 +116,15 @@ def main() -> None:
             "total_sessoes_outros": int(row["total_sessoes_outros"]),
         }
         total = sum(totais.values())
+        dados_concentracao = concentracao.get(
+            (str(row["municipio"]), str(row["cluster"])),
+            {
+                "usuarios_observados_total": 0,
+                "sessoes_concentracao_total": 0,
+                "periodo_pico": "SEM_DADO",
+                "usuarios_observados_periodo_pico": 0,
+            },
+        )
         output: dict[str, object] = {
             "municipio": row["municipio"],
             "cluster": row["cluster"],
@@ -105,11 +138,22 @@ def main() -> None:
             "percentual_5g": round(totais["total_sessoes_5g"] / total * 100, 4) if total else 0.0,
             "percentual_outros": round(totais["total_sessoes_outros"] / total * 100, 4) if total else 0.0,
             "tecnologia_predominante_regiao": "",
+            **dados_concentracao,
+            "indice_concentracao_relativa": 0.0,
             "fonte_antenas": SOURCE_ANTENNAS,
             "fonte_sessoes": SOURCE_SESSIONS,
+            "fonte_concentracao": SOURCE_CONCENTRATION,
         }
         output["tecnologia_predominante_regiao"] = tecnologia_predominante(totais)
         output_rows.append(output)
+
+    max_usuarios = max(int(item["usuarios_observados_total"]) for item in output_rows)
+    for item in output_rows:
+        item["indice_concentracao_relativa"] = (
+            round(int(item["usuarios_observados_total"]) / max_usuarios * 100, 4)
+            if max_usuarios
+            else 0.0
+        )
 
     output_rows.sort(key=lambda item: (str(item["municipio"]), str(item["cluster"])))
     if not output_rows:
@@ -122,10 +166,15 @@ def main() -> None:
         writer.writerows(output_rows)
 
     payload = {
-        "fontes": {"antenas": SOURCE_ANTENNAS, "sessoes": SOURCE_SESSIONS},
+        "fontes": {
+            "antenas": SOURCE_ANTENNAS,
+            "sessoes": SOURCE_SESSIONS,
+            "concentracao": SOURCE_CONCENTRATION,
+        },
         "metodologia": (
             "Agregação por município e cluster. Percentuais representam distribuição observada "
-            "de sessões por tecnologia; não representam medição de velocidade ou garantia de cobertura."
+            "de sessões por tecnologia; não representam medição de velocidade ou garantia de cobertura. "
+            "O índice de concentração é relativo ao maior volume observado entre as regiões."
         ),
         "total_regioes": len(output_rows),
         "regioes": output_rows,

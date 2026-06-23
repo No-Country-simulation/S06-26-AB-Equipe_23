@@ -4,6 +4,7 @@
 
 - `mocks/candidatos_teste.json`: 8 candidatos de teste do projeto.
 - `data/processed/antenas_sinal_tratadas.csv`: 132 antenas Anatel enriquecidas com sessões observadas no Vísent.
+- `data/processed/concentracao_regional.csv`: concentração e período de pico derivados do tensor oficial.
 
 ## Saídas
 
@@ -22,6 +23,7 @@ python scripts/gera_insights_regioes.py
 python scripts/gera_powerbi_insights_regioes.py
 python scripts/_aux_cruzamento_candidatos.py
 python scripts/gera_metricas_empresa_demo.py
+python scripts/valida_integracao_bi.py
 ```
 
 Os assinantes do Vísent não são candidatos. Consulte `docs/linhagem-dados-oficiais.md` antes de adicionar métricas.

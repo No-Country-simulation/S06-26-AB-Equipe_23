@@ -53,6 +53,7 @@ def gerar_documentacao(status: dict) -> str:
 - Candidatos: `mocks/candidatos_teste.json`, arquivo de entrada oficial do projeto com {TOTAL_CANDIDATOS_OFICIAL} registros fictícios de teste.
 - Infraestrutura: `antenas_flp.csv`, cadastro de 132 ERBs reais da Anatel distribuído no dataset Vísent.
 - Sessões: `tensor_mobilidade.csv`, dataset Vísent de telecomunicações usado para agregar sessões 3G, 4G e 5G por antena e região.
+- Concentração: `tensor_concentracao.csv`, dataset Vísent usado para volume regional observado e período de pico.
 
 Os assinantes do Vísent são usuários de telecomunicações e não podem ser transformados em candidatos. Nenhum candidato adicional, coordenada ausente ou classificação de qualidade é inventado. Turnover e ESG usam massa empresarial fictícia, separada e identificada como demonstrativa, apenas para estruturar o dashboard.
 
@@ -70,6 +71,7 @@ O retorno inicial não expõe `contato_pos_aprovacao`. Os contatos somente podem
 - sessões observadas por tecnologia;
 - percentuais de sessões 3G, 4G, 5G e outros;
 - tecnologia predominante por volume de sessões.
+- índice de concentração relativa e período de pico observados.
 
 Percentuais de sessões não são teste de velocidade nem garantia de cobertura. Turnover, headcount e metas ESG demonstrativos devem ser substituídos pela fonte empresarial antes do uso em produção.
 

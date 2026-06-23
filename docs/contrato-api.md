@@ -38,7 +38,8 @@ Fontes: cadastro de antenas Anatel e tensor de mobilidade do Vísent.
 {
   "fontes": {
     "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-    "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+    "concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
   },
   "metodologia": "agregação por município e cluster",
   "total_regioes": 24,
@@ -59,11 +60,17 @@ Fontes: cadastro de antenas Anatel e tensor de mobilidade do Vísent.
       "percentual_5g": 0,
       "percentual_outros": 0,
       "tecnologia_predominante_regiao": "4G",
+      "usuarios_observados_total": 120000,
+      "sessoes_concentracao_total": 540000,
+      "periodo_pico": "TARDE",
+      "usuarios_observados_periodo_pico": 50000,
+      "indice_concentracao_relativa": 82.5,
       "fonte_antenas": "Vísent CDRView: referencias/antenas_flp.csv",
-      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+      "fonte_sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv",
+      "fonte_concentracao": "Vísent CDRView: tensores/tensor_concentracao.csv"
     }
   ]
 }
 ```
 
-Os valores do exemplo ilustram o formato; o endpoint deve servir os números gerados pelos arquivos processados, sem hardcode. Sessões não equivalem a velocidade ou garantia de cobertura.
+Os valores do exemplo ilustram o formato; o endpoint deve servir os números gerados pelos arquivos processados, sem hardcode. Sessões não equivalem a velocidade ou garantia de cobertura. `usuarios_observados_total` agrega observações do tensor e não representa população única.

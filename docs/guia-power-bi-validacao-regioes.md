@@ -9,5 +9,6 @@ Valide:
 - latitude e longitude como número decimal;
 - totais e percentuais de sessões 3G, 4G, 5G e outros;
 - tecnologia predominante calculada pelo maior total de sessões.
+- período de pico e índice de concentração relativa derivados do tensor de concentração.
 
 No mapa, use latitude/longitude, tamanho por `qtd_antenas` e legenda por `tecnologia_predominante_regiao`. Não interprete sessões como velocidade ou garantia de cobertura.
