@@ -15,7 +15,8 @@ O dataset Vísent não contém candidatos. Os assinantes do dataset são usuári
 - dashboard limitado a quantidade de candidatos, shortlist e score já fornecido pela fonte;
 - painel regional limitado a antenas, coordenadas e sessões 3G/4G/5G observadas;
 - removidas classificações arbitrárias de conectividade, alertas e recomendações de RH;
-- métricas corporativas sem fonte, como turnover e meta ESG, não são exibidas.
+- telas `Relatório ESG` e `Saúde do time` reservam a incorporação do Power BI e exibem apenas uma demonstração identificada como fictícia;
+- métricas demonstrativas ficam separadas dos candidatos e dos dados Vísent.
 
 ## Dependências do backend
 

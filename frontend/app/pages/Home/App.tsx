@@ -4,6 +4,7 @@ import Sidebar from '../../../components/ui/Sidebar.tsx';
 import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilidade';
 import PainelInsightsRegionais from '../../../components/charts/PainelInsightsRegionais';
 import DashboardExecutivo from '../../../components/charts/DashboardExecutivo';
+import PainelMetricasEmpresa from '../../../components/charts/PainelMetricasEmpresa';
 
 export default function App() {
   const [activeNav, setActiveNav] = useState('Empregabilidade');
@@ -20,7 +21,8 @@ export default function App() {
           {activeSidebarItem === 'Minhas vagas' && <PainelEmpregabilidade />}
           {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
           {activeSidebarItem === 'Insights regionais' && <PainelInsightsRegionais />}
-          {!['Minhas vagas', 'Dashboard executivo', 'Insights regionais'].includes(activeSidebarItem) && (
+          {['Relatório ESG', 'Saúde do time'].includes(activeSidebarItem) && <PainelMetricasEmpresa />}
+          {!['Minhas vagas', 'Dashboard executivo', 'Insights regionais', 'Relatório ESG', 'Saúde do time'].includes(activeSidebarItem) && (
             <EmptyState label={activeSidebarItem} />
           )}
         </main>

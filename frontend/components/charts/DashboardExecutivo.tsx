@@ -38,7 +38,7 @@ export default function DashboardExecutivo() {
           <tbody>{match.candidatos.map((candidate) => <tr key={candidate.candidato_id} style={{ borderTop: '1px solid #e5e7eb' }}><td>{candidate.apelido_exibicao}</td><td>{candidate.nivel}</td><td>{candidate.regiao}</td><td>{candidate.score_match}</td><td>{candidate.skills.join(', ')}</td><td>{candidate.badge_diversidade ?? 'Não informado'}</td></tr>)}</tbody>
         </table>
       </section>
-      <p style={{ color: '#92400e', fontSize: 13 }}>Turnover, headcount e metas ESG não são exibidos porque não existem nos arquivos oficiais atuais.</p>
+      <p style={{ color: '#6b7280', fontSize: 13 }}>A estrutura demonstrativa de Turnover e ESG está disponível nas telas “Relatório ESG” e “Saúde do time”.</p>
     </div>
   );
 }
