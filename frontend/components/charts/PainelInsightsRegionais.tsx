@@ -50,6 +50,7 @@ export default function PainelInsightsRegionais() {
 
   const totalAntenas = filtradas.reduce((acc, item) => acc + item.qtd_antenas, 0);
   const totalSessoes = filtradas.reduce((acc, item) => acc + item.total_sessoes, 0);
+  const usuariosObservados = filtradas.reduce((acc, item) => acc + item.usuarios_observados_total, 0);
   const topRegioes = [...filtradas].sort((a, b) => b.total_sessoes - a.total_sessoes).slice(0, 8);
   const maxSessoes = Math.max(1, ...topRegioes.map((r) => r.total_sessoes));
   const latitudes = regioes.map((r) => r.lat_media);
@@ -72,11 +73,12 @@ export default function PainelInsightsRegionais() {
         {erro && <p style={{ color: '#b91c1c', fontSize: 13 }}>{erro}</p>}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
         <Card label="Regiões derivadas" value={filtradas.length} />
         <Card label="Municípios" value={new Set(filtradas.map((r) => r.municipio)).size} />
         <Card label="Antenas" value={formatNumber(totalAntenas)} />
         <Card label="Sessões observadas" value={formatNumber(totalSessoes)} />
+        <Card label="Usuários observados*" value={formatNumber(usuariosObservados)} />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 16 }}>
@@ -121,14 +123,15 @@ export default function PainelInsightsRegionais() {
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Dados observados por região</h3>
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-                <thead><tr style={{ color: '#6b7280', textAlign: 'left' }}><th>Município</th><th>Cluster</th><th>Tecnologia</th><th>3G</th><th>4G</th><th>5G</th><th>Antenas</th><th>Sessões</th></tr></thead>
+                <thead><tr style={{ color: '#6b7280', textAlign: 'left' }}><th>Município</th><th>Cluster</th><th>Tecnologia</th><th>3G</th><th>4G</th><th>5G</th><th>Antenas</th><th>Sessões</th><th>Concentração</th><th>Pico</th></tr></thead>
                 <tbody>{filtradas.map((regiao) => (
                   <tr key={`${regiao.municipio}-${regiao.cluster}`} style={{ borderTop: '1px solid #e5e7eb' }}>
-                    <td>{regiao.municipio}</td><td>{regiao.cluster}</td><td>{regiao.tecnologia_predominante_regiao}</td><td>{regiao.percentual_3g.toFixed(2)}%</td><td>{regiao.percentual_4g.toFixed(2)}%</td><td>{regiao.percentual_5g.toFixed(2)}%</td><td>{regiao.qtd_antenas}</td><td>{formatNumber(regiao.total_sessoes)}</td>
+                    <td>{regiao.municipio}</td><td>{regiao.cluster}</td><td>{regiao.tecnologia_predominante_regiao}</td><td>{regiao.percentual_3g.toFixed(2)}%</td><td>{regiao.percentual_4g.toFixed(2)}%</td><td>{regiao.percentual_5g.toFixed(2)}%</td><td>{regiao.qtd_antenas}</td><td>{formatNumber(regiao.total_sessoes)}</td><td>{regiao.indice_concentracao_relativa.toFixed(1)}</td><td>{regiao.periodo_pico}</td>
                   </tr>
                 ))}</tbody>
               </table>
             </div>
+            <p style={{ color: '#6b7280', fontSize: 11 }}>*Soma de observações agregadas no tensor; não representa população única.</p>
           </div>
         </section>
       </div>

@@ -1,9 +1,9 @@
-const turnoverMensal = [3.8, 5.1, 4.2, 5.8, 4.7, 3.9, 5.4, 4.5, 3.6, 5.0, 4.3, 4.0];
+const turnoverMensal = [6.24, 5.8, 5.63, 5.61, 6.29, 5.69, 5.99, 5.85, 5.76, 6.32, 5.59, 5.84];
 const departamentos = [
-  { nome: 'Tecnologia', valor: 5.6 },
-  { nome: 'Operações', valor: 6.4 },
-  { nome: 'Comercial', valor: 4.7 },
-  { nome: 'Administrativo', valor: 3.1 },
+  { nome: 'Tecnologia', valor: 5.92 },
+  { nome: 'Operações', valor: 6.18 },
+  { nome: 'Comercial', valor: 5.41 },
+  { nome: 'Administrativo', valor: 5.9 },
 ];
 
 function Card({ label, value }: { label: string; value: string }) {
@@ -18,9 +18,9 @@ export default function PainelMetricasEmpresa() {
       <p style={{ color: '#64748b', marginTop: 0 }}>Área reservada para incorporação do Power BI ou componentes conectados aos dados da empresa.</p>
 
       <section style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12 }}>
-        <Card label="Turnover geral" value="4,8%" />
-        <Card label="Desligamentos" value="17" />
-        <Card label="Participação diversa" value="43,0%" />
+        <Card label="Turnover — Dez/2026" value="5,8%" />
+        <Card label="Desligamentos — Dez/2026" value="70" />
+        <Card label="Participação diversa" value="86,5%" />
         <Card label="Meta ESG" value="Atingida" />
       </section>
 
@@ -34,12 +34,12 @@ export default function PainelMetricasEmpresa() {
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, padding: 18 }}>
-          <h2 style={{ fontSize: 16, marginTop: 0 }}>Turnover por departamento</h2>
+          <h2 style={{ fontSize: 16, marginTop: 0 }}>Turnover por departamento — Dez/2026</h2>
           {departamentos.map((item) => <div key={item.nome} style={{ margin: '18px 0' }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}><span>{item.nome}</span><strong>{item.valor.toFixed(1)}%</strong></div><div style={{ height: 9, background: '#ede9fe', borderRadius: 8, marginTop: 5 }}><div style={{ height: 9, width: `${item.valor * 12}%`, background: '#16a34a', borderRadius: 8 }} /></div></div>)}
         </div>
 
         <div style={{ gridColumn: '1 / -1', background: '#fff', border: '1px dashed #94a3b8', borderRadius: 10, padding: 22, textAlign: 'center', color: '#475569' }}>
-          Espaço reservado para iframe do Power BI. Substituir os dados demonstrativos após a empresa cadastrar a base corporativa.
+          Espaço reservado para iframe do Power BI. Esta prévia usa o mesmo recorte demonstrativo de Dez/2026 do CSV de BI.
         </div>
       </section>
     </div>

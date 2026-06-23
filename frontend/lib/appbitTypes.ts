@@ -42,12 +42,18 @@ export interface RegiaoInsight {
   percentual_5g: number;
   percentual_outros: number;
   tecnologia_predominante_regiao: '3G' | '4G' | '5G' | 'OUTROS' | 'SEM_DADO';
+  usuarios_observados_total: number;
+  sessoes_concentracao_total: number;
+  periodo_pico: 'MANHA' | 'TARDE' | 'NOITE' | 'MADRUGADA' | 'SEM_DADO';
+  usuarios_observados_periodo_pico: number;
+  indice_concentracao_relativa: number;
   fonte_antenas: string;
   fonte_sessoes: string;
+  fonte_concentracao: string;
 }
 
 export interface InsightsRegioesResponse {
-  fontes: { antenas: string; sessoes: string };
+  fontes: { antenas: string; sessoes: string; concentracao: string };
   metodologia: string;
   total_regioes: number;
   regioes: RegiaoInsight[];
