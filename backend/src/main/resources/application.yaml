@@ -2,6 +2,10 @@ spring:
   application:
     name: appbit
 
+  http:
+    converters:
+      preferred-json-mapper: jackson2
+
   datasource:
     url: jdbc:mysql://${DB_HOST_APPBIT}:${DB_PORT_APPBIT}/${DB_NAME_APPBIT}
     username: ${DB_USER_APPBIT}
