@@ -1,7 +1,6 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
+import br.com.appbit.appbit.dtos.InsightResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -9,30 +8,28 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @Service
 public class RegiaoMockService {
 
     private static final String CAMINHO_MOCK = "mocks/insights_regioes.json";
 
-    private final List<RegiaoInsightDTO> regioes;
+    private final InsightResponseDTO insights;
 
-    public RegiaoMockService(ObjectMapper objectMapper) {
-        this.regioes = carregarRegioesMock(objectMapper);
+    public RegiaoMockService() {
+        this.insights = carregarRegioesMock(new ObjectMapper());
     }
 
-    private List<RegiaoInsightDTO> carregarRegioesMock(ObjectMapper objectMapper) {
+    private InsightResponseDTO carregarRegioesMock(ObjectMapper objectMapper) {
         ClassPathResource resource = new ClassPathResource(CAMINHO_MOCK);
         try (InputStream inputStream = resource.getInputStream()) {
-            return objectMapper.readValue(inputStream, new TypeReference<List<RegiaoInsightDTO>>() {
-            });
+            return objectMapper.readValue(inputStream, InsightResponseDTO.class);
         } catch (IOException e) {
             throw new IllegalStateException("Não foi possível carregar o mock de regiões em " + CAMINHO_MOCK, e);
         }
     }
 
-    public List<RegiaoInsightDTO> listarTodas() {
-        return regioes;
+    public InsightResponseDTO obterInsights() {
+        return insights;
     }
 }

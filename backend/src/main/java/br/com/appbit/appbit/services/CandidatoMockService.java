@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoResponseDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
+import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -9,36 +9,32 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CandidatoMockService {
 
     private static final String CAMINHO_MOCK = "mocks/candidatos_teste.json";
+    private final List<CandidatoMatchDTO> candidatos;
 
-    private final List<CandidatoResponseDTO> candidatos;
-
-    public CandidatoMockService(ObjectMapper objectMapper) {
-        this.candidatos = carregarCandidatosMock(objectMapper);
+    public CandidatoMockService() {
+        this.candidatos = carregarCandidatosMock(new ObjectMapper());
     }
 
-    private List<CandidatoResponseDTO> carregarCandidatosMock(ObjectMapper objectMapper) {
+    private List<CandidatoMatchDTO> carregarCandidatosMock(ObjectMapper objectMapper) {
         ClassPathResource resource = new ClassPathResource(CAMINHO_MOCK);
         try (InputStream inputStream = resource.getInputStream()) {
-            return objectMapper.readValue(inputStream, new TypeReference<List<CandidatoResponseDTO>>() {
-            });
+            CandidatosPayload payload = objectMapper.readValue(inputStream, CandidatosPayload.class);
+            return List.copyOf(payload.candidatos());
         } catch (IOException e) {
-            throw new IllegalStateException("Não foi possível carregar o mock de candidatos em " + CAMINHO_MOCK, e);
+            throw new IllegalStateException("Não foi possível carregar os candidatos em " + CAMINHO_MOCK, e);
         }
     }
 
-    public List<CandidatoResponseDTO> listarTodosCompletos() {
+    public List<CandidatoMatchDTO> listarAnonimizados() {
         return candidatos;
     }
 
-    public Optional<CandidatoResponseDTO> buscarPorId(String candidatoId) {
-        return candidatos.stream()
-                .filter(candidato -> candidato.id().equals(candidatoId))
-                .findFirst();
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private record CandidatosPayload(List<CandidatoMatchDTO> candidatos) {
     }
 }
