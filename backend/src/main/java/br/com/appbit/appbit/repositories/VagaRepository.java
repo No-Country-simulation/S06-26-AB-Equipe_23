@@ -13,36 +13,26 @@ import java.util.Optional;
 @Repository
 public interface VagaRepository extends JpaRepository<VagaEntity, Integer> {
 
-    // Buscar por empresa
     List<VagaEntity> findByEmpresaId(String empresaId);
 
-    // Buscar por título
     List<VagaEntity> findByTitulo(String titulo);
 
-    // Buscar por nível
     List<VagaEntity> findByNivel(String nivel);
 
-    // Buscar por região alvo
     List<VagaEntity> findByRegiaoAlvo(RegiaoEntity regiao);
 
-    // Buscar vagas com anti-viés
     List<VagaEntity> findByAntiVies(Boolean antiVies);
 
-    // Query customizada - vagas por empresa e nível
     @Query("SELECT v FROM VagaEntity v WHERE v.empresaId = :empresaId AND v.nivel = :nivel")
     List<VagaEntity> findByEmpresaAndNivel(@Param("empresaId") String empresaId, @Param("nivel") String nivel);
 
-    // Query customizada - vagas com anti-viés ativo
     @Query("SELECT v FROM VagaEntity v WHERE v.antiVies = true")
     List<VagaEntity> findVagasComAntiVies();
 
-    // Query customizada - buscar por padrão de título
     @Query("SELECT v FROM VagaEntity v WHERE LOWER(v.titulo) LIKE LOWER(CONCAT('%', :titulo, '%'))")
     List<VagaEntity> findByTituloContaining(@Param("titulo") String titulo);
 
-    // Contar vagas por empresa
     Long countByEmpresaId(String empresaId);
 
-    // Contar vagas por nível
     Long countByNivel(String nivel);
 }
