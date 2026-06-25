@@ -4,16 +4,23 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "dim_candidato")
+@Table(name = "dim_candidato", indexes = {
+        @Index(name = "idx_regiao", columnList = "regiao_id"),
+        @Index(name = "idx_ativo", columnList = "ativo")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = { "regiao" })
 public class CandidatoEntity {
 
     @Id
@@ -25,11 +32,11 @@ public class CandidatoEntity {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "cargo_alvo" )
+    @Column(name = "cargo_alvo")
     private String cargo;
 
     @NotBlank(message = "O nivel é obrigatório")
-    @Column(name = "nivel", nullable = false )
+    @Column(name = "nivel", nullable = false)
     private String nivel;
 
     @Column(name = "cluster_residencia")
@@ -49,7 +56,7 @@ public class CandidatoEntity {
 
     @NotNull(message = "O status é obrigatório")
     @Column(nullable = false)
-    private Boolean ativo ;
+    private Boolean ativo;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "regiao_id", nullable = false)

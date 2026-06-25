@@ -11,7 +11,12 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "fact_fluxo_regional")
+@Table(name = "fact_fluxo_regional", indexes = {
+    @Index(name = "idx_cluster_origem", columnList = "cluster_origem"),
+    @Index(name = "idx_municipio_origem", columnList = "municipio_origem"),
+    @Index(name = "idx_cluster_destino", columnList = "cluster_destino"),
+    @Index(name = "idx_municipio_destino", columnList = "municipio_destino")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,7 +35,6 @@ public class FluxoRegionalEntity {
     @NotBlank(message = "O municipio origem é obrigatório")
     @Column(name = "municipio_origem", nullable = false)
     private String municipioOrigem;
-
 
     @NotBlank(message = "O cluster destino é obrigatório")
     @Column(name = "cluster_destino", nullable = false)

@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "fact_match")
 @Getter
@@ -49,7 +51,8 @@ public class MatchEntity {
     @Column(name = "justificativa")
     private String justificativa;
 
-    @Column(name = "criado_em", nullable = false, insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "criado_em", nullable = false)
     private LocalDateTime dataCriacao;
 
     @ManyToOne(optional = false)

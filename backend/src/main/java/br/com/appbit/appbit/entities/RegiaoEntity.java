@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.DecimalMax;
 
 import java.math.BigDecimal;
 
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class RegiaoEntity {
 
     @Id
@@ -30,10 +33,14 @@ public class RegiaoEntity {
     @Column(name = "municipio", nullable = false)
     private String municipio;
 
-    @Column(name = "lat" )
+    @DecimalMin(value = "-90.0", message = "Latitude deve estar entre -90 e 90")
+    @DecimalMax(value = "90.0", message = "Latitude deve estar entre -90 e 90")
+    @Column(name = "lat", nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "lon" )
+    @DecimalMin(value = "-180.0", message = "Longitude deve estar entre -180 e 180")
+    @DecimalMax(value = "180.0", message = "Longitude deve estar entre -180 e 180")
+    @Column(name = "lon", nullable = false)
     private BigDecimal longitude;
 
     @Column(name = "perfil_regiao")

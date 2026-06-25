@@ -1,29 +1,30 @@
 package br.com.appbit.appbit.dtos;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record CandidatoMatchDTO(
-        String candidatoId,
+                String candidatoId,
 
-        String apelidoExibicao,
+                String apelidoExibicao,
 
-        String statusIdentificacao,
+                String statusIdentificacao,
 
-        String cargoAlvo,
+                String cargoAlvo,
 
-        String nivel,
+                String nivel,
 
-        String regiao,
+                String regiao,
 
-        String clusterResidencia,
+                String clusterResidencia,
 
-        Integer scoreMatch,
+                BigDecimal scoreMatch,
 
-        List<String> skills,
+                List<String> skills,
 
-        String badgeDiversidade,
+                String badgeDiversidade,
 
-        String explicacao
+                String explicacao
 
 ) {
 

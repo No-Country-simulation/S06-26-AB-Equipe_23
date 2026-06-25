@@ -2,110 +2,123 @@ package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.*;
 import br.com.appbit.appbit.entities.*;
-import br.com.appbit.appbit.mappers.CandidatoSkillMapper;
+import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.VagaSkillMapper;
-import br.com.appbit.appbit.repositories.CandidatoSkillRepository;
 import br.com.appbit.appbit.repositories.SkillRepository;
 import br.com.appbit.appbit.repositories.VagaRepository;
 import br.com.appbit.appbit.repositories.VagaSkillRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class VagaSkillService {
 
     private final VagaSkillRepository repository;
-
     private final VagaRepository vagaRepository;
-
     private final SkillRepository skillRepository;
-
     private final VagaSkillMapper mapper;
 
     public VagaSkillResponseDTO createVagaSkill(VagaSkillCreateDTO createDTO) {
+        log.info("Criando nova vaga-skill: Vaga ID: {}, Skill ID: {}",
+                createDTO.vagaId(), createDTO.skillId());
 
-        VagaEntity vaga =
-                vagaRepository.findById(createDTO.vagaId()).orElse(null);
+        VagaEntity vaga = vagaRepository.findById(createDTO.vagaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Vaga não encontrada com ID: " + createDTO.vagaId()));
 
-        if (vaga == null) {
-            throw new RuntimeException("Vaga não encontrada");
-        }
+        SkillEntity skill = skillRepository.findById(createDTO.skillId())
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Skill não encontrada com ID: " + createDTO.skillId()));
 
-        SkillEntity skill =
-                skillRepository.findById(createDTO.skillId()).orElse(null);
-
-        if (skill == null) {
-            throw new RuntimeException("Skill não encontrada");
-        }
-
-        VagaSkillEntity vagaSkill= mapper.toEntity(createDTO);
-
+        VagaSkillEntity vagaSkill = mapper.toEntity(createDTO);
         vagaSkill.setVaga(vaga);
         vagaSkill.setSkill(skill);
 
         VagaSkillEntity vagaSkillSave = repository.save(vagaSkill);
+        log.info("Vaga-skill criada com sucesso");
 
         return mapper.toResponseDTO(vagaSkillSave);
     }
 
+    @Transactional(readOnly = true)
     public List<VagaSkillResponseDTO> listAllVagaSkill() {
-
-        List<VagaSkillEntity> vagasSkills = repository.findAll();
-        List<VagaSkillResponseDTO> responseDTOS = new ArrayList<>();
-
-        for (VagaSkillEntity vagaSkill : vagasSkills) {
-
-            VagaSkillResponseDTO responseDTO =
-                    mapper.toResponseDTO(vagaSkill);
-
-            responseDTOS.add(responseDTO);
-        }
-
-        return responseDTOS;
+        log.info("Listando todas as vagas-skills");
+        return repository.findAll()
+                .stream()
+                .map(mapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public VagaSkillResponseDTO getVagaSkillById(VagaSkillId id) {
+        log.info("Buscando vaga-skill: Vaga ID: {}, Skill ID: {}",
+                id.getVagaId(), id.getSkillId());
 
-        VagaSkillEntity vagaSkill  = repository.findById(id).orElse(null);
+        VagaSkillEntity vagaSkill = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vaga-skill não encontrada: Vaga " + id.getVagaId() + ", Skill " + id.getSkillId()));
 
-        if (vagaSkill  == null) {
-            throw new RuntimeException("Vaga Skill não encontrados");
-        }
-
-        return mapper.toResponseDTO(vagaSkill );
+        return mapper.toResponseDTO(vagaSkill);
     }
 
-    public VagaSkillResponseDTO updateVagaSkillById(
-            VagaSkillUpdateDTO updateDTO,
-            VagaSkillId id) {
+    public VagaSkillResponseDTO updateVagaSkillById(VagaSkillUpdateDTO updateDTO, VagaSkillId id) {
+        log.info("Atualizando vaga-skill: Vaga ID: {}, Skill ID: {}",
+                id.getVagaId(), id.getSkillId());
 
-        VagaSkillEntity vagaSkill = repository.findById(id).orElse(null);
-
-        if (vagaSkill == null) {
-            throw new RuntimeException("Vaga Skill não encontrados");
-        }
+        VagaSkillEntity vagaSkill = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vaga-skill não encontrada: Vaga " + id.getVagaId() + ", Skill " + id.getSkillId()));
 
         vagaSkill.setPeso(updateDTO.peso());
 
-        VagaSkillEntity vagaSkillAtualizado =
-                repository.save(vagaSkill);
+        VagaSkillEntity vagaSkillAtualizado = repository.save(vagaSkill);
+        log.info("Vaga-skill atualizada com sucesso");
 
         return mapper.toResponseDTO(vagaSkillAtualizado);
     }
 
     public void deleteVagaSkillById(VagaSkillId id) {
+        log.info("Deletando vaga-skill: Vaga ID: {}, Skill ID: {}",
+                id.getVagaId(), id.getSkillId());
 
-        VagaSkillEntity vagaSkill = repository.findById(id).orElse(null);
-
-        if (vagaSkill == null) {
-            throw new RuntimeException("Vaga Skill não encontrados");
-        }
+        VagaSkillEntity vagaSkill = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vaga-skill não encontrada: Vaga " + id.getVagaId() + ", Skill " + id.getSkillId()));
 
         repository.delete(vagaSkill);
+        log.info("Vaga-skill deletada com sucesso");
+    }
+
+    @Transactional(readOnly = true)
+    public List<VagaSkillResponseDTO> findSkillsByVaga(Integer vagaId) {
+        log.info("Buscando skills para vaga ID: {}", vagaId);
+
+        VagaEntity vaga = vagaRepository.findById(vagaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vaga não encontrada com ID: " + vagaId));
+
+        return repository.findByVaga(vaga)
+                .stream()
+                .map(mapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<VagaSkillResponseDTO> findVagasBySkill(Integer skillId) {
+        log.info("Buscando vagas que requerem skill ID: {}", skillId);
+
+        SkillEntity skill = skillRepository.findById(skillId)
+                .orElseThrow(() -> new ResourceNotFoundException("Skill não encontrada com ID: " + skillId));
+
+        return repository.findBySkill(skill)
+                .stream()
+                .map(mapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 }

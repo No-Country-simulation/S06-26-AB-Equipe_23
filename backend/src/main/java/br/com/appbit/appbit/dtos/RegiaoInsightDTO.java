@@ -1,30 +1,27 @@
 package br.com.appbit.appbit.dtos;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record RegiaoInsightDTO(
-        String cluster,
+                String cluster,
 
-        String municipio,
+                String municipio,
 
-        Double lat,
+                BigDecimal lat,
 
-        Double lon,
+                BigDecimal lon,
 
-        @JsonProperty("n_usuarios_estimados")
-        Integer nUsuariosEstimados,
+                @JsonProperty("n_usuarios_estimados") Integer nUsuariosEstimados,
 
-        @JsonProperty("periodo_pico")
-        String periodoPico,
+                @JsonProperty("periodo_pico") String periodoPico,
 
-        @JsonProperty("perfil_regiao")
-        String perfilRegiao,
+                @JsonProperty("perfil_regiao") String perfilRegiao,
 
-        @JsonProperty("indicador_acessibilidade")
-        String indicadorAcessibilidade,
+                @JsonProperty("indicador_acessibilidade") String indicadorAcessibilidade,
 
-        @JsonProperty("uso_no_produto")
-        String usoNoProduto
+                @JsonProperty("uso_no_produto") String usoNoProduto
 
 ) {
 }

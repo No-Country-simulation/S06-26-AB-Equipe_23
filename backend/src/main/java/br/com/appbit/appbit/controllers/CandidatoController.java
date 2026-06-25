@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping(("/candidatos"))
 public class CandidatoController {
 
-
     private final CandidatoService candidatoService;
 
     @PostMapping
@@ -26,7 +25,6 @@ public class CandidatoController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
-
 
     @GetMapping
     public ResponseEntity<List<CandidatoResponseDTO>> getAllCandidato() {
@@ -37,7 +35,7 @@ public class CandidatoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CandidatoResponseDTO> getRegiaoById(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<CandidatoResponseDTO> getCandidatoById(@PathVariable(name = "id") Integer id) {
 
         CandidatoResponseDTO responseDTO = candidatoService.getCandidatoById(id);
 
@@ -45,15 +43,16 @@ public class CandidatoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CandidatoResponseDTO> updateRegiaoById(@Valid @RequestBody CandidatoUpdateDTO updateDTO, @PathVariable(name = "id") Integer id) {
+    public ResponseEntity<CandidatoResponseDTO> updateCandidatoById(@Valid @RequestBody CandidatoUpdateDTO updateDTO,
+            @PathVariable(name = "id") Integer id) {
 
         CandidatoResponseDTO responseDTO = candidatoService.updateCandidatoById(updateDTO, id);
 
-        return  ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRegiaoById(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteCandidatoById(@PathVariable Integer id) {
 
         candidatoService.deleteCandidatoById(id);
 

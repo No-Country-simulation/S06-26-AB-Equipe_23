@@ -11,15 +11,12 @@ import br.com.appbit.appbit.services.RegiaoMockService;
 import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/insights")
 public class InsightsController {
 
     private final RegiaoMockService regiaoMockService;
-
-    public InsightsController(RegiaoMockService regiaoMockService) {
-        this.regiaoMockService = regiaoMockService;
-    }
 
     @GetMapping("/regioes")
     public ResponseEntity<InsightResponseDTO> listarRegioes() {

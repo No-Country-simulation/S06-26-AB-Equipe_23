@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping(("/vagas"))
 public class VagaController {
 
-
     private final VagaService vagaService;
 
     @PostMapping
@@ -24,7 +23,6 @@ public class VagaController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
-
 
     @GetMapping
     public ResponseEntity<List<VagaResponseDTO>> getAllVaga() {
@@ -43,18 +41,18 @@ public class VagaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VagaResponseDTO> updateVagaById(@Valid @RequestBody VagaUpdateDTO updateDTO, @PathVariable(name = "id") Integer id) {
+    public ResponseEntity<VagaResponseDTO> updateVagaById(@Valid @RequestBody VagaUpdateDTO updateDTO,
+            @PathVariable(name = "id") Integer id) {
 
         VagaResponseDTO responseDTO = vagaService.updateVagaById(updateDTO, id);
 
-        return  ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDeleteById(@PathVariable Integer id){
-
+    public ResponseEntity<Void> deleteVagaById(@PathVariable Integer id) {
         vagaService.deleteVagaById(id);
-
         return ResponseEntity.noContent().build();
+
     }
 }

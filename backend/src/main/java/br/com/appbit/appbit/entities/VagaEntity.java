@@ -12,11 +12,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dim_vaga")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "dim_vaga", indexes = {
+        @Index(name = "idx_empresa", columnList = "empresa_id")
+})
 public class VagaEntity {
 
     @Id
@@ -29,27 +31,25 @@ public class VagaEntity {
     private String empresaId;
 
     @NotBlank(message = "O titulo é obrigatório")
-    @Column(name = "titulo", nullable = false )
+    @Column(name = "titulo", nullable = false)
     private String titulo;
 
     @NotBlank(message = "O nivel é obrigatório")
-    @Column(name = "nivel", nullable = false )
+    @Column(name = "nivel", nullable = false)
     private String nivel;
 
-    @Column(name = "regiao_alvo")
-    private String regiaoAlvo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "regiao_id")
+    private RegiaoEntity regiao;
 
     @Column(name = "diversidade_minima")
     private BigDecimal diversidadeMinima;
 
     @NotNull(message = "O Antiviés é obrigatório")
     @Column(name = "anti_vies", nullable = false)
-    private Boolean antiVies ;
+    private Boolean antiVies;
 
-    @Column(name = "criada_em",
-            nullable = false,
-            insertable = false,
-            updatable = false
-    )
+    @Column(name = "criada_em", nullable = false, insertable = false, updatable = false)
     private LocalDateTime criacao;
+
 }

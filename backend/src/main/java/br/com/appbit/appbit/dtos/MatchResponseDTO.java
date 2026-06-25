@@ -21,8 +21,6 @@ public record MatchResponseDTO(
 
         String justificativa,
 
-        LocalDateTime dataCriacao,
-
         Integer vagaId,
 
         Integer candidatoId
