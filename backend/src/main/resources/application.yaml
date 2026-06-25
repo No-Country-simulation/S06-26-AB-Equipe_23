@@ -11,10 +11,10 @@ spring:
     username: ${DB_USER_APPBIT}
     password: ${DB_PASSWORD_APPBIT}
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: validate
-
     show-sql: true
 
   flyway:
@@ -22,3 +22,7 @@ spring:
     baseline-on-migrate: true
     locations: classpath:db/migration
     out-of-order: true
+
+jwt:
+  secret: ${JWT_SECRET:Hfj938fjd8fhdgn646bf8gbfrg56fdnj53hj7}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 h (padrão)

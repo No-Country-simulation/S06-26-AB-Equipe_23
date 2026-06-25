@@ -45,6 +45,15 @@ public class CandidatoEntity {
     @Column(name = "municipio_residencia")
     private String municipio;
 
+    @Column(name = "cep", length = 10)
+    private String cep;
+
+    @Column(name = "lat", precision = 12, scale = 6)
+    private Double lat;
+
+    @Column(name = "lon", precision = 12, scale = 6)
+    private Double lon;
+
     @Column(name = "grupo_subrepresentado")
     private String grupo;
 
