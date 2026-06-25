@@ -1,25 +1,190 @@
-[
-  {
-    "candidato_id": "cand_008",
-    "apelido_exibicao": "Candidato 8",
-    "status_identificacao": "anonimizado",
-    "contato_pos_aprovacao": {
-      "nome": "Henrique Barros",
-      "email": "henrique.barros@example.com",
-      "telefone": "+55 48 99999-0008",
-      "linkedin": "https://linkedin.com/in/henrique-barros"
+{
+  "descricao": "Massa ficticia para testes do fluxo de match, dashboard e aprovacao de contato.",
+  "observacao": "Dados ficticios. Na shortlist inicial, usar apenas apelido_exibicao e dados nao sensiveis.",
+  "candidatos": [
+    {
+      "candidato_id": "cand_001",
+      "apelido_exibicao": "Candidato 1",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Ana Souza",
+        "email": "ana.souza@example.com",
+        "telefone": "+55 48 99999-0001",
+        "linkedin": "https://linkedin.com/in/ana-souza"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "TRINDADE",
+      "cep": "88036-000",
+      "lat": -27.596111,
+      "lon": -48.525528,
+      "modelo_trabalho_preferido": "hibrido",
+      "skills": ["sql", "python", "power bi", "excel"],
+      "anos_experiencia": 1,
+      "badge_diversidade": "Mulher negra em tecnologia",
+      "score_match": 91
     },
-    "cargo_alvo": "Analista de Dados Junior",
-    "nivel": "junior",
-    "regiao": "Florianopolis",
-    "cluster_residencia": "CONTINENTE",
-    "cep": "88070-000",
-    "lat": -27.597667,
-    "lon": -48.585108,
-    "modelo_trabalho_preferido": "hibrido",
-    "skills": ["excel", "power bi", "sql"],
-    "anos_experiencia": 0,
-    "badge_diversidade": "Talento de baixa renda",
-    "score_match": 76
-  }
-]
+    {
+      "candidato_id": "cand_002",
+      "apelido_exibicao": "Candidato 2",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Bruno Martins",
+        "email": "bruno.martins@example.com",
+        "telefone": "+55 48 99999-0002",
+        "linkedin": "https://linkedin.com/in/bruno-martins"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Sao Jose",
+      "cluster_residencia": "SAO_JOSE_KOBRASOL",
+      "cep": "88102-000",
+      "lat": -27.594458,
+      "lon": -48.619528,
+      "modelo_trabalho_preferido": "presencial",
+      "skills": ["sql", "python", "excel"],
+      "anos_experiencia": 1,
+      "badge_diversidade": "Talento de regiao com menor acesso",
+      "score_match": 86
+    },
+    {
+      "candidato_id": "cand_003",
+      "apelido_exibicao": "Candidato 3",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Carla Nunes",
+        "email": "carla.nunes@example.com",
+        "telefone": "+55 48 99999-0003",
+        "linkedin": "https://linkedin.com/in/carla-nunes"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "UFSC",
+      "cep": "88040-000",
+      "lat": -27.593478,
+      "lon": -48.552089,
+      "modelo_trabalho_preferido": "remoto",
+      "skills": ["power bi", "sql", "estatistica"],
+      "anos_experiencia": 0,
+      "badge_diversidade": "Perfil junior em formacao tecnica",
+      "score_match": 84
+    },
+    {
+      "candidato_id": "cand_004",
+      "apelido_exibicao": "Candidato 4",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Diego Almeida",
+        "email": "diego.almeida@example.com",
+        "telefone": "+55 48 99999-0004",
+        "linkedin": "https://linkedin.com/in/diego-almeida"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Biguacu",
+      "cluster_residencia": "BIGUACU_BR101_NORTE",
+      "cep": "88160-000",
+      "lat": -27.508108,
+      "lon": -48.654131,
+      "modelo_trabalho_preferido": "hibrido",
+      "skills": ["sql", "power bi", "etl"],
+      "anos_experiencia": 2,
+      "badge_diversidade": "Pessoa com deficiencia",
+      "score_match": 82
+    },
+    {
+      "candidato_id": "cand_005",
+      "apelido_exibicao": "Candidato 5",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Elisa Rocha",
+        "email": "elisa.rocha@example.com",
+        "telefone": "+55 48 99999-0005",
+        "linkedin": "https://linkedin.com/in/elisa-rocha"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Palhoca",
+      "cluster_residencia": "PALHOCA_CENTRO",
+      "cep": "88130-000",
+      "lat": -27.637456,
+      "lon": -48.666794,
+      "modelo_trabalho_preferido": "hibrido",
+      "skills": ["python", "excel", "power bi"],
+      "anos_experiencia": 1,
+      "badge_diversidade": "Mulher em transicao de carreira para tecnologia",
+      "score_match": 79
+    },
+    {
+      "candidato_id": "cand_006",
+      "apelido_exibicao": "Candidato 6",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Felipe Costa",
+        "email": "felipe.costa@example.com",
+        "telefone": "+55 48 99999-0006",
+        "linkedin": "https://linkedin.com/in/felipe-costa"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "CBD_BEIRAMAR",
+      "cep": "88015-000",
+      "lat": -27.586028,
+      "lon": -48.547444,
+      "modelo_trabalho_preferido": "presencial",
+      "skills": ["sql", "tableau", "excel"],
+      "anos_experiencia": 2,
+      "badge_diversidade": "Sem badge informada",
+      "score_match": 73
+    },
+    {
+      "candidato_id": "cand_007",
+      "apelido_exibicao": "Candidato 7",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Gabriela Lima",
+        "email": "gabriela.lima@example.com",
+        "telefone": "+55 48 99999-0007",
+        "linkedin": "https://linkedin.com/in/gabriela-lima"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Sao Jose",
+      "cluster_residencia": "CAMPINAS_SAO_JOSE",
+      "cep": "88101-000",
+      "lat": -27.608008,
+      "lon": -48.62685,
+      "modelo_trabalho_preferido": "remoto",
+      "skills": ["sql", "python", "power bi", "git"],
+      "anos_experiencia": 1,
+      "badge_diversidade": "Primeira geracao no ensino superior",
+      "score_match": 88
+    },
+    {
+      "candidato_id": "cand_008",
+      "apelido_exibicao": "Candidato 8",
+      "status_identificacao": "anonimizado",
+      "contato_pos_aprovacao": {
+        "nome": "Henrique Barros",
+        "email": "henrique.barros@example.com",
+        "telefone": "+55 48 99999-0008",
+        "linkedin": "https://linkedin.com/in/henrique-barros"
+      },
+      "cargo_alvo": "Analista de Dados Junior",
+      "nivel": "junior",
+      "regiao": "Florianopolis",
+      "cluster_residencia": "CONTINENTE",
+      "cep": "88070-000",
+      "lat": -27.597667,
+      "lon": -48.585108,
+      "modelo_trabalho_preferido": "hibrido",
+      "skills": ["excel", "power bi", "sql"],
+      "anos_experiencia": 0,
+      "badge_diversidade": "Talento de baixa renda",
+      "score_match": 76
+    }
+  ]
+}

@@ -1,45 +1,35 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.InsightResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class InsightService {
 
-        public InsightResponseDTO buscarInsights() {
-                List<RegiaoInsightDTO> regioes = new ArrayList<>();
+        private static final String CAMINHO_MOCK = "mocks/insights_regioes.json";
 
-                regioes.add(
-                                new RegiaoInsightDTO(
-                                                "TRINDADE",
-                                                "Florianopolis",
-                                                BigDecimal.valueOf(-27.6011),
-                                                BigDecimal.valueOf(-48.5320),
-                                                18420,
-                                                "TARDE",
-                                                "Residencial universitario",
-                                                "alta",
-                                                "regiao com potencial para talentos junior e perfis universitarios"));
+        private final InsightResponseDTO insights;
 
-                regioes.add(
-                                new RegiaoInsightDTO(
-                                                "CBD_BEIRAMAR",
-                                                "Florianopolis",
-                                                BigDecimal.valueOf(-27.5954),
-                                                BigDecimal.valueOf(-48.5480),
-                                                22080,
-                                                "TARDE",
-                                                "Centro corporativo",
-                                                "alta",
-                                                "regiao com maior concentracao para vagas corporativas e hibridas"));
+        public InsightService() {
+                this.insights = carregarRegioesMock(new ObjectMapper());
+        }
 
-                return new InsightResponseDTO(
-                                "Visent CDRView - dataset sintetico App BiT",
-                                regioes);
+        private InsightResponseDTO carregarRegioesMock(ObjectMapper objectMapper) {
+                ClassPathResource resource = new ClassPathResource(CAMINHO_MOCK);
+                try (InputStream inputStream = resource.getInputStream()) {
+                        return objectMapper.readValue(inputStream, InsightResponseDTO.class);
+                } catch (IOException e) {
+                        throw new IllegalStateException(
+                                        "Não foi possível carregar o mock de regiões em " + CAMINHO_MOCK, e);
+                }
+        }
+
+        public InsightResponseDTO obterInsights() {
+                return insights;
         }
 }

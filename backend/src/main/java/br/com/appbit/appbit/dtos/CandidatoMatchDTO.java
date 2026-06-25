@@ -1,31 +1,25 @@
 package br.com.appbit.appbit.dtos;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record CandidatoMatchDTO(
-                String candidatoId,
-
-                String apelidoExibicao,
-
-                String statusIdentificacao,
-
-                String cargoAlvo,
-
-                String nivel,
-
-                String regiao,
-
-                String clusterResidencia,
-
-                BigDecimal scoreMatch,
-
-                List<String> skills,
-
-                String badgeDiversidade,
-
-                String explicacao
-
+        @JsonProperty("candidato_id") String candidatoId,
+        @JsonProperty("apelido_exibicao") String apelidoExibicao,
+        @JsonProperty("status_identificacao") String statusIdentificacao,
+        @JsonProperty("cargo_alvo") String cargoAlvo,
+        String nivel,
+        String regiao,
+        @JsonProperty("cluster_residencia") String clusterResidencia,
+        String cep,
+        Double lat,
+        Double lon,
+        @JsonProperty("modelo_trabalho_preferido") String modeloTrabalhoPreferido,
+        List<String> skills,
+        @JsonProperty("anos_experiencia") Integer anosExperiencia,
+        @JsonProperty("badge_diversidade") String badgeDiversidade,
+        @JsonProperty("score_match") Integer scoreMatch
 ) {
-
 }

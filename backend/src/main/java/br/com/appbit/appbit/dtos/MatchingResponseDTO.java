@@ -1,19 +1,13 @@
 package br.com.appbit.appbit.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record MatchingResponseDTO(
-
-        String vagaId,
-
-        Integer totalAnalisados,
-
-        Integer totalRetorno,
-
-        MetricaDiversidadeDTO metricaDiversidade,
-
+        @JsonProperty("fonte_candidatos") String fonteCandidatos,
+        @JsonProperty("total_analisados") Integer totalAnalisados,
+        @JsonProperty("total_retorno") Integer totalRetorno,
+        @JsonProperty("regra_privacidade") String regraPrivacidade,
         List<CandidatoMatchDTO> candidatos
 ) {
-
-
 }
