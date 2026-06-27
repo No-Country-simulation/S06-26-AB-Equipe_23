@@ -24,7 +24,7 @@
       ],
       "anos_experiencia": 1,
       "badge_diversidade": "Mulher negra em tecnologia",
-      "score_match": 91
+      "score_match": 80
     },
     {
       "candidato_id": "cand_002",
@@ -45,7 +45,7 @@
       ],
       "anos_experiencia": 1,
       "badge_diversidade": "Talento de regiao com menor acesso",
-      "score_match": 86
+      "score_match": 61
     },
     {
       "candidato_id": "cand_003",
@@ -66,7 +66,7 @@
       ],
       "anos_experiencia": 0,
       "badge_diversidade": "Perfil junior em formacao tecnica",
-      "score_match": 84
+      "score_match": 56
     },
     {
       "candidato_id": "cand_004",
@@ -87,7 +87,7 @@
       ],
       "anos_experiencia": 2,
       "badge_diversidade": "Pessoa com deficiencia",
-      "score_match": 82
+      "score_match": 68
     },
     {
       "candidato_id": "cand_005",
@@ -108,7 +108,7 @@
       ],
       "anos_experiencia": 1,
       "badge_diversidade": "Mulher em transicao de carreira para tecnologia",
-      "score_match": 79
+      "score_match": 63
     },
     {
       "candidato_id": "cand_006",
@@ -129,7 +129,7 @@
       ],
       "anos_experiencia": 2,
       "badge_diversidade": "Sem badge informada",
-      "score_match": 73
+      "score_match": 49
     },
     {
       "candidato_id": "cand_007",
@@ -151,7 +151,7 @@
       ],
       "anos_experiencia": 1,
       "badge_diversidade": "Primeira geracao no ensino superior",
-      "score_match": 88
+      "score_match": 78
     },
     {
       "candidato_id": "cand_008",
@@ -172,7 +172,7 @@
       ],
       "anos_experiencia": 0,
       "badge_diversidade": "Talento de baixa renda",
-      "score_match": 76
+      "score_match": 58
     }
   ]
 }

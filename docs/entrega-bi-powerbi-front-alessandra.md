@@ -4,7 +4,7 @@
 
 Fonte: `data/powerbi/shortlist_candidatos_powerbi.csv`, gerada dos 8 registros de `mocks/candidatos_teste.json`.
 
-Exibir total analisado, total retornado, score fornecido pela fonte, cargo, nível, região, skills e badge. O contato não aparece antes da aprovação.
+Exibir total analisado, total retornado, `score_match` recalculado, cargo, nível, região, skills e badge. O contato não aparece antes da aprovação.
 
 ## Painel regional
 
@@ -27,3 +27,4 @@ O frontend deve reservar espaço nas telas `Relatório ESG` e `Saúde do time` p
 - A base de Turnover/ESG é propositalmente fictícia para prototipação e deve ser substituída pela fonte corporativa.
 - Sessões observadas não garantem qualidade ou cobertura de rede.
 - A indisponibilidade da API deve ser explícita; o frontend não deve fabricar fallback.
+- O score atual é prototípico e deve seguir `docs/score-match.md` e `docs/impacto-score-match-no-bi.md`.

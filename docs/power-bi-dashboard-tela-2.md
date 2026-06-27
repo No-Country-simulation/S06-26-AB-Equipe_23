@@ -11,7 +11,7 @@
 - score médio informado no input;
 - candidatos por região, nível e cargo;
 - distribuição dos badges informados;
-- tabela anonimizada com skills e score informado.
+- tabela anonimizada com skills e `score_match` recalculado pelo protótipo atual.
 
 ## Privacidade
 
@@ -28,4 +28,5 @@ Consulte `docs/especificacao-dashboard-tela-2.md`, `docs/power-bi-medidas-dax.md
 - exatamente oito registros provenientes do input oficial;
 - nenhum contato pessoal na shortlist;
 - nenhuma massa artificial de candidatos para preencher gráficos;
-- toda medida deve ser reproduzível a partir do CSV ou JSON de origem.
+- toda medida deve ser reproduzível a partir do CSV ou JSON de origem;
+- o ranking deve usar o `score_match` gerado por `python -m scripts.gera_shortlist_mvp`.

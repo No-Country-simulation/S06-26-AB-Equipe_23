@@ -2,7 +2,7 @@
 
 ## `POST /match`
 
-Entrada: filtros da vaga conforme implementação do backend. Fonte atual de candidatos: `mocks/candidatos_teste.json`.
+Entrada: filtros da vaga conforme implementação do backend. Fonte atual de candidatos: `mocks/candidatos_teste.json`. O `score_match` deve seguir o cálculo documentado em `docs/score-match.md` ou consumir artefato gerado por `python -m scripts.gera_shortlist_mvp`.
 
 Resposta mínima:
 
