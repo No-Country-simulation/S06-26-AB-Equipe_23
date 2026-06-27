@@ -58,13 +58,31 @@ No worktree `backend-integracao-oficial`:
 .\backend\mvnw.cmd test
 ```
 
-Resultado local: bloqueado por ambiente.
+Primeira tentativa: bloqueada por ambiente local sem JDK/JAVA_HOME.
 
 ```text
 The JAVA_HOME environment variable is not defined correctly
 ```
 
-O bloqueio local é de máquina/JDK, não prova falha do código. Ainda assim, o CI/CD precisa validar esta frente.
+Foi instalado Microsoft OpenJDK 21 para viabilizar a validação local:
+
+```text
+openjdk version "21.0.11" 2026-04-21 LTS
+javac 21.0.11
+```
+
+Após configurar `JAVA_HOME` na sessão, o backend compilou, mas o teste falhou no carregamento do contexto Spring por incompatibilidade entre Flyway/H2 e a migration V2:
+
+```text
+Failed to execute script V2__add_geolocalizacao_candidato.sql
+Syntax error in SQL statement:
+ALTER TABLE dim_candidato
+    ADD COLUMN cep VARCHAR(10) NULL AFTER cluster_residencia,
+    ADD COLUMN lat DECIMAL(12, 6) NULL AFTER cep,
+    ADD COLUMN lon DECIMAL(12, 6) NULL AFTER lat
+```
+
+Conclusão: a falha de backend está validada localmente. O problema não é mais apenas ambiente; o perfil de teste com H2/Flyway quebra porque a migration usa sintaxe MySQL `AFTER`.
 
 ## Pontos que estão batendo
 
@@ -107,7 +125,7 @@ Decisão necessária:
 - implementar no backend a mesma regra documentada em `docs/score-match.md`; ou
 - definir que o backend consome artefato gerado por Dados/BI.
 
-### 2. `application-test` ainda é risco para H2/Flyway
+### 2. `application-test` quebra em H2/Flyway
 
 O backend está com:
 
@@ -120,7 +138,7 @@ spring:
     enabled: true
 ```
 
-Isso pode quebrar testes em H2 se as migrations MySQL não forem 100% compatíveis com H2.
+Isso quebra os testes em H2 porque `V2__add_geolocalizacao_candidato.sql` usa `AFTER`, sintaxe aceita no MySQL, mas não aceita pelo H2 neste contexto.
 
 Opções alinhadas com a demanda:
 
@@ -155,7 +173,7 @@ Isso não altera código, apenas corrige o tracking local.
 
 1. Publicar o commit de BI `a558061`.
 2. Alinhar com Júlio se o backend vai recalcular score ou consumir score recalculado.
-3. Corrigir `application-test.yml`/perfil de teste no backend antes do merge na `main`.
+3. Corrigir `application-test.yml`/perfil de teste no backend antes do merge na `main`, pois o teste local falha em `V2__add_geolocalizacao_candidato.sql`.
 4. Remover fallback sensível de JWT ou exigir variável no ambiente de produção.
 5. Validar CI/CD do backend em ambiente com JDK configurado.
 6. Depois do merge backend + BI + frontend, rodar smoke:
@@ -164,4 +182,3 @@ Isso não altera código, apenas corrige o tracking local.
    - `GET /insights/regioes`
    - build frontend
    - validação BI.
-
