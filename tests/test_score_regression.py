@@ -4,12 +4,13 @@ from pathlib import Path
 from unittest.mock import patch
 
 import scripts.gera_shortlist_mvp as gen
+from scripts.score_match import ScoreConfig, ScoreProfile, compute_scores
 
 
 class TestScoreRegression(unittest.TestCase):
 
-    def test_scores_are_transported(self):
-        """Gera a shortlist a partir do mock e garante que os score_match são preservados."""
+    def test_match_payload_uses_computed_scores(self):
+        """Gera a shortlist a partir do mock e garante que os scores são recalculados."""
         repo_root = Path(gen.ROOT)
         src = repo_root / "mocks" / "candidatos_teste.json"
         data = json.loads(src.read_text(encoding="utf-8"))
@@ -27,7 +28,12 @@ class TestScoreRegression(unittest.TestCase):
             gen.main()
 
         out = json.loads(tmp_output.read_text(encoding="utf-8"))
-        in_scores = {c["candidato_id"]: c["score_match"] for c in data["candidatos"]}
+        computed = compute_scores(
+            data["candidatos"],
+            ScoreProfile(required_skills=("sql", "python", "power bi"), preferred_work_model="hibrido", min_experience_years=1),
+            ScoreConfig(),
+        )
+        expected_scores = {c["candidato_id"]: c["score_match"] for c in computed}
         out_scores = {c["candidato_id"]: c["score_match"] for c in out["candidatos"]}
 
-        self.assertEqual(in_scores, out_scores)
+        self.assertEqual(expected_scores, out_scores)

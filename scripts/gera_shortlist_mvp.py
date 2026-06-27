@@ -4,6 +4,8 @@ import csv
 import json
 from pathlib import Path
 
+from scripts.score_match import ScoreConfig, ScoreProfile, compute_scores
+
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "mocks" / "candidatos_teste.json"
@@ -44,6 +46,12 @@ def main() -> None:
             "Atualize o contrato antes de gerar a shortlist."
         )
 
+    score_profile = ScoreProfile(
+        required_skills=("sql", "python", "power bi"),
+        preferred_work_model="hibrido",
+        min_experience_years=1,
+    )
+    candidates = compute_scores(candidates, score_profile, ScoreConfig())
     public_candidates = [anonimizar(candidate) for candidate in candidates]
     match_payload = {
         "fonte_candidatos": "mocks/candidatos_teste.json",

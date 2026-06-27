@@ -58,9 +58,22 @@ raw_score = (
 
 6. Normalize para a escala de 0 a 100 e arredonde.
 
+### Comportamento quando nenhuma skill é encontrada
+
+Se a vaga exigir uma skill que nenhum candidato possui, o protótipo atual retorna:
+
+- `skill_score` igual a 0 para todos os candidatos;
+- pontuações ainda calculadas a partir de experiência, modelo de trabalho e bônus de diversidade;
+- notas menores, mas não necessariamente zero, desde que exista compatibilidade por experiência ou modelo de trabalho.
+
+Esse comportamento é intencional no protótipo: ele trata o conjunto de skills como um fator importante,
+mas não elimina automaticamente candidatos quando outros atributos ainda podem contribuir.
+
 ## Resultados atuais do protótipo
 
-O protótipo já foi coberto por testes: `tests/test_score_match.py` e `tests/test_score_regression.py`.
+O gerador de shortlist oficial também foi atualizado para usar o cálculo de score protótipo em `scripts/gera_shortlist_mvp.py`. Isso significa que a geração de `mocks/match_payload.json` agora recalcula `score_match` a partir do perfil fixo do MVP.
+
+O protótipo já foi coberto por testes: `tests/test_score_match.py`, `tests/test_score_regression.py` e `tests/test_anonymization.py`.
 
 O teste de regressão garante que o valor de `score_match` presente em `mocks/candidatos_teste.json` seja preservado na geração de `mocks/match_payload.json`.
 
