@@ -65,7 +65,7 @@ VALUES
     4, 'CONTINENTE',          'Florianopolis',
     '88070-000', -27.597667, -48.585108,
     'Talento de baixa renda',                        'hibrido',    TRUE);
-
+ 
 
 INSERT IGNORE INTO bridge_candidato_skill (candidato_id, skill_id, nivel_skill) VALUES
 -- cand_001: sql, python, power bi, excel

@@ -38,8 +38,7 @@ public class VagaEntity {
     @Column(name = "nivel", nullable = false)
     private String nivel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "regiao_id")
+    @Column(name = "regiao_alvo")
     private RegiaoEntity regiao;
 
     @Column(name = "diversidade_minima")
