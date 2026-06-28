@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from '../pages/Home/App.tsx';
+import ShortList from '../pages/Shortlist/shortlist.tsx';
 
 const SobreRoute = () => (
   <div>
@@ -43,9 +44,11 @@ export default function App() {
           <Route path="/insights/regioes" element={<Home />} />
           <Route path="/sobre" element={<SobreRoute />} />
           <Route path="/contato" element={<ContatoRoute />} />
+          <Route path="/shortlist" element={<ShortList />} />
           <Route path="*" element={<NaoEncontradaRoute />} />
         </Routes>
       </main>
     </BrowserRouter>
   );
 }
+
