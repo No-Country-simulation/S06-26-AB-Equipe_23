@@ -7,9 +7,8 @@ import java.math.BigDecimal;
 
 public record VagaCreateDTO(
 
-
         @NotBlank(message = "A empresa é obrigatória")
-         String empresaId,
+        String empresaId,
 
         @NotBlank(message = "O titulo é obrigatório")
         String titulo,
@@ -17,7 +16,7 @@ public record VagaCreateDTO(
         @NotBlank(message = "O nivel é obrigatório")
         String nivel,
 
-        String regiaoAlvo,
+        Integer regiaoAlvoId,
 
         BigDecimal diversidadeMinima,
 

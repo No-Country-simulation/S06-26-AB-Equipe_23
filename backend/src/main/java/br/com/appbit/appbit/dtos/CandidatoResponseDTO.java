@@ -1,6 +1,7 @@
 package br.com.appbit.appbit.dtos;
 
 public record CandidatoResponseDTO(
+
         Integer id,
 
         String nome,
@@ -13,6 +14,12 @@ public record CandidatoResponseDTO(
 
         String municipio,
 
+        String cep,
+
+        Double lat,
+
+        Double lon,
+
         String grupo,
 
         String diversidade,
@@ -21,5 +28,8 @@ public record CandidatoResponseDTO(
 
         Boolean ativo,
 
-        Integer regiaoId) {
+        // CORRIGIDO: expõe o ID da região, consistente com CandidatoCreateDTO
+        Integer regiaoId
+
+) {
 }

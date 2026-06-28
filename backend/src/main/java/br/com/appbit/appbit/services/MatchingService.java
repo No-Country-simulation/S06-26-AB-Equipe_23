@@ -23,6 +23,7 @@ public class MatchingService {
 
         public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
                 List<CandidatoMatchDTO> fonte = candidatoMockService.listarAnonimizados();
+                @SuppressWarnings("null")
                 List<CandidatoMatchDTO> candidatos = fonte.stream()
                                 .filter(candidato -> atendeFiltros(candidato, request))
                                 .sorted(Comparator.comparing(CandidatoMatchDTO::scoreMatch).reversed())

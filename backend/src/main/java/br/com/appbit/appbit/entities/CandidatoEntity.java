@@ -1,5 +1,7 @@
 package br.com.appbit.appbit.entities;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,10 +51,10 @@ public class CandidatoEntity {
     private String cep;
 
     @Column(name = "lat", precision = 12, scale = 6)
-    private Double lat;
+    private BigDecimal lat;
 
     @Column(name = "lon", precision = 12, scale = 6)
-    private Double lon;
+    private BigDecimal lon;
 
     @Column(name = "grupo_subrepresentado")
     private String grupo;

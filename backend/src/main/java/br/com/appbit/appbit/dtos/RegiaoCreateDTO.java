@@ -6,15 +6,17 @@ import java.math.BigDecimal;
 
 public record RegiaoCreateDTO(
 
+        Integer id,
+
         @NotBlank(message = "O cluster é obrigatório")
         String cluster,
 
         @NotBlank(message = "O municipio é obrigatório")
         String municipio,
 
-        BigDecimal latitude,
+        BigDecimal lat,
 
-        BigDecimal longitude,
+        BigDecimal lon,
 
         String perfil,
 

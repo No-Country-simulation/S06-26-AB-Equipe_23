@@ -10,5 +10,6 @@ public record MatchingRequestDTO(
         VagaRequestDTO vaga,
 
         FiltroRequestDTO filtros
+
 ) {
 }

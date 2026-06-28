@@ -65,13 +65,13 @@ public class VagaService {
         vaga.setTitulo(updateDTO.titulo());
         vaga.setNivel(updateDTO.nivel());
 
-        if (updateDTO.regiaoAlvo() != null) {
-            RegiaoEntity regiao = regiaoRepository.findById(updateDTO.regiaoAlvo())
+        if (updateDTO.regiaoAlvoId() != null) {
+            RegiaoEntity regiao = regiaoRepository.findById(updateDTO.regiaoAlvoId())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "Região não encontrada com ID: " + updateDTO.regiaoAlvo()));
-            vaga.setRegiao(regiao);
+                            "Região não encontrada com ID: " + updateDTO.regiaoAlvoId()));
+            vaga.setRegiaoAlvo(regiao);
         } else {
-            vaga.setRegiao(null);
+            vaga.setRegiaoAlvo(null);
         }
 
         vaga.setDiversidadeMinima(updateDTO.diversidadeMinima());

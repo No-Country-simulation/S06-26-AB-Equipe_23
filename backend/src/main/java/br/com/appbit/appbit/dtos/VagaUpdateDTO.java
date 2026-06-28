@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 
 public record VagaUpdateDTO(
 
-
         @NotBlank(message = "A empresa é obrigatória")
         String empresaId,
 
@@ -17,11 +16,13 @@ public record VagaUpdateDTO(
         @NotBlank(message = "O nivel é obrigatório")
         String nivel,
 
-        String regiaoAlvo,
+        // CORRIGIDO: era String, mas regiaoAlvo é uma RegiaoEntity — recebe o ID (Integer)
+        Integer regiaoAlvoId,
 
         BigDecimal diversidadeMinima,
 
         @NotNull(message = "O Antiviés é obrigatório")
         Boolean antiVies
+
 ) {
 }

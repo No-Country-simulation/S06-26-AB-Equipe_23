@@ -17,6 +17,12 @@ public record CandidatoCreateDTO(
 
         String municipio,
 
+         String cep,
+
+        Double lat,
+
+        Double lon,
+        
         String grupo,
 
         String diversidade,

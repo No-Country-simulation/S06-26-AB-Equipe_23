@@ -60,8 +60,8 @@ public class RegiaoService {
 
         regiao.setCluster(updateDTO.cluster());
         regiao.setMunicipio(updateDTO.municipio());
-        regiao.setLatitude(updateDTO.latitude());
-        regiao.setLongitude(updateDTO.longitude());
+        regiao.setLat(updateDTO.lat());
+        regiao.setLon(updateDTO.lon());
         regiao.setPerfil(updateDTO.perfil());
         regiao.setFonte(updateDTO.fonte());
 

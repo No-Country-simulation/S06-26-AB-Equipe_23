@@ -25,6 +25,10 @@ CREATE TABLE dim_candidato (
     cargo_alvo VARCHAR(120) NULL,
     nivel VARCHAR(40) NOT NULL,
     regiao_id INT NULL,
+   /* cep         VARCHAR(10)    NULL, /*modificado*/
+    lat         DECIMAL(12,6)  NULL, /*modificado*/
+    lon         DECIMAL(12,6)  NULL, /*modificado*/
+   */
     cluster_residencia VARCHAR(80) NULL,
     municipio_residencia VARCHAR(80) NULL,
     grupo_subrepresentado VARCHAR(120) NULL,
@@ -57,7 +61,9 @@ CREATE TABLE dim_vaga (
     empresa_id VARCHAR(40) NOT NULL,
     titulo VARCHAR(160) NOT NULL,
     nivel VARCHAR(40) NOT NULL,
-    regiao_alvo VARCHAR(80) NULL,
+    regiao_alvo_id INT NULL, /* ! modificado e adicionado */
+    CONSTRAINT fk_dim_vaga_regiao
+    FOREIGN KEY (regiao_alvo_id) REFERENCES dim_regiao(regiao_id),
     diversidade_minima DECIMAL(5,2) NULL,
     anti_vies BOOLEAN NOT NULL DEFAULT TRUE,
     criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP

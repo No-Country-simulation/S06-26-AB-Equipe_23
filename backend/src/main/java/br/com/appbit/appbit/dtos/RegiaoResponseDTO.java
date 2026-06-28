@@ -10,9 +10,9 @@ public record RegiaoResponseDTO(
 
         String municipio,
 
-        BigDecimal latitude,
+        BigDecimal lat,
 
-        BigDecimal longitude,
+        BigDecimal lon,
 
         String perfil,
 
