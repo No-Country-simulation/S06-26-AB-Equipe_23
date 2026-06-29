@@ -24,5 +24,6 @@ spring:
     out-of-order: true
 
 jwt:
-  secret: ${JWT_SECRET:Hfj938fjd8fhdgn646bf8gbfrg56fdnj53hj7}
+
+  secret: ${JWT_SECRET}
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 h (padrão)

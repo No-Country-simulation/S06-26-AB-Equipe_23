@@ -1,0 +1,49 @@
+name: CI — AppBit Backend
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-test:
+    name: Build & Test (Java 21)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Rodar testes
+        run: ./mvnw test --no-transfer-progress
+        env:
+          # Os testes usam H2 em memória — estas vars são dummies
+          # para satisfazer qualquer @Value que ainda escape ao application-test.yaml
+          JWT_SECRET: ci-secret-appbit-minimo-32-caracteres-ok
+
+      - name: Build sem testes (verifica compilação completa)
+        run: ./mvnw package -DskipTests --no-transfer-progress
+
+      - name: Publicar relatório de testes
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: backend/target/surefire-reports/
+          retention-days: 7

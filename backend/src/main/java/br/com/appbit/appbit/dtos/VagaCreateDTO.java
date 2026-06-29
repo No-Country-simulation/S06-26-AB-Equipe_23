@@ -2,26 +2,30 @@ package br.com.appbit.appbit.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import br.com.appbit.appbit.entities.RegiaoEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record VagaCreateDTO(
 
-        @NotBlank(message = "A empresa é obrigatória")
-        String empresaId,
+                Integer id,
 
-        @NotBlank(message = "O titulo é obrigatório")
-        String titulo,
+                @NotBlank(message = "A empresa é obrigatória") String empresaId,
 
-        @NotBlank(message = "O nivel é obrigatório")
-        String nivel,
+                @NotBlank(message = "O titulo é obrigatório") String titulo,
 
-        Integer regiaoAlvoId,
+                @NotBlank(message = "O nivel é obrigatório") String nivel,
 
-        BigDecimal diversidadeMinima,
+                Integer regiaoAlvoId,
 
-        @NotNull(message = "O Antiviés é obrigatório")
-        Boolean antiVies
+                RegiaoEntity regiaoAlvo,
+
+                BigDecimal diversidadeMinima,
+
+                @NotNull(message = "O Antiviés é obrigatório") Boolean antiVies,
+
+                LocalDateTime criacao
 
 ) {
 }

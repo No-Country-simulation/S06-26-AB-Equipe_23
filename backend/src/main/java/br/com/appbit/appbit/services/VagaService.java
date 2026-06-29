@@ -31,8 +31,16 @@ public class VagaService {
         log.info("Criando nova vaga: {}", createDTO.titulo());
 
         VagaEntity vaga = vagaMapper.toEntity(createDTO);
-        VagaEntity vagaSave = vagaRepository.save(vaga);
 
+        // CORRIGIDO: resolve regiaoAlvoId -> RegiaoEntity (igual ao CandidatoService)
+        if (createDTO.regiaoAlvoId() != null) {
+            RegiaoEntity regiao = regiaoRepository.findById(createDTO.regiaoAlvoId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Região não encontrada com ID: " + createDTO.regiaoAlvoId()));
+            vaga.setRegiaoAlvo(regiao);
+        }
+
+        VagaEntity vagaSave = vagaRepository.save(vaga);
         log.info("Vaga criada com sucesso. ID: {}", vagaSave.getId());
         return vagaMapper.toResponseDTO(vagaSave);
     }
@@ -51,7 +59,6 @@ public class VagaService {
         log.info("Buscando vaga por ID: {}", vagaId);
         VagaEntity vaga = vagaRepository.findById(vagaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vaga não encontrada com ID: " + vagaId));
-
         return vagaMapper.toResponseDTO(vaga);
     }
 
@@ -79,16 +86,13 @@ public class VagaService {
 
         VagaEntity vagaAtualizada = vagaRepository.save(vaga);
         log.info("Vaga atualizada com sucesso. ID: {}", vagaId);
-
         return vagaMapper.toResponseDTO(vagaAtualizada);
     }
 
     public void deleteVagaById(Integer vagaId) {
         log.info("Deletando vaga com ID: {}", vagaId);
-
         VagaEntity vaga = vagaRepository.findById(vagaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vaga não encontrada com ID: " + vagaId));
-
         vagaRepository.delete(vaga);
         log.info("Vaga deletada com sucesso. ID: {}", vagaId);
     }
@@ -114,10 +118,8 @@ public class VagaService {
     @Transactional(readOnly = true)
     public List<VagaResponseDTO> findVagasByRegiao(Integer regiaoId) {
         log.info("Buscando vagas por região ID: {}", regiaoId);
-
         RegiaoEntity regiao = regiaoRepository.findById(regiaoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Região não encontrada com ID: " + regiaoId));
-
         return vagaRepository.findByRegiaoAlvo(regiao)
                 .stream()
                 .map(vagaMapper::toResponseDTO)
