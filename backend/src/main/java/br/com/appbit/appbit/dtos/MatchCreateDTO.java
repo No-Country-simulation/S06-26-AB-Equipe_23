@@ -23,7 +23,7 @@ public record MatchCreateDTO(
 
                 @NotNull(message = "A vaga é obrigatória") Integer vagaId,
 
-                @NotNull(message = "O candidato é obrigatório") Integer candidatoId,
+                @NotNull(message = "O candidato é obrigatório") String candidatoId,
 
                 LocalDateTime dataCriacao
             ) {     
