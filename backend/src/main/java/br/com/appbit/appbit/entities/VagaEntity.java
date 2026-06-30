@@ -11,6 +11,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Getter
 @Setter
@@ -49,6 +51,7 @@ public class VagaEntity {
     @Column(name = "anti_vies", nullable = false)
     private Boolean antiVies;
 
+    @CreationTimestamp
     @Column(name = "criada_em", nullable = false, insertable = false, updatable = false)
     private LocalDateTime criacao;
 

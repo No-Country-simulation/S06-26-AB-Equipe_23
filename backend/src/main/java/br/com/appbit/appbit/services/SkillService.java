@@ -9,8 +9,11 @@ import br.com.appbit.appbit.mappers.SkillMapper;
 import br.com.appbit.appbit.repositories.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +32,7 @@ public class SkillService {
 
         // Validar se skill já existe
         if (skillRepository.existsByNome(createDTO.nome())) {
-            throw new RuntimeException("Skill com este nome já existe");
+           throw new ResponseStatusException(HttpStatus.CONFLICT, "Skill com este nome já existe");
         }
 
         SkillEntity skill = skillMapper.toEntity(createDTO);

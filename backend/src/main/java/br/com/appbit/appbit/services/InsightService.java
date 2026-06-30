@@ -11,12 +11,16 @@ import java.io.InputStream;
 @Service
 public class InsightService {
 
-        private static final String CAMINHO_MOCK = "mocks/insights_regioes.json";
+        private static final String CAMINHO_MOCK = "/mocks/insights_regioes.json";
 
         private final InsightResponseDTO insights;
 
         public InsightService() {
                 this.insights = carregarRegioesMock(new ObjectMapper());
+        }
+
+        public InsightService(ObjectMapper objectMapper) {
+                this.insights = carregarRegioesMock(objectMapper);
         }
 
         private InsightResponseDTO carregarRegioesMock(ObjectMapper objectMapper) {
