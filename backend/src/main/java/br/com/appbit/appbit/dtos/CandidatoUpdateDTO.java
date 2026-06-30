@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CandidatoUpdateDTO(
+
         @NotBlank(message = "O nome é obrigatório")
         String nome,
 
@@ -16,6 +17,12 @@ public record CandidatoUpdateDTO(
 
         String municipio,
 
+        String cep,
+
+        Double lat,
+
+        Double lon,
+
         String grupo,
 
         String diversidade,
@@ -27,5 +34,6 @@ public record CandidatoUpdateDTO(
 
         @NotNull(message = "A região é obrigatória")
         Integer regiaoId
+
 ) {
 }

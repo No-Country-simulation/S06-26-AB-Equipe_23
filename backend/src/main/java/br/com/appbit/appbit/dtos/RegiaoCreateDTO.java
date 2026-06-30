@@ -12,9 +12,9 @@ public record RegiaoCreateDTO(
         @NotBlank(message = "O municipio é obrigatório")
         String municipio,
 
-        BigDecimal latitude,
+        BigDecimal lat,
 
-        BigDecimal longitude,
+        BigDecimal lon,
 
         String perfil,
 

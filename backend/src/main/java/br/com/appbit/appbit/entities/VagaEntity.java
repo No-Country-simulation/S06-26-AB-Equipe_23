@@ -11,6 +11,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Getter
 @Setter
@@ -39,8 +41,8 @@ public class VagaEntity {
     private String nivel;
 
     @ManyToOne
-    @JoinColumn(name = "regiao_alvo", nullable = false)
-    private RegiaoEntity regiao;
+    @JoinColumn(name = "regiao_alvo_id")
+    private RegiaoEntity regiaoAlvo;
 
     @Column(name = "diversidade_minima")
     private BigDecimal diversidadeMinima;
@@ -49,6 +51,7 @@ public class VagaEntity {
     @Column(name = "anti_vies", nullable = false)
     private Boolean antiVies;
 
+    @CreationTimestamp
     @Column(name = "criada_em", nullable = false, insertable = false, updatable = false)
     private LocalDateTime criacao;
 

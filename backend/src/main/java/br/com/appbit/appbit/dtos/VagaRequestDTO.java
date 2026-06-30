@@ -5,17 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record VagaRequestDTO(
-        String titulo,
+                String titulo,
 
-        List<String> skills,
+                List<String> skills,
 
-        String nivel,
+                String nivel,
 
-        String regiao,
+                String regiao,
 
-        @JsonProperty("modelo_trabalho")
-        String modeloTrabalho
-) {
-
+                @JsonProperty("modelo_trabalho") String modeloTrabalho) {
 
 }

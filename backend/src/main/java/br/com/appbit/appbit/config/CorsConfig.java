@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
     private final String[] allowedOrigins;
 
+    @SuppressWarnings("null")
     public CorsConfig(
             @Value("${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}")
             String allowedOrigins

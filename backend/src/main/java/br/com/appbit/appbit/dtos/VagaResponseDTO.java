@@ -1,6 +1,5 @@
 package br.com.appbit.appbit.dtos;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -14,12 +13,13 @@ public record VagaResponseDTO(
 
         String nivel,
 
-        String regiaoAlvo,
+        RegiaoResponseDTO regiaoAlvo,
 
         BigDecimal diversidadeMinima,
 
         Boolean antiVies,
 
         LocalDateTime criacao
+
 ) {
 }

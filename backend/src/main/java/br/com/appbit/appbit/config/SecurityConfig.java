@@ -53,6 +53,7 @@ public class SecurityConfig {
     // Cadeia de filtros HTTP
  
 
+    @SuppressWarnings("null")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

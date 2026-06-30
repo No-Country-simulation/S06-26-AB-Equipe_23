@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: appbit
+
+  http:
+    converters:
+      preferred-json-mapper: jackson2
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: root
+    password: lilian
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  flyway:
+    enabled: true
+
+jwt:
+  secret: test-secret-appbit-minimo-32-caracteres-ok
+  expiration-ms: 3600000

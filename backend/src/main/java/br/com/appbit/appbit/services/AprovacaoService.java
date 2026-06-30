@@ -36,7 +36,7 @@ public class AprovacaoService {
 
         if (candidato.contatoPosAprovacao() == null) {
             throw new ResponseStatusException(
-                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    HttpStatus.BAD_REQUEST,
                     "Dados de contato indisponíveis para: " + request.candidatoId()
             );
         }

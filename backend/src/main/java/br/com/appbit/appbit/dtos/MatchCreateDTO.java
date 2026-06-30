@@ -3,9 +3,10 @@ package br.com.appbit.appbit.dtos;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record MatchCreateDTO(
-
+                
                 @NotNull(message = "O Score match é obrigatório") BigDecimal scoreMatch,
 
                 @NotNull(message = "O Score skill é obrigatório") BigDecimal scoreSkills,
@@ -22,7 +23,8 @@ public record MatchCreateDTO(
 
                 @NotNull(message = "A vaga é obrigatória") Integer vagaId,
 
-                @NotNull(message = "O candidato é obrigatório") Integer candidatoId
+                @NotNull(message = "O candidato é obrigatório") Integer candidatoId,
 
-) {
+                LocalDateTime dataCriacao
+            ) {     
 }
