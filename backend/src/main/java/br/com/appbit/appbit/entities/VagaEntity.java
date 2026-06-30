@@ -38,7 +38,8 @@ public class VagaEntity {
     @Column(name = "nivel", nullable = false)
     private String nivel;
 
-    @Column(name = "regiao_alvo")
+    @ManyToOne
+    @JoinColumn(name = "regiao_alvo", nullable = false)
     private RegiaoEntity regiao;
 
     @Column(name = "diversidade_minima")

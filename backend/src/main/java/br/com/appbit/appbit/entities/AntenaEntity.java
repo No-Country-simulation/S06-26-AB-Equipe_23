@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.DecimalMax;
 
+@Entity
 @Table(name = "dim_antena")
 @Getter
 @Setter

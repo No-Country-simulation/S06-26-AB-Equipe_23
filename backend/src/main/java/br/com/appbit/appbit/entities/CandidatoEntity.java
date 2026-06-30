@@ -48,10 +48,10 @@ public class CandidatoEntity {
     @Column(name = "cep", length = 10)
     private String cep;
 
-    @Column(name = "lat", precision = 12, scale = 6)
+    @Column(name = "lat")
     private Double lat;
 
-    @Column(name = "lon", precision = 12, scale = 6)
+    @Column(name = "lon")
     private Double lon;
 
     @Column(name = "grupo_subrepresentado")
