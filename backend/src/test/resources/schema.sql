@@ -3,19 +3,18 @@
 
 CREATE TABLE IF NOT EXISTS dim_candidato (
     candidato_id BIGINT PRIMARY KEY,
-    apelido_exibicao VARCHAR(255),
-    status_identificacao VARCHAR(50),
-    cargo_alvo VARCHAR(100),
-    nivel VARCHAR(50),
-    regiao VARCHAR(100),
-    cluster_residencia VARCHAR(100),
+    nome VARCHAR(120),
+    cargo_alvo VARCHAR(120),
+    nivel VARCHAR(40),
+    regiao_id INT,
+    cluster_residencia VARCHAR(80),
+    municipio_residencia VARCHAR(80),
     cep VARCHAR(10),
-    lat DOUBLE,
-    lon DOUBLE,
-    modelo_trabalho_preferido VARCHAR(50),
-    anos_experiencia INT,
-    badge_diversidade VARCHAR(255),
-    skills VARCHAR(1000)
+    lat DECIMAL(12,6),
+    lon DECIMAL(12,6),
+    badge_diversidade VARCHAR(120),
+    disponibilidade VARCHAR(40),
+    ativo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS dim_regiao (
