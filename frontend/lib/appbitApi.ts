@@ -1,8 +1,13 @@
 import api from './axios';
-import type { InsightsRegioesResponse, MatchRequest, MatchResponse } from './appbitTypes';
+import type { AprovacaoRequest, ContatoAprovado, InsightsRegioesResponse, MatchRequest, MatchResponse } from './appbitTypes';
 
 export async function executarMatch(request: MatchRequest = {}): Promise<MatchResponse> {
   const response = await api.post<MatchResponse>('/match', request);
+  return response.data;
+}
+
+export async function aprovarCandidato(request: AprovacaoRequest): Promise<ContatoAprovado> {
+  const response = await api.post<ContatoAprovado>('/match/aprovar-candidato', request);
   return response.data;
 }
 

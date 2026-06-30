@@ -1,4 +1,18 @@
-export type MatchRequest = Record<string, unknown>;
+export interface MatchRequest {
+  empresa_id?: string;
+  vaga?: {
+    titulo?: string;
+    skills?: string[];
+    nivel?: string;
+    regiao?: string;
+    modelo_trabalho?: string;
+  };
+  filtros?: {
+    anti_vies?: boolean;
+    diversidade_minima?: number;
+    limite_resultados?: number;
+  };
+}
 
 export interface CandidatoMatch {
   candidato_id: string;
@@ -24,6 +38,22 @@ export interface MatchResponse {
   total_retorno: number;
   regra_privacidade: string;
   candidatos: CandidatoMatch[];
+}
+
+export interface AprovacaoRequest {
+  candidato_id: string;
+  empresa_id: string;
+}
+
+export interface ContatoAprovado {
+  candidato_id: string;
+  apelido_exibicao: string;
+  contato_liberado: {
+    nome: string;
+    email: string;
+    telefone: string;
+    linkedin: string;
+  };
 }
 
 export interface RegiaoInsight {
