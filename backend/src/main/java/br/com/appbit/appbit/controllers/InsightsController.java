@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.appbit.appbit.services.InsightService;
+import br.com.appbit.appbit.services.TalentoInsightService;
+import br.com.appbit.appbit.dtos.MapaTalentosResponseDTO;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,6 +17,12 @@ import lombok.RequiredArgsConstructor;
 public class InsightsController {
 
     private final InsightService insightService;
+    private final TalentoInsightService talentoInsightService;
+
+    @GetMapping
+    public ResponseEntity<MapaTalentosResponseDTO> mapaTalentos() {
+        return ResponseEntity.ok(talentoInsightService.obterMapaTalentos());
+    }
 
     @GetMapping("/regioes")
     public ResponseEntity<InsightResponseDTO> listarRegioes() {

@@ -3,6 +3,7 @@ package br.com.appbit.appbit.services;
 import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
 import br.com.appbit.appbit.dtos.MatchingRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.MetricaDiversidadeDTO;
 import br.com.appbit.appbit.dtos.VagaRequestDTO;
 import br.com.appbit.appbit.matching.ScoreConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -43,28 +44,42 @@ public class MatchingService {
     // Ponto de entrada
     // ──────────────────────────────────────────────────────────────
 
-    public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
-        List<CandidatoMatchDTO> fonte = candidatoMockService.listarAnonimizados();
+   public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
+    List<CandidatoMatchDTO> fonte = candidatoMockService.listarAnonimizados();
 
-        @SuppressWarnings("null")
-        List<CandidatoMatchDTO> candidatos = fonte.stream()
-                .filter(c -> atendeFiltros(c, request))
-                .map(c -> recalcularScore(c, request))
-                .sorted(Comparator.comparing(CandidatoMatchDTO::scoreMatch).reversed())
-                .limit(limite(request, fonte.size()))
-                .toList();
+    List<CandidatoMatchDTO> candidatos = fonte.stream()
+            .filter(c -> atendeFiltros(c, request))
+            .map(c -> recalcularScore(c, request))
+            .sorted(Comparator.comparing(CandidatoMatchDTO::scoreMatch).reversed())
+            .limit(limite(request, fonte.size()))
+            .toList();
 
-        log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
+    MetricaDiversidadeDTO metrica = calcularMetricaDiversidade(candidatos, request);
 
-        return new MatchingResponseDTO(
-                "mocks/candidatos_teste.json",
-                fonte.size(),
-                candidatos.size(),
-                "contato_pos_aprovacao omitido na triagem inicial",
-                candidatos
-        );
-    }
+    log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
 
+    return new MatchingResponseDTO(
+            "mocks/candidatos_teste.json",
+            fonte.size(),
+            candidatos.size(),
+            "contato_pos_aprovacao omitido na triagem inicial",
+            metrica,
+            candidatos
+    );
+}
+
+private MetricaDiversidadeDTO calcularMetricaDiversidade(List<CandidatoMatchDTO> candidatos, MatchingRequestDTO request) {
+    long comBadge = candidatos.stream()
+            .filter(c -> c.badgeDiversidade() != null && !c.badgeDiversidade().isBlank())
+            .count();
+
+    double percentual = candidatos.isEmpty() ? 0.0 : (comBadge * 100.0) / candidatos.size();
+
+    Integer meta = request.filtros() != null ? request.filtros().diversidadeMinima() : null;
+    boolean atingida = meta != null && percentual >= meta;
+
+    return new MetricaDiversidadeDTO(percentual, meta, atingida);
+}
     // Código novo abaixo
 
     /**
@@ -111,6 +126,7 @@ public class MatchingService {
                 score
         );
     }
+
 
     // ──────────────────────────────────────────────────────────────
     // Sub-scores (portados de score_match.py)
