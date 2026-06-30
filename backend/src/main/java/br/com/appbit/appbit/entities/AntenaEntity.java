@@ -16,7 +16,6 @@ import jakarta.validation.constraints.DecimalMax;
 @Table(name = "dim_antena")
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "ecgi")
