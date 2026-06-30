@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
@@ -22,10 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Testes Unitários Simplificados - MatchingService
  */
 @SpringBootTest
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
     "spring.security.user.name=testuser",
     "spring.security.user.password=testpass",
-    "logging.level.root=ERROR"
+    "logging.level.root=ERROR",
+    "spring.sql.init.mode=never",
+    "spring.sql.init.enabled=false"
 })
 @DisplayName("Testes Unitários - MatchingService")
 class MatchingServiceSimpleTest {
