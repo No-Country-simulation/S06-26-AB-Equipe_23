@@ -5,7 +5,10 @@ import br.com.appbit.appbit.dtos.MatchingRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingResponseDTO;
 import br.com.appbit.appbit.dtos.MetricaDiversidadeDTO;
 import br.com.appbit.appbit.dtos.VagaRequestDTO;
+import br.com.appbit.appbit.entities.CandidatoEntity;
+import br.com.appbit.appbit.mappers.CandidatoMapper;
 import br.com.appbit.appbit.matching.ScoreConfig;
+import br.com.appbit.appbit.repositories.CandidatoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,70 +19,64 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Executa o matching candidato × vaga usando a fórmula validada por Dados/BI.
- *
- * Fórmula (portada do score_match.py):
- *
- *   score = (skill_score   × 0.50)
- *         + (exp_score     × 0.25)
- *         + (model_score   × 0.15)
- *         + (diversity     × 0.10)   ← bônus
- *
- * O resultado é multiplicado por 100 e arredondado → inteiro 0–100.
- */
 @Service
 @Slf4j
 public class MatchingService {
 
     private static final ScoreConfig CONFIG = ScoreConfig.defaults();
 
-    private final CandidatoMockService candidatoMockService;
+    private final CandidatoRepository candidatoRepository;
+    private final CandidatoMapper candidatoMapper;
 
-    public MatchingService(CandidatoMockService candidatoMockService) {
-        this.candidatoMockService = candidatoMockService;
+    public MatchingService(CandidatoRepository candidatoRepository, CandidatoMapper candidatoMapper) {
+        this.candidatoRepository = candidatoRepository;
+        this.candidatoMapper = candidatoMapper;
     }
 
-    // ──────────────────────────────────────────────────────────────
-    // Ponto de entrada
-    // ──────────────────────────────────────────────────────────────
+    public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
+        // Busca candidatos ativos no banco
+        List<CandidatoEntity> candidatosEntity = candidatoRepository.findByAtivo(true);
 
-   public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
-    List<CandidatoMatchDTO> fonte = candidatoMockService.listarAnonimizados();
+        // Converte para DTO usando o mapper
+        List<CandidatoMatchDTO> fonte = candidatosEntity.stream()
+                .map(candidatoMapper::toMatchDTO)
+                .toList();
 
-    List<CandidatoMatchDTO> candidatos = fonte.stream()
-            .filter(c -> atendeFiltros(c, request))
-            .map(c -> recalcularScore(c, request))
-            .sorted(Comparator.comparing(CandidatoMatchDTO::scoreMatch).reversed())
-            .limit(limite(request, fonte.size()))
-            .toList();
+        // Aplica filtros e calcula score
+        List<CandidatoMatchDTO> candidatos = fonte.stream()
+                .filter(c -> atendeFiltros(c, request))
+                .map(c -> recalcularScore(c, request))
+                .sorted(Comparator.comparing(CandidatoMatchDTO::scoreMatch).reversed())
+                .limit(limite(request, fonte.size()))
+                .toList();
 
-    MetricaDiversidadeDTO metrica = calcularMetricaDiversidade(candidatos, request);
+        MetricaDiversidadeDTO metrica = calcularMetricaDiversidade(candidatos, request);
 
-    log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
+        log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
 
-    return new MatchingResponseDTO(
-            "mocks/candidatos_teste.json",
-            fonte.size(),
-            candidatos.size(),
-            "contato_pos_aprovacao omitido na triagem inicial",
-            metrica,
-            candidatos
-    );
-}
+        return new MatchingResponseDTO(
+                "banco_de_dados", // agora a fonte é o banco
+                fonte.size(),
+                candidatos.size(),
+                "contato_pos_aprovacao omitido na triagem inicial",
+                metrica,
+                candidatos
+        );
+    }
 
-private MetricaDiversidadeDTO calcularMetricaDiversidade(List<CandidatoMatchDTO> candidatos, MatchingRequestDTO request) {
-    long comBadge = candidatos.stream()
-            .filter(c -> c.badgeDiversidade() != null && !c.badgeDiversidade().isBlank())
-            .count();
+    private MetricaDiversidadeDTO calcularMetricaDiversidade(List<CandidatoMatchDTO> candidatos, MatchingRequestDTO request) {
+        long comBadge = candidatos.stream()
+                .filter(c -> c.badgeDiversidade() != null && !c.badgeDiversidade().isBlank())
+                .count();
 
-    double percentual = candidatos.isEmpty() ? 0.0 : (comBadge * 100.0) / candidatos.size();
+        double percentual = candidatos.isEmpty() ? 0.0 : (comBadge * 100.0) / candidatos.size();
 
-    Integer meta = request.filtros() != null ? request.filtros().diversidadeMinima() : null;
-    boolean atingida = meta != null && percentual >= meta;
+        Integer meta = request.filtros() != null ? request.filtros().diversidadeMinima() : null;
+        boolean atingida = meta != null && percentual >= meta;
 
-    return new MetricaDiversidadeDTO(percentual, meta, atingida);
-}
+        return new MetricaDiversidadeDTO(percentual, meta, atingida);
+    }
+
     // Código novo abaixo
 
     /**
@@ -110,8 +107,7 @@ private MetricaDiversidadeDTO calcularMetricaDiversidade(List<CandidatoMatchDTO>
         // Retorna novo record com score recalculado (records são imutáveis)
         return new CandidatoMatchDTO(
                 candidato.candidatoId(),
-                candidato.apelidoExibicao(),
-                candidato.statusIdentificacao(),
+                candidato.nome(),
                 candidato.cargoAlvo(),
                 candidato.nivel(),
                 candidato.regiao(),

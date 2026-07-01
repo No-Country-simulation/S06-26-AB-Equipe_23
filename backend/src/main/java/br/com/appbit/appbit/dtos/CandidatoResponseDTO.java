@@ -28,7 +28,6 @@ public record CandidatoResponseDTO(
 
         Boolean ativo,
 
-        // CORRIGIDO: expõe o ID da região, consistente com CandidatoCreateDTO
         Integer regiaoId
 
 ) {

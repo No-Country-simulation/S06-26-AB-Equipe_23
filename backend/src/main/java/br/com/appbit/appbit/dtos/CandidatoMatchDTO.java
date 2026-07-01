@@ -7,8 +7,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CandidatoMatchDTO(
         @JsonProperty("candidato_id") String candidatoId,
-        @JsonProperty("apelido_exibicao") String apelidoExibicao,
-        @JsonProperty("status_identificacao") String statusIdentificacao,
+        String nome,
         @JsonProperty("cargo_alvo") String cargoAlvo,
         String nivel,
         String regiao,

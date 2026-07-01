@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 public record RegiaoCreateDTO(
 
+        Integer id,
+
         @NotBlank(message = "O cluster é obrigatório")
         String cluster,
 

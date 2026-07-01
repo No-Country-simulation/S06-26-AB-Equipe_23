@@ -42,17 +42,17 @@ public class CandidatoEntity {
     @Column(name = "cluster_residencia")
     private String cluster;
 
-    @Column(name = "municipio_residencia")
-    private String municipio;
-
-    @Column(name = "cep", length = 10)
+    @Column(name = "cep")
     private String cep;
+
+    @Column(name = "lon")
+    private String lon;
 
     @Column(name = "lat")
     private Double lat;
 
-    @Column(name = "lon")
-    private Double lon;
+    @Column(name = "municipio_residencia")
+    private String municipio;
 
     @Column(name = "grupo_subrepresentado")
     private String grupo;
