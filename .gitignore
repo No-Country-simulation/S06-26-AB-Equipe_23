@@ -7,12 +7,76 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Runtime and diagnostic files
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Build outputs
 dist
 dist-ssr
-*.local
+build/Release
+out
+.output
 
-# Editor directories and files
+# Tool caches
+coverage
+*.lcov
+.nyc_output
+.grunt
+.npm
+.eslintcache
+.stylelintcache
+.cache
+.parcel-cache
+.next
+.nuxt
+.svelte-kit/
+.temp
+.vite/
+**/.vitepress/dist
+**/.vitepress/cache
+.vuepress/dist
+.docusaurus
+.serverless/
+.fusebox/
+.dynamodb/
+.firebase/
+.tern-port
+.vscode-test
+
+# Package manager files
+*.tgz
+.yarn-integrity
+.pnpm-store
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# TypeScript and Vite generated files
+*.tsbuildinfo
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Environment files
+.env
+.env.*
+!.env.example
+*.local
+frontend/config/.env
+
+# Editor and OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,4 +86,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-frontend/config/.env
+
+# Project local/raw data
+external/
+tmp_large/
+data/raw/
+data/staging/
+*.sqlite
+*.db
+*.xlsx
+tensor_mobilidade.csv
+tensor_sequencias.csv
+
+# Python
+__pycache__/
+*.py[cod]

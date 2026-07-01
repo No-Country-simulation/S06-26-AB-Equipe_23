@@ -1,0 +1,9 @@
+﻿candidato_id,apelido_exibicao,status_identificacao,cargo_alvo,nivel,regiao,cluster_residencia,cep,lat,lon,modelo_trabalho_preferido,skills,anos_experiencia,badge_diversidade,score_match,fonte_candidatos
+cand_001,Candidato 1,anonimizado,Analista de Dados Junior,junior,Florianopolis,TRINDADE,88036-000,-27.596111,-48.525528,hibrido,"sql, python, power bi, excel",1,Mulher negra em tecnologia,80,mocks/candidatos_teste.json
+cand_002,Candidato 2,anonimizado,Analista de Dados Junior,junior,Sao Jose,SAO_JOSE_KOBRASOL,88102-000,-27.594458,-48.619528,presencial,"sql, python, excel",1,Talento de regiao com menor acesso,61,mocks/candidatos_teste.json
+cand_003,Candidato 3,anonimizado,Analista de Dados Junior,junior,Florianopolis,UFSC,88040-000,-27.593478,-48.552089,remoto,"power bi, sql, estatistica",0,Perfil junior em formacao tecnica,56,mocks/candidatos_teste.json
+cand_004,Candidato 4,anonimizado,Analista de Dados Junior,junior,Biguacu,BIGUACU_BR101_NORTE,88160-000,-27.508108,-48.654131,hibrido,"sql, power bi, etl",2,Pessoa com deficiencia,68,mocks/candidatos_teste.json
+cand_005,Candidato 5,anonimizado,Analista de Dados Junior,junior,Palhoca,PALHOCA_CENTRO,88130-000,-27.637456,-48.666794,hibrido,"python, excel, power bi",1,Mulher em transicao de carreira para tecnologia,63,mocks/candidatos_teste.json
+cand_006,Candidato 6,anonimizado,Analista de Dados Junior,junior,Florianopolis,CBD_BEIRAMAR,88015-000,-27.586028,-48.547444,presencial,"sql, tableau, excel",2,Sem badge informada,49,mocks/candidatos_teste.json
+cand_007,Candidato 7,anonimizado,Analista de Dados Junior,junior,Sao Jose,CAMPINAS_SAO_JOSE,88101-000,-27.608008,-48.62685,remoto,"sql, python, power bi, git",1,Primeira geracao no ensino superior,78,mocks/candidatos_teste.json
+cand_008,Candidato 8,anonimizado,Analista de Dados Junior,junior,Florianopolis,CONTINENTE,88070-000,-27.597667,-48.585108,hibrido,"excel, power bi, sql",0,Talento de baixa renda,58,mocks/candidatos_teste.json

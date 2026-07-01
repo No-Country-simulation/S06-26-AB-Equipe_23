@@ -1,0 +1,578 @@
+[
+  {
+    "coordenadas_entrada": {
+      "lat": -27.596111,
+      "lon": -48.525528
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 260119,
+      "sessoes_4g": 910819,
+      "sessoes_5g": 339616,
+      "sessoes_outros": 0,
+      "total_sessoes": 1510554,
+      "percentual_3g": 17.2201,
+      "percentual_4g": 60.297,
+      "percentual_5g": 22.4829,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003495238",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "lat": -27.596111,
+        "lon": -48.525528,
+        "distancia_km": 0.0,
+        "sessoes_3g": 87390,
+        "sessoes_4g": 305139,
+        "sessoes_5g": 113294,
+        "sessoes_outros": 0,
+        "total_sessoes": 505823,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050699654432",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "lat": -27.594083,
+        "lon": -48.521139,
+        "distancia_km": 0.488,
+        "sessoes_3g": 87120,
+        "sessoes_4g": 305258,
+        "sessoes_5g": 114131,
+        "sessoes_outros": 0,
+        "total_sessoes": 506509,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050683898841",
+        "cluster": "TRINDADE",
+        "municipio": "Florianopolis",
+        "lat": -27.594028,
+        "lon": -48.520928,
+        "distancia_km": 0.509,
+        "sessoes_3g": 85609,
+        "sessoes_4g": 300422,
+        "sessoes_5g": 112191,
+        "sessoes_outros": 0,
+        "total_sessoes": 498222,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_001",
+    "apelido_exibicao": "Candidato 1",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "TRINDADE"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.594458,
+      "lon": -48.619528
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 213903,
+      "sessoes_4g": 757709,
+      "sessoes_5g": 285629,
+      "sessoes_outros": 0,
+      "total_sessoes": 1257241,
+      "percentual_3g": 17.0137,
+      "percentual_4g": 60.2676,
+      "percentual_5g": 22.7187,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "724050699925282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "lat": -27.599583,
+        "lon": -48.620278,
+        "distancia_km": 0.575,
+        "sessoes_3g": 72649,
+        "sessoes_4g": 255620,
+        "sessoes_5g": 95335,
+        "sessoes_outros": 0,
+        "total_sessoes": 423604,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050699844282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "lat": -27.594139,
+        "lon": -48.612611,
+        "distancia_km": 0.683,
+        "sessoes_3g": 70916,
+        "sessoes_4g": 250926,
+        "sessoes_5g": 94213,
+        "sessoes_outros": 0,
+        "total_sessoes": 416055,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "7240501000087309",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "lat": -27.584058,
+        "lon": -48.619528,
+        "distancia_km": 1.156,
+        "sessoes_3g": 70338,
+        "sessoes_4g": 251163,
+        "sessoes_5g": 96081,
+        "sessoes_outros": 0,
+        "total_sessoes": 417582,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_002",
+    "apelido_exibicao": "Candidato 2",
+    "regiao": "Sao Jose",
+    "cluster_residencia": "SAO_JOSE_KOBRASOL"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.593478,
+      "lon": -48.552089
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 256018,
+      "sessoes_4g": 904857,
+      "sessoes_5g": 341863,
+      "sessoes_outros": 0,
+      "total_sessoes": 1502738,
+      "percentual_3g": 17.0368,
+      "percentual_4g": 60.2139,
+      "percentual_5g": 22.7493,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003495564",
+        "cluster": "UFSC",
+        "municipio": "Florianopolis",
+        "lat": -27.593478,
+        "lon": -48.552089,
+        "distancia_km": 0.0,
+        "sessoes_3g": 90613,
+        "sessoes_4g": 316405,
+        "sessoes_5g": 119884,
+        "sessoes_outros": 0,
+        "total_sessoes": 526902,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050683983270",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "lat": -27.591528,
+        "lon": -48.552775,
+        "distancia_km": 0.227,
+        "sessoes_3g": 82815,
+        "sessoes_4g": 295020,
+        "sessoes_5g": 110703,
+        "sessoes_outros": 0,
+        "total_sessoes": 488538,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050697792102",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "lat": -27.591372,
+        "lon": -48.552747,
+        "distancia_km": 0.243,
+        "sessoes_3g": 82590,
+        "sessoes_4g": 293432,
+        "sessoes_5g": 111276,
+        "sessoes_outros": 0,
+        "total_sessoes": 487298,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_003",
+    "apelido_exibicao": "Candidato 3",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "UFSC"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.508108,
+      "lon": -48.654131
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 260576,
+      "sessoes_4g": 912359,
+      "sessoes_5g": 340506,
+      "sessoes_outros": 0,
+      "total_sessoes": 1513441,
+      "percentual_3g": 17.2175,
+      "percentual_4g": 60.2838,
+      "percentual_5g": 22.4988,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003962715",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "lat": -27.508108,
+        "lon": -48.654131,
+        "distancia_km": 0.0,
+        "sessoes_3g": 86272,
+        "sessoes_4g": 303756,
+        "sessoes_5g": 115292,
+        "sessoes_outros": 0,
+        "total_sessoes": 505320,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "7240501004978224",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "lat": -27.508108,
+        "lon": -48.654131,
+        "distancia_km": 0.0,
+        "sessoes_3g": 88264,
+        "sessoes_4g": 303016,
+        "sessoes_5g": 112694,
+        "sessoes_outros": 0,
+        "total_sessoes": 503974,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050699844231",
+        "cluster": "BIGUACU_BR101_NORTE",
+        "municipio": "Biguacu",
+        "lat": -27.51925,
+        "lon": -48.640444,
+        "distancia_km": 1.832,
+        "sessoes_3g": 86040,
+        "sessoes_4g": 305587,
+        "sessoes_5g": 112520,
+        "sessoes_outros": 0,
+        "total_sessoes": 504147,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_004",
+    "apelido_exibicao": "Candidato 4",
+    "regiao": "Biguacu",
+    "cluster_residencia": "BIGUACU_BR101_NORTE"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.637456,
+      "lon": -48.666794
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 388184,
+      "sessoes_4g": 1345957,
+      "sessoes_5g": 505079,
+      "sessoes_outros": 0,
+      "total_sessoes": 2239220,
+      "percentual_3g": 17.3357,
+      "percentual_4g": 60.1083,
+      "percentual_5g": 22.556,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "724050698410289",
+        "cluster": "PALHOCA_CENTRO",
+        "municipio": "Palhoca",
+        "lat": -27.637456,
+        "lon": -48.666794,
+        "distancia_km": 0.0,
+        "sessoes_3g": 137645,
+        "sessoes_4g": 478905,
+        "sessoes_5g": 179789,
+        "sessoes_outros": 0,
+        "total_sessoes": 796339,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050685015130",
+        "cluster": "PALHOCA_PEDRA_BRANCA",
+        "municipio": "Palhoca",
+        "lat": -27.622639,
+        "lon": -48.674258,
+        "distancia_km": 1.804,
+        "sessoes_3g": 106082,
+        "sessoes_4g": 370990,
+        "sessoes_5g": 138436,
+        "sessoes_outros": 0,
+        "total_sessoes": 615508,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050699871808",
+        "cluster": "SAO_JOSE_CENTRO",
+        "municipio": "Sao Jose",
+        "lat": -27.618972,
+        "lon": -48.634694,
+        "distancia_km": 3.772,
+        "sessoes_3g": 144457,
+        "sessoes_4g": 496062,
+        "sessoes_5g": 186854,
+        "sessoes_outros": 0,
+        "total_sessoes": 827373,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_005",
+    "apelido_exibicao": "Candidato 5",
+    "regiao": "Palhoca",
+    "cluster_residencia": "PALHOCA_CENTRO"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.586028,
+      "lon": -48.547444
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 250252,
+      "sessoes_4g": 882942,
+      "sessoes_5g": 332773,
+      "sessoes_outros": 0,
+      "total_sessoes": 1465967,
+      "percentual_3g": 17.0708,
+      "percentual_4g": 60.2293,
+      "percentual_5g": 22.6999,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501003862800",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "lat": -27.586028,
+        "lon": -48.547444,
+        "distancia_km": 0.0,
+        "sessoes_3g": 85013,
+        "sessoes_4g": 298975,
+        "sessoes_5g": 111296,
+        "sessoes_outros": 0,
+        "total_sessoes": 495284,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050684142457",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "lat": -27.585,
+        "lon": -48.544722,
+        "distancia_km": 0.292,
+        "sessoes_3g": 82307,
+        "sessoes_4g": 291150,
+        "sessoes_5g": 110507,
+        "sessoes_outros": 0,
+        "total_sessoes": 483964,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "7240501005162600",
+        "cluster": "CBD_BEIRAMAR",
+        "municipio": "Florianopolis",
+        "lat": -27.585,
+        "lon": -48.543889,
+        "distancia_km": 0.369,
+        "sessoes_3g": 82932,
+        "sessoes_4g": 292817,
+        "sessoes_5g": 110970,
+        "sessoes_outros": 0,
+        "total_sessoes": 486719,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_006",
+    "apelido_exibicao": "Candidato 6",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "CBD_BEIRAMAR"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.608008,
+      "lon": -48.62685
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 286755,
+      "sessoes_4g": 1005439,
+      "sessoes_5g": 378770,
+      "sessoes_outros": 0,
+      "total_sessoes": 1670964,
+      "percentual_3g": 17.1611,
+      "percentual_4g": 60.1712,
+      "percentual_5g": 22.6678,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "724050684646269",
+        "cluster": "SAO_JOSE_CENTRO",
+        "municipio": "Sao Jose",
+        "lat": -27.608008,
+        "lon": -48.62685,
+        "distancia_km": 0.0,
+        "sessoes_3g": 141409,
+        "sessoes_4g": 496733,
+        "sessoes_5g": 186528,
+        "sessoes_outros": 0,
+        "total_sessoes": 824670,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050698586638",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "lat": -27.607781,
+        "lon": -48.634719,
+        "distancia_km": 0.776,
+        "sessoes_3g": 72697,
+        "sessoes_4g": 253086,
+        "sessoes_5g": 96907,
+        "sessoes_outros": 0,
+        "total_sessoes": 422690,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050699925282",
+        "cluster": "SAO_JOSE_KOBRASOL",
+        "municipio": "Sao Jose",
+        "lat": -27.599583,
+        "lon": -48.620278,
+        "distancia_km": 1.139,
+        "sessoes_3g": 72649,
+        "sessoes_4g": 255620,
+        "sessoes_5g": 95335,
+        "sessoes_outros": 0,
+        "total_sessoes": 423604,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_007",
+    "apelido_exibicao": "Candidato 7",
+    "regiao": "Sao Jose",
+    "cluster_residencia": "CAMPINAS_SAO_JOSE"
+  },
+  {
+    "coordenadas_entrada": {
+      "lat": -27.597667,
+      "lon": -48.585108
+    },
+    "fontes": {
+      "coordenadas": "mocks/candidatos_teste.json",
+      "antenas": "Vísent CDRView: referencias/antenas_flp.csv",
+      "sessoes": "Vísent CDRView: tensores/tensor_mobilidade.csv"
+    },
+    "resumo_sessoes_antenas_proximas": {
+      "sessoes_3g": 189678,
+      "sessoes_4g": 670868,
+      "sessoes_5g": 251985,
+      "sessoes_outros": 0,
+      "total_sessoes": 1112531,
+      "percentual_3g": 17.0492,
+      "percentual_4g": 60.3011,
+      "percentual_5g": 22.6497,
+      "percentual_outros": 0.0,
+      "tecnologia_predominante": "4G"
+    },
+    "antenas_proximas": [
+      {
+        "ecgi": "7240501005162759",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "lat": -27.597667,
+        "lon": -48.585108,
+        "distancia_km": 0.0,
+        "sessoes_3g": 63752,
+        "sessoes_4g": 224108,
+        "sessoes_5g": 83675,
+        "sessoes_outros": 0,
+        "total_sessoes": 371535,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "7240501004011684",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "lat": -27.594453,
+        "lon": -48.586731,
+        "distancia_km": 0.392,
+        "sessoes_3g": 62620,
+        "sessoes_4g": 222173,
+        "sessoes_5g": 84617,
+        "sessoes_outros": 0,
+        "total_sessoes": 369410,
+        "tecnologia_predominante": "4G"
+      },
+      {
+        "ecgi": "724050683793381",
+        "cluster": "ESTREITO_CAPOEIRAS",
+        "municipio": "Florianopolis",
+        "lat": -27.599258,
+        "lon": -48.579861,
+        "distancia_km": 0.546,
+        "sessoes_3g": 63306,
+        "sessoes_4g": 224587,
+        "sessoes_5g": 83693,
+        "sessoes_outros": 0,
+        "total_sessoes": 371586,
+        "tecnologia_predominante": "4G"
+      }
+    ],
+    "limitacao": "Sessões por tecnologia descrevem uso observado no dataset. Não equivalem a teste de velocidade nem garantem cobertura no endereço.",
+    "candidato_id": "cand_008",
+    "apelido_exibicao": "Candidato 8",
+    "regiao": "Florianopolis",
+    "cluster_residencia": "CONTINENTE"
+  }
+]

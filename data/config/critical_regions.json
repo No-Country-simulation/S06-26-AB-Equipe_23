@@ -1,0 +1,83 @@
+[
+  {
+    "municipio": "Florianopolis",
+    "cluster": "CANASVIEIRAS",
+    "lat": -27.432597,
+    "lon": -48.459966,
+    "usuarios_observados_total": 330261,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Florianopolis",
+    "cluster": "CENTRO_HISTORICO",
+    "lat": -27.60395,
+    "lon": -48.546242,
+    "usuarios_observados_total": 246244,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Florianopolis",
+    "cluster": "COQUEIROS",
+    "lat": -27.594117,
+    "lon": -48.571572,
+    "usuarios_observados_total": 200813,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Florianopolis",
+    "cluster": "JURERE",
+    "lat": -27.451011,
+    "lon": -48.507101,
+    "usuarios_observados_total": 441413,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Florianopolis",
+    "cluster": "VIA_EXPRESSA_CORREDOR",
+    "lat": -27.609272,
+    "lon": -48.585003,
+    "usuarios_observados_total": 411600,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Palhoca",
+    "cluster": "PALHOCA_PEDRA_BRANCA",
+    "lat": -27.632075,
+    "lon": -48.690179,
+    "usuarios_observados_total": 268727,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Palhoca",
+    "cluster": "SAO_JOSE_BARREIROS",
+    "lat": -27.673358,
+    "lon": -48.656689,
+    "usuarios_observados_total": 204273,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Sao Jose",
+    "cluster": "ESTREITO_CAPOEIRAS",
+    "lat": -27.581231,
+    "lon": -48.606435,
+    "usuarios_observados_total": 255650,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  },
+  {
+    "municipio": "Sao Jose",
+    "cluster": "SAO_JOSE_ROÇADO",
+    "lat": -27.569376,
+    "lon": -48.640131,
+    "usuarios_observados_total": 428700,
+    "indicador_conectividade": "media",
+    "qualidade_sinal": "media"
+  }
+]
