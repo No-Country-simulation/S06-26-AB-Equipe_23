@@ -5,6 +5,9 @@ import br.com.appbit.appbit.dtos.FiltroRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingResponseDTO;
 import br.com.appbit.appbit.dtos.VagaRequestDTO;
+import br.com.appbit.appbit.entities.CandidatoEntity;
+import br.com.appbit.appbit.mappers.CandidatoMapper;
+import br.com.appbit.appbit.repositories.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -15,38 +18,42 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class MatchingJavaPythonParityExportTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Test
     void exportJavaReferenceForPythonParity() throws IOException {
-        CandidatoMockService candidatoMockService = new CandidatoMockService();
-        MatchingService matchingService = new MatchingService(candidatoMockService);
+        CandidatoRepository candidatoRepository = mock(CandidatoRepository.class);
+        CandidatoMapper candidatoMapper = mock(CandidatoMapper.class);
+        MatchingService matchingService = new MatchingService(candidatoRepository, candidatoMapper);
 
-        List<CandidatoMatchDTO> sourceCandidates = candidatoMockService.listarAnonimizados();
+        List<CandidatoMatchDTO> sourceCandidates = List.of(
+                new CandidatoMatchDTO("cand_001", "Candidato 1", "Analista", "junior", "Florianopolis", "cluster1", "88000", -27.5969, -48.5494, "remoto", List.of("sql", "python"), 3, "badge1", 91),
+                new CandidatoMatchDTO("cand_002", "Candidato 2", "Analista", "pleno", "Sao Paulo", "cluster2", "01000", -23.5505, -46.6333, "presencial", List.of("java", "python"), 5, "badge2", 86)
+        );
+
+        List<CandidatoEntity> entities = sourceCandidates.stream()
+                .map(candidate -> mock(CandidatoEntity.class))
+                .toList();
+
+        when(candidatoRepository.findByAtivo(true)).thenReturn(entities);
+        for (int i = 0; i < entities.size(); i++) {
+            when(candidatoMapper.toMatchDTO(entities.get(i))).thenReturn(sourceCandidates.get(i));
+        }
 
         MatchingRequestDTO biProfileRequest = new MatchingRequestDTO(
                 "emp_001",
-                new VagaRequestDTO(
-                        "Analista de Dados",
-                        List.of("sql", "python"),
-                        "junior",
-                        "Florianopolis",
-                        "remoto"
-                ),
+                new VagaRequestDTO("Analista de Dados", List.of("sql", "python"), "junior", "Florianopolis", "remoto"),
                 new FiltroRequestDTO(null, null, 8)
         );
 
         MatchingRequestDTO inexistentSkillRequest = new MatchingRequestDTO(
                 "emp_002",
-                new VagaRequestDTO(
-                        "Desenvolvedor",
-                        List.of("kotlin"),
-                        "pleno",
-                        "Sao Paulo",
-                        "presencial"
-                ),
+                new VagaRequestDTO("Desenvolvedor", List.of("kotlin"), "pleno", "Sao Paulo", "presencial"),
                 new FiltroRequestDTO(null, null, 8)
         );
 
