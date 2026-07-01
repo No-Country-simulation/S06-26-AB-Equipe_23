@@ -6,7 +6,7 @@ App BiT helps companies create fairer, privacy-conscious and data-driven hiring 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 ![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Python](https://img.shields.io/badge/Python-Data%2FBI-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-Data_BI-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Power BI](https://img.shields.io/badge/Power_BI-Dashboards-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![CI](https://img.shields.io/badge/CI-AppBit_Full_MVP-success?style=for-the-badge)
@@ -97,12 +97,12 @@ Frontend -> Backend API -> Matching and Privacy Rules -> Data / BI Outputs -> Da
 ## Project Structure
 
 ```text
-backend/    Backend API, business rules, authentication and migrations
-frontend/   Web interface and backend integration
-data/       Processed datasets for BI and dashboards
-docs/       Technical and analytical documentation
-scripts/    Data generation, validation and integration scripts
-tests/      Score, anonymization and regression tests
+backend/      Backend API, business rules, authentication and migrations
+frontend/     Web interface and backend integration
+data/         Processed datasets for BI and dashboards
+docs/         Technical and analytical documentation
+scripts/      Data generation, validation and integration scripts
+tests/        Score, anonymization and regression tests
 ```
 
 ## How to Run
@@ -137,6 +137,7 @@ Requirements:
 - npm
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
@@ -180,7 +181,7 @@ VITE_API_URL=http://localhost:8080
 
 ## Documentation
 
-Additional project documentation is available in the `docs/` directory, including:
+Additional project documentation is available in the docs/ directory, including:
 
 - Match score calculation
 - Power BI support
@@ -207,7 +208,7 @@ Additional contribution details can be expanded by each team member in AUTHORS.m
 
 ## Status
 
-MVP — locally validated.
+MVP - locally validated.
 
 ## Authors and Contributors
 
