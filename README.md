@@ -7,9 +7,9 @@ App BiT helps companies create fairer, privacy-conscious and data-driven hiring 
 ![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-Data_BI-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Power BI](https://img.shields.io/badge/Power_BI-Dashboards-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![CI](https://img.shields.io/badge/CI-AppBit_Full_MVP-success?style=for-the-badge)
+[![Power BI](https://img.shields.io/badge/Power_BI-Dashboards-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)](docs/power-bi-dashboard-tela-2.md)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![CI](https://img.shields.io/badge/CI-AppBit_Full_MVP-success?style=for-the-badge)](https://github.com/No-Country-simulation/S06-26-AB-Equipe_23/actions/workflows/full-mvp-ci.yml)
 
 ## Overview
 
@@ -30,14 +30,16 @@ The platform generates candidate shortlists based on job requirements, calculate
 
 ## Product Preview
 
-Product screenshots will be added as the team consolidates the final visual flow.
+The BI preview below uses the demonstrative company metrics dataset prepared for the MVP. It represents the dashboard structure for Turnover, ESG and Team Health analysis and is not a live embedded Power BI report.
 
-Planned preview items:
+![BI dashboard preview](docs/assets/bi-dashboard-preview.png)
 
-- Candidate shortlist screen
-- Anonymized candidate view
-- Approval flow for contact release
-- BI / Power BI indicators view
+Related BI assets:
+
+- `data/powerbi/shortlist_candidatos_powerbi.csv`
+- `data/powerbi/insights_regioes_powerbi.csv`
+- `data/powerbi/metricas_empresa_demo.csv`
+- `exports/mock_dashboard_metricas_empresa.html`
 
 ## Key Features
 
@@ -190,21 +192,18 @@ Additional project documentation is available in the docs/ directory, including:
 - Candidate anonymization flow
 - Backend and frontend integration notes
 
-## Team Project and My Contribution
+## Team Project and Contributions
 
 App BiT was developed as a team project during the No Country simulation program.
 
-My main contribution was focused on the Data / BI layer and integration alignment, including:
+| Contributor | Focus | Contribution |
+| --- | --- | --- |
+| Pedro Paullo Azevedo | Data / BI and integration support | Structured BI-ready datasets, validated the 8-candidate shortlist, supported score_match validation, documented data storytelling, prepared dashboard assets and checked anonymization rules. |
+| Alessandra Heiser | Project management | Organized delivery priorities, aligned requirements with the team and supported sprint coordination for the MVP presentation. |
+| Andre Ribeiro | Data analysis | Audited the score_match logic, validated error scenarios, supported regression tests and documented how the matching algorithm behaves. |
+| Julio Noronha | Backend development | Built and stabilized backend services, authentication, database integration, migrations and backend CI validation. |
 
-- structuring the official MVP candidate dataset;
-- validating the 8-candidate shortlist;
-- supporting the score_match logic;
-- preparing BI-ready files for Power BI;
-- documenting the data storytelling;
-- validating anonymization rules;
-- supporting frontend/backend integration alignment.
-
-Additional contribution details can be expanded by each team member in AUTHORS.md or future documentation updates.
+See [AUTHORS.md](AUTHORS.md) for contributor details.
 
 ## Status
 
