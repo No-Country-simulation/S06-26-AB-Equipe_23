@@ -15,7 +15,8 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento' },
   { label: 'Candidatos', icon: '👥', section: 'Recrutamento' },
   { label: 'Shortlist', icon: '📊', section: 'Recrutamento' },
-  { label: 'Mapa de talentos', icon: '📍', section: 'Diversidade' },
+  { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade' },
+  { label: 'Insights regionais', icon: '📍', section: 'Diversidade' },
   { label: 'Relatório ESG', icon: '📈', section: 'Diversidade' },
   { label: 'Saúde do time', icon: '❤️', section: 'Diversidade' },
 ];

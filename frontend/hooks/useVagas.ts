@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Vaga } from "../features/jobs/components/type/index.ts";
-import { NovaVagaForm } from "../features/jobs/components/type/index.ts";
+import type { Vaga } from "../features/jobs/components/type/index.ts";
+import type { NovaVagaForm } from "../features/jobs/components/type/index.ts";
 import { VAGAS_MOCK } from '../stores/data/vagasMock';
 
 export default function useVagas() {

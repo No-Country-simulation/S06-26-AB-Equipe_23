@@ -1,6 +1,6 @@
 import api from '../../../lib/axios';
 import { useState } from 'react';
-import Skill from './type';
+import type Skill from './type';
 
 export default function SkillPostForm() {
 

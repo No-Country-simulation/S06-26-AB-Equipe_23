@@ -1,5 +1,5 @@
-import React from 'react';
-import { Vaga } from '../../features/jobs/components/type/index.ts';
+import type { CSSProperties } from 'react';
+import type { Vaga } from '../../features/jobs/components/type/index.ts';
 import Badge from '../ui/Badge';
 
 interface VagaDetalheProps {
@@ -16,7 +16,7 @@ function getFiltrosAtivos(vaga: Vaga): string[] {
   return labels;
 }
 
-const cardStyle: React.CSSProperties = {
+const cardStyle: CSSProperties = {
   background: '#fff',
   border: '0.5px solid #e5e7eb',
   borderRadius: 12,
@@ -24,13 +24,13 @@ const cardStyle: React.CSSProperties = {
   marginBottom: 16,
 };
 
-const dividerStyle: React.CSSProperties = {
+const dividerStyle: CSSProperties = {
   height: '0.5px',
   background: '#e5e7eb',
   margin: '20px 0',
 };
 
-const sectionLabelStyle: React.CSSProperties = {
+const sectionLabelStyle: CSSProperties = {
   fontSize: 13,
   fontWeight: 500,
   color: '#6b7280',

@@ -1,4 +1,4 @@
-import { Vaga } from '../../features/jobs/components/type/index.ts';
+import type { Vaga } from '../../features/jobs/components/type/index.ts';
 
 export const VAGAS_MOCK: Vaga[] = [
   {
