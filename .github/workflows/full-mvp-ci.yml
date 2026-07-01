@@ -1,4 +1,4 @@
-name: CI — AppBit Full MVP
+name: CI - AppBit Full MVP
 
 on:
   push:
