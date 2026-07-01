@@ -14,3 +14,7 @@ App BiT was developed as a team project during the No Country simulation program
 App BiT is an MVP for an intelligent recruiting platform focused on candidate matching, privacy-first screening, diversity awareness and data-driven decision support.
 
 The project combines backend services, frontend integration and a Data / BI layer to support candidate shortlisting, match scoring, anonymization rules and business intelligence analysis.
+
+## Contribution Updates
+
+Contribution details may be expanded by each team member in future documentation updates.
