@@ -1,245 +1,185 @@
-# AppBit — Backend
+# App BiT
 
-API REST para matching inteligente de candidatos a vagas com base em skills, geolocalização e diversidade.
+App BiT helps companies build fairer and more data-driven hiring shortlists by combining candidate matching, privacy-first screening, diversity awareness, and business intelligence insights.
 
-Construída com **Spring Boot 4.1 · Java 21 · MySQL · Flyway · Spring Security + JWT**.
+![Java](https://img.shields.io/badge/Java-21-007396?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-Data%2FBI-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Power BI](https://img.shields.io/badge/Power_BI-Dashboards-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 
----
+## Overview
 
-## Sumário
+App BiT is an intelligent recruitment platform designed to support objective and privacy-conscious hiring decisions.
 
-- [Visão geral](#visão-geral)
-- [Tecnologias](#tecnologias)
-- [Pré-requisitos](#pré-requisitos)
-- [Configuração do ambiente](#configuração-do-ambiente)
-- [Rodando localmente](#rodando-localmente)
-- [Migrações de banco (Flyway)](#migrações-de-banco-flyway)
-- [Autenticação](#autenticação)
-- [Endpoints principais](#endpoints-principais)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Variáveis de ambiente — referência completa](#variáveis-de-ambiente--referência-completa)
+The platform generates candidate shortlists based on job requirements, calculates a match score, protects sensitive candidate information during the first screening stage, and supports decision-making through regional connectivity analysis and BI indicators such as Turnover, ESG, and Team Health.
 
----
+## Key Features
 
-## Visão geral
+- Privacy-first candidate shortlisting.
+- Match score calculation between candidates and job openings.
+- Bias-aware screening flow with anonymized candidate data.
+- Contact information release only after explicit approval.
+- Regional connectivity insights to support inclusive hiring decisions.
+- BI-ready datasets for Power BI dashboards.
+- Turnover, ESG, and Team Health indicators for business analysis.
+- Data validation scripts to keep candidate and BI outputs consistent.
 
-O AppBit conecta candidatos a vagas considerando:
+## Architecture
 
-- **Skills** e nível de proficiência
-- **Geolocalização** (cluster/município de residência vs. localização da vaga)
-- **Diversidade** (grupos sub-representados e badges de diversidade)
-- **Matching** configurável com aprovação manual ou automática
-
----
-
-## Tecnologias
-
-| Camada | Tecnologia |
-|---|---|
-| Linguagem | Java 21 |
-| Framework | Spring Boot 4.1 (Web MVC, Data JPA, Security, Validation) |
-| Banco de dados | MySQL 8+ |
-| Migrations | Flyway |
-| Autenticação | JWT via jjwt 0.12.x (HMAC-SHA256) |
-| Mapeamento | MapStruct 1.6.3 |
-| Boilerplate | Lombok |
-| Build | Maven (Wrapper incluído) |
-| Testes | JUnit 5 + H2 (in-memory) |
-
----
-
-## Pré-requisitos
-
-- **JDK 21+** — [Adoptium](https://adoptium.net/) ou similar
-- **MySQL 8+** rodando localmente (ou via Docker)
-- Maven não precisa ser instalado — use o wrapper `./mvnw`
-
-### MySQL rápido com Docker
-
-```bash
-docker run -d \
-  --name appbit-db \
-  -e MYSQL_ROOT_PASSWORD=root \
-  -e MYSQL_DATABASE=appbit \
-  -e MYSQL_USER=appbit_user \
-  -e MYSQL_PASSWORD=sua_senha_aqui \
-  -p 3306:3306 \
-  mysql:8
+```mermaid
+flowchart LR
+    A[Frontend<br/>React + TypeScript] --> B[Backend<br/>Java 21 + Spring Boot]
+    B --> C[(Database<br/>MySQL / H2)]
+    B --> D[Matching Engine<br/>Score + Privacy Rules]
+    D --> E[Data / BI Layer<br/>Python + CSV + Power BI]
+    E --> F[Dashboards<br/>Shortlist, ESG, Turnover, Connectivity]
 ```
 
----
+Simplified flow:
 
-## Configuração do ambiente
-
-O projeto lê suas credenciais exclusivamente de **variáveis de ambiente** — nenhum segredo é hardcoded.
-
-### 1. Crie o arquivo `.env`
-
-```bash
-cp backend/.env.example backend/.env
+```text
+Frontend -> Backend API -> Matching & Privacy Rules -> Data/BI Outputs -> Dashboards
 ```
 
-### 2. Preencha os valores reais
+## Tech Stack
+
+### Backend
+
+- Java 21
+- Spring Boot
+- Maven
+- Flyway
+- H2
+- MySQL
+- JWT
+
+### Frontend
+
+- React
+- TypeScript
+- Vite
+- Axios
+
+### Data / BI
+
+- Python
+- Power BI
+- DAX
+- CSV
+- Pytest
+
+## Project Structure
+
+```text
+backend/    Backend API, business rules, authentication and migrations
+frontend/   Web interface and backend integration
+data/       Processed datasets for BI and dashboards
+docs/       Technical and analytical documentation
+scripts/    Data generation, validation and integration scripts
+tests/      Score, anonymization and regression tests
+```
+
+## How to Run
+
+### Backend
+
+Requirements:
+
+- Java 21
+- Maven Wrapper
+- MySQL for local database execution
+
+```bash
+cd backend
+./mvnw test
+./mvnw spring-boot:run
+```
+
+On Windows:
+
+```powershell
+cd backend
+.\mvnw.cmd test
+.\mvnw.cmd spring-boot:run
+```
+
+### Frontend
+
+Requirements:
+
+- Node.js
+- npm
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+### Data / BI
+
+Requirements:
+
+- Python
+- Pytest
+
+```bash
+python -m pytest tests/test_score_match.py tests/test_score_regression.py tests/test_anonymization.py -q
+python scripts/valida_integracao_bi.py
+```
+
+Generate the MVP shortlist:
+
+```bash
+python -m scripts.gera_shortlist_mvp
+```
+
+## Environment Variables
 
 ```env
 DB_HOST_APPBIT=localhost
 DB_PORT_APPBIT=3306
 DB_NAME_APPBIT=appbit
-DB_USER_APPBIT=appbit_user
-DB_PASSWORD_APPBIT=sua_senha_aqui
-
-JWT_SECRET=troque-por-uma-chave-super-secreta-com-pelo-menos-32-chars
+DB_USER_APPBIT=root
+DB_PASSWORD_APPBIT=your_password
+JWT_SECRET=your_secure_secret_key
 JWT_EXPIRATION_MS=86400000
-
-APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
+VITE_API_URL=http://localhost:8080
 ```
 
-> **Gerar uma `JWT_SECRET` segura:**
-> ```bash
-> openssl rand -base64 48
-> ```
+## Documentation
 
-> O arquivo `.env` já está no `.gitignore` — nunca o commite.
+API endpoints are documented in `docs/`. Swagger integration is planned for the next release.
 
-### Como o Spring Boot encontra as variáveis
+Additional project documentation is available in the `docs/` directory, including:
 
-O `application.yaml` usa a sintaxe `${NOME_DA_VARIAVEL}` do Spring:
+- Match score calculation
+- Power BI support
+- Data storytelling
+- BI validation
+- Candidate anonymization flow
+- Backend and frontend integration notes
 
-```yaml
-datasource:
-  url: jdbc:mysql://${DB_HOST_APPBIT}:${DB_PORT_APPBIT}/${DB_NAME_APPBIT}
-  username: ${DB_USER_APPBIT}
-  password: ${DB_PASSWORD_APPBIT}
+## My Contribution
 
-jwt:
-  secret: ${JWT_SECRET}
-  expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # valor após ':' é o default
-```
+I worked mainly on the Data/BI layer and integration alignment.
 
-O Spring resolve essas expressões na seguinte ordem de prioridade (maior → menor):
+My contribution included structuring the official MVP candidate dataset, validating the 8-candidate shortlist, supporting the `score_match` logic, preparing BI-ready files for Power BI, documenting the data storytelling, and validating anonymization rules to ensure sensitive candidate data stays protected during the first screening stage.
 
-1. Argumentos de linha de comando (`--DB_HOST_APPBIT=...`)
-2. **Variáveis de ambiente do sistema operacional** ← o mais comum
-3. Arquivo `application.yaml` (valores default após `:`)
+I also supported integration across the project by aligning the frontend shortlist screen with the official backend contract and helping review backend concerns related to migrations, test validation, JWT configuration, and data consistency.
 
-Ou seja: basta exportar as variáveis no shell antes de rodar, ou deixá-las no ambiente do container/servidor, que o Spring as encontra automaticamente — sem nenhuma biblioteca extra.
+## Status
 
----
+MVP — locally validated.
 
-## Rodando localmente
+## License
 
-```bash
-cd backend
-
-# Carregue as variáveis do .env no shell atual
-export $(grep -v '^#' .env | xargs)
-
-# Compile e suba a aplicação
-./mvnw spring-boot:run
-```
-
-A API estará disponível em `http://localhost:8080`.
-
----
-
-## Migrações de banco (Flyway)
-
-O Flyway roda automaticamente ao iniciar a aplicação e aplica os scripts em `src/main/resources/db/migration/` em ordem:
-
-| Versão | Descrição |
-|---|---|
-| V1 | Schema inicial (regiões, antenas, candidatos, skills, vagas, matches) |
-| V2 | Adiciona geolocalização (lat/lon) ao candidato |
-| V3 | Seed de candidatos de teste |
-| V4 | Cria tabela de usuários para autenticação |
-
-Nenhuma ação manual é necessária — basta ter o banco criado e as variáveis configuradas.
-
----
-
-## Autenticação
-
-A API usa **JWT stateless**. O token deve ser enviado em todas as rotas protegidas no header:
-
-```
-Authorization: Bearer <token>
-```
-
-### Fazer login
-
-```http
-POST /login
-Content-Type: application/json
-
-{
-  "email": "usuario@empresa.com",
-  "senha": "senha123"
-}
-```
-
-Resposta:
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9...",
-  "expiresIn": 86400000
-}
-```
-
-Rotas públicas (sem token): `POST /login` e `GET /actuator/health`.
-
----
-
-## Endpoints principais
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `POST` | `/login` | Autenticação e geração de token |
-| `GET` | `/candidatos` | Lista candidatos |
-| `POST` | `/candidatos` | Cadastra candidato |
-| `PUT` | `/candidatos/{id}` | Atualiza candidato |
-| `GET` | `/vagas` | Lista vagas |
-| `POST` | `/vagas` | Cadastra vaga |
-| `GET` | `/skills` | Lista skills disponíveis |
-| `POST` | `/matching` | Executa matching candidatos × vaga |
-| `GET` | `/matches` | Lista matches realizados |
-| `PUT` | `/matches/{id}/aprovacao` | Aprova ou rejeita um match |
-| `GET` | `/regioes` | Lista regiões/clusters |
-| `GET` | `/insights` | Métricas de diversidade e distribuição regional |
-
----
-
-## Estrutura do projeto
-
-```
-backend/
-├── src/main/java/br/com/appbit/appbit/
-│   ├── config/          # Security, CORS, JWT, filtros
-│   ├── controllers/     # Camada HTTP (REST)
-│   ├── dtos/            # Objetos de transferência de dados
-│   ├── entities/        # Entidades JPA
-│   ├── repositories/    # Interfaces Spring Data
-│   ├── services/        # Lógica de negócio
-│   └── AppbitApplication.java
-├── src/main/resources/
-│   ├── application.yaml
-│   └── db/migration/    # Scripts Flyway (V1…Vn)
-├── .env.example         # Template de variáveis de ambiente
-├── pom.xml
-└── mvnw / mvnw.cmd
-```
-
----
-
-## Variáveis de ambiente — referência completa
-
-| Variável | Obrigatória | Default | Descrição |
-|---|---|---|---|
-| `DB_HOST_APPBIT` | ✅ | — | Host do MySQL |
-| `DB_PORT_APPBIT` | ✅ | — | Porta do MySQL |
-| `DB_NAME_APPBIT` | ✅ | — | Nome do banco/schema |
-| `DB_USER_APPBIT` | ✅ | — | Usuário do banco |
-| `DB_PASSWORD_APPBIT` | ✅ | — | Senha do banco |
-| `JWT_SECRET` | ✅ | — | Chave secreta JWT (mín. 32 chars) |
-| `JWT_EXPIRATION_MS` | ❌ | `86400000` (24h) | Expiração do token em ms |
-| `APP_CORS_ALLOWED_ORIGINS` | ❌ | `http://localhost:5173,http://localhost:4173` | Origens CORS permitidas (separadas por vírgula) |
+This project was developed as part of the No Country simulation program.
