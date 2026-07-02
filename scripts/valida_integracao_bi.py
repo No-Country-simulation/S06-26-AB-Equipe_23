@@ -61,6 +61,28 @@ def main() -> None:
         for item in metricas
     )
 
+    formacoes = csv_rows("data/servicos_mvp/formacoes_mvp.csv")
+    experiencias = csv_rows("data/servicos_mvp/experiencias_estruturantes_mvp.csv")
+    mentorias = csv_rows("data/servicos_mvp/mentorias_mvp.csv")
+    assert len(formacoes) == 6
+    assert len(experiencias) == 24
+    assert len(mentorias) == 10
+    assert all(item["nome_trilha"].strip() and item["carga_horaria"].strip() for item in formacoes)
+    assert all(item["nome_evento"].strip() and item["tema_palestra"].strip() for item in experiencias)
+    assert all(item["nome_mentor"].strip() and item["especialidade_esg"].strip() for item in mentorias)
+
+    disponibilidade_permitida = {"Quinzenal", "Mensal"}
+    assert all(item["disponibilidade"] in disponibilidade_permitida for item in mentorias)
+
+    regioes_powerbi = csv_rows("data/powerbi/insights_regioes_powerbi.csv")
+    labels_regiao_validos = {item["label_regiao"].strip() for item in regioes_powerbi}
+    locais_eventos: set[str] = set()
+    for item in experiencias:
+        local = item["local"].strip()
+        locais_eventos.add(local)
+        assert local in labels_regiao_validos
+    assert len(locais_eventos) == 24
+
     for obsoleto in (
         "data/powerbi/candidatos_powerbi.csv",
         "data/powerbi/dashboard_tela2_mvp.csv",
@@ -71,6 +93,8 @@ def main() -> None:
     print("OK: candidatos=8, privacidade preservada")
     print("OK: antenas=132, regioes=24, sessoes e concentracao reconciliadas")
     print("OK: metricas empresariais demonstrativas=1152, segmentos=8")
+    print("OK: servicos_mvp formacoes=6, eventos=24, mentorias=10")
+    print("OK: locais de eventos mapeados para 24 regioes validas")
     print("OK: artefatos artificiais de candidatos ausentes")
 
 
