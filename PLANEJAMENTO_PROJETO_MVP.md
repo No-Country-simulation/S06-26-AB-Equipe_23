@@ -250,32 +250,33 @@ Status verificado nesta branch em 02/07/2026:
 3. Migration oficial criada em `backend/src/main/resources/db/migration/V5__servicos_mvp.sql`.
 4. `scripts/valida_integracao_bi.py` atualizado para validar trilhas, eventos, mentores e mapeamento dos 24 locais.
 5. Validacao local executada com sucesso em 02/07/2026.
+6. Contagens no banco confirmadas em ambiente limpo: trilhas=6, eventos=24, mentores=10.
 
 ### Fase 1 - Estrutura
 
 - [x] Criar DDL da tabela trilhas.
 - [x] Criar DDL da tabela eventos.
 - [x] Criar DDL da tabela mentores.
-- [ ] Executar DDL em ambiente de desenvolvimento sem erro.
+- [x] Executar DDL em ambiente de desenvolvimento sem erro.
 
 ### Fase 2 - Dados Iniciais
 
-- [ ] Criar script de seed da tabela trilhas.
-- [ ] Criar script de seed da tabela eventos.
-- [ ] Criar script de seed da tabela mentores.
-- [ ] Executar seed completo sem falhas.
+- [x] Criar script de seed da tabela trilhas.
+- [x] Criar script de seed da tabela eventos.
+- [x] Criar script de seed da tabela mentores.
+- [x] Executar seed completo sem falhas.
 
 ### Fase 3 - Qualidade e Integracao
 
-- [ ] Validar consultas basicas por tabela.
+- [x] Validar consultas basicas por tabela.
 - [x] Validar dados de local contra as 24 regioes de Florianopolis.
 - [x] Atualizar valida_integracao_bi.py para novas tabelas.
 - [x] Rodar validacao local completa sem regressao.
 
 ### Fase 4 - Entrega
 
-- [ ] Verificar pipeline de CI sem quebra relacionada aos dados.
-- [ ] Consolidar evidencias de execucao (DDL, seed, validacoes).
+- [x] Verificar pipeline de CI sem quebra relacionada aos dados.
+- [x] Consolidar evidencias de execucao (DDL, seed, validacoes).
 - [ ] Revisar documentacao tecnica final.
 - [ ] Realizar handoff para backend e frontend.
 
@@ -288,17 +289,17 @@ Preencher e atualizar este quadro durante a execucao do projeto.
 | 1 | Fase 1 - Estrutura | Criar DDL da tabela trilhas | Concluido | A definir | A definir | 02/07/2026 | Migration oficial adicionada em backend/src/main/resources/db/migration/V5__servicos_mvp.sql |
 | 2 | Fase 1 - Estrutura | Criar DDL da tabela eventos | Concluido | A definir | A definir | 02/07/2026 | Migration oficial adicionada em backend/src/main/resources/db/migration/V5__servicos_mvp.sql |
 | 3 | Fase 1 - Estrutura | Criar DDL da tabela mentores | Concluido | A definir | A definir | 02/07/2026 | Migration oficial adicionada em backend/src/main/resources/db/migration/V5__servicos_mvp.sql |
-| 4 | Fase 1 - Estrutura | Executar DDL sem erro no ambiente de desenvolvimento | Pendente | A definir | A definir | - | - |
+| 4 | Fase 1 - Estrutura | Executar DDL sem erro no ambiente de desenvolvimento | Concluido | A definir | A definir | 02/07/2026 | Validado em ambiente limpo via AppbitApplicationTests com Flyway aplicando ate V5 |
 | 5 | Fase 2 - Dados Iniciais | Criar seed da tabela trilhas | Concluido | A definir | A definir | 02/07/2026 | Dados em CSV + inserts no draft SQL |
 | 6 | Fase 2 - Dados Iniciais | Criar seed da tabela eventos | Concluido | A definir | A definir | 02/07/2026 | Dados em CSV + inserts no draft SQL |
 | 7 | Fase 2 - Dados Iniciais | Criar seed da tabela mentores | Concluido | A definir | A definir | 02/07/2026 | Dados em CSV + inserts no draft SQL |
-| 8 | Fase 2 - Dados Iniciais | Executar seed completo sem falhas | Pendente | A definir | A definir | - | Falta executar no fluxo oficial de migration do backend |
-| 9 | Fase 3 - Qualidade e Integracao | Validar consultas basicas por tabela | Pendente | A definir | A definir | - | - |
+| 8 | Fase 2 - Dados Iniciais | Executar seed completo sem falhas | Concluido | A definir | A definir | 02/07/2026 | Seed aplicado no fluxo oficial de migration (V5) em teste de inicializacao do backend |
+| 9 | Fase 3 - Qualidade e Integracao | Validar consultas basicas por tabela | Concluido | A definir | A definir | 02/07/2026 | Validado via MigrationV5CountsTest com contagens 6/24/10 no banco apos Flyway |
 | 10 | Fase 3 - Qualidade e Integracao | Validar local com as 24 regioes de Florianopolis | Concluido | A definir | A definir | 02/07/2026 | Validacao automatizada adicionada ao script BI com comparacao por label_regiao |
 | 11 | Fase 3 - Qualidade e Integracao | Atualizar valida_integracao_bi.py | Concluido | A definir | A definir | 02/07/2026 | Incluidas checagens de formacoes, eventos, mentorias e consistencia de local |
 | 12 | Fase 3 - Qualidade e Integracao | Rodar validacao local completa sem regressao | Concluido | A definir | A definir | 02/07/2026 | Execucao local do script concluida com sucesso |
-| 13 | Fase 4 - Entrega | Verificar pipeline de CI sem quebra | Pendente | A definir | A definir | - | - |
-| 14 | Fase 4 - Entrega | Consolidar evidencias de execucao | Pendente | A definir | A definir | - | - |
+| 13 | Fase 4 - Entrega | Verificar pipeline de CI sem quebra | Concluido | A definir | A definir | 02/07/2026 | Blocos backend, frontend e data-bi validados localmente com sucesso |
+| 14 | Fase 4 - Entrega | Consolidar evidencias de execucao | Concluido | A definir | A definir | 02/07/2026 | Evidencias registradas na secao "Consolidado de Evidencias Tecnicas" |
 | 15 | Fase 4 - Entrega | Revisar documentacao tecnica final | Pendente | A definir | A definir | - | - |
 | 16 | Fase 4 - Entrega | Realizar handoff para backend e frontend | Pendente | A definir | A definir | - | - |
 
@@ -308,6 +309,36 @@ Legenda de status sugerida:
 2. Em andamento
 3. Bloqueado
 4. Concluido
+
+### Consolidado de Evidencias Tecnicas
+
+Data de consolidacao: 02/07/2026
+
+1. Migration oficial criada:
+	- Arquivo: backend/src/main/resources/db/migration/V5__servicos_mvp.sql
+	- Escopo: criacao de tabelas trilhas_formacao, eventos_estruturantes e mentores_diversidade + seed inicial.
+
+2. Validacao BI atualizada:
+	- Arquivo: scripts/valida_integracao_bi.py
+	- Escopo: checagem de volumes (6/24/10) e consistencia de locais com as 24 regioes validas.
+	- Comando executado: python scripts/valida_integracao_bi.py
+	- Resultado: sucesso com todas as assercoes aprovadas.
+
+3. Migracoes Flyway validadas em ambiente limpo:
+	- Comando executado: .\\mvnw.cmd -Dtest=AppbitApplicationTests test (pasta backend)
+	- Resultado: BUILD SUCCESS e aplicacao ate versao v5.
+
+4. Contagens do banco validadas por teste automatizado:
+	- Arquivo de teste: backend/src/test/java/br/com/appbit/appbit/MigrationV5CountsTest.java
+	- Comando executado: .\\mvnw.cmd -Dtest=MigrationV5CountsTest test (pasta backend)
+	- Resultado: BUILD SUCCESS.
+	- Evidencia de contagem: trilhas_formacao=6, eventos_estruturantes=24, mentores_diversidade=10.
+
+5. Verificacao local dos blocos de CI:
+	- Backend: .\\mvnw.cmd test --no-transfer-progress (pasta backend) -> BUILD SUCCESS, 28 testes sem falhas.
+	- Frontend: npm run build (raiz do projeto) -> build concluido com sucesso.
+	- Data/BI: .\\.venv-ci\\Scripts\\python.exe -m pytest tests/test_score_match.py tests/test_score_regression.py tests/test_anonymization.py -q -> 7 passed.
+	- Data/BI: .\\.venv-ci\\Scripts\\python.exe scripts/valida_integracao_bi.py -> validacao BI concluida com sucesso.
 
 ## 11. Responsabilidades do Analista de Dados
 
