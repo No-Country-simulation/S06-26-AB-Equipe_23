@@ -119,20 +119,20 @@ Objetivo do dia: fechar requisitos de dados e preparar base para modelagem do Di
 
 Checklist de execucao do Dia 1:
 
-- [ ] Alinhar com produto os campos obrigatorios de trilhas, eventos e mentores.
-- [ ] Validar com backend os tipos esperados por campo (texto, data, horario, identificadores).
-- [ ] Validar com frontend os campos necessarios para listagem, detalhe e filtros.
-- [ ] Definir e registrar o dicionario de dados inicial.
-- [ ] Definir regras de qualidade de dados por campo (nao nulo, formato, limites).
-- [ ] Definir padrao de disponibilidade de mentores (exemplo: semanal, quinzenal, mensal).
-- [ ] Definir estrategia de local para eventos (lista controlada das 24 regioes).
-- [ ] Revisar e aprovar criterios de pronto do Dia 1 com o time.
+- [x] Alinhar com produto os campos obrigatorios de trilhas, eventos e mentores.
+- [x] Validar com backend os tipos esperados por campo (texto, data, horario, identificadores).
+- [x] Validar com frontend os campos necessarios para listagem, detalhe e filtros.
+- [x] Definir e registrar o dicionario de dados inicial.
+- [x] Definir regras de qualidade de dados por campo (nao nulo, formato, limites).
+- [x] Definir padrao de disponibilidade de mentores (exemplo: semanal, quinzenal, mensal).
+- [x] Definir estrategia de local para eventos (lista controlada das 24 regioes).
+- [x] Revisar e aprovar criterios de pronto do Dia 1 com o time.
 
 Status do Dia 1:
 
-1. Situacao atual: Em andamento
+1. Situacao atual: Concluido
 2. Bloqueios: Nenhum registrado
-3. Proximo marco: Dicionario de dados validado
+3. Proximo marco: DDL e seed validados
 
 Evidencias do Dia 1 (preencher ao longo do dia):
 
@@ -152,12 +152,12 @@ Responsabilidades sugeridas:
 
 | Item | Tarefa | Status | Responsavel | Prazo | Observacoes |
 |---|---|---|---|---|---|
-| D1-01 | Alinhar campos obrigatorios com produto | Em andamento | Analista de Dados + PO | 02/07/2026 | - |
-| D1-02 | Validar tipos de dados com backend | Pendente | Analista de Dados + Backend | 02/07/2026 | - |
-| D1-03 | Validar necessidade de campos com frontend | Pendente | Analista de Dados + Frontend | 02/07/2026 | - |
-| D1-04 | Fechar dicionario de dados inicial | Pendente | Analista de Dados | 02/07/2026 | Dependente dos itens D1-01 a D1-03 |
-| D1-05 | Fechar regras de qualidade por campo | Pendente | Analista de Dados + Backend | 02/07/2026 | Dependente do item D1-04 |
-| D1-06 | Fechar estrategia das 24 regioes de local | Pendente | Analista de Dados + PO | 02/07/2026 | Validar aderencia com negocio |
+| D1-01 | Alinhar campos obrigatorios com produto | Concluido | Analista de Dados + PO | 02/07/2026 | - |
+| D1-02 | Validar tipos de dados com backend | Concluido | Analista de Dados + Backend | 02/07/2026 | - |
+| D1-03 | Validar necessidade de campos com frontend | Concluido | Analista de Dados + Frontend | 02/07/2026 | - |
+| D1-04 | Fechar dicionario de dados inicial | Concluido | Analista de Dados | 02/07/2026 | Dependente dos itens D1-01 a D1-03 |
+| D1-05 | Fechar regras de qualidade por campo | Concluido | Analista de Dados + Backend | 02/07/2026 | Dependente do item D1-04 |
+| D1-06 | Fechar estrategia das 24 regioes de local | Concluido | Analista de Dados + PO | 02/07/2026 | Validar aderencia com negocio |
 
 ## Dia 2 - Modelagem e DDL
 
