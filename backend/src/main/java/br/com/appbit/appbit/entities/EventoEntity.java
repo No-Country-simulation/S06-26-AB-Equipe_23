@@ -47,7 +47,7 @@ public class EventoEntity {
 
     @NotBlank(message = "O tema é obrigatório")
     @Column(name = "tema_palestra", nullable = false)
-    private String tema;
+    private String temaPalestra;
 
     @NotBlank(message = "O local é obrigatório")
     @Column(name = "local", nullable = false)

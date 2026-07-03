@@ -13,7 +13,7 @@ public record EventosDTO(
 
                 @NotBlank(message = "Os palestrantes são obrigatórios") String palestrantes,
 
-                @NotBlank(message = "O tema da palestra é obrigatório") String tema,
+                @NotBlank(message = "O tema da palestra é obrigatório") String temaPalestra,
 
                 @NotBlank(message = "Os detalhes são obrigatórios") String detalhes,
 

@@ -15,7 +15,7 @@ public interface EventoRepository extends JpaRepository<EventoEntity, Integer> {
 
     List<EventoEntity> findByPalestrantes(String palestrantes);
 
-    List<EventoEntity> findByTemaPalestra(String tema_palestra);
+    List<EventoEntity> findByTemaPalestra(String temaPalestra);
 
     List<EventoEntity> findByCargaHoraria(String cargaHoraria);
 
@@ -23,5 +23,5 @@ public interface EventoRepository extends JpaRepository<EventoEntity, Integer> {
 
     List<EventoEntity> findByData(LocalDateTime data);
 
-    List<EventoEntity> findByHorario(String horario);
+    List<EventoEntity> findByDetalhes(String detalhes);
 }
