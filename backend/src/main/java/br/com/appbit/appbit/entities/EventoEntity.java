@@ -32,10 +32,10 @@ public class EventoEntity {
     @Column(name = "nome_evento", nullable = false)
     private String nome;
 
-    @PalavrasMaximas(mensagem = "O horario do evento excede o limite máximo de 10 palavras.", max = 10)
-    @NotBlank(message = "O horario é obrigatório")
+    @PalavrasMaximas(mensagem = "A carga horária do evento excede o limite máximo de 10 palavras.", max = 10)
+    @NotBlank(message = "A carga horária é obrigatória")
     @Column(name = "horario", nullable = false)
-    private String horario;
+    private String cargaHoraria;
 
     @NotBlank(message = "Os detalhes são obrigatórios")
     @Column(name = "detalhes", nullable = false)
@@ -48,6 +48,10 @@ public class EventoEntity {
     @NotBlank(message = "O tema é obrigatório")
     @Column(name = "tema_palestra", nullable = false)
     private String tema;
+
+    @NotBlank(message = "O local é obrigatório")
+    @Column(name = "local", nullable = false)
+    private String local;
 
     @NotBlank(message = "Os palestrantes são obrigatórios")
     @Column(name = "palestrantes", nullable = false)

@@ -1,9 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
 import br.com.appbit.appbit.dtos.FiltroRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingResponseDTO;
+
 import br.com.appbit.appbit.dtos.VagaRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
-import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 

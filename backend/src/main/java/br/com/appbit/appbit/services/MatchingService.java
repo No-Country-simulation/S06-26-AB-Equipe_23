@@ -1,5 +1,6 @@
 package br.com.appbit.appbit.services;
 
+import br.com.appbit.appbit.config.ScoreConfig;
 import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
 import br.com.appbit.appbit.dtos.MatchingRequestDTO;
 import br.com.appbit.appbit.dtos.MatchingResponseDTO;
@@ -7,7 +8,6 @@ import br.com.appbit.appbit.dtos.MetricaDiversidadeDTO;
 import br.com.appbit.appbit.dtos.VagaRequestDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
-import br.com.appbit.appbit.matching.ScoreConfig;
 import br.com.appbit.appbit.repositories.CandidatoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class MatchingService {
         log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
 
         return new MatchingResponseDTO(
-                "banco_de_dados", // agora a fonte é o banco
+                "banco_de_dados",
                 fonte.size(),
                 candidatos.size(),
                 "contato_pos_aprovacao omitido na triagem inicial",

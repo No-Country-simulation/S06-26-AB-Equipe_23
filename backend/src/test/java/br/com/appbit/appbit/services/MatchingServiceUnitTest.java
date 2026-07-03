@@ -197,6 +197,7 @@ class MatchingServiceUnitTest {
                 assertNotNull(response);
                 assertFalse(response.candidatos().isEmpty());
 
+                @SuppressWarnings("null")
                 List<Integer> scores = response.candidatos().stream()
                                 .map(CandidatoMatchDTO::scoreMatch)
                                 .toList();
@@ -228,6 +229,7 @@ class MatchingServiceUnitTest {
                 MatchingResponseDTO response = matchingService.executarMatch(requestBase);
 
                 assertNotNull(response);
+                @SuppressWarnings("null")
                 List<Integer> scores = response.candidatos().stream()
                                 .map(CandidatoMatchDTO::scoreMatch)
                                 .toList();

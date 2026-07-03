@@ -1,4 +1,4 @@
-package br.com.appbit.appbit.matching;
+package br.com.appbit.appbit.config;
 
 /**
  * Pesos e limites usados na fórmula de score_match.

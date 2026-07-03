@@ -16,6 +16,6 @@ public interface TrilhaRepository extends JpaRepository<TrilhaEntity, Integer> {
 
     List<TrilhaEntity> findByLink(String link);
 
-    List<TrilhaEntity> findByCarga_horaria(String carga_horaria);
+    List<TrilhaEntity> findByCargaHoraria(String cargaHoraria);
 
 }
