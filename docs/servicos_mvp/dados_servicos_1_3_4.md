@@ -13,7 +13,9 @@ O objetivo e entregar ao backend uma base inicial coerente com a proposta do pro
 - `data/servicos_mvp/formacoes_mvp.csv`
 - `data/servicos_mvp/experiencias_estruturantes_mvp.csv`
 - `data/servicos_mvp/mentorias_mvp.csv`
-- `database/V5__servicos_mvp_seed_draft.sql`
+- `database/V5__servicos_mvp_seed_draft.sql` (historico do desenho inicial)
+- `backend/src/main/resources/db/migration/V5__servicos_mvp.sql` (migration oficial aplicada no backend)
+- `backend/src/test/java/br/com/appbit/appbit/MigrationV5CountsTest.java` (teste de contagem pos-migration)
 
 ## Formacoes
 
@@ -79,20 +81,23 @@ O frontend pode consumir esses endpoints e renderizar cards sem regra adicional.
 
 ## Observacao para Flyway
 
-O arquivo `database/V5__servicos_mvp_seed_draft.sql` e um draft. Antes de virar migration oficial, o backend deve revisar:
+Status atualizado em 02/07/2026:
 
-- nomes finais das tabelas;
-- padrao de entidades Java;
-- compatibilidade H2/MySQL;
-- se os inserts precisam ser idempotentes.
+1. A migration oficial foi publicada em `backend/src/main/resources/db/migration/V5__servicos_mvp.sql`.
+2. A aplicacao da migration foi validada em ambiente limpo (Flyway ate V5).
+3. O teste `MigrationV5CountsTest` confirmou as contagens esperadas:
+	- trilhas_formacao = 6
+	- eventos_estruturantes = 24
+	- mentores_diversidade = 10
 
 ## Sugestao para validacao BI
 
-O script `scripts/valida_integracao_bi.py` pode receber uma validacao leve:
+Status atualizado em 02/07/2026:
 
-- conferir 6 trilhas de formacao;
-- conferir 24 eventos;
-- conferir que os 24 locais dos eventos existem em `insights_regioes_powerbi.csv`;
-- conferir 10 mentores.
-
-Isso amplia a validacao dos novos servicos sem quebrar o CI atual.
+1. O script `scripts/valida_integracao_bi.py` ja foi atualizado para validar os servicos MVP.
+2. Regras validadas:
+	- 6 trilhas de formacao
+	- 24 eventos
+	- 10 mentores
+	- mapeamento dos 24 locais com regioes validas de `data/powerbi/insights_regioes_powerbi.csv`
+3. A validacao foi executada com sucesso na verificacao local do fluxo de CI.

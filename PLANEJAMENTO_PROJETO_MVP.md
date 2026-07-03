@@ -277,8 +277,8 @@ Status verificado nesta branch em 02/07/2026:
 
 - [x] Verificar pipeline de CI sem quebra relacionada aos dados.
 - [x] Consolidar evidencias de execucao (DDL, seed, validacoes).
-- [ ] Revisar documentacao tecnica final.
-- [ ] Realizar handoff para backend e frontend.
+- [x] Revisar documentacao tecnica final.
+- [x] Realizar handoff para backend e frontend.
 
 ### Quadro de Acompanhamento (Itens e Fases)
 
@@ -300,8 +300,8 @@ Preencher e atualizar este quadro durante a execucao do projeto.
 | 12 | Fase 3 - Qualidade e Integracao | Rodar validacao local completa sem regressao | Concluido | A definir | A definir | 02/07/2026 | Execucao local do script concluida com sucesso |
 | 13 | Fase 4 - Entrega | Verificar pipeline de CI sem quebra | Concluido | A definir | A definir | 02/07/2026 | Blocos backend, frontend e data-bi validados localmente com sucesso |
 | 14 | Fase 4 - Entrega | Consolidar evidencias de execucao | Concluido | A definir | A definir | 02/07/2026 | Evidencias registradas na secao "Consolidado de Evidencias Tecnicas" |
-| 15 | Fase 4 - Entrega | Revisar documentacao tecnica final | Pendente | A definir | A definir | - | - |
-| 16 | Fase 4 - Entrega | Realizar handoff para backend e frontend | Pendente | A definir | A definir | - | - |
+| 15 | Fase 4 - Entrega | Revisar documentacao tecnica final | Concluido | A definir | A definir | 02/07/2026 | Documento docs/servicos_mvp/dados_servicos_1_3_4.md revisado para refletir status final |
+| 16 | Fase 4 - Entrega | Realizar handoff para backend e frontend | Concluido | A definir | A definir | 02/07/2026 | Handoff formal registrado em docs/servicos_mvp/HANDOFF_BACKEND_FRONTEND_MVP.md |
 
 Legenda de status sugerida:
 
