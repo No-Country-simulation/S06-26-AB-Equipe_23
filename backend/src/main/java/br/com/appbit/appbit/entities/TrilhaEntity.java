@@ -36,7 +36,7 @@ public class TrilhaEntity {
     @PalavrasMaximas(mensagem = "A carga horária excede o limite máximo de 20 palavras.", max = 20)
     @NotBlank(message = "A carga horária é obrigatória")
     @Column(name = "carga_horaria", nullable = false)
-    private String carga_horaria;
+    private String cargaHoraria;
 
     @Column(name = "link_midia")
     private String link;

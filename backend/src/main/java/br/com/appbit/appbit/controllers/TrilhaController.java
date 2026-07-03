@@ -41,6 +41,22 @@ public class TrilhaController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<List<TrilhasDTO>> getTrilhaByNome(@PathVariable(name = "nome") String nome) {
+
+        List<TrilhasDTO> trilhaDtoList = trilhaService.findByNome(nome);
+
+        return ResponseEntity.ok(trilhaDtoList);
+    }
+
+    @GetMapping("/link/{link}")
+    public ResponseEntity<List<TrilhasDTO>> getTrilhaByLink(@PathVariable(name = "link") String link) {
+
+        List<TrilhasDTO> trilhaDtoList = trilhaService.findByLink(link);
+
+        return ResponseEntity.ok(trilhaDtoList);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TrilhasDTO> updateTrilhaById(@Valid @RequestBody TrilhasDTO updateDTO,
             @PathVariable(name = "id") Integer id) {

@@ -33,6 +33,7 @@ public class MatchingService {
         this.candidatoMapper = candidatoMapper;
     }
 
+    @SuppressWarnings("null")
     public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
         // Busca candidatos ativos no banco
         List<CandidatoEntity> candidatosEntity = candidatoRepository.findByAtivo(true);

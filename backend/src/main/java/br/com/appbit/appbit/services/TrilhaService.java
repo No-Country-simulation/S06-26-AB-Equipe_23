@@ -58,7 +58,7 @@ public class TrilhaService {
 
         trilha.setNome(updateDTO.nome());
         trilha.setDescricao(updateDTO.descricao());
-        trilha.setCarga_horaria(updateDTO.carga_horaria());
+        trilha.setCargaHoraria(updateDTO.cargaHoraria());
         trilha.setLink(updateDTO.link());
 
         trilha = trilhaRepository.save(trilha);

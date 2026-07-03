@@ -21,7 +21,15 @@ public interface CandidatoMapper {
     @Mapping(target = "regiaoId", source = "regiao.id")
     CandidatoResponseDTO toResponseDTO(CandidatoEntity entity);
 
-    @Mapping(target = "regiao", source = "regiao.municipio")
+ @Mapping(target = "candidatoId", expression = "java(String.valueOf(entity.getId()))")
+    @Mapping(target = "cargoAlvo", source = "cargo")
+    @Mapping(target = "regiao", source = "regiao.municipio") 
+    @Mapping(target = "clusterResidencia", source = "cluster")
+    @Mapping(target = "lon", expression = "java(entity.getLon() != null ? Double.valueOf(entity.getLon()) : null)")
+    @Mapping(target = "modeloTrabalhoPreferido", source = "disponibilidade") 
+    @Mapping(target = "badgeDiversidade", source = "diversidade")
+    @Mapping(target = "skills", ignore = true)
+    @Mapping(target = "anosExperiencia", ignore = true)
+    @Mapping(target = "scoreMatch", ignore = true)
     CandidatoMatchDTO toMatchDTO(CandidatoEntity entity);
-
 }
