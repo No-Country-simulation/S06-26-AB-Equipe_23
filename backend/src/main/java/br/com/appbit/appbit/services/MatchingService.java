@@ -1,13 +1,13 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
-import br.com.appbit.appbit.dtos.MatchingRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingResponseDTO;
-import br.com.appbit.appbit.dtos.MetricaDiversidadeDTO;
-import br.com.appbit.appbit.dtos.VagaRequestDTO;
+import br.com.appbit.appbit.config.ScoreConfig;
+import br.com.appbit.appbit.dtos.medidasDTOs.MetricaDiversidadeDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.VagaRequestDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoMatchDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
-import br.com.appbit.appbit.matching.ScoreConfig;
 import br.com.appbit.appbit.repositories.CandidatoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +33,7 @@ public class MatchingService {
         this.candidatoMapper = candidatoMapper;
     }
 
+    @SuppressWarnings("null")
     public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
         // Busca candidatos ativos no banco
         List<CandidatoEntity> candidatosEntity = candidatoRepository.findByAtivo(true);
@@ -55,7 +56,7 @@ public class MatchingService {
         log.info("Matching executado: {} candidatos na fonte, {} retornados", fonte.size(), candidatos.size());
 
         return new MatchingResponseDTO(
-                "banco_de_dados", // agora a fonte é o banco
+                "banco_de_dados",
                 fonte.size(),
                 candidatos.size(),
                 "contato_pos_aprovacao omitido na triagem inicial",
@@ -102,7 +103,7 @@ public class MatchingService {
         int score = (int) Math.round(Math.max(0.0, Math.min(100.0, raw * 100)));
 
         log.debug("Candidato {}: skill={:.2f} exp={:.2f} modelo={:.2f} div={:.2f} → score={}",
-                candidato.candidatoId(), skillScore, expScore, modelScore, diversidade, score);
+                candidato.candidatoId() + "\n" + skillScore + "\n" + expScore + "\n" + modelScore + "\n" + diversidade + "\n" + score +"." );
 
         // Retorna novo record com score recalculado (records são imutáveis)
         return new CandidatoMatchDTO(

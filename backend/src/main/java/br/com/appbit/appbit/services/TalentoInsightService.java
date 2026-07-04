@@ -1,9 +1,9 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
-import br.com.appbit.appbit.dtos.MapaTalentoDTO;
-import br.com.appbit.appbit.dtos.MapaTalentosResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
+import br.com.appbit.appbit.dtos.medidasDTOs.MapaTalentoDTO;
+import br.com.appbit.appbit.dtos.medidasDTOs.RegiaoInsightDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.MapaTalentosResponseDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoMatchDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

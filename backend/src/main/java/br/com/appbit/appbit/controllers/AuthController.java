@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.LoginRequestDTO;
-import br.com.appbit.appbit.dtos.LoginResponseDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.LoginRequestDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.LoginResponseDTO;
 import br.com.appbit.appbit.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,4 +43,6 @@ public class AuthController {
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
+
+    
 }

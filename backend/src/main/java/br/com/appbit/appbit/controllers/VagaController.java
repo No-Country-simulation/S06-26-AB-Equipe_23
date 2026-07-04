@@ -1,6 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.createDTOs.VagaCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.VagaUpdateDTO;
 import br.com.appbit.appbit.services.VagaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

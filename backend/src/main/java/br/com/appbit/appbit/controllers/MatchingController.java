@@ -1,9 +1,9 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.AprovacaoRequestDTO;
-import br.com.appbit.appbit.dtos.ContatoAprovadoDTO;
-import br.com.appbit.appbit.dtos.MatchingRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.AprovacaoRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.ContatoAprovadoDTO;
 import br.com.appbit.appbit.services.AprovacaoService;
 import br.com.appbit.appbit.services.MatchingService;
 import jakarta.validation.Valid;

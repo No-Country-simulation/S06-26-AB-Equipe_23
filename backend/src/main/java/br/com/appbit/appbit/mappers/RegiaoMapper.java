@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.mappers;
 
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.RegiaoResponseDTO;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

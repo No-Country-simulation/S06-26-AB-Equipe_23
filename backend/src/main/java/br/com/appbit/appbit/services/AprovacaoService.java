@@ -1,8 +1,9 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.AprovacaoRequestDTO;
-import br.com.appbit.appbit.dtos.CandidatoCompletoDTO;
-import br.com.appbit.appbit.dtos.ContatoAprovadoDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.AprovacaoRequestDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoCompletoDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.ContatoAprovadoDTO;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;

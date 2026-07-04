@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoSkillCreateDTO;
-import br.com.appbit.appbit.dtos.CandidatoSkillResponseDTO;
-import br.com.appbit.appbit.dtos.CandidatoSkillUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.CandidatoSkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.CandidatoSkillResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.CandidatoSkillUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.CandidatoSkillEntity;
 import br.com.appbit.appbit.entities.CandidatoSkillId;

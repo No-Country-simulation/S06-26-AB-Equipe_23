@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.mappers;
 
-import br.com.appbit.appbit.dtos.MatchCreateDTO;
-import br.com.appbit.appbit.dtos.MatchResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.MatchCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.MatchResponseDTO;
 import br.com.appbit.appbit.entities.MatchEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

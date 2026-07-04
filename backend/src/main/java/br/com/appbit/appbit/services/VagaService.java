@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.VagaCreateDTO;
-import br.com.appbit.appbit.dtos.VagaResponseDTO;
-import br.com.appbit.appbit.dtos.VagaUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.VagaCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.VagaUpdateDTO;
 import br.com.appbit.appbit.entities.VagaEntity;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
