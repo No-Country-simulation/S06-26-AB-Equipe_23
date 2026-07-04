@@ -1,6 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.createDTOs.CandidatoSkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.CandidatoSkillResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.CandidatoSkillUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoSkillId;
 import br.com.appbit.appbit.services.CandidatoSkillService;
 import jakarta.validation.Valid;

@@ -1,6 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.createDTOs.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.CandidatoResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.CandidatoUpdateDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;

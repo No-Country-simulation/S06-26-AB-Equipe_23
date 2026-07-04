@@ -1,8 +1,10 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoMatchDTO;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 

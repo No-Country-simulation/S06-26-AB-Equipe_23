@@ -1,9 +1,9 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.FiltroRequestDTO;
-import br.com.appbit.appbit.dtos.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.FiltroRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.VagaRequestDTO;
 
-import br.com.appbit.appbit.dtos.VagaRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

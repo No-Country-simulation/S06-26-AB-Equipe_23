@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.SkillCreateDTO;
-import br.com.appbit.appbit.dtos.SkillResponseDTO;
-import br.com.appbit.appbit.dtos.SkillUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.SkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.SkillUpdateDTO;
 import br.com.appbit.appbit.entities.SkillEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.SkillMapper;

@@ -1,6 +1,6 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.geraisDTOs.TrilhasDTO;
 import br.com.appbit.appbit.entities.TrilhaEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.TrilhaMapper;

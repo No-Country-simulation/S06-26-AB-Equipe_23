@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.mappers;
 
-import br.com.appbit.appbit.dtos.VagaCreateDTO;
-import br.com.appbit.appbit.dtos.VagaResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.VagaCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaResponseDTO;
 import br.com.appbit.appbit.entities.VagaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

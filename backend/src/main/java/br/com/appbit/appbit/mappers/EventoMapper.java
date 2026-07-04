@@ -1,7 +1,6 @@
 package br.com.appbit.appbit.mappers;
 
-import br.com.appbit.appbit.dtos.EventosDTO;
-
+import br.com.appbit.appbit.dtos.geraisDTOs.EventosDTO;
 import br.com.appbit.appbit.entities.EventoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,7 +8,6 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-
 public interface EventoMapper {
 
     @Mapping(target = "id", ignore = true)

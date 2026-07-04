@@ -1,6 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.createDTOs.VagaSkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaSkillResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.VagaSkillUpdateDTO;
 import br.com.appbit.appbit.entities.*;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.VagaSkillMapper;

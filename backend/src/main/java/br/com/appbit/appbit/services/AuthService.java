@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.config.JwtUtil;
-import br.com.appbit.appbit.dtos.LoginRequestDTO;
-import br.com.appbit.appbit.dtos.LoginResponseDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.LoginRequestDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.LoginResponseDTO;
 import br.com.appbit.appbit.entities.UsuarioEntity;
 import br.com.appbit.appbit.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;

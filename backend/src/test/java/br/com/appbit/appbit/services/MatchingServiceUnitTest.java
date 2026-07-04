@@ -1,6 +1,10 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.dtos.requestDTOs.FiltroRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.MatchingRequestDTO;
+import br.com.appbit.appbit.dtos.requestDTOs.VagaRequestDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.MatchingResponseDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoMatchDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
 import br.com.appbit.appbit.repositories.CandidatoRepository;

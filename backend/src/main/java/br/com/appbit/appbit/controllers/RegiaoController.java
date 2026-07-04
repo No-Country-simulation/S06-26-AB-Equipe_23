@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.RegiaoResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.RegiaoUpdateDTO;
 import br.com.appbit.appbit.services.RegiaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

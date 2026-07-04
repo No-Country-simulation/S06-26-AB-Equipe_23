@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.VagaSkillCreateDTO;
-import br.com.appbit.appbit.dtos.VagaSkillResponseDTO;
-import br.com.appbit.appbit.dtos.VagaSkillUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.VagaSkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaSkillResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.VagaSkillUpdateDTO;
 import br.com.appbit.appbit.entities.VagaSkillId;
 import br.com.appbit.appbit.services.VagaSkillService;
 import jakarta.validation.Valid;

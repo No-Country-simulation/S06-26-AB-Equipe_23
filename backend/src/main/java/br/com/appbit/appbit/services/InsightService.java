@@ -1,7 +1,9 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.InsightResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.appbit.appbit.dtos.responseDTOs.InsightResponseDTO;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 

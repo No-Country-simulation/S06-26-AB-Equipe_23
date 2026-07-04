@@ -1,9 +1,9 @@
 package br.com.appbit.appbit.mappers;
 
 
-import br.com.appbit.appbit.dtos.CandidatoCreateDTO;
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
-import br.com.appbit.appbit.dtos.CandidatoResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.CandidatoResponseDTO;
+import br.com.appbit.appbit.dtos.utilDTOs.CandidatoMatchDTO;
 import br.com.appbit.appbit.entities.CandidatoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

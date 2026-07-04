@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.mappers;
 
 
-import br.com.appbit.appbit.dtos.VagaSkillCreateDTO;
-import br.com.appbit.appbit.dtos.VagaSkillResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.VagaSkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.VagaSkillResponseDTO;
 import br.com.appbit.appbit.entities.VagaSkillEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

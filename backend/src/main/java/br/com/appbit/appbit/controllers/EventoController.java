@@ -1,6 +1,6 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.EventosDTO;
+import br.com.appbit.appbit.dtos.geraisDTOs.EventosDTO;
 import br.com.appbit.appbit.services.EventoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

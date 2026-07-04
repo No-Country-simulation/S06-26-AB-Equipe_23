@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.RegiaoCreateDTO;
-import br.com.appbit.appbit.dtos.RegiaoResponseDTO;
-import br.com.appbit.appbit.dtos.RegiaoUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.RegiaoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.RegiaoResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.RegiaoUpdateDTO;
 import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.RegiaoMapper;

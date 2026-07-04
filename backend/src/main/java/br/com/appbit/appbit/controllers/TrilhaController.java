@@ -1,6 +1,6 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.TrilhasDTO;
+import br.com.appbit.appbit.dtos.geraisDTOs.TrilhasDTO;
 import br.com.appbit.appbit.services.TrilhaService;
 
 import jakarta.validation.Valid;

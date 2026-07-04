@@ -1,8 +1,8 @@
 package br.com.appbit.appbit.controllers;
 
-import br.com.appbit.appbit.dtos.CandidatoCreateDTO;
-import br.com.appbit.appbit.dtos.CandidatoResponseDTO;
-import br.com.appbit.appbit.dtos.CandidatoUpdateDTO;
+import br.com.appbit.appbit.dtos.createDTOs.CandidatoCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.CandidatoResponseDTO;
+import br.com.appbit.appbit.dtos.updateDTOs.CandidatoUpdateDTO;
 import br.com.appbit.appbit.services.CandidatoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

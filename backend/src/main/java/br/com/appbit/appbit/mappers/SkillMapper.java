@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.mappers;
 
-import br.com.appbit.appbit.dtos.SkillCreateDTO;
-import br.com.appbit.appbit.dtos.SkillResponseDTO;
+import br.com.appbit.appbit.dtos.createDTOs.SkillCreateDTO;
+import br.com.appbit.appbit.dtos.responseDTOs.SkillResponseDTO;
 import br.com.appbit.appbit.entities.SkillEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
