@@ -103,7 +103,7 @@ public class MatchingService {
         int score = (int) Math.round(Math.max(0.0, Math.min(100.0, raw * 100)));
 
         log.debug("Candidato {}: skill={:.2f} exp={:.2f} modelo={:.2f} div={:.2f} → score={}",
-                candidato.candidatoId(), skillScore, expScore, modelScore, diversidade, score);
+                candidato.candidatoId() + "\n" + skillScore + "\n" + expScore + "\n" + modelScore + "\n" + diversidade + "\n" + score +"." );
 
         // Retorna novo record com score recalculado (records são imutáveis)
         return new CandidatoMatchDTO(
