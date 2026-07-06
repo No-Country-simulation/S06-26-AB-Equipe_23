@@ -3,8 +3,8 @@ import { useNavigate, useSearchParams }      from 'react-router-dom';
 import './shortlist.css';
 
 // ── Config da API ───────────────────────────────────────────────────────────
-// TODO: ajustar para a URL real do backend (ex: via variável de ambiente)
-const API_BASE_URL = 'http://localhost:5173'; // troque pela URL real, ou use import.meta.env.VITE_API_URL / process.env.REACT_APP_API_URL
+// TODO: ajustar para a URL real do backend se não for rssa
+const API_BASE_URL = 'http://localhost:5173'; 
 
 const VAGAS_ENDPOINT = `${API_BASE_URL}/api/vagas`;
 const candidatosEndpoint = (vagaId: number) => `${API_BASE_URL}/api/vagas/${vagaId}/candidatos`;
