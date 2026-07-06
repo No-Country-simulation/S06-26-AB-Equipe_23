@@ -3,7 +3,7 @@
 // Responsabilidade: listagem, seleção e detalhes das vagas publicadas.
 
 import { useState, useEffect } from 'react';
-import './Vagas.css';
+import './vagas.css';
 
 // ── Config da API ───────────────────────────────────────────────────────────
 // TODO: ajustar para a URL real do backend (ex: via variável de ambiente)
