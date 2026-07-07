@@ -6,6 +6,7 @@ import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilid
 import PainelInsightsRegionais from '../../../components/charts/PainelInsightsRegionais';
 import DashboardExecutivo from '../../../components/charts/DashboardExecutivo';
 import PainelMetricasEmpresa from '../../../components/charts/PainelMetricasEmpresa';
+import PainelServicosMvp from '../../../components/charts/PainelServicosMvp';
  
 const ROTAS_EXTERNAS: Record<string, string> = {
   'Shortlist': '/shortlist',
@@ -39,6 +40,7 @@ export default function App() {
   const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState('Empregabilidade');
   const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
+  const isServicosMvp = activeNav === 'Formações' || activeNav === 'Mentorias';
  
   useEffect(() => {
     const rota = ROTAS_EXTERNAS[activeSidebarItem];
@@ -52,9 +54,13 @@ export default function App() {
       <Header activeNav={activeNav} onNavChange={setActiveNav} />
  
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
+        {!isServicosMvp && (
+          <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
+        )}
  
-        {!isRotaExterna && (
+        {isServicosMvp && <PainelServicosMvp />}
+
+        {!isServicosMvp && !isRotaExterna && (
           <main style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
             {activeSidebarItem === 'Minhas vagas'        && <PainelEmpregabilidade />}
             {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
