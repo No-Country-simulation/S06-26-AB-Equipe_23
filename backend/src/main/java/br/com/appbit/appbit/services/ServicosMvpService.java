@@ -7,6 +7,7 @@ import br.com.appbit.appbit.repositories.EventoEstruturanteRepository;
 import br.com.appbit.appbit.repositories.MentorDiversidadeRepository;
 import br.com.appbit.appbit.repositories.TrilhaFormacaoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class ServicosMvpService {
     private final MentorDiversidadeRepository mentorDiversidadeRepository;
 
     public List<TrilhaFormacaoResponseDTO> listarFormacoes() {
-        return trilhaFormacaoRepository.findAll().stream()
+        return trilhaFormacaoRepository.findAll(Sort.by(Sort.Direction.ASC, "trilhaId")).stream()
                 .map(trilha -> new TrilhaFormacaoResponseDTO(
                         trilha.getTrilhaId(),
                         trilha.getNomeTrilha(),
@@ -33,7 +34,7 @@ public class ServicosMvpService {
     }
 
     public List<EventoEstruturanteResponseDTO> listarExperiencias() {
-        return eventoEstruturanteRepository.findAll().stream()
+        return eventoEstruturanteRepository.findAll(Sort.by(Sort.Direction.ASC, "eventoId")).stream()
                 .map(evento -> new EventoEstruturanteResponseDTO(
                         evento.getEventoId(),
                         evento.getNomeEvento(),
@@ -47,7 +48,7 @@ public class ServicosMvpService {
     }
 
     public List<MentorDiversidadeResponseDTO> listarMentorias() {
-        return mentorDiversidadeRepository.findAll().stream()
+        return mentorDiversidadeRepository.findAll(Sort.by(Sort.Direction.ASC, "mentorId")).stream()
                 .map(mentor -> new MentorDiversidadeResponseDTO(
                         mentor.getMentorId(),
                         mentor.getNomeMentor(),
