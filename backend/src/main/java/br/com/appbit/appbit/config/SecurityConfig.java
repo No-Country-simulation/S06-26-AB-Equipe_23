@@ -69,6 +69,7 @@ public class SecurityConfig {
                 // Rotas públicas
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/actuator/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 // Tudo mais requer autenticação
                 .anyRequest().authenticated()
             )
