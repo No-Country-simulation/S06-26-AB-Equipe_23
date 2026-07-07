@@ -7,9 +7,9 @@ spring:
       preferred-json-mapper: jackson2
 
   datasource:
-      url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:sys}
+      url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:appbit}
       username: ${DB_USER_APPBIT:root}
-      password: ${DB_PASSWORD_APPBIT:lilian}
+      password: ${DB_PASSWORD_APPBIT:123Global!}
       driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -24,6 +24,5 @@ spring:
     out-of-order: true
 
 jwt:
-
-  secret: jwt.secret=${JWT_SECRET:97c4e511488e02bf17dbec1451d0879e64e526487e411ea3ad858db4d94cd2f3}
+  secret: ${JWT_SECRET:97c4e511488e02bf17dbec1451d0879e64e526487e411ea3ad858db4d94cd2f3}
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 h (padrão)

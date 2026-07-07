@@ -12,11 +12,13 @@ public record MentorDiversidadeResponseDTO(
         @JsonProperty("empresa_origem")
         String empresaOrigem,
 
+        @JsonProperty("cargo")
         String cargo,
 
         @JsonProperty("especialidade_esg")
         String especialidadeEsg,
 
+        @JsonProperty("disponibilidade")
         String disponibilidade
 ) {
 }
