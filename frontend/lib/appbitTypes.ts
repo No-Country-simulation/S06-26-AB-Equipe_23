@@ -88,3 +88,31 @@ export interface InsightsRegioesResponse {
   total_regioes: number;
   regioes: RegiaoInsight[];
 }
+
+export interface FormacaoMvp {
+  trilha_id: number;
+  nome_trilha: string;
+  descricao_conteudo: string;
+  carga_horaria: string;
+  link_midia?: string | null;
+}
+
+export interface ExperienciaEstruturanteMvp {
+  evento_id: number;
+  nome_evento: string;
+  data: string;
+  horario: string;
+  local: string;
+  detalhes: string;
+  tema_palestra: string;
+  palestrantes: string;
+}
+
+export interface MentoriaMvp {
+  mentor_id: number;
+  nome_mentor: string;
+  empresa_origem: string;
+  cargo: string;
+  especialidade_esg: string;
+  disponibilidade: string;
+}
