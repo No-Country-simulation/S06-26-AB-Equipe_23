@@ -51,7 +51,11 @@ public class VagaSkillController {
 
         return ResponseEntity.ok(responseDTO);
     }
-
+    @GetMapping("/vaga/{vagaId}")
+    public ResponseEntity<List<VagaSkillResponseDTO>> getSkillsByVaga(@PathVariable Integer vagaId) {
+    List<VagaSkillResponseDTO> lista = service.listByVagaId(vagaId);
+    return ResponseEntity.ok(lista);
+}
 
     @PutMapping("/{vagaId}/{skillId}")
     public ResponseEntity<VagaSkillResponseDTO> updateVagaSkillById(
