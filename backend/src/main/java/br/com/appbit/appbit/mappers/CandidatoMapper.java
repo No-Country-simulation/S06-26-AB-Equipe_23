@@ -23,7 +23,7 @@ public interface CandidatoMapper {
     @Mapping(target = "regiaoId", source = "regiao.id")
     CandidatoResponseDTO toResponseDTO(CandidatoEntity entity);
 
-    @Mapping(target = "candidatoId",            expression = "java(String.valueOf(entity.getId()))")
+    @Mapping(target = "candidatoId",            expression = "java(String.format(\"cand_%03d\", entity.getId()))")
     @Mapping(target = "cargoAlvo",              source = "cargo")
     @Mapping(target = "regiao",                 source = "regiao.municipio")
     @Mapping(target = "clusterResidencia",      source = "cluster")
