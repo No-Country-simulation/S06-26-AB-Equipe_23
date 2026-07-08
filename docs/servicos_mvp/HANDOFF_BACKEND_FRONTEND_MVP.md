@@ -15,6 +15,14 @@ Garantir que backend e frontend consumam os novos dados com contrato claro, evid
    - scripts/valida_integracao_bi.py
 3. Teste de contagem pos-migration:
    - backend/src/test/java/br/com/appbit/appbit/MigrationV5CountsTest.java
+4. Skills do banco conectadas ao motor de match (08/07/2026):
+   - CandidatoSkillEntity, CandidatoSkillId (bridge_candidato_skill via JPA)
+   - CandidatoEntity com @OneToMany candidatoSkills
+   - CandidatoMapper extraindo skills reais: candidatoSkills -> skill -> nome
+   - V6__add_anos_experiencia_candidato.sql
+5. Endpoint /insights/regioes sincronizado com payload BI (08/07/2026):
+   - RegiaoInsightDTO com qualidade_sinal e indicador_conectividade
+   - insights_regioes.json atualizado para 24 regioes com os dois campos
 
 ## 3. Contrato de dados (camada banco)
 

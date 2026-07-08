@@ -107,3 +107,7 @@ RESUMO_DISCORD.md
 RESUMO_PARA_DISCORD.md
 TESTES_EXECUTADOS_COM_SUCESSO.md
 backend/test_output.txt
+
+# Diretórios temporários gerados pelos testes Python
+tests/tmp_gera_shortlist/
+tests/tmp_score_test/
