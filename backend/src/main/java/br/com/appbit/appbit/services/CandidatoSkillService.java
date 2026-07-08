@@ -77,7 +77,7 @@ public class CandidatoSkillService {
                         "Candidato-skill não encontrada: Candidato " + id.getCandidatoId() + ", Skill "
                                 + id.getSkillId()));
 
-        candidatoSkill.setNivel(updateDTO.nivel());
+        candidatoSkill.setNivelSkill(updateDTO.nivel());
 
         CandidatoSkillEntity candidatoSkillAtualizado = repository.save(candidatoSkill);
 
