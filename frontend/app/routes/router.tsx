@@ -1,54 +1,315 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from '../pages/Home/App.tsx';
+/* Layout Base */
+.pageContainer {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+}
 
-const HomeRoute = () => (
-  <Home />
-);
+.bannerSection {
+  flex: 1.2;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  color: #ffffff;
+}
 
-const SobreRoute = () => (
-  <div>
-    <h2>Sobre Nós</h2>
-    <p>Esta é a página sobre a nossa empresa.</p>
-  </div>
-);
+.bannerContent {
+  max-width: 520px;
+  width: 100%;
+}
 
-const ContatoRoute = () => (
-  <div>
-    <h2>Contato</h2>
-    <p>Fale conosco em: contato@email.com</p>
-  </div>
-);
+.bannerTitle {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
 
-const NaoEncontradaRoute = () => (
-  <div>
-    <h2>Erro 404</h2>
-    <p>Página não encontrada!</p>
-  </div>
-);
+.bannerSubtitle {
+  font-size: 1.05rem;
+  color: #ddd6fe;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
 
-// 2. Componente Principal de Navegação
-export default function App() {
-  return (
-    <BrowserRouter>
-      <header style={{ padding: '10px', background: '#eee' }}>
-        <nav style={{ display: 'flex', gap: '15px' }}>
-  
-          <Link to="/">Início</Link>
-          <Link to="/sobre">Sobre</Link>
-          <Link to="/contato">Contato</Link>
-        </nav>
-      </header>
+/* Painel de Guia Informativo (Lado Esquerdo) */
+.infoGuideList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-      <main style={{ padding: '20px' }}>
+.infoGuideItem {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sobre" element={<SobreRoute />} />
-          <Route path="/contato" element={<ContatoRoute />} />
-          <Route path="*" element={<NaoEncontradaRoute />} />
-        </Routes>
-      </main>
-    </BrowserRouter>
-  );
+.infoGuideItem h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #ffffff;
+}
+
+.infoGuideItem p {
+  font-size: 0.875rem;
+  color: #ddd6fe;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.guideNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Estado de Destaque da Etapa Atual */
+.infoGuideItem.activeGuide {
+  opacity: 1;
+  transform: translateX(6px);
+}
+
+.infoGuideItem.activeGuide .guideNumber {
+  background-color: #ffffff;
+  color: #6d28d9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado Direito */
+.formSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: #ffffff;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.brandLogo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6d28d9;
+  margin-bottom: 24px;
+}
+
+.formHeader h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.formHeader p {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.formElement {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.inputGroup input,
+.inputGroup select {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* CLASSE DE ERRO VISUAL (Substituição aos alerts) */
+.inputGroup input.inputError,
+.inputGroup select.inputError {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2;
+}
+
+.inputGroup input.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.inputHint {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* Botões */
+.submitButton {
+  background-color: #6d28d9;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+.submitButton:hover {
+  background-color: #5b21b6;
+}
+
+.activeSubmit {
+  background-color: #5b21b6;
+}
+
+.backButton {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background-color: #f8fafc;
+}
+
+.buttonGroupRow {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: #6d28d9;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.linkButton:hover {
+  color: #5b21b6;
+}
+
+.footerText {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* Multi-step Components */
+.progressBar {
+  width: 100%;
+  height: 5px;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #6d28d9;
+  transition: width 0.3s ease;
+}
+
+.stepInstruction {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+/* Caixa de Revisão de Dados - Passo 4 */
+.reviewBox {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewItem {
+  font-size: 0.875rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.reviewItem strong {
+  color: #475569;
+  font-weight: 600;
+}
+
+.reviewDivider {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 8px 0;
+}
+
+/* Modificadores da Barra para as 4 etapas */
+.progressFill.step-1 { width: 25%; }
+.progressFill.step-2 { width: 50%; }
+.progressFill.step-3 { width: 75%; }
+.progressFill.step-4 { width: 100%; }
+
+/* Responsivo */
+@media (max-width: 950px) {
+  .bannerSection {
+    display: none;
+  }
 }
