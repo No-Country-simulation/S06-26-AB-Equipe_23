@@ -1,13 +1,13 @@
-import React from 'react';
-
 interface HeaderProps {
   activeNav: string;
   onNavChange: (nav: string) => void;
+  sidebarAberta: boolean;
+  onToggleSidebar: () => void;
 }
-
-const NAV_ITEMS = ['Formações', 'Empregabilidade', 'Mentorias', 'Métricas ESG'];
-
-export default function Header({ activeNav, onNavChange }: HeaderProps) {
+ 
+const NAV_ITEMS = ['Formações', 'Empregabilidade', 'Mentorias', 'Métricas ESG', 'Insights'];
+ 
+export default function Header({ activeNav, onNavChange, sidebarAberta, onToggleSidebar }: HeaderProps) {
   return (
     <header style={{
       background: '#fff',
@@ -20,6 +20,31 @@ export default function Header({ activeNav, onNavChange }: HeaderProps) {
       top: 0,
       zIndex: 50,
     }}>
+      {/* Botão hamburguer — abre/fecha a sidebar */}
+      <button
+        onClick={onToggleSidebar}
+        aria-label="Abrir ou fechar menu"
+        aria-expanded={sidebarAberta}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: 4,
+          width: 32,
+          height: 32,
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 6,
+          borderRadius: 8,
+          flexShrink: 0,
+        }}
+      >
+        <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+        <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+        <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+      </button>
+ 
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <div style={{
           width: 32, height: 32,
@@ -32,7 +57,7 @@ export default function Header({ activeNav, onNavChange }: HeaderProps) {
           app<span style={{ color: '#6C3FC5' }}>BiT</span>
         </span>
       </div>
-
+ 
       <nav style={{ display: 'flex', gap: 4 }}>
         {NAV_ITEMS.map((item) => (
           <button
@@ -53,7 +78,7 @@ export default function Header({ activeNav, onNavChange }: HeaderProps) {
           </button>
         ))}
       </nav>
-
+ 
       <div style={{ marginLeft: 'auto' }}>
         <div style={{
           width: 32, height: 32,
