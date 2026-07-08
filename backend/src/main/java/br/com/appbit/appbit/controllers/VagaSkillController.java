@@ -1,5 +1,6 @@
 package br.com.appbit.appbit.controllers;
 
+import br.com.appbit.appbit.dtos.SkillResponseDTO;
 import br.com.appbit.appbit.dtos.VagaSkillCreateDTO;
 import br.com.appbit.appbit.dtos.VagaSkillResponseDTO;
 import br.com.appbit.appbit.dtos.VagaSkillUpdateDTO;
@@ -52,8 +53,8 @@ public class VagaSkillController {
         return ResponseEntity.ok(responseDTO);
     }
     @GetMapping("/vaga/{vagaId}")
-    public ResponseEntity<List<VagaSkillResponseDTO>> getSkillsByVaga(@PathVariable Integer vagaId) {
-    List<VagaSkillResponseDTO> lista = service.listByVagaId(vagaId);
+    public ResponseEntity<List<SkillResponseDTO>> getSkillsByVaga(@PathVariable Integer vagaId) {
+    List<SkillResponseDTO> lista = service.listByVagaId(vagaId);
     return ResponseEntity.ok(lista);
 }
 

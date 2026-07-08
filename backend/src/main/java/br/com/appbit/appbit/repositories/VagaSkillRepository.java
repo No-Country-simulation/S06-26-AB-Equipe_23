@@ -24,6 +24,9 @@ public interface VagaSkillRepository extends JpaRepository<VagaSkillEntity, Vaga
     @Query("SELECT vs FROM VagaSkillEntity vs WHERE vs.skill.id = :skillId")
     List<VagaSkillEntity> findVagasBySkill(@Param("skillId") Integer skillId);
 
+    @Query("SELECT vs FROM VagaSkillEntity vs WHERE vs.vaga.id = :vagaId")
+    List<SkillEntity> findByVagaId(@Param("vagaId") Integer vagaId);
+
     boolean existsByVagaAndSkill(VagaEntity vaga, SkillEntity skill);
 
     Long countByVaga(VagaEntity vaga);

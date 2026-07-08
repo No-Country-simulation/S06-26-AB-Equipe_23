@@ -68,6 +68,14 @@ public class VagaSkillService {
         return mapper.toResponseDTO(vagaSkill);
     }
 
+        @Transactional(readOnly = true)
+        public List<SkillResponseDTO> listByVagaId(Integer vagaId) {
+                 log.info("Buscando vaga-skill: Vaga ID: {}", vagaId);      
+            return repository.findByVagaId(vagaId)
+                .stream()
+                .map(mapper::toSkillResponseDTO);
+        }
+
     public VagaSkillResponseDTO updateVagaSkillById(VagaSkillUpdateDTO updateDTO, VagaSkillId id) {
         log.info("Atualizando vaga-skill: Vaga ID: {}, Skill ID: {}",
                 id.getVagaId(), id.getSkillId());
