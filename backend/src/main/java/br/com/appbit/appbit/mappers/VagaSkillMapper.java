@@ -1,10 +1,9 @@
 package br.com.appbit.appbit.mappers;
 
-import br.com.appbit.appbit.dtos.SkillResponseDTO;
+
 import br.com.appbit.appbit.dtos.VagaSkillCreateDTO;
 import br.com.appbit.appbit.dtos.VagaSkillResponseDTO;
 import br.com.appbit.appbit.entities.VagaSkillEntity;
-import br.com.appbit.appbit.entities.SkillEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -21,8 +20,6 @@ public interface VagaSkillMapper {
     @Mapping(target = "vagaId", source = "vaga.id")
     @Mapping(target = "skillId", source = "skill.id")
     VagaSkillResponseDTO toResponseDTO(VagaSkillEntity entity);
-
-    SkillResponseDTO toSkillResponseDTO(SkillEntity entity);
 
 }
 
