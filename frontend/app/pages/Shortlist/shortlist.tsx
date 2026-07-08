@@ -1,81 +1,116 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useSearchParams }      from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './shortlist.css';
+import api from '../../../lib/axios';
 
-// ── Config da API ───────────────────────────────────────────────────────────
-// TODO: ajustar para a URL real do backend se não for rssa
-const API_BASE_URL = 'http://localhost:5173'; 
+// ── Types ────────────────────────────────────────────────────────────────
 
-const VAGAS_ENDPOINT = `${API_BASE_URL}/api/vagas`;
-const candidatosEndpoint = (vagaId: number) => `${API_BASE_URL}/api/vagas/${vagaId}/candidatos`;
-const aprovarEndpoint    = (candidatoId: number) => `${API_BASE_URL}/api/candidatos/${candidatoId}/aprovar`;
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-interface Candidato {
+interface RegiaoResponse {
   id: number;
-  vagaId: number;
-  codinome: string;
-  nomeReal: string;
-  email: string;
-  linkedin: string;
-  scoreMatch: number;
-  skills: string[];
-  regiao: string;
-  estado: string;
-  senioridade: string;
-  disponibilidade: string;
-  badges: string[];
+  cluster: string;
+  municipio: string;
+  lat: number;
+  lon: number;
+  perfil: string;
+  fonte: string;
 }
 
 interface Vaga {
   id: number;
+  empresaId: string;
   titulo: string;
-  area: string;
-  modelo: string;
-  local: string;
-  scoreESG: number;
+  nivel: string;
+  regiaoAlvo: RegiaoResponse;
+  diversidadeMinima: number;
+  antiVies: boolean;
+  criacao: string;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
+interface CandidatoMatch {
+  candidato_id: number;
+  nome: string;
+  cargo_alvo: string;
+  nivel: string;
+  regiao: string;
+  cluster_residencia: string;
+  cep: string;
+  lat: number;
+  lon: number;
+  modelo_trabalho_preferido: string;
+  skills: string[];
+  anos_experiencia: number;
+  badge_diversidade: string;
+  score_match: number;
+}
+
+interface MetricaDiversidade {
+  percentualShortlistDiversa: number;
+  metaDiversidade: number;
+  metaAtingida: boolean;
+}
+
+interface MatchingResponse {
+  fonte_candidatos: string;
+  total_analisados: number;
+  total_retorno: number;
+  regra_privacidade: string;
+  metrica_diversidade: MetricaDiversidade;
+  candidatos: CandidatoMatch[];
+}
+
+interface ContatoLiberado {
+  nome: string;
+  email: string;
+  telefone: string;
+  linkedin: string;
+}
+
+interface ContatoAprovado {
+  candidato_id: string;
+  apelido_exibicao: string;
+  contato_liberado: ContatoLiberado;
+}
 
 const BADGE_COLORS: Record<string, { bg: string; color: string }> = {
-  'Mulher':      { bg: '#F3EFFE', color: '#6D28D9' },
-  'Preta':       { bg: '#EDE9FE', color: '#5B21B6' },
+  'Mulher': { bg: '#F3EFFE', color: '#6D28D9' },
+  'Preta': { bg: '#EDE9FE', color: '#5B21B6' },
   'Preto/Pardo': { bg: '#EDE9FE', color: '#5B21B6' },
-  'PcD':         { bg: '#FEF3C7', color: '#92400E' },
-  'LGBTQIA+':    { bg: '#FCE7F3', color: '#9D174D' },
+  'PcD': { bg: '#FEF3C7', color: '#92400E' },
+  'LGBTQIA+': { bg: '#FCE7F3', color: '#9D174D' },
 };
 
 function scoreStyle(s: number) {
   if (s >= 90) return { bg: '#DCFCE7', color: '#166534', ring: '#4ADE80' };
   if (s >= 80) return { bg: '#EDE9FE', color: '#5B21B6', ring: '#8B5CF6' };
-  return              { bg: '#FEF3C7', color: '#92400E', ring: '#F59E0B' };
+  return { bg: '#FEF3C7', color: '#92400E', ring: '#F59E0B' };
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+//  empresaId é String no backend (AprovacaoRequestDTO / MatchingRequestDTO /
+// VagaResponseDTO). Precisa vir de contexto de autenticação real.
+const EMPRESA_ID = 1; // TODO: pegar de autenticação
 
 export default function ShortList() {
-  const navigate  = useNavigate();
-  const [params]  = useSearchParams();
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
   const vagaIdParam = Number(params.get('vaga')) || null;
 
-  // Vagas (sidebar)
-  const [vagas, setVagas]                 = useState<Vaga[]>([]);
+  // Vagas (sidebar) — GET /vagas
+  const [vagas, setVagas] = useState<Vaga[]>([]);
   const [carregandoVagas, setCarregandoVagas] = useState<boolean>(true);
-  const [erroVagas, setErroVagas]         = useState<string | null>(null);
+  const [erroVagas, setErroVagas] = useState<string | null>(null);
+  const [vagaAtiva, setVagaAtiva] = useState<number | null>(vagaIdParam);
 
-  const [vagaAtiva, setVagaAtiva]         = useState<number | null>(vagaIdParam);
-
-  // Candidatos (main)
-  const [candidatos, setCandidatos]           = useState<Candidato[]>([]);
+  // Resultado do matching (main) — POST /match
+  const [matching, setMatching] = useState<MatchingResponse | null>(null);
   const [carregandoCandidatos, setCarregandoCandidatos] = useState<boolean>(false);
-  const [erroCandidatos, setErroCandidatos]   = useState<string | null>(null);
+  const [erroCandidatos, setErroCandidatos] = useState<string | null>(null);
 
   const [aprovados, setAprovados] = useState<Set<number>>(new Set());
   const [revealing, setRevealing] = useState<number | null>(null);
+  const [contatos, setContatos] = useState<Record<number, ContatoLiberado>>({});
 
-  // ── Buscar vagas ao montar ──────────────────────────────────────────────
+  // ── Buscar vagas: GET /vagas ────────────────────────────────────────────
   useEffect(() => {
     let ativo = true;
 
@@ -84,21 +119,23 @@ export default function ShortList() {
       setErroVagas(null);
 
       try {
-        const resposta = await fetch(VAGAS_ENDPOINT);
-        if (!resposta.ok) throw new Error(`Erro ao buscar vagas: ${resposta.status}`);
-
-        const dados: Vaga[] = await resposta.json();
+        const resposta = await api.get<Vaga[]>('/vagas');
         if (!ativo) return;
+        const dados = resposta.data;
 
         setVagas(dados);
-
-        // Se não veio vagaId pela URL, ou a vaga não existe mais, seleciona a primeira disponível
         setVagaAtiva(prev => {
           if (prev && dados.some(v => v.id === prev)) return prev;
           return dados[0]?.id ?? null;
         });
-      } catch (err) {
-        if (ativo) setErroVagas(err instanceof Error ? err.message : 'Não foi possível carregar as vagas.');
+      } catch (erro: any) {
+        if (ativo) {
+          setErroVagas(
+            erro.response?.status
+              ? `Erro ao buscar vagas: ${erro.response.status}`
+              : erro.message
+          );
+        }
       } finally {
         if (ativo) setCarregandoVagas(false);
       }
@@ -108,52 +145,73 @@ export default function ShortList() {
     return () => { ativo = false; };
   }, []);
 
-  // ── Buscar candidatos toda vez que a vaga ativa mudar ──────────────────
+  // ── Rodar matching sempre que a vaga ativa mudar: POST /match ──────────
   useEffect(() => {
     if (vagaAtiva === null) {
-      setCandidatos([]);
+      setMatching(null);
       return;
     }
 
+    const vaga = vagas.find(v => v.id === vagaAtiva);
+    if (!vaga) return;
+
     let ativo = true;
 
-    async function buscarCandidatos() {
+    async function executarMatch() {
       setCarregandoCandidatos(true);
       setErroCandidatos(null);
 
       try {
-        const resposta = await fetch(candidatosEndpoint(vagaAtiva as number));
-        if (!resposta.ok) throw new Error(`Erro ao buscar candidatos: ${resposta.status}`);
+        const resposta = await api.post<MatchingResponse>('/match', {
+          empresa_id: EMPRESA_ID,
+          vaga: {
+            titulo: vaga!.titulo,
+            skills: [] as string[],
+            nivel: vaga!.nivel,
+            regiao: vaga!.regiaoAlvo?.municipio ?? vaga!.regiaoAlvo?.cluster ?? '',
+            modelo_trabalho: undefined as string | undefined,
+          },
+          filtros: {
+            anti_vies: vaga!.antiVies,
+            diversidade_minima: Math.round(vaga!.diversidadeMinima),
+            limite_resultados: 10,
+          },
+        });
 
-        const dados: Candidato[] = await resposta.json();
-        if (ativo) setCandidatos(dados);
-      } catch (err) {
-        if (ativo) setErroCandidatos(err instanceof Error ? err.message : 'Não foi possível carregar os candidatos.');
+        if (ativo) setMatching(resposta.data);
+      } catch (erro: any) {
+        if (ativo) {
+          setErroCandidatos(
+            erro.response?.status
+              ? `Erro ao buscar candidatos: ${erro.response.status}`
+              : 'Não foi possível carregar os candidatos.'
+          );
+        }
       } finally {
         if (ativo) setCarregandoCandidatos(false);
       }
     }
 
-    buscarCandidatos();
+    executarMatch();
     return () => { ativo = false; };
-  }, [vagaAtiva]);
 
-  // ── Aprovar candidato (chama backend, que deve retornar os dados revelados) ──
-  const handleAprovar = useCallback(async (id: number) => {
-    setRevealing(id);
+  }, [vagaAtiva, vagas]);
+
+  // ── Aprovar candidato: POST /match/aprovar-candidato ────────────────────
+  const handleAprovar = useCallback(async (candidatoId: number) => {
+    setRevealing(candidatoId);
 
     try {
-      const resposta = await fetch(aprovarEndpoint(id), { method: 'POST' });
-      if (!resposta.ok) throw new Error(`Erro ao aprovar candidato: ${resposta.status}`);
+      const resposta = await api.post<ContatoAprovado>('/match/aprovar-candidato', {
+        candidato_id: candidatoId,
+        empresa_id: EMPRESA_ID,
+      });
 
-      const candidatoAtualizado: Candidato = await resposta.json();
+      const contato = resposta.data;
 
-      setCandidatos(prev =>
-        prev.map(c => (c.id === id ? candidatoAtualizado : c))
-      );
-      setAprovados(prev => new Set(prev).add(id));
+      setContatos(prev => ({ ...prev, [candidatoId]: contato.contato_liberado }));
+      setAprovados(prev => new Set(prev).add(candidatoId));
     } catch (err) {
-      // Poderia mostrar um toast/alerta aqui
       console.error(err);
       alert('Não foi possível aprovar o candidato. Tente novamente.');
     } finally {
@@ -162,6 +220,8 @@ export default function ShortList() {
   }, []);
 
   const vaga = vagas.find(v => v.id === vagaAtiva) ?? null;
+  const candidatos = matching?.candidatos ?? [];
+  const metricaDiversidade = matching?.metrica_diversidade ?? null;
 
   return (
     <div className="sl-shell">
@@ -236,15 +296,8 @@ export default function ShortList() {
               onClick={() => setVagaAtiva(v.id)}
             >
               <span className="sl-vaga-item__titulo">{v.titulo}</span>
-              <span className="sl-vaga-item__area">{v.area}</span>
-              <span className="sl-vaga-item__local">📍 {v.modelo} · {v.local}</span>
-              <div className="sl-vaga-item__bar-wrap">
-                <div
-                  className="sl-vaga-item__bar"
-                  style={{ width: `${v.scoreESG}%` }}
-                />
-                <span className="sl-vaga-item__pct">{v.scoreESG}%</span>
-              </div>
+              <span className="sl-vaga-item__area">{v.nivel}</span>
+              <span className="sl-vaga-item__local">📍 {v.diversidadeMinima} · {v.regiaoAlvo?.municipio}</span>
             </button>
           ))}
         </aside>
@@ -306,12 +359,12 @@ export default function ShortList() {
           {vagaAtiva !== null && !carregandoCandidatos && !erroCandidatos && candidatos.length > 0 && (
             <div className="sl-grid">
               {candidatos.map(c => {
-                const isAprovado  = aprovados.has(c.id);
-                const isRevealing = revealing === c.id;
-                const sc          = scoreStyle(c.scoreMatch);
+                const isAprovado = aprovados.has(c.candidato_id);
+                const isRevealing = revealing === c.candidato_id;
+                const sc = scoreStyle(c.score_match);
 
                 return (
-                  <article key={c.id} className={`sl-card${isAprovado ? ' sl-card--aprovado' : ''}`}>
+                  <article key={c.candidato_id} className={`sl-card${isAprovado ? ' sl-card--aprovado' : ''}`}>
 
                     {isAprovado && (
                       <div className="sl-card__ribbon">✓ Aprovado</div>
@@ -321,42 +374,52 @@ export default function ShortList() {
                     <div className="sl-card__header">
                       <div className="sl-card__avatar">
                         {isAprovado
-                          ? <span className="sl-card__initial">{c.nomeReal[0]}</span>
+                          ? <span className="sl-card__initial">{c.nome[0]}</span>
                           : <span>👤</span>
                         }
                       </div>
                       <div className="sl-card__id-block">
                         <p className="sl-card__codinome">
-                          {isAprovado ? c.nomeReal : c.codinome}
+                          {isAprovado ? c.nome : c.nome}
                         </p>
                         <div className="sl-card__meta">
-                          <span>📍 {c.regiao}, {c.estado}</span>
+                          <span>📍 {c.regiao}, {c.cluster_residencia}</span>
                           <span className="sl-dot" />
-                          <span>{c.senioridade}</span>
+                          <span>{c.nivel}</span>
                         </div>
                       </div>
                       <div
                         className="sl-score"
                         style={{ background: sc.bg, borderColor: sc.ring, color: sc.color }}
                       >
-                        <span className="sl-score__num">{c.scoreMatch}</span>
+                        <span className="sl-score__num">{c.score_match}</span>
                         <span className="sl-score__pct">%</span>
                       </div>
                     </div>
 
                     {/* Badges de diversidade */}
-                    {c.badges.length > 0 && (
-                      <div className="sl-card__badges">
-                        {c.badges.map(b => {
-                          const s = BADGE_COLORS[b] ?? { bg: '#F3F4F6', color: '#6B7280' };
-                          return (
-                            <span key={b} className="sl-badge" style={{ background: s.bg, color: s.color }}>
-                              {b}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    )}
+                    {(() => {
+                      // Converte string para array separando por vírgula e remove espaços extras
+                      const badgesArray = typeof c.badge_diversidade === 'string'
+                        ? c.badge_diversidade.split(',').map(b => b.trim()).filter(Boolean)
+                        : (Array.isArray(c.badge_diversidade) ? c.badge_diversidade : []);
+
+                      if (badgesArray.length === 0) return null;
+
+                      return (
+                        <div className="sl-card__badges">
+                          {badgesArray.map(b => {
+                            const s = BADGE_COLORS[b] ?? { bg: '#F3F4F6', color: '#6B7280' };
+                            return (
+                              <span key={b} className="sl-badge" style={{ background: s.bg, color: s.color }}>
+                                {b}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
+
 
                     <div className="sl-card__divider" />
 
@@ -371,20 +434,20 @@ export default function ShortList() {
                     {/* Detalhes */}
                     <div className="sl-card__row">
                       <div className="sl-card__detail">
-                        <span className="sl-card__detail-label">Disponibilidade</span>
-                        <span className="sl-card__detail-value">{c.disponibilidade}</span>
+                        <span className="sl-card__detail-label">Anos de experiência</span>
+                        <span className="sl-card__detail-value">{c.anos_experiencia}</span>
                       </div>
                       <div className="sl-card__detail">
-                        <span className="sl-card__detail-label">Senioridade</span>
-                        <span className="sl-card__detail-value">{c.senioridade}</span>
+                        <span className="sl-card__detail-label">Nível</span>
+                        <span className="sl-card__detail-value">{c.nivel}</span>
                       </div>
                     </div>
 
                     {/* Contato oculto / revelado */}
                     {isAprovado ? (
                       <div className="sl-card__contact">
-                        <div className="sl-card__contact-item">✉️ <a href={`mailto:${c.email}`}>{c.email}</a></div>
-                        <div className="sl-card__contact-item">🔗 <a href={`https://${c.linkedin}`} target="_blank" rel="noopener noreferrer">{c.linkedin}</a></div>
+                        <div className="sl-card__contact-item">✉️ <a href={`mailto:${contatos[c.candidato_id]?.email}`}>${contatos[c.candidato_id]?.email}</a></div>
+                        <div className="sl-card__contact-item">🔗 <a href={`https://${contatos[c.candidato_id]?.linkedin}`} target="_blank" rel="noopener noreferrer">{contatos[c.candidato_id]?.linkedin}</a></div>
                       </div>
                     ) : null}
 
@@ -392,7 +455,7 @@ export default function ShortList() {
                     {!isAprovado ? (
                       <button
                         className="sl-btn-aprovar"
-                        onClick={() => handleAprovar(c.id)}
+                        onClick={() => handleAprovar(c.candidato_id)}
                         disabled={isRevealing}
                       >
                         {isRevealing

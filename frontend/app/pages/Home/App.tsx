@@ -13,7 +13,7 @@ export default function App() {
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
-
+        
         <main style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
           {activeNav === 'Empregabilidade' && activeSidebarItem === 'Minhas vagas' ? (
             <PainelEmpregabilidade />

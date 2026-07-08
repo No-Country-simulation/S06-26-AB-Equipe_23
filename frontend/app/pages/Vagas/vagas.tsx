@@ -1,73 +1,87 @@
 // pages/Vagas/Vagas.tsx
 // Módulo isolado de gerenciamento de vagas.
 // Responsabilidade: listagem, seleção e detalhes das vagas publicadas.
-
 import { useState, useEffect } from 'react';
 import './vagas.css';
-
-// ── Config da API ───────────────────────────────────────────────────────────
-// TODO: ajustar para a URL real do backend (ex: via variável de ambiente)
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5173';
-const VAGAS_ENDPOINT = `${API_BASE_URL}/api/vagas`; // <-- rota do backend para listar vagas
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-
+import api from '../../../lib/axios';
+ 
+// ── Types ────────────────────────────────────────────────────────────────
+ 
+interface RegiaoResponse {
+  id: number;
+  cluster: string;
+  municipio: string;
+  lat: number;  
+  lon: number; 
+  perfil: string;
+  fonte: string;
+}
+ 
 interface Vaga {
   id: number;
+  empresaId: string;
   titulo: string;
-  area: string;
-  modelo: string;
-  local: string;
   nivel: string;
-  scoreESG: number;
-  badges: string[];
-  descricao: string;
-  skills: string[];
+  regiaoAlvo: RegiaoResponse;
+  diversidadeMinima: number;
+  antiVies: boolean;
+  criacao: string;
+}
+ 
+interface VagaSkill {
+  vagaId: number;
+  skillId: number;
+  peso: number;
 }
 
+interface Skill {
+  id: number;
+  nome: string;
+  categoria: string;
+}
+ 
 function scoreBadgeStyle(score: number): { background: string; color: string } {
   if (score >= 90) return { background: '#DCFCE7', color: '#166534' };
   if (score >= 75) return { background: '#EDE9FE', color: '#5B21B6' };
   return { background: '#FEF3C7', color: '#92400E' };
 }
-
-// ── Componente ────────────────────────────────────────────────────────────────
-
+ 
+// ── Componente ───────────────────────────────────────────────────────────
 export default function Vagas() {
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
   const [carregando, setCarregando] = useState<boolean>(true);
   const [erro, setErro] = useState<string | null>(null);
-
+ 
+  // Skills da vaga selecionada — GET /vaga-skills/vaga/{vagaId}
+  const [vagaSkills, setVagaSkills] = useState<VagaSkill[]>([]);
+  const [carregandoSkills, setCarregandoSkills] = useState<boolean>(false);
+ 
+  // Catálogo de skills — GET /skills, usado só pra resolver skillId -> nome.
+  const [catalogoSkills, setCatalogoSkills] = useState<Skill[]>([]);
+ 
   useEffect(() => {
-    let ativo = true; // evita atualizar estado se o componente já desmontou
-
+    let ativo = true;
+ 
     async function buscarVagas() {
       setCarregando(true);
       setErro(null);
-
+ 
       try {
-        const resposta = await fetch(VAGAS_ENDPOINT, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Authorization: `Bearer ${token}`, // se precisar de autenticação
-          },
-        });
 
-        if (!resposta.ok) {
-          throw new Error(`Erro ao buscar vagas: ${resposta.status}`);
-        }
-
-        const dados: Vaga[] = await resposta.json();
-
-        if (ativo) {
-          setVagas(dados);
-        }
-      } catch (err) {
+        const resposta = await api.get<Vaga[]>('/vagas');
+        if (!ativo) return;
+ 
+        const dados: Vaga[] = resposta.data;
+        setVagas(dados);
+      } catch (err: any) {
         if (ativo) {
           setErro(
-            err instanceof Error ? err.message : 'Não foi possível carregar as vagas.'
+            err.response?.status
+              ? `Erro ao buscar vagas: ${err.response.status}`
+              : err instanceof Error
+                ? err.message
+                : 'Não foi possível carregar as vagas.'
           );
         }
       } finally {
@@ -76,17 +90,62 @@ export default function Vagas() {
         }
       }
     }
-
+ 
     buscarVagas();
-
     return () => {
       ativo = false;
     };
   }, []);
+ 
+  // ── Buscar catálogo de skills: GET /skills ──────────────────────────────
 
+  useEffect(() => {
+    let ativo = true;
+ 
+    async function buscarCatalogoSkills() {
+      try {
+        const resposta = await api.get<Skill[]>('/skills');
+        if (ativo) setCatalogoSkills(resposta.data);
+      } catch (err) {
+        console.error('Erro ao buscar catálogo de skills:', err);
+      }
+    }
+ 
+    buscarCatalogoSkills();
+    return () => { ativo = false; };
+  }, []);
+ 
+  useEffect(() => {
+    if (!vagaSelecionada) {
+      setVagaSkills([]);
+      return;
+    }
+ 
+    let ativo = true;
+ 
+    async function buscarVagaSkills() {
+      setCarregandoSkills(true);
+ 
+      try {
+        const resposta = await api.get<VagaSkill[]>(`/vaga-skills/vaga/${vagaSelecionada!.id}`);
+        if (ativo) setVagaSkills(resposta.data);
+      } catch (err) {
+        // Poderia expor um erro próprio aqui; mantendo silencioso por ora
+        // pra não travar a exibição do resto do detalhe da vaga.
+        console.error('Erro ao buscar skills da vaga:', err);
+        if (ativo) setVagaSkills([]);
+      } finally {
+        if (ativo) setCarregandoSkills(false);
+      }
+    }
+ 
+    buscarVagaSkills();
+    return () => { ativo = false; };
+  }, [vagaSelecionada]);
+ 
   return (
     <div className="pv-shell">
-
+ 
       {/* ── Coluna esquerda: lista de vagas ── */}
       <div className="pv-lista">
         <div className="pv-lista__header">
@@ -95,27 +154,27 @@ export default function Vagas() {
           </span>
           <button className="pv-btn-nova">+ Nova vaga</button>
         </div>
-
+ 
         <div className="pv-lista__itens">
           {carregando && (
             <div className="pv-lista__estado">
               <p>Carregando vagas...</p>
             </div>
           )}
-
+ 
           {!carregando && erro && (
             <div className="pv-lista__estado pv-lista__estado--erro">
               <p>⚠️ {erro}</p>
             </div>
           )}
-
+ 
           {!carregando && !erro && vagas.length === 0 && (
             <div className="pv-lista__estado">
               <span className="pv-detalhe__empty-icon">📭</span>
               <p>Nenhuma vaga publicada ainda.</p>
             </div>
           )}
-
+ 
           {!carregando &&
             !erro &&
             vagas.map(vaga => (
@@ -125,69 +184,75 @@ export default function Vagas() {
                 onClick={() => setVagaSelecionada(vaga)}
               >
                 <p className="pv-vaga-card__titulo">{vaga.titulo}</p>
-                <p className="pv-vaga-card__area">{vaga.area}</p>
-                <p className="pv-vaga-card__local">📍 {vaga.modelo} · {vaga.local}</p>
-
+       
+                <p className="pv-vaga-card__area">{vaga.regiaoAlvo?.perfil}</p>
+           
+                <p className="pv-vaga-card__local">📍 {vaga.regiaoAlvo?.municipio}</p>
+ 
                 <div className="pv-vaga-card__badges">
                   <span className="pv-badge pv-badge--nivel">{vaga.nivel}</span>
-                  {vaga.badges.map(b => (
-                    <span key={b} className="pv-badge pv-badge--grupo">{b}</span>
-                  ))}
+      
+                  {vaga.antiVies && (
+                    <span className="pv-badge pv-badge--grupo">🛡 Anti-viés</span>
+                  )}
+              
                   <span
                     className="pv-badge pv-badge--esg"
-                    style={scoreBadgeStyle(vaga.scoreESG)}
+                    style={scoreBadgeStyle(vaga.diversidadeMinima)}
                   >
-                    ESG {vaga.scoreESG}%
+                    Diversidade {vaga.diversidadeMinima}%
                   </span>
                 </div>
-
+ 
                 <div className="pv-vaga-card__bar-wrap">
                   <span className="pv-vaga-card__bar-label">Score diversidade</span>
                   <div className="pv-vaga-card__bar-track">
                     <div
                       className="pv-vaga-card__bar-fill"
-                      style={{ width: `${vaga.scoreESG}%` }}
+                      style={{ width: `${vaga.diversidadeMinima}%` }}
                     />
                   </div>
                   <span
                     className="pv-vaga-card__bar-pct"
-                    style={{ color: scoreBadgeStyle(vaga.scoreESG).color }}
+                    style={{ color: scoreBadgeStyle(vaga.diversidadeMinima).color }}
                   >
-                    {vaga.scoreESG}%
+                    {vaga.diversidadeMinima}%
                   </span>
                 </div>
               </button>
             ))}
         </div>
       </div>
-
+ 
       {/* ── Coluna direita: detalhe da vaga ou placeholder ── */}
       <div className="pv-detalhe">
         {vagaSelecionada ? (
           <div className="pv-detalhe__content">
             <h2 className="pv-detalhe__titulo">{vagaSelecionada.titulo}</h2>
-            <p className="pv-detalhe__empresa">🏢 Sua empresa</p>
-
+     
+            <p className="pv-detalhe__empresa">🏢 Empresa {vagaSelecionada.empresaId}</p>
+ 
             <div className="pv-detalhe__meta">
-              <span>📍 {vagaSelecionada.modelo}</span>
-              <span>🌐 {vagaSelecionada.local}</span>
+              <span>📍 {vagaSelecionada.regiaoAlvo?.municipio}</span>
+              <span>🌐 {vagaSelecionada.regiaoAlvo?.cluster}</span>
               <span>📋 {vagaSelecionada.nivel}</span>
-              <span>📁 {vagaSelecionada.area}</span>
-            </div>
 
+              <span>📁 {vagaSelecionada.regiaoAlvo?.perfil}</span>
+            </div>
+ 
             <div className="pv-detalhe__badges">
-              {vagaSelecionada.badges.map(b => (
-                <span key={b} className="pv-badge pv-badge--grupo">{b}</span>
-              ))}
+
               <span
                 className="pv-badge pv-badge--esg"
-                style={scoreBadgeStyle(vagaSelecionada.scoreESG)}
+                style={scoreBadgeStyle(vagaSelecionada.diversidadeMinima)}
               >
-                Score ESG: {vagaSelecionada.scoreESG}%
+                Diversidade mínima: {vagaSelecionada.diversidadeMinima}%
               </span>
-              <span className="pv-badge pv-badge--antivies">🛡 Anti-viés ativo</span>
+              {vagaSelecionada.antiVies && (
+                <span className="pv-badge pv-badge--antivies">🛡 Anti-viés ativo</span>
+              )}
             </div>
-
+ 
             {/* Botão shortlist */}
             <button
               className="pv-btn-shortlist"
@@ -197,20 +262,24 @@ export default function Vagas() {
             >
               👥 Ver shortlist de candidatos
             </button>
-
+ 
             <div className="pv-detalhe__divider" />
-
-            <section>
-              <h3 className="pv-detalhe__section-title">Sobre a vaga</h3>
-              <p className="pv-detalhe__descricao">{vagaSelecionada.descricao}</p>
-            </section>
 
             <section>
               <h3 className="pv-detalhe__section-title">Skills exigidas</h3>
               <div className="pv-detalhe__skills">
-                {vagaSelecionada.skills.map(s => (
-                  <span key={s} className="pv-skill">{s}</span>
-                ))}
+                {carregandoSkills && <p>Carregando skills...</p>}
+                {!carregandoSkills && vagaSkills.length === 0 && (
+                  <p>Nenhuma skill cadastrada para esta vaga.</p>
+                )}
+                {!carregandoSkills && vagaSkills.map(vs => {
+                  const skill = catalogoSkills.find(s => s.id === vs.skillId);
+                  return (
+                    <span key={vs.skillId} className="pv-skill">
+                      {skill ? skill.nome : `Skill #${vs.skillId}`} ({vs.peso}%)
+                    </span>
+                  );
+                })}
               </div>
             </section>
           </div>
@@ -221,7 +290,8 @@ export default function Vagas() {
           </div>
         )}
       </div>
-
+ 
     </div>
   );
 }
+ 
