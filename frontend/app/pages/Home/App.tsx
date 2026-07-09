@@ -54,6 +54,7 @@ export default function App() {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState('Empregabilidade');
   const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
+  const [sidebarAberta, setSidebarAberta] = useState(true);
 
   useEffect(() => {
     const painel = PAINEL_POR_ROTA[location.pathname];
@@ -90,10 +91,15 @@ export default function App() {
   };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <Header activeNav={activeNav} onNavChange={handleNavChange} />
+      <Header
+        activeNav={activeNav}
+        onNavChange={handleNavChange}
+        sidebarAberta={sidebarAberta}
+        onToggleSidebar={() => setSidebarAberta((aberta) => !aberta)}
+      />
  
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {activeNav === 'Empregabilidade' && (
+        {activeNav === 'Empregabilidade' && sidebarAberta && (
           <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
         )}
  

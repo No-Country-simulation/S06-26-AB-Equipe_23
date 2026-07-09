@@ -1,9 +1,11 @@
 interface HeaderProps {
   activeNav: string;
   onNavChange: (nav: string) => void;
+  sidebarAberta?: boolean;
+  onToggleSidebar?: () => void;
 }
 
-export default function Header(_props: HeaderProps) {
+export default function Header({ sidebarAberta = true, onToggleSidebar }: HeaderProps) {
   return (
     <header style={{
       background: '#fff',
@@ -16,6 +18,32 @@ export default function Header(_props: HeaderProps) {
       top: 0,
       zIndex: 50,
     }}>
+      {onToggleSidebar && (
+        <button
+          onClick={onToggleSidebar}
+          aria-label={sidebarAberta ? 'Fechar menu lateral' : 'Abrir menu lateral'}
+          aria-expanded={sidebarAberta}
+          style={{
+            display: 'inline-flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 4,
+            width: 32,
+            height: 32,
+            border: 'none',
+            borderRadius: 8,
+            background: 'transparent',
+            cursor: 'pointer',
+            padding: 6,
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+          <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+          <span style={{ display: 'block', width: 18, height: 2, background: '#374151', borderRadius: 2 }} />
+        </button>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <div style={{
           width: 32, height: 32,
