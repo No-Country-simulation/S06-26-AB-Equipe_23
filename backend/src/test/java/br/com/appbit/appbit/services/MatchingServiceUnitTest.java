@@ -60,14 +60,14 @@ class MatchingServiceUnitTest {
 
     private List<CandidatoMatchDTO> getMockCandidates() {
         return Arrays.asList(
-                new CandidatoMatchDTO("cand_001", "Candidato 1", "Analista", "junior", "Florianopolis", "cluster1", "88000", new BigDecimal("-27.5969"), "-48.5494", "remoto", Arrays.asList("sql", "python"), 3, "badge1", 91),
-                new CandidatoMatchDTO("cand_007", "Candidato 7", "Analista", "senior", "Sao Paulo", "cluster2", "01000", new BigDecimal("-23.5505"), "-46.6333", "presencial", Arrays.asList("java", "python"), 8, "badge2", 88),
-                new CandidatoMatchDTO("cand_002", "Candidato 2", "Analista", "pleno", "Rio de Janeiro", "cluster3", "20000", new BigDecimal("-22.9068"), "-43.1729", "hibrido", Arrays.asList("sql", "python", "java"), 5, "badge3", 86),
-                new CandidatoMatchDTO("cand_003", "Candidato 3", "Analista", "junior", "Florianopolis", "cluster1", "88100", new BigDecimal("-27.5969"), "-48.5494", "remoto", Arrays.asList("sql", "python"), 2, "badge4", 84),
-                new CandidatoMatchDTO("cand_004", "Candidato 4", "Analista", "pleno", "Curitiba", "cluster4", "80000", new BigDecimal("-25.4284"), "-49.2733", "presencial", List.of("sql"), 4, "badge5", 82),
-                new CandidatoMatchDTO("cand_005", "Candidato 5", "Analista", "senior", "Sao Paulo", "cluster2", "01100", new BigDecimal("-23.5505"), "-46.6333", "presencial", Arrays.asList("python", "java"), 7, "badge6", 79),
-                new CandidatoMatchDTO("cand_008", "Candidato 8", "Analista", "junior", "Florianopolis", "cluster1", "88200", new BigDecimal("-27.5969"), "-48.5494", "remoto", Arrays.asList("python", "sql"), 3, "badge7", 76),
-                new CandidatoMatchDTO("cand_006", "Candidato 6", "Analista", "junior", "Florianopolis", "cluster1", "88300", new BigDecimal("-27.5969"), "-48.5494", "remoto", Arrays.asList("sql", "python"), 2, "badge8", 73)
+                new CandidatoMatchDTO("cand_001", "Candidato 1", "Analista", "junior", "Florianopolis", "cluster1", "88000", new BigDecimal("-27.5969"), new BigDecimal("-48.5494"), "remoto", Arrays.asList("sql", "python"), 3, "badge1", 91),
+                new CandidatoMatchDTO("cand_007", "Candidato 7", "Analista", "senior", "Sao Paulo", "cluster2", "01000", new BigDecimal("-23.5505"), new BigDecimal("-46.6333"), "presencial", Arrays.asList("java", "python"), 8, "badge2", 88),
+                new CandidatoMatchDTO("cand_002", "Candidato 2", "Analista", "pleno", "Rio de Janeiro", "cluster3", "20000", new BigDecimal("-22.9068"), new BigDecimal("-43.1729"), "hibrido", Arrays.asList("sql", "python", "java"), 5, "badge3", 86),
+                new CandidatoMatchDTO("cand_003", "Candidato 3", "Analista", "junior", "Florianopolis", "cluster1", "88100", new BigDecimal("-27.5969"), new BigDecimal("-48.5494"), "remoto", Arrays.asList("sql", "python"), 2, "badge4", 84),
+                new CandidatoMatchDTO("cand_004", "Candidato 4", "Analista", "pleno", "Curitiba", "cluster4", "80000", new BigDecimal("-25.4284"), new BigDecimal("-49.2733"), "presencial", List.of("sql"), 4, "badge5", 82),
+                new CandidatoMatchDTO("cand_005", "Candidato 5", "Analista", "senior", "Sao Paulo", "cluster2", "01100", new BigDecimal("-23.5505"), new BigDecimal("-46.6333"), "presencial", Arrays.asList("python", "java"), 7, "badge6", 79),
+                new CandidatoMatchDTO("cand_008", "Candidato 8", "Analista", "junior", "Florianopolis", "cluster1", "88200", new BigDecimal("-27.5969"), new BigDecimal("-48.5494"), "remoto", Arrays.asList("python", "sql"), 3, "badge7", 76),
+                new CandidatoMatchDTO("cand_006", "Candidato 6", "Analista", "junior", "Florianopolis", "cluster1", "88300", new BigDecimal("-27.5969"), new BigDecimal("-48.5494"), "remoto", Arrays.asList("sql", "python"), 2, "badge8", 73)
         );
     }
 

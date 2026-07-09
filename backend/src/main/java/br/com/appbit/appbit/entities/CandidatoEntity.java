@@ -50,7 +50,7 @@ public class CandidatoEntity {
     private String cep;
 
     @Column(name = "lon")
-    private String lon;
+    private BigDecimal lon;
 
     @Column(name = "lat")
     private BigDecimal lat;

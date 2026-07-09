@@ -15,7 +15,7 @@ public record CandidatoMatchDTO(
         @JsonProperty("cluster_residencia") String clusterResidencia,
         String cep,
         BigDecimal lat,
-        String lon,
+        BigDecimal lon,
         @JsonProperty("modelo_trabalho_preferido") String modeloTrabalhoPreferido,
         List<String> skills,
         @JsonProperty("anos_experiencia") Integer anosExperiencia,
