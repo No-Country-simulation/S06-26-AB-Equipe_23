@@ -42,8 +42,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/vagas" element={<Home />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/insights/regioes" element={<Home />} />
+          <Route path="/relatorio-esg" element={<Home />} />
           <Route path="/sobre" element={<SobreRoute />} />
           <Route path="/contato" element={<ContatoRoute />} />
           <Route path="/shortlist" element={<ShortList />} />

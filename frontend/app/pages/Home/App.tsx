@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../../components/ui/Header.tsx';
 import Sidebar from '../../../components/ui/Sidebar.tsx';
 import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilidade';
@@ -11,6 +11,13 @@ import PainelMentorias from '../../../components/charts/PainelMentorias';
  
 const ROTAS_EXTERNAS: Record<string, string> = {
   'Shortlist': '/shortlist',
+};
+
+const PAINEL_POR_ROTA: Record<string, string> = {
+  '/vagas': 'Minhas vagas',
+  '/dashboard': 'Dashboard executivo',
+  '/insights/regioes': 'Insights regionais',
+  '/relatorio-esg': 'Relatório ESG',
 };
  
 const PAINEIS_LOCAIS = [
@@ -39,8 +46,17 @@ function EmptyState({ label }: { label: string }) {
  
 export default function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeNav, setActiveNav] = useState('Empregabilidade');
   const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
+
+  useEffect(() => {
+    const painel = PAINEL_POR_ROTA[location.pathname];
+    if (painel) {
+      setActiveNav('Empregabilidade');
+      setActiveSidebarItem(painel);
+    }
+  }, [location.pathname]);
  
   useEffect(() => {
     const rota = ROTAS_EXTERNAS[activeSidebarItem];
