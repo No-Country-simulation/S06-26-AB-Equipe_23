@@ -78,10 +78,11 @@ export default function LoginPage() {
       return;
     }
 
-    api.post('/login', { email: formData.email, password: formData.password })
+    api.post('/login', { email: formData.email, senha: formData.password })
       .then((response) => {
         console.log('Login bem-sucedido:', response.data);
-        navigate('../../../app/pages/vagas/vagas.tsx');
+        localStorage.setItem('token', response.data.token);
+        navigate('/');
       })
       .catch((error) => {
         console.error('Erro no login:', error);
