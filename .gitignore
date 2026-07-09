@@ -111,3 +111,9 @@ backend/test_output.txt
 # Diretórios temporários gerados pelos testes Python
 tests/tmp_gera_shortlist/
 tests/tmp_score_test/
+
+# Certificados SSL (Aiven e outros — nunca commitar)
+*.pem
+*.crt
+*.key
+backend/src/main/resources/ssl/

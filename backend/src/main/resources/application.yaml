@@ -7,7 +7,7 @@ spring:
       preferred-json-mapper: jackson2
 
   datasource:
-      url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:appbit}
+      url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:appbit}?sslMode=${DB_SSL_MODE:DISABLED}&trustCertificateKeyStoreUrl=${DB_SSL_TRUSTSTORE_URL:}&trustCertificateKeyStorePassword=${DB_SSL_TRUSTSTORE_PASSWORD:}
       username: ${DB_USER_APPBIT:root}
       password: ${DB_PASSWORD_APPBIT:123Global!}
       driver-class-name: com.mysql.cj.jdbc.Driver
