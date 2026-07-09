@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   activeItem: string;
@@ -9,21 +10,33 @@ interface SidebarItem {
   label: string;
   icon: string;
   section: string;
+  path?: string;
 }
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento' },
+  { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento', path: '/vagas' },
   { label: 'Candidatos', icon: '👥', section: 'Recrutamento' },
-  { label: 'Shortlist', icon: '📊', section: 'Recrutamento' },
-  { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade' },
-  { label: 'Insights regionais', icon: '📍', section: 'Diversidade' },
-  { label: 'Relatório ESG', icon: '📈', section: 'Diversidade' },
-  { label: 'Saúde do time', icon: '❤️', section: 'Diversidade' },
+  { label: 'Shortlist', icon: '📊', section: 'Recrutamento', path: '/shortlist' },
+  { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade', path: '/dashboard' },
+  { label: 'Insights regionais', icon: '📍', section: 'Diversidade', path: '/insights/regioes' },
+  { label: 'Relatório ESG', icon: '📈', section: 'Diversidade', path: '/relatorio-esg' },
+  { label: 'Saúde do time', icon: '❤️', section: 'Diversidade', path: '/saude-time' },
+  { label: 'Formações', icon: '🎓', section: 'Capacitação' , path: '/trilhas-capacitacoes' },
+  { label: 'Eventos', icon: '📅', section: 'Capacitação', path: '/eventos' },
+  { label: 'Mentorias', icon: '🤝', section: 'Capacitação', path: '/mentorias' },
 ];
 
-const SECTIONS = ['Recrutamento', 'Diversidade'];
+const SECTIONS = ['Recrutamento', 'Diversidade', 'Capacitação'];
 
 export default function Sidebar({ activeItem, onItemChange }: SidebarProps) {
+  const navigate = useNavigate();
+
+  const handleItemClick = (item: SidebarItem) => {
+    onItemChange(item.label);
+    if (item.path) {
+      navigate(item.path);
+    }
+  };
   
   return (
     <aside style={{
@@ -53,7 +66,7 @@ export default function Sidebar({ activeItem, onItemChange }: SidebarProps) {
           {SIDEBAR_ITEMS.filter((i) => i.section === section).map((item) => (
             <button
               key={item.label}
-              onClick={() => onItemChange(item.label)}
+              onClick={() => handleItemClick(item)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
