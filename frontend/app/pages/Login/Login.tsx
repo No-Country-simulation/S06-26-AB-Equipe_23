@@ -13,6 +13,7 @@ export default function LoginPage() {
   
   // Estado para capturar quais campos estão com erro visual (borda vermelha)
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [cadastroMessage, setCadastroMessage] = useState('');
   
   // Estado Único de Formulário (Incluindo os Indicadores Atuais)
   const [formData, setFormData] = useState({
@@ -245,10 +246,18 @@ export default function LoginPage() {
 
               <p className="footerText">
                 Ainda não tem uma conta?{' '}
-                <button type="button" className="linkButton" onClick={() => { setIsCadastro(true); setErrors({}); }}>
+                <button
+                  type="button"
+                  className="linkButton"
+                  onClick={() => {
+                    setCadastroMessage('Cadastro de novas empresas não está habilitado nesta versão demo. Use o login de recrutador fornecido para acessar o MVP.');
+                    setErrors({});
+                  }}
+                >
                   Cadastre-se
                 </button>
               </p>
+              {cadastroMessage && <p className="inputHint" style={{ textAlign: 'center', marginTop: 8 }}>{cadastroMessage}</p>}
             </div>
           ) : (
             /* ================= CADASTRO MULTI-STEP ================= */
