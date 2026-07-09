@@ -1,55 +1,54 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Home from '../pages/Home/App.tsx';
-import ShortList from '../pages/Shortlist/shortlist.tsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from '../pages/Login/Login.tsx';
-
-const SobreRoute = () => (
-  <div>
-    <h2>Sobre Nós</h2>
-    <p>Esta é a página sobre a nossa empresa.</p>
-  </div>
-);
-
-const ContatoRoute = () => (
-  <div>
-    <h2>Contato</h2>
-    <p>Fale conosco em: contato@email.com</p>
-  </div>
-);
+import AppLayout from '../../components/layout/AppLayout.tsx';
+import Vagas from '../pages/Vagas/Vagas.tsx';
+import PainelInsightsRegionais from '../pages/Paineldeinsightsregionais/paineldeinsightsregionais.tsx';
+import RelatorioESG from '../pages/RelatorioESG/relatorioesg.tsx';
+import ShortList from '../pages/Shortlist/shortlist.tsx';
+import DashboardExecutivo from '../../components/charts/DashboardExecutivo.tsx';
+import Eventos from '../pages/Eventos/Eventoscorporativos.tsx';
+import Trilhadecapacitações from '../pages/Trilhascapacitacoes/trilhadecapacitacoes.tsx';
+import Mentorias from '../pages/Mentorias/mentorias.tsx';
 
 const NaoEncontradaRoute = () => (
-  <div>
+  <div style={{ padding: 24 }}>
     <h2>Erro 404</h2>
     <p>Página não encontrada!</p>
   </div>
 );
 
-// 2. Componente Principal de Navegação
-export default function App() {
+function EmDesenvolvimento({ label }: { label: string }) {
+  return (
+    <div className="app-empty-state">
+      <span>🚧</span>
+      <p className="app-empty-state__label">{label}</p>
+      <p className="app-empty-state__sub">Módulo em desenvolvimento</p>
+    </div>
+  );
+}
+
+
+export default function AppRouter() {
   return (
     <BrowserRouter>
-      <header style={{ padding: '10px', background: '#eee' }}>
-        <nav style={{ display: 'flex', gap: '15px' }}>
-  
-          <Link to="/">Início</Link>
-          <Link to="/sobre">Sobre</Link>
-          <Link to="/contato">Contato</Link>
-        </nav>
-      </header>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
 
-      <main style={{ padding: '20px' }}>
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/insights/regioes" element={<Home />} />
-          <Route path="/sobre" element={<SobreRoute />} />
-          <Route path="/contato" element={<ContatoRoute />} />
+        <Route element={<AppLayout />}>
+          <Route path="/vagas" element={<Vagas />} />
+          <Route path="/insights-regionais" element={<PainelInsightsRegionais />} />
+          <Route path="/relatorio-esg" element={<RelatorioESG />} />
           <Route path="/shortlist" element={<ShortList />} />
+          <Route path="/shortlist/:vagaId" element={<ShortList />} />
+          <Route path="/dashboard" element={<DashboardExecutivo />} />
+          <Route path="/candidatos" element={<EmDesenvolvimento label="Candidatos" />} />
+          <Route path="/saude-do-time" element={<EmDesenvolvimento label="Saúde do time" />} />
+          <Route path="/eventos" element={<Eventos />} />
+          <Route path="/trilhas" element={<Trilhadecapacitações />} />
+          <Route path="/mentorias" element={<Mentorias />} />
           <Route path="*" element={<NaoEncontradaRoute />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
