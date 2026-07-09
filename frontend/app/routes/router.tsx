@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home/App.tsx';
 import ShortList from '../pages/Shortlist/shortlist.tsx';
 import LoginPage from '../pages/Login/Login.tsx';
@@ -27,31 +28,41 @@ const NaoEncontradaRoute = () => (
   </div>
 );
 
+const hasToken = () => Boolean(localStorage.getItem('token'));
+
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  return hasToken() ? children : <Navigate to="/login" replace />;
+};
+
+const DefaultRoute = () => {
+  return hasToken() ? <Navigate to="/vagas" replace /> : <Navigate to="/login" replace />;
+};
+
 export default function App() {
   return (
     <BrowserRouter>
       <main>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<DefaultRoute />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/formacoes" element={<TrilhasCapacitacaoPage />} />
-          <Route path="/trilhas-capacitacoes" element={<TrilhasCapacitacaoPage />} />
-          <Route path="/trilhas" element={<TrilhasCapacitacaoPage />} />
-          <Route path="/eventos" element={<EventosCorporativosPage />} />
-          <Route path="/mentorias" element={<MentoriasPage />} />
-          <Route path="/vagas" element={<Home />} />
-          <Route path="/candidatos" element={<Home />} />
-          <Route path="/dashboard" element={<Home />} />
-          <Route path="/insights/regioes" element={<Home />} />
-          <Route path="/insights-regionais" element={<Home />} />
-          <Route path="/relatorio-esg" element={<Home />} />
-          <Route path="/saude-time" element={<Home />} />
-          <Route path="/saude-do-time" element={<Home />} />
+          <Route path="/formacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
+          <Route path="/trilhas-capacitacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
+          <Route path="/trilhas" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
+          <Route path="/eventos" element={<ProtectedRoute><EventosCorporativosPage /></ProtectedRoute>} />
+          <Route path="/mentorias" element={<ProtectedRoute><MentoriasPage /></ProtectedRoute>} />
+          <Route path="/vagas" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/candidatos" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/insights/regioes" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/insights-regionais" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/relatorio-esg" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/saude-time" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/saude-do-time" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/sobre" element={<SobreRoute />} />
           <Route path="/contato" element={<ContatoRoute />} />
-          <Route path="/shortlist" element={<ShortList />} />
-          <Route path="/shortlist/:vagaId" element={<ShortList />} />
+          <Route path="/shortlist" element={<ProtectedRoute><ShortList /></ProtectedRoute>} />
+          <Route path="/shortlist/:vagaId" element={<ProtectedRoute><ShortList /></ProtectedRoute>} />
           <Route path="*" element={<NaoEncontradaRoute />} />
         </Routes>
       </main>
