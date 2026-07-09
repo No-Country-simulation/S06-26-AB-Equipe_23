@@ -126,20 +126,69 @@ export default function PainelInsightsRegionais() {
 
           <div style={{ gridColumn: '1 / -1', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Dados Observados por Região</h3>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-                <thead><tr style={{ color: '#6b7280', textAlign: 'left' }}><th>Município</th><th>Cluster</th><th>Tecnologia</th><th>3G</th><th>4G</th><th>5G</th><th>Antenas</th><th>Sessões</th><th>Concentração</th><th>Pico</th></tr></thead>
-                <tbody>{filtradas.map((regiao) => (
-                  <tr key={`${regiao.municipio}-${regiao.cluster}`} style={{ borderTop: '1px solid #e5e7eb' }}>
-                    <td>{formatarTextoMvp(regiao.municipio)}</td><td>{formatarClusterMvp(regiao.cluster)}</td><td>{regiao.tecnologia_predominante_regiao}</td><td>{regiao.percentual_3g.toFixed(2)}%</td><td>{regiao.percentual_4g.toFixed(2)}%</td><td>{regiao.percentual_5g.toFixed(2)}%</td><td>{regiao.qtd_antenas}</td><td>{formatNumber(regiao.total_sessoes)}</td><td>{regiao.indice_concentracao_relativa.toFixed(1)}</td><td>{formatarPeriodoPico(regiao.periodo_pico)}</td>
-                  </tr>
-                ))}</tbody>
-              </table>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+              {filtradas.map((regiao) => (
+                <article
+                  key={`${regiao.municipio}-${regiao.cluster}`}
+                  style={{
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 10,
+                    padding: 14,
+                    background: '#f9fafb',
+                    display: 'grid',
+                    gap: 10,
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'flex-start' }}>
+                    <div>
+                      <h4 style={{ margin: '0 0 4px', color: '#111827', fontSize: 13 }}>
+                        {formatarTextoMvp(regiao.municipio)}
+                      </h4>
+                      <p style={{ margin: 0, color: '#6b7280', fontSize: 12, lineHeight: 1.35 }}>
+                        {formatarClusterMvp(regiao.cluster)}
+                      </p>
+                    </div>
+                    <span style={{
+                      background: tecnologiaCores[regiao.tecnologia_predominante_regiao],
+                      color: '#fff',
+                      borderRadius: 999,
+                      padding: '4px 8px',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                    }}>
+                      {regiao.tecnologia_predominante_regiao}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                    <MiniMetric label="3G" value={`${regiao.percentual_3g.toFixed(2)}%`} />
+                    <MiniMetric label="4G" value={`${regiao.percentual_4g.toFixed(2)}%`} />
+                    <MiniMetric label="5G" value={`${regiao.percentual_5g.toFixed(2)}%`} />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+                    <MiniMetric label="Antenas" value={formatNumber(regiao.qtd_antenas)} />
+                    <MiniMetric label="Sessões" value={formatNumber(regiao.total_sessoes)} />
+                    <MiniMetric label="Concentração" value={regiao.indice_concentracao_relativa.toFixed(1)} />
+                    <MiniMetric label="Pico" value={formatarPeriodoPico(regiao.periodo_pico)} />
+                  </div>
+                </article>
+              ))}
             </div>
             <p style={{ color: '#6b7280', fontSize: 11 }}>*Soma de observações agregadas no tensor; não representa população única.</p>
           </div>
         </section>
       </div>
+    </div>
+  );
+}
+
+function MiniMetric({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: '8px 10px' }}>
+      <div style={{ color: '#6b7280', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
+      <div style={{ color: '#111827', fontSize: 12, fontWeight: 700, lineHeight: 1.25 }}>{value}</div>
     </div>
   );
 }
