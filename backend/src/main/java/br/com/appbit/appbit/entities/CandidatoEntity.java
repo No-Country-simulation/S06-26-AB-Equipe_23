@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class CandidatoEntity {
     private String lon;
 
     @Column(name = "lat")
-    private Double lat;
+    private BigDecimal lat;
 
     @Column(name = "municipio_residencia")
     private String municipio;

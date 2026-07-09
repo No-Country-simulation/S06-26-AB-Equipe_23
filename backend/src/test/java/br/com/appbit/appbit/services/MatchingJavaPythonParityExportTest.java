@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
@@ -32,8 +33,8 @@ class MatchingJavaPythonParityExportTest {
         MatchingService matchingService = new MatchingService(candidatoRepository, candidatoMapper);
 
         List<CandidatoMatchDTO> sourceCandidates = List.of(
-                new CandidatoMatchDTO("cand_001", "Candidato 1", "Analista", "junior", "Florianopolis", "cluster1", "88000", -27.5969, -48.5494, "remoto", List.of("sql", "python"), 3, "badge1", 91),
-                new CandidatoMatchDTO("cand_002", "Candidato 2", "Analista", "pleno", "Sao Paulo", "cluster2", "01000", -23.5505, -46.6333, "presencial", List.of("java", "python"), 5, "badge2", 86)
+                new CandidatoMatchDTO("cand_001", "Candidato 1", "Analista", "junior", "Florianopolis", "cluster1", "88000", new BigDecimal("-27.5969"), "-48.5494", "remoto", List.of("sql", "python"), 3, "badge1", 91),
+                new CandidatoMatchDTO("cand_002", "Candidato 2", "Analista", "pleno", "Sao Paulo", "cluster2", "01000", new BigDecimal("-23.5505"), "-46.6333", "presencial", List.of("java", "python"), 5, "badge2", 86)
         );
 
         List<CandidatoEntity> entities = sourceCandidates.stream()

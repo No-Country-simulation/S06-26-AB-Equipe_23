@@ -2,6 +2,7 @@ package br.com.appbit.appbit.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,8 +14,8 @@ public record CandidatoMatchDTO(
         String regiao,
         @JsonProperty("cluster_residencia") String clusterResidencia,
         String cep,
-        Double lat,
-        Double lon,
+        BigDecimal lat,
+        String lon,
         @JsonProperty("modelo_trabalho_preferido") String modeloTrabalhoPreferido,
         List<String> skills,
         @JsonProperty("anos_experiencia") Integer anosExperiencia,
