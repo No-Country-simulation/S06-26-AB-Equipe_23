@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { buscarFormacoesMvp, buscarExperienciasMvp } from '../../lib/appbitApi';
 import type { FormacaoMvp, ExperienciaEstruturanteMvp } from '../../lib/appbitTypes';
+import { formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 export default function PainelFormacoes() {
   const [formacoes, setFormacoes] = useState<FormacaoMvp[]>([]);
@@ -84,6 +85,8 @@ export default function PainelFormacoes() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
           {formacoes.map((trilha) => {
             const isHovered = hoveredTrilhaId === trilha.trilha_id;
+            const nomeTrilha = formatarTextoMvp(trilha.nome_trilha);
+            const descricaoTrilha = formatarTextoMvp(trilha.descricao_conteudo);
             return (
               <div
                 key={trilha.trilha_id}
@@ -114,11 +117,11 @@ export default function PainelFormacoes() {
                   </div>
 
                   <h3 style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', margin: '0 0 8px 0', lineHeight: 1.4 }}>
-                    {trilha.nome_trilha}
+                    {nomeTrilha}
                   </h3>
 
                   <p style={{ fontSize: 12, color: '#475569', lineHeight: 1.5, margin: 0 }}>
-                    {trilha.descricao_conteudo}
+                    {descricaoTrilha}
                   </p>
                 </div>
 
@@ -182,6 +185,11 @@ export default function PainelFormacoes() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
           {experiencias.map((evento) => {
             const isHovered = hoveredEventoId === evento.evento_id;
+            const nomeEvento = formatarTextoMvp(evento.nome_evento);
+            const localEvento = formatarTextoMvp(evento.local);
+            const detalhesEvento = formatarTextoMvp(evento.detalhes);
+            const temaEvento = formatarTextoMvp(evento.tema_palestra);
+            const palestrantes = formatarTextoMvp(evento.palestrantes);
             return (
               <div
                 key={evento.evento_id}
@@ -207,20 +215,20 @@ export default function PainelFormacoes() {
                       ID {evento.evento_id}
                     </span>
                     <span style={{ fontSize: 10, fontWeight: 600, background: '#e0f2fe', color: '#0369a1', padding: '3px 6px', borderRadius: 4 }}>
-                      {evento.local.split(' - ')[0]}
+                      {localEvento.split(' - ')[0]}
                     </span>
                   </div>
 
                   <h3 style={{ fontSize: 13, fontWeight: 600, color: '#0f172a', margin: '0 0 6px 0', lineHeight: 1.4 }}>
-                    {evento.nome_evento}
+                    {nomeEvento}
                   </h3>
 
                   <p style={{ fontSize: 11, color: '#64748b', margin: '0 0 10px 0' }}>
-                    <strong>Palestra:</strong> {evento.tema_palestra}
+                    <strong>Palestra:</strong> {temaEvento}
                   </p>
 
                   <p style={{ fontSize: 11, color: '#475569', lineHeight: 1.4, margin: '0 0 12px 0' }}>
-                    {evento.detalhes}
+                    {detalhesEvento}
                   </p>
                 </div>
 
@@ -229,10 +237,10 @@ export default function PainelFormacoes() {
                     <span>🗓️</span> <span>{evento.data.split('-').reverse().join('/')} · {evento.horario}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#475569', marginBottom: 4 }}>
-                    <span>📍</span> <span style={{ color: '#0284c7', fontWeight: 500 }} title={evento.local}>{evento.local.split(' - ')[1] || evento.local}</span>
+                    <span>📍</span> <span style={{ color: '#0284c7', fontWeight: 500 }} title={localEvento}>{localEvento.split(' - ')[1] || localEvento}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#475569' }}>
-                    <span>👥</span> <span style={{ fontStyle: 'italic' }}>{evento.palestrantes}</span>
+                    <span>👥</span> <span style={{ fontStyle: 'italic' }}>{palestrantes}</span>
                   </div>
                 </div>
               </div>

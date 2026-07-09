@@ -5,7 +5,8 @@ import Sidebar from '../../../components/ui/Sidebar.tsx';
 import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilidade';
 import PainelInsightsRegionais from '../../../components/charts/PainelInsightsRegionais';
 import DashboardExecutivo from '../../../components/charts/DashboardExecutivo';
-import PainelMetricasEmpresa from '../../../components/charts/PainelMetricasEmpresa';
+import PainelRelatorioESG from '../../../components/charts/PainelRelatorioESG';
+import PainelSaudeTime from '../../../components/charts/PainelSaudeTime';
 import PainelFormacoes from '../../../components/charts/PainelFormacoes';
 import PainelMentorias from '../../../components/charts/PainelMentorias';
  
@@ -18,6 +19,7 @@ const PAINEL_POR_ROTA: Record<string, string> = {
   '/dashboard': 'Dashboard executivo',
   '/insights/regioes': 'Insights regionais',
   '/relatorio-esg': 'Relatório ESG',
+  '/saude-time': 'Saúde do time',
 };
  
 const PAINEIS_LOCAIS = [
@@ -95,7 +97,8 @@ export default function App() {
               {activeSidebarItem === 'Minhas vagas'        && <PainelEmpregabilidade />}
               {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
               {activeSidebarItem === 'Insights regionais'  && <PainelInsightsRegionais />}
-              {['Relatório ESG', 'Saúde do time'].includes(activeSidebarItem) && <PainelMetricasEmpresa />}
+              {activeSidebarItem === 'Relatório ESG'       && <PainelRelatorioESG />}
+              {activeSidebarItem === 'Saúde do time'       && <PainelSaudeTime />}
               {/* EmptyState só para itens sem destino definido */}
               {!ITENS_CONHECIDOS.includes(activeSidebarItem) && (
                 <EmptyState label={activeSidebarItem} />

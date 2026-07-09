@@ -46,6 +46,7 @@ export default function App() {
           <Route path="/dashboard" element={<Home />} />
           <Route path="/insights/regioes" element={<Home />} />
           <Route path="/relatorio-esg" element={<Home />} />
+          <Route path="/saude-time" element={<Home />} />
           <Route path="/sobre" element={<SobreRoute />} />
           <Route path="/contato" element={<ContatoRoute />} />
           <Route path="/shortlist" element={<ShortList />} />

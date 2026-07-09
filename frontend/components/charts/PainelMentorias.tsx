@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { buscarMentoriasMvp } from '../../lib/appbitApi';
 import type { MentoriaMvp } from '../../lib/appbitTypes';
+import { formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 export default function PainelMentorias() {
   const [mentores, setMentores] = useState<MentoriaMvp[]>([]);
@@ -95,6 +96,9 @@ export default function PainelMentorias() {
           {mentores.map((mentor) => {
             const isHovered = hoveredMentorId === mentor.mentor_id;
             const isAgendado = agendados.has(mentor.mentor_id);
+            const cargo = formatarTextoMvp(mentor.cargo);
+            const empresa = formatarTextoMvp(mentor.empresa_origem);
+            const especialidade = formatarTextoMvp(mentor.especialidade_esg);
             return (
               <div
                 key={mentor.mentor_id}
@@ -131,10 +135,10 @@ export default function PainelMentorias() {
                         {mentor.nome_mentor}
                       </h3>
                       <p style={{ fontSize: 12, color: '#64748b', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {mentor.cargo}
+                        {cargo}
                       </p>
                       <p style={{ fontSize: 11, color: '#475569', fontWeight: 500, margin: '2px 0 0 0' }}>
-                        🏢 {mentor.empresa_origem}
+                        🏢 {empresa}
                       </p>
                     </div>
                   </div>
@@ -154,7 +158,7 @@ export default function PainelMentorias() {
                       borderRadius: 6,
                       border: '0.5px solid #cbd5e1'
                     }}>
-                      💡 {mentor.especialidade_esg}
+                      💡 {especialidade}
                     </span>
                   </div>
                 </div>

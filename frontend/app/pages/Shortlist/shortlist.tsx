@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { aprovarCandidato, executarMatch } from '../../../lib/appbitApi';
 import type { CandidatoMatch, ContatoAprovado, MatchResponse } from '../../../lib/appbitTypes';
+import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
 import './shortlist.css';
 
 const EMPRESA_ID = 'emp_001';
@@ -9,7 +10,7 @@ const EMPRESA_ID = 'emp_001';
 const MATCH_REQUEST = {
   empresa_id: EMPRESA_ID,
   vaga: {
-    titulo: 'Analista de Dados Junior',
+    titulo: 'Analista de Dados Júnior',
     skills: ['sql', 'python', 'power bi'],
     nivel: 'junior',
     modelo_trabalho: 'hibrido',
@@ -21,9 +22,9 @@ const MATCH_REQUEST = {
 };
 
 const VAGA_OFICIAL = {
-  titulo: 'Analista de Dados Junior',
+  titulo: 'Analista de Dados Júnior',
   area: 'Dados',
-  modelo: 'Hibrido',
+  modelo: 'Híbrido',
   local: 'Brasil',
   scoreESG: 92,
 };
@@ -43,7 +44,7 @@ function scoreStyle(s: number) {
 }
 
 function firstSkillLabel(candidate: CandidatoMatch) {
-  return candidate.skills.length ? candidate.skills.join(', ') : 'Nao informado';
+  return candidate.skills.length ? candidate.skills.map(formatarSkillMvp).join(', ') : 'Não informado';
 }
 
 export default function ShortList() {
@@ -61,7 +62,7 @@ export default function ShortList() {
         setError('');
       })
       .catch(() => {
-        setError('Nao foi possivel carregar o POST /match. A shortlist oficial depende do backend.');
+        setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
       });
   }, []);
 
@@ -82,7 +83,7 @@ export default function ShortList() {
     } catch {
       setApprovalError((prev) => ({
         ...prev,
-        [candidateId]: 'Aprovacao nao confirmada pelo backend. Dados sensiveis permanecem ocultos.',
+        [candidateId]: 'Aprovação não confirmada pelo backend. Dados sensíveis permanecem ocultos.',
       }));
     } finally {
       setRevealing(null);
@@ -108,7 +109,7 @@ export default function ShortList() {
                 Minhas vagas
               </span>
               <span className="sl-breadcrumb__sep">›</span>
-              <span className="sl-breadcrumb__current">Shortlist — {VAGA_OFICIAL.titulo}</span>
+              <span className="sl-breadcrumb__current">Shortlist — {formatarTextoMvp(VAGA_OFICIAL.titulo)}</span>
             </nav>
             <h1 className="sl-topbar__title">
               Lista de triagem
@@ -122,10 +123,10 @@ export default function ShortList() {
         <aside className="sl-sidebar">
           <p className="sl-sidebar__heading">Vaga oficial do MVP</p>
           <button className="sl-vaga-item sl-vaga-item--active">
-            <span className="sl-vaga-item__titulo">{VAGA_OFICIAL.titulo}</span>
+            <span className="sl-vaga-item__titulo">{formatarTextoMvp(VAGA_OFICIAL.titulo)}</span>
             <span className="sl-vaga-item__area">{VAGA_OFICIAL.area}</span>
             <span className="sl-vaga-item__local">
-              📍 {VAGA_OFICIAL.modelo} · {VAGA_OFICIAL.local}
+              📍 {formatarTextoMvp(VAGA_OFICIAL.modelo)} · {VAGA_OFICIAL.local}
             </span>
             <div className="sl-vaga-item__bar-wrap">
               <div className="sl-vaga-item__bar" style={{ width: `${VAGA_OFICIAL.scoreESG}%` }} />
@@ -138,14 +139,14 @@ export default function ShortList() {
           <div className="sl-notice">
             🛡️
             <p>
-              <strong>Filtro anti-vies ativo</strong> — a tela consome o contrato oficial do backend e nao carrega
+              <strong>Filtro anti-viés ativo</strong> — a tela consome o contrato oficial do backend e não carrega
               nome, e-mail, telefone ou LinkedIn na shortlist inicial.
             </p>
           </div>
 
           <div className="sl-insights-bar">
             <p className="sl-insights-bar__text">
-              Fonte: {match?.fonte_candidatos ?? 'POST /match'} · analisados: {match?.total_analisados ?? 0} · score medio: {averageScore}
+              Fonte: {match?.fonte_candidatos ?? 'POST /match'} · analisados: {match?.total_analisados ?? 0} · score médio: {averageScore}
             </p>
             <button className="sl-btn-insights" onClick={() => navigate('/insights/regioes')}>
               Ver insights da rede →
@@ -175,6 +176,10 @@ export default function ShortList() {
                 const sc = scoreStyle(candidate.score_match);
                 const badge = candidate.badge_diversidade;
                 const badgeStyle = badge ? BADGE_COLORS[badge] ?? { bg: '#F3F4F6', color: '#6B7280' } : null;
+                const regiao = formatarTextoMvp(candidate.regiao);
+                const nivel = formatarNivelMvp(candidate.nivel);
+                const modelo = formatarTextoMvp(candidate.modelo_trabalho_preferido ?? 'Não informado');
+                const badgeLabel = badge ? formatarTextoMvp(badge) : '';
 
                 return (
                   <article key={candidate.candidato_id} className={`sl-card${approved ? ' sl-card--aprovado' : ''}`}>
@@ -187,9 +192,9 @@ export default function ShortList() {
                       <div className="sl-card__id-block">
                         <p className="sl-card__codinome">{approved ? approved.contato_liberado.nome : candidate.apelido_exibicao}</p>
                         <div className="sl-card__meta">
-                          <span>📍 {candidate.regiao}</span>
+                          <span>📍 {regiao}</span>
                           <span className="sl-dot" />
-                          <span>{candidate.nivel}</span>
+                          <span>{nivel}</span>
                         </div>
                       </div>
                       <div className="sl-score" style={{ background: sc.bg, borderColor: sc.ring, color: sc.color }}>
@@ -201,7 +206,7 @@ export default function ShortList() {
                     {badge && badgeStyle && (
                       <div className="sl-card__badges">
                         <span className="sl-badge" style={{ background: badgeStyle.bg, color: badgeStyle.color }}>
-                          {badge}
+                          {badgeLabel}
                         </span>
                       </div>
                     )}
@@ -209,11 +214,11 @@ export default function ShortList() {
                     <div className="sl-card__divider" />
 
                     <div className="sl-card__section">
-                      <p className="sl-card__section-label">Competencias tecnicas</p>
+                      <p className="sl-card__section-label">Competências técnicas</p>
                       <div className="sl-card__skills">
                         {candidate.skills.map((skill) => (
                           <span key={skill} className="sl-skill">
-                            {skill}
+                            {formatarSkillMvp(skill)}
                           </span>
                         ))}
                       </div>
@@ -221,18 +226,18 @@ export default function ShortList() {
 
                     <div className="sl-card__row">
                       <div className="sl-card__detail">
-                        <span className="sl-card__detail-label">Experiencia</span>
+                        <span className="sl-card__detail-label">Experiência</span>
                         <span className="sl-card__detail-value">{candidate.anos_experiencia ?? 0} ano(s)</span>
                       </div>
                       <div className="sl-card__detail">
                         <span className="sl-card__detail-label">Modelo</span>
-                        <span className="sl-card__detail-value">{candidate.modelo_trabalho_preferido ?? 'Nao informado'}</span>
+                        <span className="sl-card__detail-value">{modelo}</span>
                       </div>
                     </div>
 
                     {!approved && (
                       <div className="sl-card__anon">
-                        🔒 Dados sensiveis ocultos. Skills: {firstSkillLabel(candidate)}
+                        🔒 Dados sensíveis ocultos. Skills: {firstSkillLabel(candidate)}
                       </div>
                     )}
 
@@ -256,7 +261,7 @@ export default function ShortList() {
                       </button>
                     ) : (
                       <button className="sl-btn-aprovado" onClick={() => navigate('/')}>
-                        Ver pre-aprovados →
+                        Ver pré-aprovados →
                       </button>
                     )}
                   </article>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buscarInsightsRegioes } from '../../lib/appbitApi';
 import type { RegiaoInsight } from '../../lib/appbitTypes';
+import { formatarClusterMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 const tecnologiaCores: Record<RegiaoInsight['tecnologia_predominante_regiao'], string> = {
   '3G': '#F59E0B',
@@ -12,6 +13,10 @@ const tecnologiaCores: Record<RegiaoInsight['tecnologia_predominante_regiao'], s
 
 function formatNumber(value: number) {
   return new Intl.NumberFormat('pt-BR').format(value);
+}
+
+function formatarPeriodoPico(value: string) {
+  return formatarTextoMvp(value.toLowerCase()).replace(/^\w/, (char) => char.toUpperCase());
 }
 
 function Card({ label, value }: { label: string; value: string | number }) {
@@ -74,11 +79,11 @@ export default function PainelInsightsRegionais() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
-        <Card label="Regiões derivadas" value={filtradas.length} />
+        <Card label="Regiões Derivadas" value={filtradas.length} />
         <Card label="Municípios" value={new Set(filtradas.map((r) => r.municipio)).size} />
         <Card label="Antenas" value={formatNumber(totalAntenas)} />
-        <Card label="Sessões observadas" value={formatNumber(totalSessoes)} />
-        <Card label="Usuários observados*" value={formatNumber(usuariosObservados)} />
+        <Card label="Sessões Observadas" value={formatNumber(totalSessoes)} />
+        <Card label="Usuários Observados*" value={formatNumber(usuariosObservados)} />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 16 }}>
@@ -95,12 +100,12 @@ export default function PainelInsightsRegionais() {
 
         <section style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Distribuição geográfica das regiões</h3>
+            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Distribuição Geográfica das Regiões</h3>
             <svg viewBox="0 0 120 96" style={{ width: '100%', height: 360, background: '#edf7f0', borderRadius: 8 }}>
               {filtradas.map((regiao) => (
                 <g key={`${regiao.municipio}-${regiao.cluster}`}>
                   <circle cx={mapX(regiao.lon_media)} cy={mapY(regiao.lat_media)} r={Math.max(3.2, Math.min(8, regiao.qtd_antenas / 1.8))} fill={tecnologiaCores[regiao.tecnologia_predominante_regiao]} stroke="#111827" strokeWidth="0.4" />
-                  <title>{`${regiao.municipio} - ${regiao.cluster}: ${regiao.tecnologia_predominante_regiao}`}</title>
+                  <title>{`${formatarTextoMvp(regiao.municipio)} - ${formatarClusterMvp(regiao.cluster)}: ${regiao.tecnologia_predominante_regiao}`}</title>
                 </g>
               ))}
             </svg>
@@ -110,23 +115,23 @@ export default function PainelInsightsRegionais() {
           </div>
 
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Top regiões por sessões</h3>
+            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Top Regiões por Sessões</h3>
             {topRegioes.map((regiao) => (
               <div key={`${regiao.municipio}-${regiao.cluster}`} style={{ marginBottom: 10 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}><span>{regiao.cluster}</span><strong>{formatNumber(regiao.total_sessoes)}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 12 }}><span>{formatarClusterMvp(regiao.cluster)}</span><strong>{formatNumber(regiao.total_sessoes)}</strong></div>
                 <div style={{ height: 8, background: '#ede9fe', borderRadius: 999, marginTop: 4 }}><div style={{ width: `${Math.max(8, (regiao.total_sessoes / maxSessoes) * 100)}%`, height: 8, background: '#6C3FC5', borderRadius: 999 }} /></div>
               </div>
             ))}
           </div>
 
           <div style={{ gridColumn: '1 / -1', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Dados observados por região</h3>
+            <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Dados Observados por Região</h3>
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead><tr style={{ color: '#6b7280', textAlign: 'left' }}><th>Município</th><th>Cluster</th><th>Tecnologia</th><th>3G</th><th>4G</th><th>5G</th><th>Antenas</th><th>Sessões</th><th>Concentração</th><th>Pico</th></tr></thead>
                 <tbody>{filtradas.map((regiao) => (
                   <tr key={`${regiao.municipio}-${regiao.cluster}`} style={{ borderTop: '1px solid #e5e7eb' }}>
-                    <td>{regiao.municipio}</td><td>{regiao.cluster}</td><td>{regiao.tecnologia_predominante_regiao}</td><td>{regiao.percentual_3g.toFixed(2)}%</td><td>{regiao.percentual_4g.toFixed(2)}%</td><td>{regiao.percentual_5g.toFixed(2)}%</td><td>{regiao.qtd_antenas}</td><td>{formatNumber(regiao.total_sessoes)}</td><td>{regiao.indice_concentracao_relativa.toFixed(1)}</td><td>{regiao.periodo_pico}</td>
+                    <td>{formatarTextoMvp(regiao.municipio)}</td><td>{formatarClusterMvp(regiao.cluster)}</td><td>{regiao.tecnologia_predominante_regiao}</td><td>{regiao.percentual_3g.toFixed(2)}%</td><td>{regiao.percentual_4g.toFixed(2)}%</td><td>{regiao.percentual_5g.toFixed(2)}%</td><td>{regiao.qtd_antenas}</td><td>{formatNumber(regiao.total_sessoes)}</td><td>{regiao.indice_concentracao_relativa.toFixed(1)}</td><td>{formatarPeriodoPico(regiao.periodo_pico)}</td>
                   </tr>
                 ))}</tbody>
               </table>

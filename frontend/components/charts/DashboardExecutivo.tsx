@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { executarMatch } from '../../lib/appbitApi';
 import type { MatchResponse } from '../../lib/appbitTypes';
+import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 function Card({ label, value }: { label: string; value: string | number }) {
   return <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 14 }}><div style={{ color: '#6b7280', fontSize: 12 }}>{label}</div><div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div></div>;
@@ -32,11 +33,33 @@ export default function DashboardExecutivo() {
         <Card label="Score médio informado" value={averageScore} />
       </div>
       <section style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
-        <p style={{ color: '#6b7280', fontSize: 13 }}>{match.regra_privacidade}</p>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-          <thead><tr style={{ textAlign: 'left' }}><th>Candidato</th><th>Nível</th><th>Região</th><th>Score</th><th>Skills</th><th>Badge informado</th></tr></thead>
-          <tbody>{match.candidatos.map((candidate) => <tr key={candidate.candidato_id} style={{ borderTop: '1px solid #e5e7eb' }}><td>{candidate.apelido_exibicao}</td><td>{candidate.nivel}</td><td>{candidate.regiao}</td><td>{candidate.score_match}</td><td>{candidate.skills.join(', ')}</td><td>{candidate.badge_diversidade ?? 'Não informado'}</td></tr>)}</tbody>
-        </table>
+        <p style={{ color: '#6b7280', fontSize: 13, marginTop: 0 }}>{match.regra_privacidade}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
+          {match.candidatos.map((candidate) => (
+            <article key={candidate.candidato_id} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 14, background: '#fff' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
+                <div>
+                  <div style={{ color: '#475569', fontSize: 11, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                    {formatarNivelMvp(candidate.nivel)} · {formatarTextoMvp(candidate.regiao)}
+                  </div>
+                  <div style={{ color: '#111827', fontSize: 13, fontWeight: 700, marginTop: 4 }}>
+                    {candidate.badge_diversidade ? formatarTextoMvp(candidate.badge_diversidade) : 'Sem badge informada'}
+                  </div>
+                </div>
+                <div style={{ minWidth: 54, height: 54, border: '2px solid #7c3aed', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#5b21b6', fontWeight: 800 }}>
+                  {candidate.score_match}%
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {candidate.skills.map((skill) => (
+                  <span key={skill} style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: 6, padding: '4px 8px', color: '#1e1b4b', fontSize: 11, fontWeight: 600 }}>
+                    {formatarSkillMvp(skill)}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
       <p style={{ color: '#6b7280', fontSize: 13 }}>A estrutura demonstrativa de Turnover e ESG está disponível nas telas “Relatório ESG” e “Saúde do time”.</p>
     </div>
