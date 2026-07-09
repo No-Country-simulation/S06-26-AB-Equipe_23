@@ -29,6 +29,8 @@ const VAGA_OFICIAL = {
   scoreESG: 92,
 };
 
+const APPROVED_CONTACTS_STORAGE_KEY = `appbit:shortlist:approved:${EMPRESA_ID}:${VAGA_OFICIAL.titulo}`;
+
 const BADGE_COLORS: Record<string, { bg: string; color: string }> = {
   Mulher: { bg: '#F3EFFE', color: '#6D28D9' },
   'Mulher negra em tecnologia': { bg: '#EDE9FE', color: '#5B21B6' },
@@ -47,13 +49,30 @@ function firstSkillLabel(candidate: CandidatoMatch) {
   return candidate.skills.length ? candidate.skills.map(formatarSkillMvp).join(', ') : 'Não informado';
 }
 
+function loadApprovedContacts(): Record<string, ContatoAprovado> {
+  try {
+    const raw = localStorage.getItem(APPROVED_CONTACTS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveApprovedContacts(contacts: Record<string, ContatoAprovado>) {
+  try {
+    localStorage.setItem(APPROVED_CONTACTS_STORAGE_KEY, JSON.stringify(contacts));
+  } catch {
+    // Se o navegador bloquear armazenamento local, a aprovação segue válida na sessão atual.
+  }
+}
+
 export default function ShortList() {
   const navigate = useNavigate();
   const [match, setMatch] = useState<MatchResponse | null>(null);
   const [error, setError] = useState('');
   const [revealing, setRevealing] = useState<string | null>(null);
   const [approvalError, setApprovalError] = useState<Record<string, string>>({});
-  const [approvedContacts, setApprovedContacts] = useState<Record<string, ContatoAprovado>>({});
+  const [approvedContacts, setApprovedContacts] = useState<Record<string, ContatoAprovado>>(() => loadApprovedContacts());
 
   useEffect(() => {
     executarMatch(MATCH_REQUEST)
@@ -79,7 +98,11 @@ export default function ShortList() {
 
     try {
       const contato = await aprovarCandidato({ candidato_id: candidateId, empresa_id: EMPRESA_ID });
-      setApprovedContacts((prev) => ({ ...prev, [candidateId]: contato }));
+      setApprovedContacts((prev) => {
+        const next = { ...prev, [candidateId]: contato };
+        saveApprovedContacts(next);
+        return next;
+      });
     } catch {
       setApprovalError((prev) => ({
         ...prev,
