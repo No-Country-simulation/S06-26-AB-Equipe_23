@@ -1,82 +1,107 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   activeItem: string;
   onItemChange: (item: string) => void;
+  aberta: boolean;
+  onClose: () => void;
 }
 
 interface SidebarItem {
   label: string;
   icon: string;
   section: string;
+  path?: string;
 }
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento' },
-  { label: 'Candidatos', icon: '👥', section: 'Recrutamento' },
-  { label: 'Shortlist', icon: '📊', section: 'Recrutamento' },
-  { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade' },
-  { label: 'Insights regionais', icon: '📍', section: 'Diversidade' },
-  { label: 'Relatório ESG', icon: '📈', section: 'Diversidade' },
-  { label: 'Saúde do time', icon: '❤️', section: 'Diversidade' },
+  /* SESSÃO: Recrutamento */
+  { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento', path: '/vagas' },
+  { label: 'Shortlist', icon: '📊', section: 'Recrutamento', path: '/shortlist' },
+  
+  /* SESSÃO: Diversidade */
+  { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade', path: '/dashboard' },
+  { label: 'Relatório ESG', icon: '📈', section: 'Diversidade', path: '/relatorio-esg' },
+  { label: 'Saúde do time', icon: '❤️', section: 'Diversidade', path: '/saude-do-time' },
+  
+  /* SEÇÃO: Capacitação & Engajamento */
+  { label: 'Eventos', icon: '📍', section: 'Capacitação & Engajamento', path: '/eventos' },
+  { label: 'Mentorias', icon: '🤝', section: 'Capacitação & Engajamento', path: '/mentorias' },
+  { label: 'Trilha de Capacitações', icon: '🎓', section: 'Capacitação & Engajamento', path: '/trilhas' },
 ];
 
-const SECTIONS = ['Recrutamento', 'Diversidade'];
 
-export default function Sidebar({ activeItem, onItemChange }: SidebarProps) {
-  
+const SECTIONS = ['Recrutamento', 'Diversidade', 'Capacitação & Engajamento'];
+
+export default function Sidebar({ activeItem, onItemChange, aberta, onClose }: SidebarProps) {
+  const navigate = useNavigate();
+
+  const handleItemClick = (item: SidebarItem) => {
+    onItemChange(item.label);
+    
+    if (item.path) {
+      navigate(item.path);
+    }
+    
+    if (aberta && onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <aside style={{
-      width: 220,
-      borderRight: '0.5px solid #e5e7eb',
-      background: '#fff',
-      padding: '16px 12px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 4,
-      flexShrink: 0,
-      height: 'calc(100vh - 57px)',
-      overflowY: 'auto',
-    }}>
-      {SECTIONS.map((section) => (
-        <React.Fragment key={section}>
-          <span style={{
-            fontSize: 10,
-            color: '#9ca3af',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-            padding: '10px 8px 4px',
-          }}>
-            {section}
-          </span>
-          {SIDEBAR_ITEMS.filter((i) => i.section === section).map((item) => (
-            <button
-              key={item.label}
-              onClick={() => onItemChange(item.label)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '8px 10px',
-                borderRadius: 8,
-                fontSize: 13,
-                color: activeItem === item.label ? '#6C3FC5' : '#4b5563',
-                background: activeItem === item.label ? '#EEE9FC' : 'transparent',
-                fontWeight: activeItem === item.label ? 500 : 400,
-                border: 'none',
-                cursor: 'pointer',
-                width: '100%',
-                textAlign: 'left',
-              }}
-            >
-              <span style={{ fontSize: 15 }}>{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
-        </React.Fragment>
-      ))}
-    </aside>
+    <>
+      <div
+        className={`app-sidebar__overlay ${aberta ? 'app-sidebar__overlay--visivel' : ''}`}
+        onClick={onClose}
+      />
+
+      <aside className={`app-sidebar ${aberta ? 'app-sidebar--aberta' : 'app-sidebar--fechada'}`}>
+        {SECTIONS.map((section) => (
+          <React.Fragment key={section}>
+            {/* Título da Divisão */}
+            <span style={{
+              display: 'block',
+              fontSize: 10,
+              color: '#9ca3af',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              padding: '18px 8px 6px', // Ajustado padding superior para dar espaçamento entre blocos
+            }}>
+              {section}
+            </span>
+
+            {/* Itens da Divisão */}
+            {SIDEBAR_ITEMS.filter((i) => i.section === section).map((item) => (
+              <button
+                key={item.label}
+                onClick={() => handleItemClick(item)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  padding: '8px 10px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  color: activeItem === item.label ? '#6C3FC5' : '#4b5563',
+                  background: activeItem === item.label ? '#EEE9FC' : 'transparent',
+                  fontWeight: activeItem === item.label ? 500 : 400,
+                  border: 'none',
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left',
+                  margin: '2px 0',
+                }}
+              >
+                <span style={{ fontSize: 15 }}>{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+          </React.Fragment>
+        ))}
+      </aside>
+    </>
   );
 }
 
