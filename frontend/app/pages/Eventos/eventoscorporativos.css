@@ -1,0 +1,102 @@
+.internalContainer {
+  padding: 32px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #ffffff;
+  min-height: 80vh;
+}
+
+.internalHeader h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.internalHeader p {
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 32px;
+  max-width: 700px;
+  line-height: 1.5;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.contentCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contentCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.contentCard h3 {
+  font-size: 1.2rem;
+  color: #1e293b;
+  margin: 12px 0 8px 0;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.cardDateRow {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.cardSpeaker {
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 16px;
+}
+
+.statusTag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  align-self: flex-start;
+  margin-bottom: 16px;
+}
+
+.statusOpen { 
+  background-color: #dcfce7; 
+  color: #15803d; 
+}
+
+.statusWait { 
+  background-color: #fef9c3; 
+  color: #a16207; 
+}
+
+.internalButton {
+  background-color: #6d28d9;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin-top: auto;
+}
+
+.internalButton:hover {
+  background-color: #5b21b6;
+}
