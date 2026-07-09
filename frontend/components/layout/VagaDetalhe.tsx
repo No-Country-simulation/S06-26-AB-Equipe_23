@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Vaga } from '../../features/jobs/components/type/index.ts';
 import Badge from '../ui/Badge';
 
@@ -38,6 +39,7 @@ const sectionLabelStyle: CSSProperties = {
 };
 
 export default function VagaDetalhe({ vaga }: VagaDetalheProps) {
+  const navigate = useNavigate();
   const filtros = getFiltrosAtivos(vaga);
 
   return (
@@ -61,16 +63,34 @@ export default function VagaDetalhe({ vaga }: VagaDetalheProps) {
           )}
         </div>
 
-        <button style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          padding: '10px 20px',
-          background: '#6C3FC5', color: '#fff',
-          border: 'none', borderRadius: 99,
-          fontSize: 13, fontWeight: 500, cursor: 'pointer',
-          marginBottom: 4,
-        }}>
-          👥 Ver shortlist de candidatos
-        </button>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
+          <button
+            type="button"
+            onClick={() => navigate('/shortlist')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 20px',
+              background: '#6C3FC5', color: '#fff',
+              border: 'none', borderRadius: 99,
+              fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            }}
+          >
+            👥 Ver shortlist de candidatos
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/insights/regioes')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 20px',
+              background: '#fff', color: '#6C3FC5',
+              border: '1px solid #6C3FC5', borderRadius: 99,
+              fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            }}
+          >
+            📍 Ver insights regionais
+          </button>
+        </div>
 
         <div style={dividerStyle} />
 

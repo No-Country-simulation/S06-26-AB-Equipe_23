@@ -81,13 +81,16 @@ a:hover {
 
 .sl-topbar__left {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
 .sl-topbar__left > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -143,6 +146,8 @@ a:hover {
   font-weight: 600;
   color: var(--sl-ink);
   line-height: 1.35;
+  margin: 0;
+  min-width: 0;
 }
 
 .sl-topbar__count {
@@ -157,6 +162,7 @@ a:hover {
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .sl-topbar__right {
   display: flex;

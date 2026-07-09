@@ -16,9 +16,7 @@ interface SidebarItem {
 const SIDEBAR_ITEMS: SidebarItem[] = [
   { label: 'Minhas vagas', icon: '💼', section: 'Recrutamento', path: '/vagas' },
   { label: 'Candidatos', icon: '👥', section: 'Recrutamento' },
-  { label: 'Shortlist', icon: '📊', section: 'Recrutamento', path: '/shortlist' },
   { label: 'Dashboard executivo', icon: '📊', section: 'Diversidade', path: '/dashboard' },
-  { label: 'Insights regionais', icon: '📍', section: 'Diversidade', path: '/insights/regioes' },
   { label: 'Relatório ESG', icon: '📈', section: 'Diversidade', path: '/relatorio-esg' },
   { label: 'Saúde do time', icon: '❤️', section: 'Diversidade', path: '/saude-time' },
   { label: 'Formações', icon: '🎓', section: 'Capacitação' , path: '/trilhas-capacitacoes' },
