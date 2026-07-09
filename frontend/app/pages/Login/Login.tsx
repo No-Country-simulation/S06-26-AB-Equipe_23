@@ -13,7 +13,6 @@ export default function LoginPage() {
   
   // Estado para capturar quais campos estão com erro visual (borda vermelha)
   const [errors, setErrors] = useState<Record<string, boolean>>({});
-  const [cadastroMessage, setCadastroMessage] = useState('');
   
   // Estado Único de Formulário (Incluindo os Indicadores Atuais)
   const [formData, setFormData] = useState({
@@ -166,7 +165,8 @@ export default function LoginPage() {
     api.post('/cadastro', dadosParaEnvio)
       .then((response) => {
         console.log('Cadastro realizado com sucesso:', response.data);
-        
+        localStorage.setItem('token', response.data.token);
+
         // Limpa os dados do formulário local
         setIsCadastro(false);
         setStep(1);
@@ -250,14 +250,13 @@ export default function LoginPage() {
                   type="button"
                   className="linkButton"
                   onClick={() => {
-                    setCadastroMessage('Cadastro de novas empresas não está habilitado nesta versão demo. Use o login de recrutador fornecido para acessar o MVP.');
+                    setIsCadastro(true);
                     setErrors({});
                   }}
                 >
                   Cadastre-se
                 </button>
               </p>
-              {cadastroMessage && <p className="inputHint" style={{ textAlign: 'center', marginTop: 8 }}>{cadastroMessage}</p>}
             </div>
           ) : (
             /* ================= CADASTRO MULTI-STEP ================= */

@@ -74,6 +74,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Rotas públicas
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/cadastro").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/actuator/health").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 // Tudo mais requer autenticação

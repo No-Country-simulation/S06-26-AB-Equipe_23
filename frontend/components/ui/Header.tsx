@@ -3,9 +3,7 @@ interface HeaderProps {
   onNavChange: (nav: string) => void;
 }
 
-const NAV_ITEMS = ['Formações', 'Eventos', 'Empregabilidade', 'Mentorias', 'Métricas ESG', 'Insights'];
-
-export default function Header({ activeNav, onNavChange }: HeaderProps) {
+export default function Header(_props: HeaderProps) {
   return (
     <header style={{
       background: '#fff',
@@ -30,27 +28,6 @@ export default function Header({ activeNav, onNavChange }: HeaderProps) {
           app<span style={{ color: '#6C3FC5' }}>BiT</span>
         </span>
       </div>
-
-      <nav style={{ display: 'flex', gap: 4 }}>
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item}
-            onClick={() => onNavChange(item)}
-            style={{
-              padding: '6px 12px',
-              borderRadius: 8,
-              fontSize: 13,
-              color: activeNav === item ? '#111' : '#6b7280',
-              background: activeNav === item ? '#f3f4f6' : 'transparent',
-              fontWeight: activeNav === item ? 500 : 400,
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            {item}
-          </button>
-        ))}
-      </nav>
 
       <div style={{ marginLeft: 'auto' }}>
         <div style={{
