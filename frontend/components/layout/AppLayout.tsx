@@ -27,7 +27,11 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <Header activeNav={activeNav} onNavChange={handleNavChange} />
+      <Header
+        activeNav={activeNav}
+        onNavChange={handleNavChange}
+        onToggleSidebar={() => navigate('/vagas')}
+      />
       <main style={{ flex: 1, minHeight: 0, display: 'flex' }}>
         {children}
       </main>
