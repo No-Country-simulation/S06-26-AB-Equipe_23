@@ -49,10 +49,27 @@ function firstSkillLabel(candidate: CandidatoMatch) {
   return candidate.skills.length ? candidate.skills.map(formatarSkillMvp).join(', ') : 'Não informado';
 }
 
+function isContatoAprovado(value: unknown): value is ContatoAprovado {
+  if (!value || typeof value !== 'object') return false;
+  const contato = (value as Partial<ContatoAprovado>).contato_liberado;
+  return Boolean(
+    contato &&
+      typeof contato.nome === 'string' &&
+      typeof contato.email === 'string' &&
+      typeof contato.telefone === 'string' &&
+      typeof contato.linkedin === 'string'
+  );
+}
+
 function loadApprovedContacts(): Record<string, ContatoAprovado> {
   try {
     const raw = localStorage.getItem(APPROVED_CONTACTS_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    const parsed = raw ? JSON.parse(raw) : {};
+    if (!parsed || typeof parsed !== 'object') return {};
+
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([, value]) => isContatoAprovado(value))
+    ) as Record<string, ContatoAprovado>;
   } catch {
     return {};
   }
