@@ -45,8 +45,13 @@ function scoreStyle(s: number) {
   return { bg: '#FEF3C7', color: '#92400E', ring: '#F59E0B' };
 }
 
+function getCandidateSkills(candidate: CandidatoMatch) {
+  return Array.isArray(candidate.skills) ? candidate.skills : [];
+}
+
 function firstSkillLabel(candidate: CandidatoMatch) {
-  return candidate.skills.length ? candidate.skills.map(formatarSkillMvp).join(', ') : 'Não informado';
+  const skills = getCandidateSkills(candidate);
+  return skills.length ? skills.map(formatarSkillMvp).join(', ') : 'Não informado';
 }
 
 function isContatoAprovado(value: unknown): value is ContatoAprovado {
@@ -211,7 +216,9 @@ export default function ShortList() {
           ) : (
             <div className="sl-grid">
               {candidatos.map((candidate) => {
-                const approved = approvedContacts[candidate.candidato_id];
+                const approved = isContatoAprovado(approvedContacts[candidate.candidato_id])
+                  ? approvedContacts[candidate.candidato_id]
+                  : null;
                 const isRevealing = revealing === candidate.candidato_id;
                 const sc = scoreStyle(candidate.score_match);
                 const badge = candidate.badge_diversidade;
@@ -220,6 +227,7 @@ export default function ShortList() {
                 const nivel = formatarNivelMvp(candidate.nivel);
                 const modelo = formatarTextoMvp(candidate.modelo_trabalho_preferido ?? 'Não informado');
                 const badgeLabel = badge ? formatarTextoMvp(badge) : '';
+                const skills = getCandidateSkills(candidate);
 
                 return (
                   <article key={candidate.candidato_id} className={`sl-card${approved ? ' sl-card--aprovado' : ''}`}>
@@ -256,7 +264,7 @@ export default function ShortList() {
                     <div className="sl-card__section">
                       <p className="sl-card__section-label">Competências técnicas</p>
                       <div className="sl-card__skills">
-                        {candidate.skills.map((skill) => (
+                        {skills.map((skill) => (
                           <span key={skill} className="sl-skill">
                             {formatarSkillMvp(skill)}
                           </span>
