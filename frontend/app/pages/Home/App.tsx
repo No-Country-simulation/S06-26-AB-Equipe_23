@@ -69,7 +69,13 @@ export default function App() {
  
   const handleNavChange = (nav: string) => {
     setActiveNav(nav);
-    if (nav === 'Métricas ESG') {
+    if (nav === 'Formações') {
+      navigate('/trilhas-capacitacoes');
+    } else if (nav === 'Eventos') {
+      navigate('/eventos');
+    } else if (nav === 'Mentorias') {
+      navigate('/mentorias');
+    } else if (nav === 'Métricas ESG') {
       setActiveNav('Empregabilidade');
       setActiveSidebarItem('Relatório ESG');
     } else if (nav === 'Insights') {

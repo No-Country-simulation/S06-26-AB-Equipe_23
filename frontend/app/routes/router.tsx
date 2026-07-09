@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from '../pages/Home/App.tsx';
 import ShortList from '../pages/Shortlist/shortlist.tsx';
 import LoginPage from '../pages/Login/Login.tsx';
+import TrilhasCapacitacaoPage from '../pages/Trilhascapacitacoes/trilhadecapacitacoes.tsx';
+import EventosCorporativosPage from '../pages/Eventos/Eventoscorporativos.tsx';
+import MentoriasPage from '../pages/Mentorias/mentorias.tsx';
 
 const SobreRoute = () => (
   <div>
@@ -42,6 +45,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/formacoes" element={<TrilhasCapacitacaoPage />} />
+          <Route path="/trilhas-capacitacoes" element={<TrilhasCapacitacaoPage />} />
+          <Route path="/eventos" element={<EventosCorporativosPage />} />
+          <Route path="/mentorias" element={<MentoriasPage />} />
           <Route path="/vagas" element={<Home />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/insights/regioes" element={<Home />} />

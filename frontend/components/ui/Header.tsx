@@ -3,7 +3,7 @@ interface HeaderProps {
   onNavChange: (nav: string) => void;
 }
 
-const NAV_ITEMS = ['Formações', 'Empregabilidade', 'Mentorias', 'Métricas ESG', 'Insights'];
+const NAV_ITEMS = ['Formações', 'Eventos', 'Empregabilidade', 'Mentorias', 'Métricas ESG', 'Insights'];
 
 export default function Header({ activeNav, onNavChange }: HeaderProps) {
   return (
