@@ -16,10 +16,13 @@ const ROTAS_EXTERNAS: Record<string, string> = {
 
 const PAINEL_POR_ROTA: Record<string, string> = {
   '/vagas': 'Minhas vagas',
+  '/candidatos': 'Candidatos',
   '/dashboard': 'Dashboard executivo',
   '/insights/regioes': 'Insights regionais',
+  '/insights-regionais': 'Insights regionais',
   '/relatorio-esg': 'Relatório ESG',
   '/saude-time': 'Saúde do time',
+  '/saude-do-time': 'Saúde do time',
 };
  
 const PAINEIS_LOCAIS = [

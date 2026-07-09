@@ -47,16 +47,21 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/formacoes" element={<TrilhasCapacitacaoPage />} />
           <Route path="/trilhas-capacitacoes" element={<TrilhasCapacitacaoPage />} />
+          <Route path="/trilhas" element={<TrilhasCapacitacaoPage />} />
           <Route path="/eventos" element={<EventosCorporativosPage />} />
           <Route path="/mentorias" element={<MentoriasPage />} />
           <Route path="/vagas" element={<Home />} />
+          <Route path="/candidatos" element={<Home />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/insights/regioes" element={<Home />} />
+          <Route path="/insights-regionais" element={<Home />} />
           <Route path="/relatorio-esg" element={<Home />} />
           <Route path="/saude-time" element={<Home />} />
+          <Route path="/saude-do-time" element={<Home />} />
           <Route path="/sobre" element={<SobreRoute />} />
           <Route path="/contato" element={<ContatoRoute />} />
           <Route path="/shortlist" element={<ShortList />} />
+          <Route path="/shortlist/:vagaId" element={<ShortList />} />
           <Route path="*" element={<NaoEncontradaRoute />} />
         </Routes>
       </main>
