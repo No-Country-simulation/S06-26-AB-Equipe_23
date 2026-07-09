@@ -15,6 +15,14 @@ Garantir que backend e frontend consumam os novos dados com contrato claro, evid
    - scripts/valida_integracao_bi.py
 3. Teste de contagem pos-migration:
    - backend/src/test/java/br/com/appbit/appbit/MigrationV5CountsTest.java
+4. Skills do banco conectadas ao motor de match (08/07/2026):
+   - CandidatoSkillEntity, CandidatoSkillId (bridge_candidato_skill via JPA)
+   - CandidatoEntity com @OneToMany candidatoSkills
+   - CandidatoMapper extraindo skills reais: candidatoSkills -> skill -> nome
+   - V6__add_anos_experiencia_candidato.sql
+5. Endpoint /insights/regioes sincronizado com payload BI (08/07/2026):
+   - RegiaoInsightDTO com qualidade_sinal e indicador_conectividade
+   - insights_regioes.json atualizado para 24 regioes com os dois campos
 
 ## 3. Contrato de dados (camada banco)
 
@@ -88,15 +96,25 @@ Observacao:
 2. Contagens no banco:
    - comando: .\\mvnw.cmd -Dtest=MigrationV5CountsTest test
    - resultado: trilhas=6, eventos=24, mentores=10.
-3. Validacao BI:
+3. Validacao BI (executada em 07/07/2026):
    - comando: python scripts/valida_integracao_bi.py
-   - resultado: validacao dos novos servicos aprovada.
+   - saida obtida:
+     - OK: candidatos=8, privacidade preservada
+     - OK: antenas=132, regioes=24, sessoes e concentracao reconciliadas
+     - OK: metricas empresariais demonstrativas=1152, segmentos=8
+     - OK: servicos_mvp formacoes=6, eventos=24, mentorias=10
+     - OK: locais de eventos mapeados para 24 regioes validas
+     - OK: artefatos artificiais de candidatos ausentes
+   - exit code: 0 (todas as assertivas passaram)
+4. DTOs de backend padronizados (07/07/2026):
+   - EventoEstruturanteResponseDTO: todos os 8 campos com @JsonProperty explicito.
+   - MentorDiversidadeResponseDTO: todos os 6 campos com @JsonProperty explicito.
 
 ## 7. Checklist de aceite do handoff
 
-- [ ] Backend disponibiliza endpoints de leitura para os 3 modulos.
-- [ ] Frontend renderiza listas com dados reais do banco.
-- [ ] Data/BI confirma consistencia de local com as 24 regioes.
+- [x] Backend disponibiliza endpoints de leitura para os 3 modulos.
+- [x] Frontend renderiza listas com dados reais do banco.
+- [x] Data/BI confirma consistencia de local com as 24 regioes.
 - [ ] Time valida comportamento em ambiente de homologacao.
 
 ## 8. Responsaveis sugeridos

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,12 +61,17 @@ public class SecurityConfig {
             // CSRF desativado — API stateless com JWT
             .csrf(AbstractHttpConfigurer::disable)
 
+            // CORS delegado ao CorsConfig (WebMvcConfigurer)
+            .cors(Customizer.withDefaults())
+
             // Sem sessão HTTP
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
             // Regras de acesso
             .authorizeHttpRequests(auth -> auth
+                // Preflight OPTIONS liberado globalmente
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Rotas públicas
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/actuator/health").permitAll()

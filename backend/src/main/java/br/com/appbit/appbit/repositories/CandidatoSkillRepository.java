@@ -18,7 +18,7 @@ public interface CandidatoSkillRepository extends JpaRepository<CandidatoSkillEn
 
     List<CandidatoSkillEntity> findBySkill(SkillEntity skill);
 
-    @Query("SELECT cs FROM CandidatoSkillEntity cs WHERE cs.candidato.id = :candidatoId ORDER BY cs.nivel DESC")
+    @Query("SELECT cs FROM CandidatoSkillEntity cs WHERE cs.candidato.id = :candidatoId ORDER BY cs.nivelSkill DESC")
     List<CandidatoSkillEntity> findSkillsByCandidate(@Param("candidatoId") Integer candidatoId);
 
     @Query("SELECT cs FROM CandidatoSkillEntity cs WHERE cs.skill.id = :skillId AND cs.candidato.ativo = true")

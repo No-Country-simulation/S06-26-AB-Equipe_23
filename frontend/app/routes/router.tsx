@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from '../pages/Home/App.tsx';
 import ShortList from '../pages/Shortlist/shortlist.tsx';
+import LoginPage from '../pages/Login/Login.tsx';
 
 const SobreRoute = () => (
   <div>
@@ -40,6 +41,7 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/insights/regioes" element={<Home />} />
           <Route path="/sobre" element={<SobreRoute />} />

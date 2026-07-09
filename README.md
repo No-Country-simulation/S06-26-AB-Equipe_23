@@ -109,63 +109,150 @@ tests/        Score, anonymization and regression tests
 
 ## How to Run
 
-### Backend
+### Prerequisites
 
-Requirements:
+| Tool | Version | Purpose |
+|---|---|---|
+| Java | 21 | Backend |
+| Maven Wrapper | included | Build backend |
+| MySQL | 8+ | Database |
+| Node.js | 18+ | Frontend |
+| npm | 9+ | Frontend dependencies |
+| Python | 3.10+ | Data / BI validation |
 
-- Java 21
-- Maven Wrapper
-- MySQL for local database execution
+---
 
-```bash
-cd backend
-./mvnw test
-./mvnw spring-boot:run
+### Step 1 — Create the database
+
+Open MySQL Workbench or a MySQL terminal and run:
+
+```sql
+CREATE DATABASE IF NOT EXISTS appbit
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 ```
 
-On Windows:
+---
 
-```powershell
-cd backend
-.\mvnw.cmd test
+### Step 2 — Configure backend environment
+
+Copy the example file and fill in your MySQL credentials:
+
+```bash
+cp backend/env.example backend/.env
+```
+
+Edit `backend/.env`:
+
+```env
+DB_HOST_APPBIT=localhost
+DB_PORT_APPBIT=3306
+DB_NAME_APPBIT=appbit
+DB_USER_APPBIT=root
+DB_PASSWORD_APPBIT=your_mysql_password
+JWT_SECRET=97c4e511488e02bf17dbec1451d0879e64e526487e411ea3ad858db4d94cd2f3
+JWT_EXPIRATION_MS=86400000
+APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
+```
+
+> Note: Spring Boot reads these as system environment variables, not directly from `.env`.
+> On Windows, set them in the current terminal session before running:
+>
+> ```powershell
+> $env:DB_PASSWORD_APPBIT="your_mysql_password"
+> ```
+>
+> Or configure them in your IDE run configuration.
+> The defaults hardcoded in `application.yaml` are used if the variables are not set.
+
+---
+
+### Step 3 — Run the backend
+
+Open a terminal in the `backend/` folder:
+
+```bash
+# Linux / macOS
+./mvnw spring-boot:run
+
+# Windows
 .\mvnw.cmd spring-boot:run
 ```
 
-### Frontend
+On first run, Flyway applies all migrations automatically (V1 to V5).
+This creates all tables and seeds the demo data — candidates, regions, training tracks, events and mentors.
 
-Requirements:
+Expected output when ready:
 
-- Node.js
-- npm
+```
+Successfully applied 5 migrations to schema "appbit"
+Tomcat started on port 8080
+Started AppbitApplication in X seconds
+```
+
+The API is now available at `http://localhost:8080`.
+
+Demo credentials:
+
+```
+email:  recrutador@appbit.com.br
+senha:  recrutador123
+```
+
+---
+
+### Step 4 — Run the frontend
+
+Open a **second terminal** at the project root (where `package.json` is):
 
 ```bash
-cd frontend
-npm install
+npm install   # only needed on first run
 npm run dev
 ```
 
-Build:
+The frontend starts at `http://localhost:5173` and connects to the backend at `http://localhost:8080`.
+
+---
+
+### Step 5 — Validate the data layer (optional)
 
 ```bash
-npm run build
-```
-
-### Data / BI
-
-Requirements:
-
-- Python
-- Pytest
-
-```bash
-python -m pytest tests/test_score_match.py tests/test_score_regression.py tests/test_anonymization.py -q
 python scripts/valida_integracao_bi.py
 ```
 
-Generate the MVP shortlist:
+Expected output:
+
+```
+OK: candidatos=8, privacidade preservada
+OK: antenas=132, regioes=24, sessoes e concentracao reconciliadas
+OK: metricas empresariais demonstrativas=1152, segmentos=8
+OK: servicos_mvp formacoes=6, eventos=24, mentorias=10
+OK: locais de eventos mapeados para 24 regioes validas
+OK: artefatos artificiais de candidatos ausentes
+```
+
+---
+
+### Quick reference — two terminals
+
+| Terminal | Folder | Command |
+|---|---|---|
+| 1 — Backend | `backend/` | `.\mvnw.cmd spring-boot:run` |
+| 2 — Frontend | project root | `npm run dev` |
+
+---
+
+### Run backend tests
 
 ```bash
-python -m scripts.gera_shortlist_mvp
+# All tests
+.\mvnw.cmd test
+
+# Matching logic only
+.\mvnw.cmd test -Dtest=MatchingServiceTest
+
+# Migration counts (V5 seed data)
+.\mvnw.cmd test -Dtest=MigrationV5CountsTest
 ```
 
 ## Environment Variables

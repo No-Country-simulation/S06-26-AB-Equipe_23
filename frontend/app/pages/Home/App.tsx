@@ -61,7 +61,6 @@ export default function App() {
       setActiveSidebarItem('Minhas vagas');
     }
   };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Header activeNav={activeNav} onNavChange={handleNavChange} />
@@ -81,7 +80,6 @@ export default function App() {
               {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
               {activeSidebarItem === 'Insights regionais'  && <PainelInsightsRegionais />}
               {['Relatório ESG', 'Saúde do time'].includes(activeSidebarItem) && <PainelMetricasEmpresa />}
-
               {/* EmptyState só para itens sem destino definido */}
               {!ITENS_CONHECIDOS.includes(activeSidebarItem) && (
                 <EmptyState label={activeSidebarItem} />

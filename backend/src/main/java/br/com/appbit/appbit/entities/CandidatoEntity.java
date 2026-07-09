@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "dim_candidato", indexes = {
         @Index(name = "idx_regiao", columnList = "regiao_id"),
@@ -20,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = { "regiao" })
+@ToString(exclude = { "regiao", "candidatoSkills" })
 public class CandidatoEntity {
 
     @Id
@@ -61,7 +64,10 @@ public class CandidatoEntity {
     private String diversidade;
 
     @Column(name = "disponibilidade")
-    private String disponibilidade;
+    private String modeloTrabalhoPreferido;
+
+    @Column(name = "anos_experiencia")
+    private Integer anosExperiencia;
 
     @NotNull(message = "O status é obrigatório")
     @Column(nullable = false)
@@ -71,4 +77,7 @@ public class CandidatoEntity {
     @JoinColumn(name = "regiao_id", nullable = false)
     @NotNull(message = "A região é obrigatória")
     private RegiaoEntity regiao;
+
+    @OneToMany(mappedBy = "candidato", fetch = FetchType.LAZY)
+    private List<CandidatoSkillEntity> candidatoSkills = new ArrayList<>();
 }

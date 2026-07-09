@@ -76,7 +76,7 @@ public class CandidatoService {
         candidato.setMunicipio(updateDTO.municipio());
         candidato.setGrupo(updateDTO.grupo());
         candidato.setDiversidade(updateDTO.diversidade());
-        candidato.setDisponibilidade(updateDTO.disponibilidade());
+        candidato.setModeloTrabalhoPreferido(updateDTO.disponibilidade());
         candidato.setAtivo(updateDTO.ativo());
         candidato.setRegiao(regiao);
 

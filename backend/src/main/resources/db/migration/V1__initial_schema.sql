@@ -1,4 +1,4 @@
-CREATE TABLE dim_regiao (
+CREATE TABLE IF NOT EXISTS dim_regiao (
     regiao_id INT AUTO_INCREMENT PRIMARY KEY,
     cluster VARCHAR(80) NOT NULL,
     municipio VARCHAR(80) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE dim_regiao (
     fonte VARCHAR(80) NOT NULL DEFAULT 'Visent CDRView'
 );
 
-CREATE TABLE dim_antena (
+CREATE TABLE IF NOT EXISTS dim_antena (
     ecgi VARCHAR(20) PRIMARY KEY,
     regiao_id INT NULL,
     cluster VARCHAR(80) NOT NULL,
@@ -19,16 +19,12 @@ CREATE TABLE dim_antena (
         FOREIGN KEY (regiao_id) REFERENCES dim_regiao(regiao_id)
 );
 
-CREATE TABLE dim_candidato (
+CREATE TABLE IF NOT EXISTS dim_candidato (
     candidato_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(120) NOT NULL,
     cargo_alvo VARCHAR(120) NULL,
     nivel VARCHAR(40) NOT NULL,
     regiao_id INT NULL,
-   /* cep         VARCHAR(10)    NULL, /*modificado*/
-    lat         DECIMAL(12,6)  NULL, /*modificado*/
-    lon         DECIMAL(12,6)  NULL, /*modificado*/
-   */
     cluster_residencia VARCHAR(80) NULL,
     municipio_residencia VARCHAR(80) NULL,
     grupo_subrepresentado VARCHAR(120) NULL,
@@ -39,13 +35,13 @@ CREATE TABLE dim_candidato (
         FOREIGN KEY (regiao_id) REFERENCES dim_regiao(regiao_id)
 );
 
-CREATE TABLE dim_skill (
+CREATE TABLE IF NOT EXISTS dim_skill (
     skill_id INT AUTO_INCREMENT PRIMARY KEY,
     nome_skill VARCHAR(80) NOT NULL UNIQUE,
     categoria VARCHAR(80) NULL
 );
 
-CREATE TABLE bridge_candidato_skill (
+CREATE TABLE IF NOT EXISTS bridge_candidato_skill (
     candidato_id INT NOT NULL,
     skill_id INT NOT NULL,
     nivel_skill VARCHAR(40) NULL,
@@ -56,7 +52,7 @@ CREATE TABLE bridge_candidato_skill (
         FOREIGN KEY (skill_id) REFERENCES dim_skill(skill_id)
 );
 
-CREATE TABLE dim_vaga (
+CREATE TABLE IF NOT EXISTS dim_vaga (
     vaga_id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id VARCHAR(40) NOT NULL,
     titulo VARCHAR(160) NOT NULL,
@@ -69,7 +65,7 @@ CREATE TABLE dim_vaga (
     criada_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE bridge_vaga_skill (
+CREATE TABLE IF NOT EXISTS bridge_vaga_skill (
     vaga_id INT NOT NULL,
     skill_id INT NOT NULL,
     peso DECIMAL(5,2) NOT NULL DEFAULT 1.00,
@@ -80,7 +76,7 @@ CREATE TABLE bridge_vaga_skill (
         FOREIGN KEY (skill_id) REFERENCES dim_skill(skill_id)
 );
 
-CREATE TABLE fact_concentracao_regional (
+CREATE TABLE IF NOT EXISTS fact_concentracao_regional (
     concentracao_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     ecgi VARCHAR(20) NOT NULL,
     cluster VARCHAR(80) NOT NULL,
@@ -98,7 +94,7 @@ CREATE TABLE fact_concentracao_regional (
         FOREIGN KEY (ecgi) REFERENCES dim_antena(ecgi)
 );
 
-CREATE TABLE fact_fluxo_regional (
+CREATE TABLE IF NOT EXISTS fact_fluxo_regional (
     fluxo_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     cluster_origem VARCHAR(80) NOT NULL,
     municipio_origem VARCHAR(80) NOT NULL,
@@ -110,7 +106,7 @@ CREATE TABLE fact_fluxo_regional (
     periodo_predominante VARCHAR(20) NULL
 );
 
-CREATE TABLE fact_match (
+CREATE TABLE IF NOT EXISTS fact_match (
     match_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     vaga_id INT NOT NULL,
     candidato_id INT NOT NULL,

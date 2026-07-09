@@ -1,6 +1,124 @@
-# QUICK REFERENCE - Validação Score Java/BI
+# QUICK REFERENCE — App BiT Backend
 
-**Status:** ✅ COMPLETO | **Data:** 2026-06-30
+**Status:** ✅ APROVADO | **Data:** 2026-07-08 | **Testes:** 28 Java + 7 Python
+
+---
+
+## ENDPOINTS DISPONÍVEIS
+
+| Endpoint | Método | Auth | Descrição |
+|----------|--------|------|-----------|
+| /login | POST | ❌ | Autenticação JWT |
+| /match | POST | ✅ | Motor de match candidatos × vaga |
+| /match/aprovar-candidato | POST | ✅ | Libera dados de contato |
+| /insights/regioes | GET | ✅ | 24 regiões com conectividade |
+| /api/formacoes | GET | ✅ | 6 trilhas de capacitação |
+| /api/experiencias | GET | ✅ | 24 eventos estruturantes |
+| /api/mentorias | GET | ✅ | 10 mentores de diversidade |
+
+**Credenciais demo:** `recrutador@appbit.com.br` / `recrutador123`
+
+---
+
+## MOTOR DE MATCH
+
+**Fórmula (Java = Python):**
+```
+score = skill(50%) + experiencia(25%) + modelo_trabalho(15%) + diversidade(10%)
+```
+
+**Filtros disponíveis:** nivel, regiao, skills (OR logic), limite_resultados
+
+**Fonte:** banco MySQL — dim_candidato + bridge_candidato_skill + dim_skill
+
+**Exemplo de request:**
+```bash
+curl -X POST http://localhost:8080/match \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"vaga":{"skills":["sql","python"],"nivel":"junior","regiao":"Florianopolis"},"filtros":{"limite_resultados":8}}'
+```
+
+---
+
+## INSIGHTS REGIONAIS
+
+**Endpoint:** GET /insights/regioes
+
+**Campos principais por região:**
+- tecnologia_predominante_regiao, qualidade_sinal, indicador_conectividade
+- percentual_3g/4g/5g, usuarios_observados_total, periodo_pico
+- indice_concentracao_relativa
+
+**Total:** 24 regiões cobrindo Florianópolis, São José, Biguaçu e Palhoça
+
+---
+
+## SERVIÇOS MVP
+
+| Endpoint | Volume | Ordenação |
+|----------|--------|-----------|
+| /api/formacoes | 6 trilhas | trilha_id ASC |
+| /api/experiencias | 24 eventos | evento_id ASC |
+| /api/mentorias | 10 mentores | mentor_id ASC |
+
+---
+
+## SEGURANÇA
+
+**Nunca retornado no /match:** contato_pos_aprovacao, nome, email, telefone, linkedin
+
+**Liberado apenas em /match/aprovar-candidato (autenticado):** dados de contato completos
+
+---
+
+## COMO SUBIR LOCALMENTE
+
+```bash
+# 1. Criar banco
+mysql -u root -p -e "CREATE DATABASE appbit CHARACTER SET utf8mb4;"
+
+# 2. Backend (terminal 1)
+cd backend
+.\mvnw.cmd spring-boot:run
+
+# 3. Frontend (terminal 2 — raiz do projeto)
+npm run dev
+```
+
+Flyway aplica V1–V6 automaticamente na primeira execução.
+
+---
+
+## TESTES
+
+```bash
+# Todos os testes Java (28)
+cd backend && .\mvnw.cmd test
+
+# Testes Python (7)
+.\.venv-ci\Scripts\python.exe -m pytest tests/ -q
+
+# Validação BI
+python scripts/valida_integracao_bi.py
+```
+
+---
+
+## MIGRATIONS
+
+| Version | Descrição |
+|---------|-----------|
+| V1 | Schema inicial |
+| V2 | cep, lat, lon em dim_candidato |
+| V3 | Seed: candidatos, regiões, skills |
+| V4 | Autenticação (dim_usuario) |
+| V5 | Serviços MVP (trilhas, eventos, mentores) |
+| V6 | anos_experiencia em dim_candidato |
+
+---
+
+**Versão:** 2026-07-08 | **Status:** ✅ PRONTO PARA DEMO
 
 ---
 

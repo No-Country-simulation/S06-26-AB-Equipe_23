@@ -20,6 +20,8 @@ public record RegiaoInsightDTO(
                 @JsonProperty("percentual_5g") Double percentual5g,
                 @JsonProperty("percentual_outros") Double percentualOutros,
                 @JsonProperty("tecnologia_predominante_regiao") String tecnologiaPredominanteRegiao,
+                @JsonProperty("qualidade_sinal") String qualidadeSinal,
+                @JsonProperty("indicador_conectividade") String indicadorConectividade,
                 @JsonProperty("usuarios_observados_total") Long usuariosObservadosTotal,
                 @JsonProperty("sessoes_concentracao_total") Long sessoesConcentracaoTotal,
                 @JsonProperty("periodo_pico") String periodoPico,

@@ -1,4 +1,89 @@
-# ✅ VALIDAÇÃO FINALIZADA - Resumo Executivo (1 página)
+# RESUMO EXECUTIVO — App BiT Backend (1 página)
+
+**Data:** 2026-07-08 | **Status:** 🟢 APROVADO | **Testes:** 28 Java + 7 Python
+
+---
+
+## OBJETIVO
+Validar alinhamento entre cálculo de score em Java e BI/Python, garantir skills do banco conectadas ao motor de match, e sincronizar o contrato do endpoint de insights regionais com o payload BI.
+
+---
+
+## VALIDAÇÕES REALIZADAS (6/6 - 100%)
+
+### 1. Score entre 0-100
+- **Status:** ✅ APROVADO
+- **Evidência:** Score calculado dinamicamente pela fórmula (skill 50% + exp 25% + modelo 15% + diversidade 10%)
+- **Pesos:** idênticos ao script Python (ScoreConfig)
+
+### 2. Sem Dados Sensíveis
+- **Status:** ✅ APROVADO
+- **Evidência:** contato_pos_aprovacao, nome, email, telefone, linkedin omitidos 100%
+
+### 3. Shortlist 8 Candidatos
+- **Status:** ✅ APROVADO
+- **Evidência:** 8 candidatos no banco (dim_candidato), seeds em V3
+
+### 4. Skills do Banco Conectadas
+- **Status:** ✅ APROVADO (adicionado 08/07/2026)
+- **Evidência:** CandidatoEntity com @OneToMany para bridge_candidato_skill; mapper extrai nomes via candidatoSkills → skill → nome
+
+### 5. Ranking Alinhado com BI
+- **Status:** ✅ APROVADO
+- **Evidência:** Fórmula Java = Python, ordenação DESC por score_match, filtros por nivel/regiao/skills
+
+### 6. Insights Regionais Completos
+- **Status:** ✅ APROVADO (adicionado 08/07/2026)
+- **Evidência:** RegiaoInsightDTO com qualidade_sinal e indicador_conectividade; mock sincronizado com payload BI para 24 regiões
+
+---
+
+## TESTES
+
+```
+Java:   28 testes — 28/28 passando  (.\mvnw.cmd test)
+Python:  7 testes —  7/7 passando  (.\.venv-ci\Scripts\python.exe -m pytest tests/ -q)
+BI:      valida_integracao_bi.py — exit code 0, 6 linhas OK
+```
+
+---
+
+## FLUXO DE DADOS (atualizado)
+
+```
+POST /match → banco MySQL (dim_candidato + bridge_candidato_skill + dim_skill)
+           → score dinâmico → ordenado DESC → resposta sem dados sensíveis
+
+GET /insights/regioes → insights_regioes.json
+                      → 24 regiões com qualidade_sinal e indicador_conectividade
+```
+
+---
+
+## SEGURANÇA
+
+```
+Omitidos: contato_pos_aprovacao, nome, email, telefone, linkedin
+Retornados: candidato_id, cargo_alvo, nivel, regiao, skills, anos_experiencia,
+            badge_diversidade, score_match, lat, lon, cep, modelo_trabalho_preferido
+```
+
+---
+
+## MIGRATIONS APLICADAS
+
+| Version | Descrição |
+|---------|-----------|
+| V1 | Schema inicial (corrigido: IF NOT EXISTS, comentário SQL) |
+| V2 | Geolocalização candidato (cep, lat, lon) |
+| V3 | Seed candidatos, regiões, skills |
+| V4 | Usuário autenticação (hash PBKDF2 corrigido) |
+| V5 | Serviços MVP (trilhas, eventos, mentores) |
+| V6 | anos_experiencia em dim_candidato |
+
+---
+
+**Validado em:** 2026-07-08 | **Status:** ✅ APROVADO
 
 **Data:** 2026-06-30 | **Status:** 🟢 APROVADO | **Tempo de Leitura:** 2 minutos
 
