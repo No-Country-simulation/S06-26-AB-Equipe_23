@@ -104,6 +104,8 @@ export default function ShortList() {
   );
 
   useEffect(() => {
+    // The query parameter can change while this component stays mounted.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setApprovedContacts(loadApprovedContacts(approvedContactsStorageKey));
   }, [approvedContactsStorageKey]);
 
@@ -118,7 +120,7 @@ export default function ShortList() {
       });
   }, []);
 
-  const candidatos = match?.candidatos ?? [];
+  const candidatos = useMemo(() => match?.candidatos ?? [], [match]);
 
   const averageScore = useMemo(() => {
     if (!candidatos.length) return 0;

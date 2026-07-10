@@ -1,4 +1,3 @@
-import.meta.env.VITE_API_URL;
 import axios from 'axios';
 import { clearAppSession } from './session';
 

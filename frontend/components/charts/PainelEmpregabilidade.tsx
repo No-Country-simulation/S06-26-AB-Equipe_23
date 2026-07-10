@@ -31,6 +31,7 @@ export default function PainelEmpregabilidade() {
             Vagas publicadas{' '}
             <span style={{ color: '#9ca3af', fontWeight: 400 }}>({vagas.length})</span>
           </h3>
+          <span style={{ color: '#64748b', fontSize: 10 }}>Simulação local</span>
           <button
             onClick={() => setModalAberto(true)}
             style={{
