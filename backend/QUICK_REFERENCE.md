@@ -16,7 +16,7 @@
 | /api/experiencias | GET | ✅ | 24 eventos estruturantes |
 | /api/mentorias | GET | ✅ | 10 mentores de diversidade |
 
-**Credenciais demo:** `recrutador@appbit.com.br` / `recrutador123`
+**Credenciais demo:** `recrutador@appbit.com.br` / `Recrutador@Bit2026!`
 
 ---
 

@@ -196,7 +196,7 @@ Demo credentials:
 
 ```
 email:  recrutador@appbit.com.br
-senha:  recrutador123
+senha:  Recrutador@Bit2026!
 ```
 
 ---
