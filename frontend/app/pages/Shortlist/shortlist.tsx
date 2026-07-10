@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { aprovarCandidato, executarMatch } from '../../../lib/appbitApi';
 import type { CandidatoMatch, ContatoAprovado, MatchResponse } from '../../../lib/appbitTypes';
 import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
@@ -28,8 +28,6 @@ const VAGA_OFICIAL = {
   local: 'Brasil',
   scoreESG: 92,
 };
-
-const APPROVED_CONTACTS_STORAGE_KEY = `appbit:shortlist:approved:${EMPRESA_ID}:${VAGA_OFICIAL.titulo}`;
 
 const BADGE_COLORS: Record<string, { bg: string; color: string }> = {
   Mulher: { bg: '#F3EFFE', color: '#6D28D9' },
@@ -66,9 +64,13 @@ function isContatoAprovado(value: unknown): value is ContatoAprovado {
   );
 }
 
-function loadApprovedContacts(): Record<string, ContatoAprovado> {
+function getApprovedContactsStorageKey(vagaId: string) {
+  return `appbit:shortlist:approved:${EMPRESA_ID}:vaga:${vagaId}`;
+}
+
+function loadApprovedContacts(storageKey: string): Record<string, ContatoAprovado> {
   try {
-    const raw = localStorage.getItem(APPROVED_CONTACTS_STORAGE_KEY);
+    const raw = localStorage.getItem(storageKey);
     const parsed = raw ? JSON.parse(raw) : {};
     if (!parsed || typeof parsed !== 'object') return {};
 
@@ -80,9 +82,9 @@ function loadApprovedContacts(): Record<string, ContatoAprovado> {
   }
 }
 
-function saveApprovedContacts(contacts: Record<string, ContatoAprovado>) {
+function saveApprovedContacts(storageKey: string, contacts: Record<string, ContatoAprovado>) {
   try {
-    localStorage.setItem(APPROVED_CONTACTS_STORAGE_KEY, JSON.stringify(contacts));
+    localStorage.setItem(storageKey, JSON.stringify(contacts));
   } catch {
     // Se o navegador bloquear armazenamento local, a aprovação segue válida na sessão atual.
   }
@@ -90,11 +92,20 @@ function saveApprovedContacts(contacts: Record<string, ContatoAprovado>) {
 
 export default function ShortList() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const vagaId = searchParams.get('vaga') ?? 'mvp-oficial';
+  const approvedContactsStorageKey = useMemo(() => getApprovedContactsStorageKey(vagaId), [vagaId]);
   const [match, setMatch] = useState<MatchResponse | null>(null);
   const [error, setError] = useState('');
   const [revealing, setRevealing] = useState<string | null>(null);
   const [approvalError, setApprovalError] = useState<Record<string, string>>({});
-  const [approvedContacts, setApprovedContacts] = useState<Record<string, ContatoAprovado>>(() => loadApprovedContacts());
+  const [approvedContacts, setApprovedContacts] = useState<Record<string, ContatoAprovado>>(() =>
+    loadApprovedContacts(approvedContactsStorageKey)
+  );
+
+  useEffect(() => {
+    setApprovedContacts(loadApprovedContacts(approvedContactsStorageKey));
+  }, [approvedContactsStorageKey]);
 
   useEffect(() => {
     executarMatch(MATCH_REQUEST)
@@ -122,7 +133,7 @@ export default function ShortList() {
       const contato = await aprovarCandidato({ candidato_id: candidateId, empresa_id: EMPRESA_ID });
       setApprovedContacts((prev) => {
         const next = { ...prev, [candidateId]: contato };
-        saveApprovedContacts(next);
+        saveApprovedContacts(approvedContactsStorageKey, next);
         return next;
       });
     } catch {

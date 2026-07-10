@@ -66,7 +66,7 @@ export default function VagaDetalhe({ vaga }: VagaDetalheProps) {
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
           <button
             type="button"
-            onClick={() => navigate('/shortlist')}
+            onClick={() => navigate(`/shortlist?vaga=${vaga.id}`)}
             style={{
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '10px 20px',
