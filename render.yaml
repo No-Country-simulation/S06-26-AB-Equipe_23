@@ -11,7 +11,7 @@ services:
       - key: DB_HOST_APPBIT
         sync: false
       - key: DB_PORT_APPBIT
-        value: "3306"
+        value: "28396"
       - key: DB_NAME_APPBIT
         sync: false
       - key: DB_USER_APPBIT
