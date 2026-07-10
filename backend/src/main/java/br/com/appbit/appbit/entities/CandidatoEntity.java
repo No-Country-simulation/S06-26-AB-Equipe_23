@@ -49,10 +49,10 @@ public class CandidatoEntity {
     @Column(name = "cep")
     private String cep;
 
-    @Column(name = "lon")
+    @Column(name = "lon", precision = 12, scale = 6)
     private BigDecimal lon;
 
-    @Column(name = "lat")
+    @Column(name = "lat", precision = 12, scale = 6)
     private BigDecimal lat;
 
     @Column(name = "municipio_residencia")

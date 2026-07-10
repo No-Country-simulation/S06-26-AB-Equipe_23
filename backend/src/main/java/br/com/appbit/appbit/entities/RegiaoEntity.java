@@ -35,12 +35,12 @@ public class RegiaoEntity {
 
     @DecimalMin(value = "-90.0", message = "Latitude deve estar entre -90 e 90")
     @DecimalMax(value = "90.0", message = "Latitude deve estar entre -90 e 90")
-    @Column(name = "lat", nullable = true)
+    @Column(name = "lat", nullable = true, precision = 12, scale = 6)
     private BigDecimal lat;
 
     @DecimalMin(value = "-180.0", message = "Longitude deve estar entre -180 e 180")
     @DecimalMax(value = "180.0", message = "Longitude deve estar entre -180 e 180")
-    @Column(name = "lon", nullable = true)
+    @Column(name = "lon", nullable = true, precision = 12, scale = 6)
     private BigDecimal lon;
 
     @Column(name = "perfil_regiao")
