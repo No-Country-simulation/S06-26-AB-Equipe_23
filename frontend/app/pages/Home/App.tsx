@@ -55,7 +55,7 @@ export default function App() {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState('Empregabilidade');
   const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
-  const [sidebarAberta, setSidebarAberta] = useState(true);
+  const [sidebarAberta, setSidebarAberta] = useState(() => window.innerWidth >= 900);
 
   const painelRoteado = PAINEL_POR_ROTA[location.pathname];
   const navExibido = painelRoteado ? 'Empregabilidade' : activeNav;

@@ -25,7 +25,7 @@ export default function PainelRelatorioESG() {
   const powerBiUrl = import.meta.env.VITE_POWERBI_URL;
 
   return (
-    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
+    <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
       <div style={{ display: 'inline-block', background: '#dcfce7', color: '#166534', borderRadius: 6, padding: '7px 10px', fontSize: 12, fontWeight: 700 }}>
         RELATÓRIO ESG - DADOS DEMONSTRATIVOS
       </div>
@@ -35,11 +35,11 @@ export default function PainelRelatorioESG() {
         Indicadores executivos de diversidade, privacidade e impacto regional para apoiar a tomada de decisão do RH.
       </p>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <section className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
         {indicadores.map((item) => <Card key={item.label} label={item.label} value={item.value} />)}
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <section className="two-column-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 18 }}>
           <h2 style={{ fontSize: 16, marginTop: 0 }}>Progresso das Metas ESG</h2>
           {metasEsg.map((meta) => (

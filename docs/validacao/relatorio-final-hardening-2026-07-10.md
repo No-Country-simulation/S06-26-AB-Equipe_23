@@ -2,7 +2,7 @@
 
 ## Veredito
 
-APROVADO COM RESSALVAS. Os contratos de matching, autenticacao, build e testes automatizados passaram. A validacao visual automatizada das tres resolucoes ainda nao foi executada porque o repositorio nao possui Playwright, Cypress ou outra suite de viewport configurada.
+APROVADO localmente. Os contratos de matching, autenticacao, build, Data/BI e responsividade passaram. Playwright foi adicionado como dependencia de desenvolvimento e validou 30 combinacoes de rota e viewport.
 
 ## Origem e branch
 
@@ -16,6 +16,7 @@ APROVADO COM RESSALVAS. Os contratos de matching, autenticacao, build e testes a
 - `e8a64dd` - `fix(auth): add reliable login feedback and secure logout`
 - `7c26e8d` - `fix(demo): label non-production modules and remove false claims`
 - `f85afec` - `fix(demo): label non-production modules and remove false claims`
+- Setimo commit: evidencias responsivas e revisao da branch, criado apos os gates locais.
 
 Os commits podem ser revertidos individualmente com `git revert <HASH>`, na ordem inversa caso todos precisem ser desfeitos.
 
@@ -38,6 +39,8 @@ Os commits podem ser revertidos individualmente com `git revert <HASH>`, na orde
 - `python -m pytest tests/test_score_match.py tests/test_score_regression.py tests/test_anonymization.py -q`: 7 testes aprovados.
 - `python scripts/valida_integracao_bi.py`: 8 candidatos, 132 antenas, 24 regioes e servicos MVP reconciliados.
 - `git diff --check`: passou.
+- `npm run test:e2e`: 3 testes aprovados, cobrindo 30 capturas em 390x844, 768x1024 e 1366x768.
+- Inspecao real de `/match`: 8 candidatos, 8 aliases estaveis, scores ordenados e zero campos proibidos.
 
 ## Pendencias e limitacoes
 
@@ -45,7 +48,7 @@ Os commits podem ser revertidos individualmente com `git revert <HASH>`, na orde
 - Solicitacoes de mentoria continuam simulacao local porque existe endpoint de leitura, mas nao endpoint de criacao.
 - Power BI depende de `VITE_POWERBI_URL`; sem essa variavel, a tela exibe reserva demonstrativa.
 - ESG e Saude do Time usam recortes fixos e estao identificados como demonstrativos.
-- Nao foram gerados screenshots de 390x844, 768x1024 e 1366x768 por ausencia de ferramenta de viewport configurada.
+- As evidencias responsivas estao em `docs/validacao/responsividade/`.
 - Os arquivos locais preexistentes fora deste lote permanecem nao versionados e nao foram incluidos: PDFs, HTML, plano de deploy e a pasta de validacao existente.
 
 ## Como validar no Windows PowerShell

@@ -25,7 +25,7 @@ function Card({ label, value }: { label: string; value: string }) {
 
 export default function PainelSaudeTime() {
   return (
-    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
+    <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
       <div style={{ display: 'inline-block', background: '#fee2e2', color: '#991b1b', borderRadius: 6, padding: '7px 10px', fontSize: 12, fontWeight: 700 }}>
         SAÚDE DO TIME - DADOS DEMONSTRATIVOS
       </div>
@@ -35,11 +35,11 @@ export default function PainelSaudeTime() {
         Recorte demonstrativo de bem-estar por área e risco operacional usando dados agregados.
       </p>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <section className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
         {indicadores.map((item) => <Card key={item.label} label={item.label} value={item.value} />)}
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
+      <section className="two-column-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 18 }}>
           <h2 style={{ fontSize: 16, marginTop: 0 }}>Evolução Mensal do Turnover</h2>
           <div style={{ height: 220, display: 'flex', alignItems: 'end', gap: 10 }}>
