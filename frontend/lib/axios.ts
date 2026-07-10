@@ -2,7 +2,7 @@ import.meta.env.VITE_API_URL;
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+    baseURL: import.meta.env.VITE_API_URL || 'https://s06-26-ab-equipe-23.vercel.app',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -11,7 +11,6 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const TOKEN = localStorage.getItem('token');
-    // TODO: Alterar para onde colocar no banco de dados
     if (TOKEN && config.headers) {  
         config.headers.Authorization = `Bearer ${TOKEN}`;
     }
