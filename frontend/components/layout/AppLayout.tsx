@@ -66,15 +66,20 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
               top: 57,
               left: 0,
               bottom: 0,
-              width: 256,
+              width: 220,
               background: '#fff',
-              borderRight: '1px solid #e5e7eb',
-              boxShadow: '0 18px 36px rgba(15, 23, 42, 0.14)',
+              borderRight: '0.5px solid #e5e7eb',
               zIndex: 45,
-              padding: 16,
+              padding: '16px 12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+              flexShrink: 0,
+              height: 'calc(100vh - 57px)',
+              overflowY: 'auto',
             }}
           >
-            <nav style={{ display: 'grid', gap: 8 }}>
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {DRAWER_NAV_ITEMS.map((nav) => {
                 const route = NAV_ROUTES[nav];
                 const isActive = activeNav === nav;
@@ -85,15 +90,19 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
                     type="button"
                     onClick={() => handleNavChange(nav)}
                     style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
                       width: '100%',
-                      border: '1px solid transparent',
+                      border: 'none',
                       borderRadius: 8,
-                      background: isActive ? '#EEE9FC' : '#fff',
-                      color: isActive ? '#5B35B1' : '#334155',
+                      background: isActive ? '#EEE9FC' : 'transparent',
+                      color: isActive ? '#6C3FC5' : '#4b5563',
                       cursor: 'pointer',
-                      fontWeight: isActive ? 700 : 500,
-                      padding: '11px 12px',
+                      fontWeight: isActive ? 500 : 400,
+                      padding: '8px 10px',
                       textAlign: 'left',
+                      fontSize: 13,
                     }}
                   >
                     {nav}
