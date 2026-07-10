@@ -9,6 +9,7 @@ import PainelRelatorioESG from '../../../components/charts/PainelRelatorioESG';
 import PainelSaudeTime from '../../../components/charts/PainelSaudeTime';
 import PainelFormacoes from '../../../components/charts/PainelFormacoes';
 import PainelMentorias from '../../../components/charts/PainelMentorias';
+import { clearAppSession } from '../../../lib/session';
  
 const ROTAS_EXTERNAS: Record<string, string> = {
   'Shortlist': '/shortlist',
@@ -89,6 +90,11 @@ export default function App() {
       setActiveSidebarItem('Minhas vagas');
     }
   };
+
+  const handleLogout = () => {
+    clearAppSession();
+    navigate('/login', { replace: true });
+  };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Header
@@ -96,6 +102,7 @@ export default function App() {
         onNavChange={handleNavChange}
         sidebarAberta={sidebarAberta}
         onToggleSidebar={() => setSidebarAberta((aberta) => !aberta)}
+        onLogout={handleLogout}
       />
  
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
