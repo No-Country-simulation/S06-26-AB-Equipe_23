@@ -17,6 +17,12 @@ public record CandidatoCompletoDTO(
         @JsonProperty("apelido_exibicao")
         String apelidoExibicao,
 
+        @JsonProperty("cargo_alvo")
+        String cargoAlvo,
+
+        @JsonProperty("cluster_residencia")
+        String clusterResidencia,
+
         @JsonProperty("contato_pos_aprovacao")
         ContatoAprovadoDTO.ContatoDTO contatoPosAprovacao
 ) {

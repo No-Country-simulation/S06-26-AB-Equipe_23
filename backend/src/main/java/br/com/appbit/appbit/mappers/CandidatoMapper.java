@@ -24,9 +24,9 @@ public interface CandidatoMapper {
     CandidatoResponseDTO toResponseDTO(CandidatoEntity entity);
 
     @Mapping(target = "candidatoId",            expression = "java(String.format(\"cand_%03d\", entity.getId()))")
+    @Mapping(target = "apelidoExibicao",        expression = "java(String.format(\"Candidato A-%03d\", entity.getId()))")
     @Mapping(target = "cargoAlvo",              source = "cargo")
     @Mapping(target = "regiao",                 source = "regiao.municipio")
-    @Mapping(target = "clusterResidencia",      source = "cluster")
     @Mapping(target = "modeloTrabalhoPreferido", source = "modeloTrabalhoPreferido")
     @Mapping(target = "anosExperiencia",         source = "anosExperiencia")
     @Mapping(target = "badgeDiversidade",        source = "diversidade")

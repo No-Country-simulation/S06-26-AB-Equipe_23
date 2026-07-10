@@ -1,6 +1,6 @@
 package br.com.appbit.appbit.services;
 
-import br.com.appbit.appbit.dtos.CandidatoMatchDTO;
+import br.com.appbit.appbit.dtos.CandidatoCompletoDTO;
 import br.com.appbit.appbit.dtos.MapaTalentoDTO;
 import br.com.appbit.appbit.dtos.MapaTalentosResponseDTO;
 import br.com.appbit.appbit.dtos.RegiaoInsightDTO;
@@ -19,21 +19,21 @@ public class TalentoInsightService {
 
     @SuppressWarnings("null")
 public MapaTalentosResponseDTO obterMapaTalentos() {
-        List<CandidatoMatchDTO> candidatos = candidatoMockService.listarAnonimizados();
+        List<CandidatoCompletoDTO> candidatos = candidatoMockService.listarParaInsights();
         List<RegiaoInsightDTO> regioes = insightService.obterInsights().regioes();
 
         // agrupa candidatos por cluster de residência
-        Map<String, List<CandidatoMatchDTO>> porCluster = candidatos.stream()
+        Map<String, List<CandidatoCompletoDTO>> porCluster = candidatos.stream()
                 .filter(c -> c.clusterResidencia() != null)
-                .collect(Collectors.groupingBy(CandidatoMatchDTO::clusterResidencia));
+                .collect(Collectors.groupingBy(CandidatoCompletoDTO::clusterResidencia));
 
         List<MapaTalentoDTO> mapa = regioes.stream()
                 .map(regiao -> {
-                    List<CandidatoMatchDTO> doCluster =
+                    List<CandidatoCompletoDTO> doCluster =
                             porCluster.getOrDefault(regiao.cluster(), List.of());
 
                     List<String> perfis = doCluster.stream()
-                            .map(CandidatoMatchDTO::cargoAlvo)
+                            .map(CandidatoCompletoDTO::cargoAlvo)
                             .filter(Objects::nonNull)
                             .distinct()
                             .toList();
