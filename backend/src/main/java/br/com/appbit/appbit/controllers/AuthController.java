@@ -26,7 +26,7 @@ public class AuthController {
      * Body:
      * {
      *   "email": "recrutador@appbit.com.br",
-     *   "senha": "recrutador123"
+     *   "senha": "Recrutador@Bit2026!"
      * }
      *
      * Response 200:
