@@ -27,7 +27,8 @@ services:
       - key: APP_CORS_ALLOWED_ORIGINS
         value: https://appbit-frontend.onrender.com
 
-  - type: static
+  - type: web
+    runtime: static
     name: appbit-frontend
     rootDir: .
     buildCommand: npm ci && npm run build
