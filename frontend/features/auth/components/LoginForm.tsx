@@ -30,7 +30,7 @@ export default function LoginForm() {
             alert('SQL Injection detectado! Não faça novamente ou será alertado as autoridades competentes com informações pessoais sobre seu ip.');
             return;
         }
-        api.post('/login', formData)
+        api.post('/login', { email: formData.email, senha: formData.password })
             .then((response) => {
                 console.log('Login bem-sucedido:', response.data);
             }).catch((error) => {

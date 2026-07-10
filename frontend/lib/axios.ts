@@ -1,8 +1,11 @@
-import.meta.env.VITE_API_URL;
 import axios from 'axios';
 
+const defaultApiUrl = import.meta.env.DEV
+    ? 'http://localhost:8080'
+    : 'https://s06-26-ab-equipe-23.vercel.app';
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://s06-26-ab-equipe-23.vercel.app',
+    baseURL: import.meta.env.VITE_API_URL || defaultApiUrl,
     timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
