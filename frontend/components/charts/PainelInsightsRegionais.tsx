@@ -69,7 +69,7 @@ export default function PainelInsightsRegionais() {
   const mapY = (lat: number) => 88 - ((lat - minLat) / Math.max(maxLat - minLat, 0.0001)) * 76;
 
   return (
-    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
+    <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
       <div style={{ marginBottom: 18 }}>
         <h1 style={{ fontSize: 24, margin: 0, color: '#111827' }}>Insights Regionais</h1>
         <p style={{ color: '#6b7280', fontSize: 13, margin: '6px 0 0' }}>
@@ -78,7 +78,7 @@ export default function PainelInsightsRegionais() {
         {erro && <p style={{ color: '#b91c1c', fontSize: 13 }}>{erro}</p>}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
         <Card label="Regiões Derivadas" value={filtradas.length} />
         <Card label="Municípios" value={new Set(filtradas.map((r) => r.municipio)).size} />
         <Card label="Antenas" value={formatNumber(totalAntenas)} />
@@ -86,7 +86,7 @@ export default function PainelInsightsRegionais() {
         <Card label="Usuários Observados*" value={formatNumber(usuariosObservados)} />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 16 }}>
+      <div className="insights-layout" style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 16 }}>
         <aside style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 14, height: 'fit-content' }}>
           <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Filtros</h3>
           <Filter label="Município" value={municipio} onChange={setMunicipio} options={municipios} />
@@ -98,7 +98,7 @@ export default function PainelInsightsRegionais() {
           </button>
         </aside>
 
-        <section style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
+        <section className="insights-content-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Distribuição Geográfica das Regiões</h3>
             <svg viewBox="0 0 120 96" style={{ width: '100%', height: 360, background: '#edf7f0', borderRadius: 8 }}>

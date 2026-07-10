@@ -6,6 +6,7 @@ import LoginPage from '../pages/Login/Login.tsx';
 import TrilhasCapacitacaoPage from '../pages/Trilhascapacitacoes/trilhadecapacitacoes.tsx';
 import EventosCorporativosPage from '../pages/Eventos/Eventoscorporativos.tsx';
 import MentoriasPage from '../pages/Mentorias/mentorias.tsx';
+import { hasValidSessionToken } from '../../lib/session';
 
 const SobreRoute = () => (
   <div>
@@ -28,14 +29,12 @@ const NaoEncontradaRoute = () => (
   </div>
 );
 
-const hasToken = () => Boolean(localStorage.getItem('token'));
-
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  return hasToken() ? children : <Navigate to="/login" replace />;
+  return hasValidSessionToken() ? children : <Navigate to="/login" replace />;
 };
 
 const DefaultRoute = () => {
-  return hasToken() ? <Navigate to="/vagas" replace /> : <Navigate to="/login" replace />;
+  return hasValidSessionToken() ? <Navigate to="/vagas" replace /> : <Navigate to="/login" replace />;
 };
 
 export default function App() {

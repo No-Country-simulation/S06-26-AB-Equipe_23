@@ -17,14 +17,9 @@ export interface MatchRequest {
 export interface CandidatoMatch {
   candidato_id: string;
   apelido_exibicao: string;
-  status_identificacao: 'anonimizado' | 'liberado_apos_aprovacao';
   cargo_alvo: string;
   nivel: string;
   regiao: string;
-  cluster_residencia: string;
-  cep?: string;
-  lat?: number;
-  lon?: number;
   modelo_trabalho_preferido?: string;
   skills: string[];
   anos_experiencia?: number;

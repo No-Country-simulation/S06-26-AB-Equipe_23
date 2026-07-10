@@ -65,6 +65,41 @@ body {
   margin: 0;
 }
 
+@media (max-width: 899px) {
+  .responsive-panel {
+    min-width: 0;
+    padding: 16px !important;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .two-column-grid,
+  .insights-layout,
+  .insights-content-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .employment-panel {
+    flex-direction: column;
+    overflow-y: auto !important;
+  }
+
+  .employment-list {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .employment-detail {
+    min-height: 360px;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 16px !important;
+  }
+}
+
 h1,
 h2 {
   font-family: var(--heading);

@@ -25,9 +25,9 @@ export default function PainelRelatorioESG() {
   const powerBiUrl = import.meta.env.VITE_POWERBI_URL;
 
   return (
-    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
+    <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
       <div style={{ display: 'inline-block', background: '#dcfce7', color: '#166534', borderRadius: 6, padding: '7px 10px', fontSize: 12, fontWeight: 700 }}>
-        RELATÓRIO ESG - MVP
+        RELATÓRIO ESG - DADOS DEMONSTRATIVOS
       </div>
 
       <h1 style={{ marginBottom: 4 }}>Relatório ESG</h1>
@@ -35,11 +35,11 @@ export default function PainelRelatorioESG() {
         Indicadores executivos de diversidade, privacidade e impacto regional para apoiar a tomada de decisão do RH.
       </p>
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <section className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(150px, 1fr))', gap: 12, marginBottom: 16 }}>
         {indicadores.map((item) => <Card key={item.label} label={item.label} value={item.value} />)}
       </section>
 
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <section className="two-column-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 18 }}>
           <h2 style={{ fontSize: 16, marginTop: 0 }}>Progresso das Metas ESG</h2>
           {metasEsg.map((meta) => (
@@ -58,12 +58,11 @@ export default function PainelRelatorioESG() {
         <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 18 }}>
           <h2 style={{ fontSize: 16, marginTop: 0 }}>Leitura Executiva</h2>
           <p style={{ color: '#475569', fontSize: 13, lineHeight: 1.6 }}>
-            A base demonstrativa indica aderência positiva das shortlists aos critérios de diversidade,
-            sem expor dados sensíveis antes da aprovação. O painel consolida o score ESG, a cobertura
-            regional e o controle de privacidade como evidências para a apresentação do MVP.
+            Este recorte demonstrativo ilustra como o RH pode acompanhar diversidade, cobertura regional
+            e privacidade na triagem. Os valores não representam uma medição produtiva auditada.
           </p>
           <div style={{ background: '#f1f5f9', borderRadius: 8, padding: 14, color: '#334155', fontSize: 13 }}>
-            Status: pronto para receber iframe real do Power BI quando o link publicado for disponibilizado.
+            Módulo demonstrativo — integração com Power BI prevista para uma próxima versão.
           </div>
         </div>
 
@@ -72,7 +71,7 @@ export default function PainelRelatorioESG() {
             <iframe title="Power BI - Relatorio ESG" src={powerBiUrl} style={{ width: '100%', height: 360, border: 0 }} />
           ) : (
             <div style={{ height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: '#475569', padding: 20 }}>
-              Espaço reservado para o dashboard Power BI publicado.
+              Módulo demonstrativo — nenhum dashboard Power BI publicado está configurado.
             </div>
           )}
         </div>

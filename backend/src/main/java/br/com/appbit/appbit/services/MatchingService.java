@@ -107,14 +107,10 @@ public class MatchingService {
         // Retorna novo record com score recalculado (records são imutáveis)
         return new CandidatoMatchDTO(
                 candidato.candidatoId(),
-                candidato.nome(),
+                candidato.apelidoExibicao(),
                 candidato.cargoAlvo(),
                 candidato.nivel(),
                 candidato.regiao(),
-                candidato.clusterResidencia(),
-                candidato.cep(),
-                candidato.lat(),
-                candidato.lon(),
                 candidato.modeloTrabalhoPreferido(),
                 candidato.skills(),
                 candidato.anosExperiencia(),

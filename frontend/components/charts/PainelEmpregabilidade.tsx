@@ -9,9 +9,9 @@ export default function PainelEmpregabilidade() {
   const [modalAberto, setModalAberto] = useState(false);
 
   return (
-    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+    <div className="employment-panel" style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
       {/* Lista de vagas */}
-      <div style={{
+      <div className="employment-list" style={{
         width: 340,
         borderRight: '0.5px solid #e5e7eb',
         background: '#fff',
@@ -31,6 +31,7 @@ export default function PainelEmpregabilidade() {
             Vagas publicadas{' '}
             <span style={{ color: '#9ca3af', fontWeight: 400 }}>({vagas.length})</span>
           </h3>
+          <span style={{ color: '#64748b', fontSize: 10 }}>Simulação local</span>
           <button
             onClick={() => setModalAberto(true)}
             style={{
@@ -56,7 +57,7 @@ export default function PainelEmpregabilidade() {
       </div>
 
       {/* Painel de detalhe */}
-      <div style={{
+      <div className="employment-detail" style={{
         flex: 1,
         overflowY: 'auto',
         padding: 24,

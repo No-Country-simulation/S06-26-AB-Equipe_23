@@ -10,6 +10,9 @@ export default function LoginPage() {
   // Estados de Controle
   const [isCadastro, setIsCadastro] = useState(false);
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authMessage, setAuthMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   
   // Estado para capturar quais campos estão com erro visual (borda vermelha)
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -68,9 +71,10 @@ export default function LoginPage() {
   // --- LÓGICA DE LOGIN ---
   const handleLoginSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     const novosErros: Record<string, boolean> = {};
 
-    if (!formData.email) novosErros.email = true;
+    if (!formData.email || !formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) novosErros.email = true;
     if (!formData.password) novosErros.password = true;
 
     if (Object.keys(novosErros).length > 0) {
@@ -78,16 +82,23 @@ export default function LoginPage() {
       return;
     }
 
+    setErrors({});
+    setAuthMessage('');
+    setIsSubmitting(true);
     api.post('/login', { email: formData.email, senha: formData.password })
       .then((response) => {
-        console.log('Login bem-sucedido:', response.data);
         localStorage.setItem('token', response.data.token);
-        navigate('/');
+        navigate('/', { replace: true });
       })
       .catch((error) => {
-        console.error('Erro no login:', error);
-        setErrors({ email: true, password: true });
-      });
+        const status = error.response?.status;
+        setAuthMessage(status === 401 || status === 403
+          ? 'E-mail ou senha inválidos.'
+          : error.code === 'ECONNABORTED' || !error.response
+            ? 'Serviço temporariamente indisponível. Tente novamente.'
+            : 'Não foi possível concluir o login. Tente novamente.');
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   // --- VALIDAÇÕES DO MULTI-STEP DE CADASTRO ---
@@ -209,7 +220,7 @@ export default function LoginPage() {
             <div className="loginMode">
               <header className="formHeader">
                 <h2>Bem-vindo de volta</h2>
-                <p>Insira as suas credenciais para aceder à plataforma</p>
+                <p>Insira suas credenciais para acessar a plataforma</p>
               </header>
 
               <form onSubmit={handleLoginSubmit} className="formElement">
@@ -231,17 +242,23 @@ export default function LoginPage() {
                   <label htmlFor="login-password">Senha</label>
                   <input
                     id="login-password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     className={errors.password ? 'inputError' : ''}
                     placeholder="••••••••"
                   />
-                  {errors.password && <span className="errorHint">Insira a sua palavra-passe de acesso.</span>}
+                  {errors.password && <span className="errorHint">Insira sua senha de acesso.</span>}
+                  <button type="button" className="linkButton" onClick={() => setShowPassword((visible) => !visible)}>
+                    {showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  </button>
                 </div>
 
-                <button type="submit" className="submitButton">Entrar na plataforma</button>
+                {authMessage && <span className="errorHint">{authMessage}</span>}
+                <button type="submit" className="submitButton" disabled={isSubmitting}>
+                  {isSubmitting ? 'Entrando...' : 'Entrar na plataforma'}
+                </button>
               </form>
 
               <p className="footerText">

@@ -106,7 +106,6 @@ export default function RelatorioESG() {
   // ── Buscar metas sempre que o período mudar ─────────────────────────────
   useEffect(() => {
     if (!periodoAtivo) {
-      setMetas([]);
       return;
     }
 

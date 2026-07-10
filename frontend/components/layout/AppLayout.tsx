@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../ui/Header';
+import { clearAppSession } from '../../lib/session';
 
 interface AppLayoutProps {
   activeNav: string;
@@ -36,6 +37,11 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
     }
   };
 
+  const handleLogout = () => {
+    clearAppSession();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Header
@@ -43,6 +49,7 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
         onNavChange={handleNavChange}
         sidebarAberta={sidebarAberta}
         onToggleSidebar={() => setSidebarAberta((prev) => !prev)}
+        onLogout={handleLogout}
       />
       {sidebarAberta && (
         <>

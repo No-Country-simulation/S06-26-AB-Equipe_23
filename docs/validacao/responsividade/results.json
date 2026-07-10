@@ -1,0 +1,272 @@
+[
+  {
+    "viewport": "390x844",
+    "route": "/login",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/01-login.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/vagas",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/02-vagas.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/vagas#detalhe",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/03-vaga-detalhe.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/shortlist",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/04-shortlist.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/insights/regioes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/05-insights.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/relatorio-esg",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/06-relatorio-esg.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/saude-time",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/07-saude-time.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/trilhas-capacitacoes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/08-formacoes.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/eventos",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/09-eventos.png"
+  },
+  {
+    "viewport": "390x844",
+    "route": "/mentorias",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/390x844/10-mentorias.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/login",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/01-login.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/vagas",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/02-vagas.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/vagas#detalhe",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/03-vaga-detalhe.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/shortlist",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/04-shortlist.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/insights/regioes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/05-insights.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/relatorio-esg",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/06-relatorio-esg.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/saude-time",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/07-saude-time.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/trilhas-capacitacoes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/08-formacoes.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/eventos",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/09-eventos.png"
+  },
+  {
+    "viewport": "768x1024",
+    "route": "/mentorias",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/768x1024/10-mentorias.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/login",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/01-login.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/vagas",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/02-vagas.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/vagas#detalhe",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/03-vaga-detalhe.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/shortlist",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/04-shortlist.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/insights/regioes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/05-insights.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/relatorio-esg",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/06-relatorio-esg.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/saude-time",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/07-saude-time.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/trilhas-capacitacoes",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/08-formacoes.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/eventos",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/09-eventos.png"
+  },
+  {
+    "viewport": "1366x768",
+    "route": "/mentorias",
+    "result": "APROVADO",
+    "overflow": false,
+    "consoleErrors": 0,
+    "failedRequests": 0,
+    "evidence": "docs/validacao/responsividade/1366x768/10-mentorias.png"
+  }
+]

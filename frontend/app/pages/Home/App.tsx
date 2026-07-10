@@ -9,6 +9,7 @@ import PainelRelatorioESG from '../../../components/charts/PainelRelatorioESG';
 import PainelSaudeTime from '../../../components/charts/PainelSaudeTime';
 import PainelFormacoes from '../../../components/charts/PainelFormacoes';
 import PainelMentorias from '../../../components/charts/PainelMentorias';
+import { clearAppSession } from '../../../lib/session';
  
 const ROTAS_EXTERNAS: Record<string, string> = {
   'Shortlist': '/shortlist',
@@ -54,22 +55,18 @@ export default function App() {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState('Empregabilidade');
   const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
-  const [sidebarAberta, setSidebarAberta] = useState(true);
+  const [sidebarAberta, setSidebarAberta] = useState(() => window.innerWidth >= 900);
 
-  useEffect(() => {
-    const painel = PAINEL_POR_ROTA[location.pathname];
-    if (painel) {
-      setActiveNav('Empregabilidade');
-      setActiveSidebarItem(painel);
-    }
-  }, [location.pathname]);
+  const painelRoteado = PAINEL_POR_ROTA[location.pathname];
+  const navExibido = painelRoteado ? 'Empregabilidade' : activeNav;
+  const sidebarItemExibido = painelRoteado ?? activeSidebarItem;
  
   useEffect(() => {
     const rota = ROTAS_EXTERNAS[activeSidebarItem];
     if (rota) navigate(rota);
   }, [activeSidebarItem, navigate]);
  
-  const isRotaExterna = activeSidebarItem in ROTAS_EXTERNAS;
+  const isRotaExterna = sidebarItemExibido in ROTAS_EXTERNAS;
  
   const handleNavChange = (nav: string) => {
     setActiveNav(nav);
@@ -89,34 +86,40 @@ export default function App() {
       setActiveSidebarItem('Minhas vagas');
     }
   };
+
+  const handleLogout = () => {
+    clearAppSession();
+    navigate('/login', { replace: true });
+  };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Header
-        activeNav={activeNav}
+        activeNav={navExibido}
         onNavChange={handleNavChange}
         sidebarAberta={sidebarAberta}
         onToggleSidebar={() => setSidebarAberta((aberta) => !aberta)}
+        onLogout={handleLogout}
       />
  
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {activeNav === 'Empregabilidade' && sidebarAberta && (
-          <Sidebar activeItem={activeSidebarItem} onItemChange={setActiveSidebarItem} />
+        {navExibido === 'Empregabilidade' && sidebarAberta && (
+          <Sidebar activeItem={sidebarItemExibido} onItemChange={setActiveSidebarItem} />
         )}
  
         <main style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
-          {activeNav === 'Formações' && <PainelFormacoes />}
-          {activeNav === 'Mentorias' && <PainelMentorias />}
+          {navExibido === 'Formações' && <PainelFormacoes />}
+          {navExibido === 'Mentorias' && <PainelMentorias />}
  
-          {activeNav === 'Empregabilidade' && !isRotaExterna && (
+          {navExibido === 'Empregabilidade' && !isRotaExterna && (
             <>
-              {activeSidebarItem === 'Minhas vagas'        && <PainelEmpregabilidade />}
-              {activeSidebarItem === 'Dashboard executivo' && <DashboardExecutivo />}
-              {activeSidebarItem === 'Insights regionais'  && <PainelInsightsRegionais />}
-              {activeSidebarItem === 'Relatório ESG'       && <PainelRelatorioESG />}
-              {activeSidebarItem === 'Saúde do time'       && <PainelSaudeTime />}
+              {sidebarItemExibido === 'Minhas vagas'        && <PainelEmpregabilidade />}
+              {sidebarItemExibido === 'Dashboard executivo' && <DashboardExecutivo />}
+              {sidebarItemExibido === 'Insights regionais'  && <PainelInsightsRegionais />}
+              {sidebarItemExibido === 'Relatório ESG'       && <PainelRelatorioESG />}
+              {sidebarItemExibido === 'Saúde do time'       && <PainelSaudeTime />}
               {/* EmptyState só para itens sem destino definido */}
-              {!ITENS_CONHECIDOS.includes(activeSidebarItem) && (
-                <EmptyState label={activeSidebarItem} />
+              {!ITENS_CONHECIDOS.includes(sidebarItemExibido) && (
+                <EmptyState label={sidebarItemExibido} />
               )}
             </>
           )}

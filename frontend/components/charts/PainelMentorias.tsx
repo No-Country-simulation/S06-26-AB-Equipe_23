@@ -191,8 +191,11 @@ export default function PainelMentorias() {
                       transform: isHovered ? 'scale(1.02)' : 'none',
                     }}
                   >
-                    {isAgendado ? '✓ Solicitado' : 'Agendar'}
+                    {isAgendado ? 'Simulação local' : 'Simular solicitação'}
                   </button>
+                  <small style={{ display: 'block', marginTop: 6, color: '#64748b', fontSize: 10 }}>
+                    Demonstração local; nenhum agendamento foi persistido.
+                  </small>
                 </div>
               </div>
             );

@@ -3,9 +3,10 @@ interface HeaderProps {
   onNavChange: (nav: string) => void;
   sidebarAberta?: boolean;
   onToggleSidebar?: () => void;
+  onLogout?: () => void;
 }
 
-export default function Header({ sidebarAberta = true, onToggleSidebar }: HeaderProps) {
+export default function Header({ sidebarAberta = true, onToggleSidebar, onLogout }: HeaderProps) {
   return (
     <header style={{
       background: '#fff',
@@ -57,7 +58,7 @@ export default function Header({ sidebarAberta = true, onToggleSidebar }: Header
         </span>
       </div>
 
-      <div style={{ marginLeft: 'auto' }}>
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{
           width: 32, height: 32,
           borderRadius: '50%',
@@ -65,6 +66,23 @@ export default function Header({ sidebarAberta = true, onToggleSidebar }: Header
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           color: '#534AB7', fontSize: 13, fontWeight: 500,
         }}>RH</div>
+        {onLogout && (
+          <button
+            type="button"
+            onClick={onLogout}
+            style={{
+              border: '1px solid #d1d5db',
+              borderRadius: 6,
+              background: '#fff',
+              color: '#374151',
+              padding: '6px 10px',
+              cursor: 'pointer',
+              fontSize: 12,
+            }}
+          >
+            Sair
+          </button>
+        )}
       </div>
     </header>
   );

@@ -54,13 +54,13 @@ export default function TrilhasCapacitacaoPage() {
                 <p style={{ fontSize: 13, color: '#475569', lineHeight: 1.5, minHeight: 58 }}>
                   {formatarTextoMvp(trilha.descricao_conteudo)}
                 </p>
-                {trilha.link_midia ? (
+                {trilha.link_midia && !trilha.link_midia.includes('example.com') ? (
                   <a href={trilha.link_midia} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', justifyContent: 'center', width: '100%', marginTop: 12, padding: '10px 14px', borderRadius: 8, background: '#7c3aed', color: '#fff', textDecoration: 'none', fontSize: 13, fontWeight: 600 }}>
-                    ▶️ Iniciar Trilha
+                    Iniciar trilha
                   </a>
                 ) : (
                   <button disabled style={{ width: '100%', marginTop: 12, padding: '10px 14px', borderRadius: 8, border: 'none', background: '#f1f5f9', color: '#94a3b8', fontSize: 13, fontWeight: 600 }}>
-                    Mídia Indisponível
+                    Conteúdo demonstrativo
                   </button>
                 )}
               </article>

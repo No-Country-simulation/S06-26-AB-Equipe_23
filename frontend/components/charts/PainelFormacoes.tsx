@@ -126,7 +126,7 @@ export default function PainelFormacoes() {
                 </div>
 
                 <div style={{ marginTop: 20 }}>
-                  {trilha.link_midia ? (
+                  {trilha.link_midia && !trilha.link_midia.includes('example.com') ? (
                     <a
                       href={trilha.link_midia}
                       target="_blank"
@@ -149,7 +149,7 @@ export default function PainelFormacoes() {
                         cursor: 'pointer',
                       }}
                     >
-                      ▶️ Iniciar Trilha
+                      Iniciar trilha
                     </a>
                   ) : (
                     <button
@@ -166,7 +166,7 @@ export default function PainelFormacoes() {
                         cursor: 'not-allowed',
                       }}
                     >
-                      Indisponível
+                      Conteúdo demonstrativo
                     </button>
                   )}
                 </div>
