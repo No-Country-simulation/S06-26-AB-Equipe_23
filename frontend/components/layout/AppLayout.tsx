@@ -16,6 +16,14 @@ const NAV_ROUTES: Record<string, string> = {
   'Insights': '/insights/regioes',
 };
 
+const DRAWER_NAV_ITEMS = [
+  'Formações',
+  'Eventos',
+  'Mentorias',
+  'Métricas ESG',
+  'Insights',
+] as const;
+
 export default function AppLayout({ activeNav, children }: AppLayoutProps) {
   const navigate = useNavigate();
   const [sidebarAberta, setSidebarAberta] = useState(false);
@@ -67,7 +75,8 @@ export default function AppLayout({ activeNav, children }: AppLayoutProps) {
             }}
           >
             <nav style={{ display: 'grid', gap: 8 }}>
-              {Object.entries(NAV_ROUTES).map(([nav, route]) => {
+              {DRAWER_NAV_ITEMS.map((nav) => {
+                const route = NAV_ROUTES[nav];
                 const isActive = activeNav === nav;
 
                 return (
