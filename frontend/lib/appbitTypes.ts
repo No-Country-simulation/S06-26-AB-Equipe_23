@@ -111,3 +111,11 @@ export interface MentoriaMvp {
   especialidade_esg: string;
   disponibilidade: string;
 }
+
+export interface AlertaEsg {
+  titulo: string;
+  descricao: string;
+  gravidade: 'INFO' | 'WARNING' | 'DANGER';
+  regiao: string;
+  acaoRecomendada: string;
+}

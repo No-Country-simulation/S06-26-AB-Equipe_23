@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { buscarInsightsRegioes } from '../../lib/appbitApi';
-import type { RegiaoInsight } from '../../lib/appbitTypes';
+import { buscarInsightsRegioes, buscarAlertasEsg } from '../../lib/appbitApi';
+import type { RegiaoInsight, AlertaEsg } from '../../lib/appbitTypes';
 import { formatarClusterMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 const tecnologiaCores: Record<RegiaoInsight['tecnologia_predominante_regiao'], string> = {
@@ -30,6 +30,7 @@ function Card({ label, value }: { label: string; value: string | number }) {
 
 export default function PainelInsightsRegionais() {
   const [regioes, setRegioes] = useState<RegiaoInsight[]>([]);
+  const [alertas, setAlertas] = useState<AlertaEsg[]>([]);
   const [erro, setErro] = useState('');
   const [municipio, setMunicipio] = useState('');
   const [tecnologia, setTecnologia] = useState('');
@@ -39,6 +40,10 @@ export default function PainelInsightsRegionais() {
     buscarInsightsRegioes()
       .then((data) => setRegioes(data.regioes))
       .catch(() => setErro('Não foi possível carregar /insights/regioes. Nenhum dado fictício foi usado como fallback.'));
+
+    buscarAlertasEsg()
+      .then((data) => setAlertas(data))
+      .catch((err) => console.error('Erro ao obter alertas ESG:', err));
   }, []);
 
   const municipios = useMemo(() => [...new Set(regioes.map((r) => r.municipio))].sort(), [regioes]);
@@ -85,6 +90,66 @@ export default function PainelInsightsRegionais() {
         <Card label="Sessões Observadas" value={formatNumber(totalSessoes)} />
         <Card label="Usuários Observados*" value={formatNumber(usuariosObservados)} />
       </div>
+
+      {alertas.length > 0 && (
+        <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16, marginBottom: 16 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 12px', color: '#111827', display: 'flex', alignItems: 'center', gap: 6 }}>
+            🌱 Alertas e Sugestões ESG (Inclusão Digital & Humana)
+          </h3>
+          <div style={{ display: 'grid', gap: 10 }}>
+            {alertas.map((alerta, index) => {
+              let bgColor = '#f0fdf4';
+              let borderColor = '#bbf7d0';
+              let textColor = '#166534';
+              let icon = 'ℹ️';
+
+              if (alerta.gravidade === 'DANGER') {
+                bgColor = '#fef2f2';
+                borderColor = '#fca5a5';
+                textColor = '#991b1b';
+                icon = '🚨';
+              } else if (alerta.gravidade === 'WARNING') {
+                bgColor = '#fffbeb';
+                borderColor = '#fde68a';
+                textColor = '#92400e';
+                icon = '⚠️';
+              } else if (alerta.gravidade === 'INFO') {
+                bgColor = '#f0f9ff';
+                borderColor = '#bae6fd';
+                textColor = '#075985';
+                icon = '💡';
+              }
+
+              return (
+                <div key={index} style={{
+                  background: bgColor,
+                  border: `1px solid ${borderColor}`,
+                  borderRadius: 8,
+                  padding: 12,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ color: textColor, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      {icon} {alerta.titulo}
+                    </strong>
+                    <span style={{ fontSize: 11, background: '#fff', border: `1px solid ${borderColor}`, borderRadius: 4, padding: '2px 6px', color: textColor, fontWeight: 600 }}>
+                      {alerta.regiao}
+                    </span>
+                  </div>
+                  <p style={{ margin: '4px 0', fontSize: 12, color: '#374151', lineHeight: 1.4 }}>
+                    {alerta.descricao}
+                  </p>
+                  <div style={{ fontSize: 11, color: textColor, fontWeight: 500, marginTop: 4, paddingLeft: 6, borderLeft: `2px solid ${borderColor}` }}>
+                    <strong>Ação Recomendada:</strong> {alerta.acaoRecomendada}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="insights-layout" style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 16 }}>
         <aside style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 14, height: 'fit-content' }}>

@@ -8,6 +8,7 @@ import type {
   MatchRequest,
   MatchResponse,
   MentoriaMvp,
+  AlertaEsg,
 } from './appbitTypes';
 
 export async function executarMatch(request: MatchRequest = {}): Promise<MatchResponse> {
@@ -37,5 +38,10 @@ export async function buscarExperienciasMvp(): Promise<ExperienciaEstruturanteMv
 
 export async function buscarMentoriasMvp(): Promise<MentoriaMvp[]> {
   const response = await api.get<MentoriaMvp[]>('/api/mentorias');
+  return response.data;
+}
+
+export async function buscarAlertasEsg(): Promise<AlertaEsg[]> {
+  const response = await api.get<AlertaEsg[]>('/insights/esg');
   return response.data;
 }

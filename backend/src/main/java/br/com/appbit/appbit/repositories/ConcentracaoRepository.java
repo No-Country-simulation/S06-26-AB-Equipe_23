@@ -35,4 +35,8 @@ public interface ConcentracaoRepository extends JpaRepository<ConcentracaoEntity
     Double findMediaUsuariosByAntena(@Param("antena") AntenaEntity antena);
 
     Long countByAntena(AntenaEntity antena);
+
+    @Query("SELECT c.cluster, AVG(c.congestionamentoMedio), AVG(c.dropPacoteMedio) " +
+           "FROM ConcentracaoEntity c GROUP BY c.cluster")
+    List<Object[]> findStatsByCluster();
 }
