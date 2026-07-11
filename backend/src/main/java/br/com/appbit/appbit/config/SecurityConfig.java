@@ -76,6 +76,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/cadastro").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/actuator/**").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/.well-known/jwks.json").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 // Tudo mais requer autenticação
                 .anyRequest().authenticated()

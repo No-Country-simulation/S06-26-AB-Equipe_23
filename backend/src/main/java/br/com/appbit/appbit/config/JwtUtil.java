@@ -22,15 +22,33 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final SecretKey secretKey;
+    private final java.security.interfaces.RSAPrivateKey privateKey;
+    private final java.security.interfaces.RSAPublicKey publicKey;
+    private final String keyId = java.util.UUID.randomUUID().toString();
     private final long expirationMs;
 
     public JwtUtil(
-            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.secret:}") String secret,
             @Value("${jwt.expiration-ms:86400000}") long expirationMs
     ) {
-        this.secretKey   = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
+        try {
+            java.security.KeyPairGenerator keyPairGenerator = java.security.KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(2048);
+            java.security.KeyPair keyPair = keyPairGenerator.generateKeyPair();
+            this.privateKey = (java.security.interfaces.RSAPrivateKey) keyPair.getPrivate();
+            this.publicKey = (java.security.interfaces.RSAPublicKey) keyPair.getPublic();
+        } catch (Exception e) {
+            throw new IllegalStateException("Falha ao gerar par de chaves RSA para JWT", e);
+        }
+    }
+
+    public String getKeyId() {
+        return keyId;
+    }
+
+    public java.security.interfaces.RSAPublicKey getPublicKey() {
+        return publicKey;
     }
 
     // ---------------------------------------------------------------
@@ -40,12 +58,15 @@ public class JwtUtil {
     public String gerarToken(String email, String nome, String empresaId) {
         long agora = System.currentTimeMillis();
         return Jwts.builder()
+                .header()
+                .keyId(keyId)
+                .and()
                 .subject(email)
                 .claim("nome", nome)
                 .claim("empresa_id", empresaId)
                 .issuedAt(new Date(agora))
                 .expiration(new Date(agora + expirationMs))
-                .signWith(secretKey)
+                .signWith(privateKey, Jwts.SIG.RS256)
                 .compact();
     }
 
@@ -76,7 +97,7 @@ public class JwtUtil {
 
     private Claims claims(String token) {
         return Jwts.parser()
-                .verifyWith(secretKey)
+                .verifyWith(publicKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

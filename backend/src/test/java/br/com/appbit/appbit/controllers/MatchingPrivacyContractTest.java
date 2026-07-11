@@ -161,4 +161,16 @@ class MatchingPrivacyContractTest {
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.pageable").exists());
     }
+
+    @Test
+    void jwksEndpointExposedAndPublic() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/.well-known/jwks.json"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.keys").isArray())
+                .andExpect(jsonPath("$.keys[0].kty").value("RSA"))
+                .andExpect(jsonPath("$.keys[0].alg").value("RS256"))
+                .andExpect(jsonPath("$.keys[0].kid").exists())
+                .andExpect(jsonPath("$.keys[0].n").exists())
+                .andExpect(jsonPath("$.keys[0].e").exists());
+    }
 }

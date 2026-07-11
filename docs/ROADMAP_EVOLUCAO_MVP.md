@@ -7,7 +7,7 @@ Este documento detalha o planejamento das melhorias arquiteturais, de infraestru
 ## 1. Segurança e Hardening Corporativo
 Para atender às exigências de segurança de grandes empresas (B2B) e conformidade legal:
 
-- `[ ]` **Autenticação com Chaves Assimétricas (JWKS):**
+- `[x]` **Autenticação com Chaves Assimétricas (JWKS):**
   - **O quê:** Migrar a assinatura de tokens JWT de chave simétrica (chave compartilhada) para chaves pública/privada (RSA ou ECDSA).
   - **Como:** O backend assina o token com a chave privada, e o frontend (ou outros microsserviços) valida o token usando a chave pública exposta em uma rota pública padronizada `/.well-known/jwks.json`.
 - `[x]` **Criptografia de Dados Pessoais (Conformidade LGPD):**
