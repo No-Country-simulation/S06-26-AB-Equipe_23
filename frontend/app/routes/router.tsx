@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home/App.tsx';
 import ShortList from '../pages/Shortlist/shortlist.tsx';
 import LoginPage from '../pages/Login/Login.tsx';
+import OAuth2RedirectPage from '../pages/Login/oauth2Redirect.tsx';
 import TrilhasCapacitacaoPage from '../pages/Trilhascapacitacoes/trilhadecapacitacoes.tsx';
 import EventosCorporativosPage from '../pages/Eventos/Eventoscorporativos.tsx';
 import MentoriasPage from '../pages/Mentorias/mentorias.tsx';
@@ -45,6 +46,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<DefaultRoute />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
           <Route path="/formacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
           <Route path="/trilhas-capacitacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
           <Route path="/trilhas" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />

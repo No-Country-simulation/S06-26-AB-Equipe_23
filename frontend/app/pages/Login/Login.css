@@ -313,3 +313,55 @@
     display: none;
   }
 }
+
+/* OAuth2 / SSO Google Login */
+.oauthDivider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 16px 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.oauthDivider::before,
+.oauthDivider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.oauthDivider:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.oauthDivider:not(:empty)::after {
+  margin-left: .5em;
+}
+
+.googleLoginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.googleLoginButton:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.googleIcon {
+  flex-shrink: 0;
+}

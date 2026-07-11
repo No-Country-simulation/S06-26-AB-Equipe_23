@@ -25,6 +25,7 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     // Password encoder — PBKDF2 com SHA-256, 310 000 iterações
 
@@ -50,9 +51,9 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
- 
+
     // Cadeia de filtros HTTP
- 
+
 
     @SuppressWarnings("null")
     @Bean
@@ -78,12 +79,23 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/actuator/**").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/.well-known/jwks.json").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/oauth2/**", "/login/oauth2/**").permitAll()
                 // Tudo mais requer autenticação
                 .anyRequest().authenticated()
             )
 
             // Registra o provider customizado
             .authenticationProvider(authenticationProvider())
+
+            // Configura o OAuth2 Login
+            .oauth2Login(oauth2 -> oauth2
+                .successHandler(oAuth2SuccessHandler)
+            )
+
+            // Trata exceções retornando 403 Forbidden em vez de redirect 302 para requisições de API protegidas
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(new org.springframework.security.web.authentication.HttpStatusEntryPoint(org.springframework.http.HttpStatus.FORBIDDEN))
+            )
 
             // Filtro JWT antes do filtro padrão de usuário/senha
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

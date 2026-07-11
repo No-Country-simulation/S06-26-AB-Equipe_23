@@ -11,6 +11,17 @@ spring:
       repositories:
         enabled: false
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:mock-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:mock-google-client-secret}
+            scope:
+              - email
+              - profile
+
   datasource:
     primary:
       jdbc-url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:appbit}?sslMode=${DB_SSL_MODE:DISABLED}&allowPublicKeyRetrieval=true
@@ -57,3 +68,6 @@ management:
       enabled: true
     health:
       show-details: always
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
