@@ -15,10 +15,12 @@ public interface CandidatoSkillMapper {
     @Mapping(target = "id.skillId", source = "skillId")
     @Mapping(target = "candidato", ignore = true)
     @Mapping(target = "skill", ignore = true)
+    @Mapping(target = "nivelSkill", source = "nivel")
     CandidatoSkillEntity toEntity(CandidatoSkillCreateDTO dto);
 
     @Mapping(target = "candidatoId", source = "candidato.id")
     @Mapping(target = "skillId", source = "skill.id")
+    @Mapping(target = "nivel", source = "nivelSkill")
     CandidatoSkillResponseDTO toResponseDTO(CandidatoSkillEntity entity);
 }
 
