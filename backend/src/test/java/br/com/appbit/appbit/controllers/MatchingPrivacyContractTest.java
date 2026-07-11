@@ -121,4 +121,10 @@ class MatchingPrivacyContractTest {
         assertNotNull(response);
         return response;
     }
+
+    @Test
+    void prometheusEndpointExposedAndPublic() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/actuator/prometheus"))
+                .andExpect(status().isOk());
+    }
 }

@@ -37,7 +37,7 @@ Garantir estabilidade à medida que o número de vagas e candidatos crescer:
 ## 3. DevOps, Monitoramento e Observabilidade
 Para que a equipe consiga prever falhas e monitorar a saúde da aplicação na nuvem:
 
-- `[ ]` **Métricas com Prometheus & Grafana:**
+- `[x]` **Métricas com Prometheus & Grafana:**
   - **O quê:** Monitorar em tempo real métricas de desempenho do servidor (uso de CPU, consumo de memória heap, tempo médio de resposta das rotas HTTP, conexões ativas no pool de banco).
   - **Como:** Adicionar a dependência do Micrometer Registry Prometheus no `pom.xml`, coletar os dados na rota `/actuator/prometheus` e configurar painéis visuais no Grafana.
 - `[ ]` **Ingestão de Logs Estruturados:**
