@@ -1,12 +1,12 @@
 package br.com.appbit.appbit.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
@@ -15,45 +15,48 @@ import java.util.Map;
 
 @Configuration
 @Profile("!test")
+@Slf4j
 public class DataSourceConfig {
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.primary")
-    public DataSource primaryDataSource() {
-        return DataSourceBuilder.create().build();
-    }
+    private final Environment env;
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.replica")
-    public DataSource replicaDataSource() {
-        return DataSourceBuilder.create().build();
-    }
-
-    @Bean
-    public DataSource routingDataSource(
-            @Qualifier("primaryDataSource") DataSource primary,
-            @Qualifier("replicaDataSource") DataSource replica
-    ) {
-        RoutingDataSource routing = new RoutingDataSource();
-        
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DataSourceType.PRIMARY, primary);
-        
-        String replicaHost = System.getenv("DB_REPLICA_HOST");
-        if (replicaHost == null || replicaHost.isBlank()) {
-            targetDataSources.put(DataSourceType.REPLICA, primary);
-        } else {
-            targetDataSources.put(DataSourceType.REPLICA, replica);
-        }
-
-        routing.setTargetDataSources(targetDataSources);
-        routing.setDefaultTargetDataSource(primary);
-        return routing;
+    public DataSourceConfig(Environment env) {
+        this.env = env;
     }
 
     @Bean
     @Primary
-    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
-        return new LazyConnectionDataSourceProxy(routingDataSource);
+    public DataSource dataSource() {
+        DataSource primaryDS = DataSourceBuilder.create()
+                .url(env.getProperty("spring.datasource.primary.jdbc-url"))
+                .username(env.getProperty("spring.datasource.primary.username"))
+                .password(env.getProperty("spring.datasource.primary.password"))
+                .driverClassName(env.getProperty("spring.datasource.primary.driver-class-name"))
+                .build();
+
+        String replicaHost = System.getenv("DB_REPLICA_HOST");
+        if (replicaHost == null || replicaHost.isBlank()) {
+            log.info("Réplica de leitura não configurada (DB_REPLICA_HOST nulo). Usando DataSource primário único.");
+            return primaryDS;
+        }
+
+        log.info("Réplica de leitura configurada. Ativando roteamento de conexões (Read/Write Splitting).");
+        DataSource replicaDS = DataSourceBuilder.create()
+                .url(env.getProperty("spring.datasource.replica.jdbc-url"))
+                .username(env.getProperty("spring.datasource.replica.username"))
+                .password(env.getProperty("spring.datasource.replica.password"))
+                .driverClassName(env.getProperty("spring.datasource.replica.driver-class-name"))
+                .build();
+
+        RoutingDataSource routing = new RoutingDataSource();
+        Map<Object, Object> targetDataSources = new HashMap<>();
+        targetDataSources.put(DataSourceType.PRIMARY, primaryDS);
+        targetDataSources.put(DataSourceType.REPLICA, replicaDS);
+        
+        routing.setTargetDataSources(targetDataSources);
+        routing.setDefaultTargetDataSource(primaryDS);
+        routing.afterPropertiesSet();
+
+        return new LazyConnectionDataSourceProxy(routing);
     }
 }
