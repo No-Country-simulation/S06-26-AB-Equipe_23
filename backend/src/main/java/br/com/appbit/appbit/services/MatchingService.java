@@ -10,6 +10,7 @@ import br.com.appbit.appbit.mappers.CandidatoMapper;
 import br.com.appbit.appbit.matching.ScoreConfig;
 import br.com.appbit.appbit.repositories.CandidatoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
@@ -27,10 +28,17 @@ public class MatchingService {
 
     private final CandidatoRepository candidatoRepository;
     private final CandidatoMapper candidatoMapper;
+    private final MatchingAiService matchingAiService;
 
     public MatchingService(CandidatoRepository candidatoRepository, CandidatoMapper candidatoMapper) {
+        this(candidatoRepository, candidatoMapper, new MatchingAiService());
+    }
+
+    @Autowired
+    public MatchingService(CandidatoRepository candidatoRepository, CandidatoMapper candidatoMapper, MatchingAiService matchingAiService) {
         this.candidatoRepository = candidatoRepository;
         this.candidatoMapper = candidatoMapper;
+        this.matchingAiService = matchingAiService;
     }
 
     public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
@@ -89,7 +97,9 @@ public class MatchingService {
         String       modeloPreferido  = vaga != null && vaga.modeloTrabalho() != null ? vaga.modeloTrabalho() : "hibrido";
         int          minExperiencia   = 1;
 
-        double skillScore    = calcularSkillScore(candidato.skills(), skillsVaga);
+        // Calcula similaridade semântica de skills via IA (OpenAI/Gemini) ou NLP local
+        br.com.appbit.appbit.dtos.AiMatchResultDTO aiResult = matchingAiService.calcularSimilaridadeSemantica(candidato.skills(), skillsVaga);
+        double skillScore    = aiResult.score() / 100.0;
         double expScore      = calcularExpScore(candidato.anosExperiencia(), minExperiencia);
         double modelScore    = calcularModeloScore(candidato.modeloTrabalhoPreferido(), modeloPreferido);
         double diversidade   = calcularDiversidade(candidato.badgeDiversidade());
@@ -104,7 +114,7 @@ public class MatchingService {
         log.debug("Candidato {}: skill={:.2f} exp={:.2f} modelo={:.2f} div={:.2f} → score={}",
                 candidato.candidatoId(), skillScore, expScore, modelScore, diversidade, score);
 
-        // Retorna novo record com score recalculado (records são imutáveis)
+        // Retorna novo record com score e justificativa da IA recalculados (records são imutáveis)
         return new CandidatoMatchDTO(
                 candidato.candidatoId(),
                 candidato.apelidoExibicao(),
@@ -115,7 +125,8 @@ public class MatchingService {
                 candidato.skills(),
                 candidato.anosExperiencia(),
                 candidato.badgeDiversidade(),
-                score
+                score,
+                aiResult.justificativa()
         );
     }
 

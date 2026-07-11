@@ -25,6 +25,7 @@ export interface CandidatoMatch {
   anos_experiencia?: number;
   badge_diversidade?: string;
   score_match: number;
+  justificativa_ai?: string;
 }
 
 export interface MatchResponse {

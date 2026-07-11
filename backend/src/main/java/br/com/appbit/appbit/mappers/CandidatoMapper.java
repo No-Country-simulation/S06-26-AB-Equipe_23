@@ -32,6 +32,7 @@ public interface CandidatoMapper {
     @Mapping(target = "badgeDiversidade",        source = "diversidade")
     @Mapping(target = "skills",                  source = "candidatoSkills", qualifiedByName = "skillsToNomes")
     @Mapping(target = "scoreMatch",              constant = "0")
+    @Mapping(target = "justificativaAi",         ignore = true)
     CandidatoMatchDTO toMatchDTO(CandidatoEntity entity);
 
     @Named("skillsToNomes")

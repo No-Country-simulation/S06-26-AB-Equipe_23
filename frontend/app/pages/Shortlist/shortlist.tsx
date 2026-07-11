@@ -285,6 +285,17 @@ export default function ShortList() {
                       </div>
                     </div>
 
+                    {candidate.justificativa_ai && (
+                      <div className="sl-card__section" style={{ background: '#f8fafc', padding: 8, borderRadius: 6, border: '1px solid #e2e8f0', marginTop: 8 }}>
+                        <p className="sl-card__section-label" style={{ display: 'flex', alignItems: 'center', gap: 4, margin: '0 0 4px', color: '#6366f1', fontWeight: 700 }}>
+                          🤖 Justificativa da IA
+                        </p>
+                        <p style={{ margin: 0, fontSize: 11, color: '#475569', lineHeight: 1.35 }}>
+                          {candidate.justificativa_ai}
+                        </p>
+                      </div>
+                    )}
+
                     <div className="sl-card__row">
                       <div className="sl-card__detail">
                         <span className="sl-card__detail-label">Experiência</span>
