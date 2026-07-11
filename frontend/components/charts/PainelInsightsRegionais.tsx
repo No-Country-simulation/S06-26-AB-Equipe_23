@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { buscarInsightsRegioes, buscarAlertasEsg } from '../../lib/appbitApi';
 import type { RegiaoInsight, AlertaEsg } from '../../lib/appbitTypes';
 import { formatarClusterMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     L: any;
-    appbitMap: any;
   }
 }
 
@@ -43,6 +43,9 @@ export default function PainelInsightsRegionais() {
   const [municipio, setMunicipio] = useState('');
   const [tecnologia, setTecnologia] = useState('');
   const [cluster, setCluster] = useState('');
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mapRef = useRef<any>(null);
 
   const municipios = useMemo(() => [...new Set(regioes.map((r) => r.municipio))].sort(), [regioes]);
   const tecnologias = useMemo(
@@ -104,16 +107,16 @@ export default function PainelInsightsRegionais() {
   useEffect(() => {
     if (!window.L || !mapLoaded || filtradas.length === 0) return;
 
-    if (window.appbitMap) {
-      window.appbitMap.remove();
-      window.appbitMap = null;
+    if (mapRef.current) {
+      mapRef.current.remove();
+      mapRef.current = null;
     }
 
     const mapContainer = document.getElementById('map-leaflet');
     if (!mapContainer) return;
 
     const map = window.L.map('map-leaflet').setView([-27.5969, -48.5495], 11);
-    window.appbitMap = map;
+    mapRef.current = map;
 
     window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap'
@@ -154,9 +157,9 @@ export default function PainelInsightsRegionais() {
     });
 
     return () => {
-      if (window.appbitMap) {
-        window.appbitMap.remove();
-        window.appbitMap = null;
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
       }
     };
   }, [mapLoaded, filtradas]);
