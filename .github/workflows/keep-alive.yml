@@ -1,0 +1,15 @@
+name: Keep Alive Database
+
+on:
+  schedule:
+    # Roda a cada 6 horas para garantir que o banco Aiven não entre em modo suspenso
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Permite executar o ping manualmente pelo painel do GitHub Actions
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Actuator Health Endpoint
+        run: |
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://appbit-backend-0v3u.onrender.com/actuator/health
