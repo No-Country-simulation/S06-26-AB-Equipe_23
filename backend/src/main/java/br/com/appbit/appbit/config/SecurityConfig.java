@@ -1,9 +1,11 @@
 package br.com.appbit.appbit.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -27,16 +30,13 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    // Password encoder — PBKDF2 com SHA-256, 310 000 iterações
+    @Value("${spring.security.oauth2.client.registration.google.client-id:disabled}")
+    private String googleClientId;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
-
-
-    // Authentication provider usa o nosso UserDetailsService + PBKDF2
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -51,54 +51,38 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-
-    // Cadeia de filtros HTTP
-
-
     @SuppressWarnings("null")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // CSRF desativado — API stateless com JWT
             .csrf(AbstractHttpConfigurer::disable)
-
-            // CORS delegado ao CorsConfig (WebMvcConfigurer)
             .cors(Customizer.withDefaults())
-
-            // Sem sessão HTTP
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-            // Regras de acesso
             .authorizeHttpRequests(auth -> auth
-                // Preflight OPTIONS liberado globalmente
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // Rotas públicas
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/cadastro").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/actuator/**").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/.well-known/jwks.json").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/oauth2/**", "/login/oauth2/**").permitAll()
-                // Tudo mais requer autenticação
                 .anyRequest().authenticated()
             )
-
-            // Registra o provider customizado
             .authenticationProvider(authenticationProvider())
-
-            // Configura o OAuth2 Login
-            .oauth2Login(oauth2 -> oauth2
-                .successHandler(oAuth2SuccessHandler)
-            )
-
-            // Trata exceções retornando 403 Forbidden em vez de redirect 302 para requisições de API protegidas
             .exceptionHandling(exceptions -> exceptions
-                .authenticationEntryPoint(new org.springframework.security.web.authentication.HttpStatusEntryPoint(org.springframework.http.HttpStatus.FORBIDDEN))
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN))
             )
-
-            // Filtro JWT antes do filtro padrão de usuário/senha
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // OAuth2 só ativa se as credenciais do Google estiverem configuradas
+        boolean oauth2Enabled = googleClientId != null
+                && !googleClientId.isBlank()
+                && !googleClientId.equals("disabled");
+
+        if (oauth2Enabled) {
+            http.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2SuccessHandler));
+        }
 
         return http.build();
     }
