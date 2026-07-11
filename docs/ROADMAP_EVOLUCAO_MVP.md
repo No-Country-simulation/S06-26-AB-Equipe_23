@@ -58,6 +58,6 @@ Adicionar valor tecnológico e diferenciais competitivos ao ecossistema do **App
 - `[x]` **Geração Automática de Insights ESG & Mapa Interativo:**
   - **O quê:** Oferecer sugestões proativas aos recrutadores e gestores de ESG com base nos dados consolidados de cobertura de sinal, mentoria técnica e formação educacional regionais, com visualização em mapa dinâmico de Florianópolis.
   - **Como:** O backend gera alertas analíticos sobre barreiras de conectividade e o frontend plota os marcadores correspondentes com Leaflet e OpenStreetMap exibindo popups dinâmicos de dados de rede.
-- `[ ]` **Relatórios e Auditoria ESG (Exportação):**
+- `[x]` **Relatórios e Auditoria ESG (Exportação):**
   - **O quê:** Permitir a exportação dos dados e gráficos gerados pela plataforma.
   - **Como:** Rota para download de PDFs assinados digitalmente e planilhas formatadas (.xlsx) dos indicadores de diversidade, saúde do time e impacto de capacitações regionais para fins de compliance das empresas.
