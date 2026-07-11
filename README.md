@@ -184,13 +184,13 @@ Open a terminal in the `backend/` folder:
 .\mvnw.cmd spring-boot:run
 ```
 
-On first run, Flyway applies all migrations automatically (V1 to V5).
-This creates all tables and seeds the demo data — candidates, regions, training tracks, events and mentors.
+On first run, Flyway applies all migrations automatically (V1 to V8).
+This creates all tables and seeds the demo data — candidates, regions, training tracks, events, mentors and authentication.
 
 Expected output when ready:
 
 ```
-Successfully applied 5 migrations to schema "appbit"
+Successfully validated 8 migrations to schema "appbit"
 Tomcat started on port 8080
 Started AppbitApplication in X seconds
 ```
@@ -250,13 +250,13 @@ OK: artefatos artificiais de candidatos ausentes
 ### Run backend tests
 
 ```bash
-# All tests
+# All tests (50)
 .\mvnw.cmd test
 
 # Matching logic only
 .\mvnw.cmd test -Dtest=MatchingServiceTest
 
-# Migration counts (V5 seed data)
+# Migration counts
 .\mvnw.cmd test -Dtest=MigrationV5CountsTest
 ```
 
@@ -299,7 +299,28 @@ See [AUTHORS.md](AUTHORS.md) for contributor details.
 
 ## Status
 
-MVP - locally validated.
+MVP - deployed and live in production.
+
+| Environment | Status | URL |
+|---|---|---|
+| Frontend | Live | https://appbit-frontend.onrender.com |
+| Backend API | Live | https://appbit-backend-0v3u.onrender.com |
+| Database | Live | Aiven MySQL 8.4 |
+
+## Contributing
+
+For a detailed guide on how to clone, run, change and deploy the project, see:
+
+[docs/CONTRIBUINDO.md](docs/CONTRIBUINDO.md)
+
+Quick summary:
+1. Clone the repository and create the local `appbit` database
+2. Configure `backend/.env` with your MySQL credentials
+3. Run the backend: `.\mvnw.cmd spring-boot:run`
+4. Run the frontend: `npm run dev`
+5. Create a feature branch, make your changes and open a Pull Request to `main`
+
+Merging to `main` triggers automatic deploy on Render.
 
 ## Authors and Contributors
 
