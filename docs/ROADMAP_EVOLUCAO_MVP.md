@@ -10,7 +10,7 @@ Para atender às exigências de segurança de grandes empresas (B2B) e conformid
 - `[ ]` **Autenticação com Chaves Assimétricas (JWKS):**
   - **O quê:** Migrar a assinatura de tokens JWT de chave simétrica (chave compartilhada) para chaves pública/privada (RSA ou ECDSA).
   - **Como:** O backend assina o token com a chave privada, e o frontend (ou outros microsserviços) valida o token usando a chave pública exposta em uma rota pública padronizada `/.well-known/jwks.json`.
-- `[ ]` **Criptografia de Dados Pessoais (Conformidade LGPD):**
+- `[x]` **Criptografia de Dados Pessoais (Conformidade LGPD):**
   - **O quê:** Garantir que informações de identificação pessoal (PII) dos candidatos (como CPF, e-mail, telefone e nome completo) não fiquem salvas em texto claro no banco de dados.
   - **Como:** Implementar criptografia simétrica AES-256 transparente na camada do JPA (utilizando conversores Hibernate `@Convert(AttributeConverter.class)` ou Spring Data JPA Encryption).
 - `[ ]` **Integração com Provedores de Identidade (SSO/OAuth2):**

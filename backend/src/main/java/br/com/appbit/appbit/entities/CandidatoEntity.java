@@ -34,6 +34,7 @@ public class CandidatoEntity {
 
     @NotBlank(message = "O nome é obrigatório")
     @Column(name = "nome", nullable = false)
+    @Convert(converter = br.com.appbit.appbit.config.AesEncryptor.class)
     private String nome;
 
     @Column(name = "cargo_alvo")
