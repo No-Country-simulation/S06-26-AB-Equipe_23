@@ -17,6 +17,11 @@ App BiT is an intelligent recruiting MVP designed to support objective, inclusiv
 
 The platform generates candidate shortlists based on job requirements, calculates match scores, protects sensitive candidate information during the first screening stage and supports decision-making with regional connectivity analysis and BI indicators such as Turnover, ESG and Team Health.
 
+## Deploy Links (Live Demo)
+
+- **Frontend Application (Web):** [https://appbit-frontend.onrender.com](https://appbit-frontend.onrender.com)
+- **Backend API Health:** [https://appbit-backend-0v3u.onrender.com/actuator/health](https://appbit-backend-0v3u.onrender.com/actuator/health)
+
 ## MVP Results
 
 - 8 official demo candidates validated.
