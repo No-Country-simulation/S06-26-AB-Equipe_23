@@ -28,7 +28,7 @@ Garantir estabilidade à medida que o número de vagas e candidatos crescer:
 - `[x]` **Cache em Memória e Distribuído (Redis):**
   - **O quê:** Armazenar temporariamente em cache os resultados do motor de matching de candidatos/vagas e os consolidados de relatórios ESG/Saúde do Time (dados com alto custo de processamento que mudam com pouca frequência).
   - **Como:** Habilitar `@EnableCaching` no Spring Boot e integrar com um serviço Redis na nuvem.
-- `[ ]` **Segregação de Conexões (Read/Write Splitting):**
+- `[x]` **Segregação de Conexões (Read/Write Splitting):**
   - **O quê:** Separar as requisições de escrita no banco de dados das consultas pesadas de relatórios e dashboards.
   - **Como:** Configurar múltiplos DataSources no HikariCP, roteando consultas `GET` para réplicas de leitura do MySQL e operações de escrita (`POST`, `PUT`, `DELETE`) para o banco de dados principal (Master).
 
