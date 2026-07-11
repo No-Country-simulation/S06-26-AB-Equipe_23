@@ -55,6 +55,13 @@ public class VagaService {
     }
 
     @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<VagaResponseDTO> listAllVaga(org.springframework.data.domain.Pageable pageable) {
+        log.info("Listando vagas com paginacao nativa: {}", pageable);
+        return vagaRepository.findAll(pageable)
+                .map(vagaMapper::toResponseDTO);
+    }
+
+    @Transactional(readOnly = true)
     public VagaResponseDTO getVagaById(Integer vagaId) {
         log.info("Buscando vaga por ID: {}", vagaId);
         VagaEntity vaga = vagaRepository.findById(vagaId)

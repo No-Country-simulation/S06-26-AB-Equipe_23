@@ -22,7 +22,7 @@ Para atender às exigências de segurança de grandes empresas (B2B) e conformid
 ## 2. Escalabilidade e Performance (Alta Escala)
 Garantir estabilidade à medida que o número de vagas e candidatos crescer:
 
-- `[ ]` **Paginação Nativa de APIs:**
+- `[x]` **Paginação Nativa de APIs:**
   - **O quê:** Evitar que rotas de listagem de candidatos e vagas retornem milhares de registros de uma só vez, o que causa estouro de memória e lentidão.
   - **Como:** Refatorar as assinaturas dos Controllers e Repositories do Spring Data JPA para aceitar parâmetros `Pageable` e retornar objetos do tipo `Page<T>`, permitindo paginação e ordenação nativa pelo banco.
 - `[ ]` **Cache em Memória e Distribuído (Redis):**

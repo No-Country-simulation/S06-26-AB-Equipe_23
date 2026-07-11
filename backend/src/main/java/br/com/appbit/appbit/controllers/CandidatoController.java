@@ -27,7 +27,13 @@ public class CandidatoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CandidatoResponseDTO>> getAllCandidato() {
+    public ResponseEntity<?> getAllCandidato(
+            @org.springframework.data.web.PageableDefault(size = 20, sort = "id") org.springframework.data.domain.Pageable pageable,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        if (request.getParameter("page") != null || request.getParameter("size") != null) {
+            return ResponseEntity.ok(candidatoService.listAllCandidato(pageable));
+        }
 
         List<CandidatoResponseDTO> candidatoDtoList = candidatoService.listAllCandidato();
 

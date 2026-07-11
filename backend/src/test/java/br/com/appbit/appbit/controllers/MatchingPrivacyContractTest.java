@@ -127,4 +127,38 @@ class MatchingPrivacyContractTest {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/actuator/prometheus"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void candidatosEndpointReturnsClassicArrayWhenNotPaged() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/candidatos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void candidatosEndpointReturnsPageObjectWhenPaged() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/candidatos?page=0&size=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.pageable").exists());
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void vagasEndpointReturnsClassicArrayWhenNotPaged() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/vagas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void vagasEndpointReturnsPageObjectWhenPaged() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/vagas?page=0&size=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.pageable").exists());
+    }
 }

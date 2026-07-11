@@ -51,6 +51,13 @@ public class CandidatoService {
     }
 
     @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<CandidatoResponseDTO> listAllCandidato(org.springframework.data.domain.Pageable pageable) {
+        log.info("Listando candidatos com paginacao nativa: {}", pageable);
+        return candidatoRepository.findAll(pageable)
+                .map(candidatoMapper::toResponseDTO);
+    }
+
+    @Transactional(readOnly = true)
     public CandidatoResponseDTO getCandidatoById(Integer candidatoId) {
         log.info("Buscando candidato por ID: {}", candidatoId);
         CandidatoEntity candidato = candidatoRepository.findById(candidatoId)

@@ -25,7 +25,13 @@ public class VagaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VagaResponseDTO>> getAllVaga() {
+    public ResponseEntity<?> getAllVaga(
+            @org.springframework.data.web.PageableDefault(size = 20, sort = "id") org.springframework.data.domain.Pageable pageable,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        if (request.getParameter("page") != null || request.getParameter("size") != null) {
+            return ResponseEntity.ok(vagaService.listAllVaga(pageable));
+        }
 
         List<VagaResponseDTO> vagaDtoList = vagaService.listAllVaga();
 
