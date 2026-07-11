@@ -3,6 +3,13 @@ import { buscarInsightsRegioes, buscarAlertasEsg } from '../../lib/appbitApi';
 import type { RegiaoInsight, AlertaEsg } from '../../lib/appbitTypes';
 import { formatarClusterMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
+declare global {
+  interface Window {
+    L: any;
+    appbitMap: any;
+  }
+}
+
 const tecnologiaCores: Record<RegiaoInsight['tecnologia_predominante_regiao'], string> = {
   '3G': '#F59E0B',
   '4G': '#2563EB',
@@ -31,20 +38,11 @@ function Card({ label, value }: { label: string; value: string | number }) {
 export default function PainelInsightsRegionais() {
   const [regioes, setRegioes] = useState<RegiaoInsight[]>([]);
   const [alertas, setAlertas] = useState<AlertaEsg[]>([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [erro, setErro] = useState('');
   const [municipio, setMunicipio] = useState('');
   const [tecnologia, setTecnologia] = useState('');
   const [cluster, setCluster] = useState('');
-
-  useEffect(() => {
-    buscarInsightsRegioes()
-      .then((data) => setRegioes(data.regioes))
-      .catch(() => setErro('Não foi possível carregar /insights/regioes. Nenhum dado fictício foi usado como fallback.'));
-
-    buscarAlertasEsg()
-      .then((data) => setAlertas(data))
-      .catch((err) => console.error('Erro ao obter alertas ESG:', err));
-  }, []);
 
   const municipios = useMemo(() => [...new Set(regioes.map((r) => r.municipio))].sort(), [regioes]);
   const tecnologias = useMemo(
@@ -63,15 +61,108 @@ export default function PainelInsightsRegionais() {
   const usuariosObservados = filtradas.reduce((acc, item) => acc + item.usuarios_observados_total, 0);
   const topRegioes = [...filtradas].sort((a, b) => b.total_sessoes - a.total_sessoes).slice(0, 8);
   const maxSessoes = Math.max(1, ...topRegioes.map((r) => r.total_sessoes));
-  const latitudes = regioes.map((r) => r.lat_media);
-  const longitudes = regioes.map((r) => r.lon_media);
-  const minLat = latitudes.length ? Math.min(...latitudes) : 0;
-  const maxLat = latitudes.length ? Math.max(...latitudes) : 1;
-  const minLon = longitudes.length ? Math.min(...longitudes) : 0;
-  const maxLon = longitudes.length ? Math.max(...longitudes) : 1;
 
-  const mapX = (lon: number) => 28 + ((lon - minLon) / Math.max(maxLon - minLon, 0.0001)) * 84;
-  const mapY = (lat: number) => 88 - ((lat - minLat) / Math.max(maxLat - minLat, 0.0001)) * 76;
+  useEffect(() => {
+    buscarInsightsRegioes()
+      .then((data) => setRegioes(data.regioes))
+      .catch(() => setErro('Não foi possível carregar /insights/regioes. Nenhum dado fictício foi usado como fallback.'));
+
+    buscarAlertasEsg()
+      .then((data) => setAlertas(data))
+      .catch((err) => console.error('Erro ao obter alertas ESG:', err));
+  }, []);
+
+  useEffect(() => {
+    const checkAndInit = () => {
+      if (window.L) {
+        setMapLoaded(true);
+      }
+    };
+
+    if (!document.getElementById('leaflet-css')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      link.onload = checkAndInit;
+      document.head.appendChild(link);
+    } else {
+      checkAndInit();
+    }
+
+    if (!document.getElementById('leaflet-js')) {
+      const script = document.createElement('script');
+      script.id = 'leaflet-js';
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = checkAndInit;
+      document.head.appendChild(script);
+    } else {
+      checkAndInit();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!window.L || !mapLoaded || filtradas.length === 0) return;
+
+    if (window.appbitMap) {
+      window.appbitMap.remove();
+      window.appbitMap = null;
+    }
+
+    const mapContainer = document.getElementById('map-leaflet');
+    if (!mapContainer) return;
+
+    const map = window.L.map('map-leaflet').setView([-27.5969, -48.5495], 11);
+    window.appbitMap = map;
+
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    filtradas.forEach((regiao) => {
+      if (regiao.lat_media && regiao.lon_media) {
+        const radius = Math.max(7, Math.min(18, regiao.qtd_antenas * 1.2));
+        const color = tecnologiaCores[regiao.tecnologia_predominante_regiao] || '#7C3AED';
+
+        const circle = window.L.circleMarker([regiao.lat_media, regiao.lon_media], {
+          radius: radius,
+          fillColor: color,
+          color: '#111827',
+          weight: 1,
+          opacity: 0.8,
+          fillOpacity: 0.65
+        }).addTo(map);
+
+        const popupContent = `
+          <div style="font-family: sans-serif; font-size: 12px; line-height: 1.4; min-width: 150px;">
+            <strong style="font-size: 13px; color: #111827; display: block; margin-bottom: 4px;">
+              ${formatarClusterMvp(regiao.cluster)}
+            </strong>
+            <b>Município:</b> ${formatarTextoMvp(regiao.municipio)}<br/>
+            <b>Tecnologia:</b> 
+            <span style="background: ${color}; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px; display: inline-block; margin-top: 2px;">
+              ${regiao.tecnologia_predominante_regiao}
+            </span><br/>
+            <div style="margin-top: 6px; border-top: 1px solid #e5e7eb; padding-top: 4px;">
+              <b>Antenas:</b> ${formatNumber(regiao.qtd_antenas)}<br/>
+              <b>Sessões:</b> ${formatNumber(regiao.total_sessoes)}
+            </div>
+          </div>
+        `;
+        circle.bindPopup(popupContent);
+      }
+    });
+
+    return () => {
+      if (window.appbitMap) {
+        window.appbitMap.remove();
+        window.appbitMap = null;
+      }
+    };
+  }, [mapLoaded, filtradas]);
+
+
+
 
   return (
     <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
@@ -166,16 +257,9 @@ export default function PainelInsightsRegionais() {
         <section className="insights-content-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 16 }}>
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 16 }}>
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Distribuição Geográfica das Regiões</h3>
-            <svg viewBox="0 0 120 96" style={{ width: '100%', height: 360, background: '#edf7f0', borderRadius: 8 }}>
-              {filtradas.map((regiao) => (
-                <g key={`${regiao.municipio}-${regiao.cluster}`}>
-                  <circle cx={mapX(regiao.lon_media)} cy={mapY(regiao.lat_media)} r={Math.max(3.2, Math.min(8, regiao.qtd_antenas / 1.8))} fill={tecnologiaCores[regiao.tecnologia_predominante_regiao]} stroke="#111827" strokeWidth="0.4" />
-                  <title>{`${formatarTextoMvp(regiao.municipio)} - ${formatarClusterMvp(regiao.cluster)}: ${regiao.tecnologia_predominante_regiao}`}</title>
-                </g>
-              ))}
-            </svg>
-            <p style={{ color: '#6b7280', fontSize: 11 }}>
-              Cor = tecnologia com maior quantidade de sessões observadas. Isso não representa teste de velocidade nem garantia de cobertura.
+            <div id="map-leaflet" style={{ width: '100%', height: 360, borderRadius: 8, border: '1px solid #e5e7eb', zIndex: 1 }} />
+            <p style={{ color: '#6b7280', fontSize: 11, marginTop: 8 }}>
+              Cor = tecnologia predominante. O mapa exibe marcadores interativos do OpenStreetMap com zoom e detalhes ao clicar.
             </p>
           </div>
 
