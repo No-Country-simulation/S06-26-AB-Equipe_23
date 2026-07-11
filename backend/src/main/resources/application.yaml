@@ -35,6 +35,9 @@ jwt:
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24 h (padrão)
 
 logging:
+  structured:
+    format:
+      console: ${LOGGING_STRUCTURED_FORMAT:}
   level:
     org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
 

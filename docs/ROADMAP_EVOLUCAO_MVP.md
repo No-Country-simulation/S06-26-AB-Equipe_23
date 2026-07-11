@@ -40,7 +40,7 @@ Para que a equipe consiga prever falhas e monitorar a saúde da aplicação na n
 - `[x]` **Métricas com Prometheus & Grafana:**
   - **O quê:** Monitorar em tempo real métricas de desempenho do servidor (uso de CPU, consumo de memória heap, tempo médio de resposta das rotas HTTP, conexões ativas no pool de banco).
   - **Como:** Adicionar a dependência do Micrometer Registry Prometheus no `pom.xml`, coletar os dados na rota `/actuator/prometheus` e configurar painéis visuais no Grafana.
-- `[ ]` **Ingestão de Logs Estruturados:**
+- `[x]` **Ingestão de Logs Estruturados:**
   - **O quê:** Padronizar a saída de logs do sistema para facilitar a indexação e busca rápida em caso de bugs na produção.
   - **Como:** Configurar o Logback para gerar logs em formato estruturado (JSON) e direcionar a saída para ferramentas de centralização de logs (ex: Loki, ELK Stack, ou Datadog).
 - `[ ]` **Ambiente de Homologação (Staging):**
