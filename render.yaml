@@ -36,7 +36,7 @@ services:
     pullRequestPreviewsEnabled: false
     envVars:
       - key: VITE_API_URL
-        value: https://appbit-backend.onrender.com
+        value: https://appbit-backend-0v3u.onrender.com
     routes:
       - type: rewrite
         source: /*
