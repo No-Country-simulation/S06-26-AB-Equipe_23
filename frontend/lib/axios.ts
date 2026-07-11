@@ -2,7 +2,7 @@ import axios from 'axios';
 import { clearAppSession } from './session';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "https://appbit-backend-0v3u.onrender.com",
+    baseURL: import.meta.env.VITE_API_URL || "https://s06-26-ab-equipe-23.onrender.com",
     timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
