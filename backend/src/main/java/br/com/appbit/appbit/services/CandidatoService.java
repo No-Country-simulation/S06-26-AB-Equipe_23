@@ -25,6 +25,7 @@ public class CandidatoService {
     private final RegiaoRepository regiaoRepository;
     private final CandidatoMapper candidatoMapper;
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoResponseDTO createCandidato(CandidatoCreateDTO createDTO) {
         log.info("Criando novo candidato: {}", createDTO.nome());
 
@@ -66,6 +67,7 @@ public class CandidatoService {
         return candidatoMapper.toResponseDTO(candidato);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoResponseDTO updateCandidatoById(CandidatoUpdateDTO updateDTO, Integer candidatoId) {
         log.info("Atualizando candidato com ID: {}", candidatoId);
 
@@ -93,6 +95,7 @@ public class CandidatoService {
         return candidatoMapper.toResponseDTO(candidatoAtualizada);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public void deleteCandidatoById(Integer candidatoId) {
         log.info("Deletando candidato com ID: {}", candidatoId);
 

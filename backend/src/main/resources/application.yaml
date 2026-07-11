@@ -6,6 +6,11 @@ spring:
     converters:
       preferred-json-mapper: jackson2
 
+  data:
+    redis:
+      repositories:
+        enabled: false
+
   datasource:
       url: jdbc:mysql://${DB_HOST_APPBIT:localhost}:${DB_PORT_APPBIT:3306}/${DB_NAME_APPBIT:appbit}?sslMode=${DB_SSL_MODE:DISABLED}&allowPublicKeyRetrieval=true
       username: ${DB_USER_APPBIT:root}

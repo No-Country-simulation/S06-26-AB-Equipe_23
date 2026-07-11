@@ -29,6 +29,7 @@ public class CandidatoSkillService {
     private final SkillRepository skillRepository;
     private final CandidatoSkillMapper mapper;
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoSkillResponseDTO createCandidatoSkill(CandidatoSkillCreateDTO createDTO) {
 
         CandidatoEntity candidato = candidatoRepository.findById(createDTO.candidatoId())
@@ -68,6 +69,7 @@ public class CandidatoSkillService {
         return mapper.toResponseDTO(candidatoSkill);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoSkillResponseDTO updateCandidatoSkillById(
             CandidatoSkillUpdateDTO updateDTO,
             CandidatoSkillId id) {
@@ -84,6 +86,7 @@ public class CandidatoSkillService {
         return mapper.toResponseDTO(candidatoSkillAtualizado);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public void deleteCandidatoSkillById(CandidatoSkillId id) {
 
         CandidatoSkillEntity candidatoSkill = repository.findById(id)

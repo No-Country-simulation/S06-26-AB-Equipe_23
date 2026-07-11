@@ -26,6 +26,7 @@ public class VagaSkillService {
     private final SkillRepository skillRepository;
     private final VagaSkillMapper mapper;
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public VagaSkillResponseDTO createVagaSkill(VagaSkillCreateDTO createDTO) {
         log.info("Criando nova vaga-skill: Vaga ID: {}, Skill ID: {}",
                 createDTO.vagaId(), createDTO.skillId());
@@ -68,6 +69,7 @@ public class VagaSkillService {
         return mapper.toResponseDTO(vagaSkill);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public VagaSkillResponseDTO updateVagaSkillById(VagaSkillUpdateDTO updateDTO, VagaSkillId id) {
         log.info("Atualizando vaga-skill: Vaga ID: {}, Skill ID: {}",
                 id.getVagaId(), id.getSkillId());
@@ -84,6 +86,7 @@ public class VagaSkillService {
         return mapper.toResponseDTO(vagaSkillAtualizado);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public void deleteVagaSkillById(VagaSkillId id) {
         log.info("Deletando vaga-skill: Vaga ID: {}, Skill ID: {}",
                 id.getVagaId(), id.getSkillId());

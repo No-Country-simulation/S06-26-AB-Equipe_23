@@ -27,6 +27,7 @@ public class VagaService {
     private final RegiaoRepository regiaoRepository;
     private final VagaMapper vagaMapper;
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public VagaResponseDTO createVaga(VagaCreateDTO createDTO) {
         log.info("Criando nova vaga: {}", createDTO.titulo());
 
@@ -69,6 +70,7 @@ public class VagaService {
         return vagaMapper.toResponseDTO(vaga);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public VagaResponseDTO updateVagaById(VagaUpdateDTO updateDTO, Integer vagaId) {
         log.info("Atualizando vaga com ID: {}", vagaId);
 
@@ -96,6 +98,7 @@ public class VagaService {
         return vagaMapper.toResponseDTO(vagaAtualizada);
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public void deleteVagaById(Integer vagaId) {
         log.info("Deletando vaga com ID: {}", vagaId);
         VagaEntity vaga = vagaRepository.findById(vagaId)

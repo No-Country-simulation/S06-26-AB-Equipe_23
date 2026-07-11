@@ -20,6 +20,7 @@ public class EsgInsightService {
     private final TrilhaFormacaoRepository trilhaFormacaoRepository;
     private final MentorDiversidadeRepository mentorDiversidadeRepository;
 
+    @org.springframework.cache.annotation.Cacheable(value = "esgInsights")
     public List<AlertaEsgDTO> obterAlertasEsg() {
         List<AlertaEsgDTO> alertas = new ArrayList<>();
 

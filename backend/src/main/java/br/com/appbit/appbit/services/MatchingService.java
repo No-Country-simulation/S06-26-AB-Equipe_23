@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@org.springframework.transaction.annotation.Transactional(readOnly = true)
 public class MatchingService {
 
     private static final ScoreConfig CONFIG = ScoreConfig.defaults();
@@ -41,6 +42,7 @@ public class MatchingService {
         this.matchingAiService = matchingAiService;
     }
 
+    @org.springframework.cache.annotation.Cacheable(value = "matching", key = "#request")
     public MatchingResponseDTO executarMatch(MatchingRequestDTO request) {
         // Busca candidatos ativos no banco
         List<CandidatoEntity> candidatosEntity = candidatoRepository.findByAtivo(true);

@@ -25,7 +25,7 @@ Garantir estabilidade à medida que o número de vagas e candidatos crescer:
 - `[x]` **Paginação Nativa de APIs:**
   - **O quê:** Evitar que rotas de listagem de candidatos e vagas retornem milhares de registros de uma só vez, o que causa estouro de memória e lentidão.
   - **Como:** Refatorar as assinaturas dos Controllers e Repositories do Spring Data JPA para aceitar parâmetros `Pageable` e retornar objetos do tipo `Page<T>`, permitindo paginação e ordenação nativa pelo banco.
-- `[ ]` **Cache em Memória e Distribuído (Redis):**
+- `[x]` **Cache em Memória e Distribuído (Redis):**
   - **O quê:** Armazenar temporariamente em cache os resultados do motor de matching de candidatos/vagas e os consolidados de relatórios ESG/Saúde do Time (dados com alto custo de processamento que mudam com pouca frequência).
   - **Como:** Habilitar `@EnableCaching` no Spring Boot e integrar com um serviço Redis na nuvem.
 - `[ ]` **Segregação de Conexões (Read/Write Splitting):**
