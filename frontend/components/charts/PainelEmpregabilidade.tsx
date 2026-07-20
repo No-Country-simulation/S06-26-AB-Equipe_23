@@ -3,10 +3,43 @@ import useVagas from '../../hooks/useVagas';
 import VagaCard from '../layout/VagaCard';
 import VagaDetalhe from '../layout/VagaDetalhe';
 import ModalNovaVaga from '../layout/ModalNovaVaga';
+import type { Vaga } from '../../features/jobs/components/type/index.ts';
 
 export default function PainelEmpregabilidade() {
-  const { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga, carregando, erro } = useVagas();
+  const {
+    vagas,
+    vagaSelecionada,
+    vagaSelecionadaId,
+    setVagaSelecionadaId,
+    publicarVaga,
+    editarVaga,
+    excluirVaga,
+    carregando,
+    erro,
+  } = useVagas();
+
   const [modalAberto, setModalAberto] = useState(false);
+  const [vagaEmEdicao, setVagaEmEdicao] = useState<Vaga | null>(null);
+
+  function handleAbrirCriacao() {
+    setVagaEmEdicao(null);
+    setModalAberto(true);
+  }
+
+  function handleAbrirEdicao() {
+    if (vagaSelecionada) {
+      setVagaEmEdicao(vagaSelecionada);
+      setModalAberto(true);
+    }
+  }
+
+  function handleExcluir() {
+    if (vagaSelecionada) {
+      if (window.confirm(`Tem certeza de que deseja excluir a vaga "${vagaSelecionada.titulo}"?`)) {
+        excluirVaga(vagaSelecionada.id);
+      }
+    }
+  }
 
   return (
     <div className="employment-panel" style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -32,7 +65,7 @@ export default function PainelEmpregabilidade() {
             <span style={{ color: '#9ca3af', fontWeight: 400 }}>({vagas.length})</span>
           </h3>
           <button
-            onClick={() => setModalAberto(true)}
+            onClick={handleAbrirCriacao}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
               padding: '7px 12px',
@@ -82,7 +115,11 @@ export default function PainelEmpregabilidade() {
         background: '#f9fafb',
       }}>
         {vagaSelecionada ? (
-          <VagaDetalhe vaga={vagaSelecionada} />
+          <VagaDetalhe
+            vaga={vagaSelecionada}
+            onEditar={handleAbrirEdicao}
+            onExcluir={handleExcluir}
+          />
         ) : (
           <div style={{
             display: 'flex', flexDirection: 'column',
@@ -98,8 +135,18 @@ export default function PainelEmpregabilidade() {
       {/* Modal */}
       {modalAberto && (
         <ModalNovaVaga
-          onClose={() => setModalAberto(false)}
-          onPublicar={publicarVaga}
+          onClose={() => {
+            setModalAberto(false);
+            setVagaEmEdicao(null);
+          }}
+          onPublicar={(form) => {
+            if (vagaEmEdicao) {
+              editarVaga(vagaEmEdicao.id, form);
+            } else {
+              publicarVaga(form);
+            }
+          }}
+          vagaInicial={vagaEmEdicao}
         />
       )}
     </div>

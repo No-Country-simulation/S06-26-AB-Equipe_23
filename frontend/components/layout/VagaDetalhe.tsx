@@ -5,6 +5,8 @@ import Badge from '../ui/Badge';
 
 interface VagaDetalheProps {
   vaga: Vaga;
+  onEditar?: () => void;
+  onExcluir?: () => void;
 }
 
 function getFiltrosAtivos(vaga: Vaga): string[] {
@@ -38,17 +40,54 @@ const sectionLabelStyle: CSSProperties = {
   marginBottom: 10,
 };
 
-export default function VagaDetalhe({ vaga }: VagaDetalheProps) {
+export default function VagaDetalhe({ vaga, onEditar, onExcluir }: VagaDetalheProps) {
   const navigate = useNavigate();
   const filtros = getFiltrosAtivos(vaga);
 
   return (
     <div>
       <div style={cardStyle}>
-        <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: 6 }}>{vaga.titulo}</h2>
-        <p style={{ fontSize: 15, color: '#6C3FC5', marginBottom: 4 }}>🏢 Sua empresa</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: 6 }}>{vaga.titulo}</h2>
+            <p style={{ fontSize: 15, color: '#6C3FC5', marginBottom: 4 }}>🏢 Sua empresa</p>
+          </div>
 
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 13, color: '#6b7280', marginBottom: 16 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {onEditar && (
+              <button
+                type="button"
+                onClick={onEditar}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '8px 14px',
+                  background: '#fff', color: '#6C3FC5',
+                  border: '1px solid #6C3FC5', borderRadius: 8,
+                  fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                }}
+              >
+                ✏️ Editar vaga
+              </button>
+            )}
+            {onExcluir && (
+              <button
+                type="button"
+                onClick={onExcluir}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '8px 14px',
+                  background: '#fef2f2', color: '#ef4444',
+                  border: '1px solid #fca5a5', borderRadius: 8,
+                  fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                }}
+              >
+                🗑 Excluir vaga
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 13, color: '#6b7280', marginBottom: 16, marginTop: 8 }}>
           <span>📍 {vaga.modalidade}</span>
           <span>🗺 {vaga.regiao}</span>
           <span>📈 {vaga.nivel}</span>

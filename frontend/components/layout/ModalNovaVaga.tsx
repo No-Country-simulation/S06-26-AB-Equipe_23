@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import type { NovaVagaForm } from '../../features/jobs/components/type/index.ts';
+import type { NovaVagaForm, Vaga } from '../../features/jobs/components/type/index.ts';
 import type { FiltrosDiversidade } from '../../features/jobs/components/type/index.ts';
 import { AREAS, NIVEIS, MODALIDADES } from '../../stores/data/vagasMock';
 import Toggle from '../ui/Toggle';
@@ -8,6 +8,7 @@ import Toggle from '../ui/Toggle';
 interface ModalNovaVagaProps {
   onClose: () => void;
   onPublicar: (form: NovaVagaForm) => void;
+  vagaInicial?: Vaga | null;
 }
 
 const INPUT_STYLE: CSSProperties = {
@@ -38,16 +39,16 @@ const INITIAL_FILTROS: FiltrosDiversidade = {
   lgbtqia: false,
 };
 
-export default function ModalNovaVaga({ onClose, onPublicar }: ModalNovaVagaProps) {
-  const [titulo, setTitulo] = useState('');
-  const [area, setArea] = useState(AREAS[0]);
-  const [nivel, setNivel] = useState<"Júnior" | "Pleno" | "Sênior" | "Liderança">(NIVEIS[0] as "Júnior" | "Pleno" | "Sênior" | "Liderança");
-  const [modalidade, setModalidade] = useState<"Remoto" | "Híbrido" | "Presencial">(MODALIDADES[0] as "Remoto" | "Híbrido" | "Presencial");
-  const [regiao, setRegiao] = useState('');
-  const [skills, setSkills] = useState(['']);
-  const [descricao, setDescricao] = useState('');
-  const [filtros, setFiltros] = useState<FiltrosDiversidade>(INITIAL_FILTROS);
-  const [scoreMin, setScoreMin] = useState(40);
+export default function ModalNovaVaga({ onClose, onPublicar, vagaInicial }: ModalNovaVagaProps) {
+  const [titulo, setTitulo] = useState(vagaInicial?.titulo || '');
+  const [area, setArea] = useState(vagaInicial?.area || AREAS[0]);
+  const [nivel, setNivel] = useState<"Júnior" | "Pleno" | "Sênior" | "Liderança">(vagaInicial?.nivel || (NIVEIS[0] as "Júnior" | "Pleno" | "Sênior" | "Liderança"));
+  const [modalidade, setModalidade] = useState<"Remoto" | "Híbrido" | "Presencial">(vagaInicial?.modalidade || (MODALIDADES[0] as "Remoto" | "Híbrido" | "Presencial"));
+  const [regiao, setRegiao] = useState(vagaInicial?.regiao || '');
+  const [skills, setSkills] = useState<string[]>(vagaInicial?.skills || ['']);
+  const [descricao, setDescricao] = useState(vagaInicial?.descricao || '');
+  const [filtros, setFiltros] = useState<FiltrosDiversidade>(vagaInicial?.filtrosDiversidade || INITIAL_FILTROS);
+  const [scoreMin, setScoreMin] = useState(vagaInicial?.scoreMinDiversidade || 40);
 
   function handleFiltroChange(key: keyof FiltrosDiversidade, value: boolean) {
     setFiltros((prev: FiltrosDiversidade) => ({ ...prev, [key]: value }));
@@ -59,6 +60,8 @@ export default function ModalNovaVaga({ onClose, onPublicar }: ModalNovaVagaProp
     });
     onClose();
   }
+
+  const isEdicao = Boolean(vagaInicial);
 
   return (
     <div
@@ -89,8 +92,12 @@ export default function ModalNovaVaga({ onClose, onPublicar }: ModalNovaVagaProp
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div>
-            <h2 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Publicar nova vaga</h2>
-            <small style={{ color: '#64748b' }}>Vaga será salva no banco de dados.</small>
+            <h2 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>
+              {isEdicao ? 'Editar vaga' : 'Publicar nova vaga'}
+            </h2>
+            <small style={{ color: '#64748b' }}>
+              {isEdicao ? 'Alterações serão salvas no banco de dados.' : 'Vaga será salva no banco de dados.'}
+            </small>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#6b7280', lineHeight: 1 }}>✕</button>
         </div>
@@ -234,7 +241,7 @@ export default function ModalNovaVaga({ onClose, onPublicar }: ModalNovaVagaProp
             border: 'none', borderRadius: 8,
             fontSize: 13, fontWeight: 500, cursor: 'pointer',
           }}>
-            Publicar vaga
+            {isEdicao ? 'Salvar alterações' : 'Publicar vaga'}
           </button>
         </div>
       </div>

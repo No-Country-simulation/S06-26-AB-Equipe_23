@@ -28,6 +28,11 @@ export async function criarVaga(vaga: VagaCreateBackend): Promise<VagaBackend> {
   return response.data;
 }
 
+export async function atualizarVaga(id: number, vaga: Partial<VagaCreateBackend>): Promise<VagaBackend> {
+  const response = await api.put<VagaBackend>(`/vagas/${id}`, vaga);
+  return response.data;
+}
+
 export async function deletarVaga(id: number): Promise<void> {
   await api.delete(`/vagas/${id}`);
 }

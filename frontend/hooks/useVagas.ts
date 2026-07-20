@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import type { Vaga, NovaVagaForm } from "../features/jobs/components/type/index.ts";
-import { buscarVagas, criarVaga as apiCriarVaga } from '../lib/appbitApi';
+import {
+  buscarVagas,
+  criarVaga as apiCriarVaga,
+  atualizarVaga as apiAtualizarVaga,
+  deletarVaga as apiDeletarVaga,
+} from '../lib/appbitApi';
 import type { VagaBackend, VagaCreateBackend } from '../lib/appbitTypes';
 
 function formatarNivelFrontend(nivelRaw: string): Vaga['nivel'] {
@@ -109,5 +114,66 @@ export default function useVagas() {
     }
   }
 
-  return { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga, carregando, erro };
+  async function editarVaga(id: number, form: NovaVagaForm) {
+    const skills = form.skills
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+
+    const payload: Partial<VagaCreateBackend> = {
+      empresaId: 'emp_001',
+      titulo: form.titulo,
+      area: form.area,
+      nivel: form.nivel ? form.nivel.toLowerCase() : undefined,
+      modalidade: form.modalidade,
+      descricao: form.descricao,
+      skills: skills.length ? skills : undefined,
+      antiVies: form.filtros?.antivies,
+      prioridadeMulheres: form.filtros?.mulheres,
+      prioridadeNegros: form.filtros?.pessoasNegras,
+      prioridadePcd: form.filtros?.pcd,
+      prioridadeLgbt: form.filtros?.lgbtqia,
+      diversidadeMinima: form.scoreMin,
+    };
+
+    try {
+      setCarregando(true);
+      const atualizada = await apiAtualizarVaga(id, payload);
+      const vagaFe = backendToFrontendVaga(atualizada);
+      setVagas((prev) => prev.map((v) => (v.id === id ? vagaFe : v)));
+    } catch (err) {
+      console.error('Erro ao atualizar vaga no backend:', err);
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  async function excluirVaga(id: number) {
+    try {
+      setCarregando(true);
+      await apiDeletarVaga(id);
+      setVagas((prev) => {
+        const filtradas = prev.filter((v) => v.id !== id);
+        if (vagaSelecionadaId === id) {
+          setVagaSelecionadaId(filtradas.length > 0 ? filtradas[0].id : null);
+        }
+        return filtradas;
+      });
+    } catch (err) {
+      console.error('Erro ao excluir vaga no backend:', err);
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  return {
+    vagas,
+    vagaSelecionada,
+    vagaSelecionadaId,
+    setVagaSelecionadaId,
+    publicarVaga,
+    editarVaga,
+    excluirVaga,
+    carregando,
+    erro,
+  };
 }
