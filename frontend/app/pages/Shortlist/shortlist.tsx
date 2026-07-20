@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { aprovarCandidato, executarMatch } from '../../../lib/appbitApi';
-import type { CandidatoMatch, ContatoAprovado, MatchResponse } from '../../../lib/appbitTypes';
+import { aprovarCandidato, executarMatch, buscarVagaPorId } from '../../../lib/appbitApi';
+import type { CandidatoMatch, ContatoAprovado, MatchResponse, MatchRequest } from '../../../lib/appbitTypes';
 import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
 import './shortlist.css';
 
 const EMPRESA_ID = 'emp_001';
 
-const MATCH_REQUEST = {
+const MATCH_REQUEST: MatchRequest = {
   empresa_id: EMPRESA_ID,
   vaga: {
     titulo: 'Analista de Dados Júnior',
@@ -110,15 +110,51 @@ export default function ShortList() {
   }, [approvedContactsStorageKey]);
 
   useEffect(() => {
-    executarMatch(MATCH_REQUEST)
-      .then((response) => {
-        setMatch(response);
-        setError('');
-      })
-      .catch(() => {
-        setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
-      });
-  }, []);
+    const idNum = Number(vagaId);
+    if (!isNaN(idNum) && idNum > 0) {
+      buscarVagaPorId(idNum)
+        .then((vagaBackend) => {
+          const req: MatchRequest = {
+            empresa_id: EMPRESA_ID,
+            vaga: {
+              titulo: vagaBackend.titulo,
+              skills: vagaBackend.skills && vagaBackend.skills.length ? vagaBackend.skills : ['sql', 'python'],
+              nivel: vagaBackend.nivel ? vagaBackend.nivel.toLowerCase() : 'junior',
+              modelo_trabalho: vagaBackend.modalidade ? vagaBackend.modalidade.toLowerCase() : 'hibrido',
+            },
+            filtros: {
+              anti_vies: vagaBackend.antiVies ?? true,
+              diversidade_minima: vagaBackend.diversidadeMinima ? Number(vagaBackend.diversidadeMinima) : 40,
+              limite_resultados: 8,
+            },
+          };
+          return executarMatch(req);
+        })
+        .then((response) => {
+          setMatch(response);
+          setError('');
+        })
+        .catch(() => {
+          executarMatch(MATCH_REQUEST)
+            .then((res) => {
+              setMatch(res);
+              setError('');
+            })
+            .catch(() => {
+              setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
+            });
+        });
+    } else {
+      executarMatch(MATCH_REQUEST)
+        .then((response) => {
+          setMatch(response);
+          setError('');
+        })
+        .catch(() => {
+          setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
+        });
+    }
+  }, [vagaId]);
 
   const candidatos = useMemo(() => match?.candidatos ?? [], [match]);
 

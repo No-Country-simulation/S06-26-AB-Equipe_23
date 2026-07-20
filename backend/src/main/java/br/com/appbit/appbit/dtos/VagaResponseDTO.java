@@ -19,6 +19,24 @@ public record VagaResponseDTO(
 
         Boolean antiVies,
 
+        java.util.List<String> skills,
+
+        String descricao,
+
+        String modalidade,
+
+        String area,
+
+        Boolean prioridadeMulheres,
+
+        Boolean prioridadeNegros,
+
+        Boolean prioridadePcd,
+
+        Boolean prioridadeLgbt,
+
+        Integer esgMatch,
+
         LocalDateTime criacao
 
 ) {

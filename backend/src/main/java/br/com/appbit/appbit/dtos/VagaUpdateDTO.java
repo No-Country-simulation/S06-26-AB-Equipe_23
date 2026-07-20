@@ -22,7 +22,25 @@ public record VagaUpdateDTO(
         BigDecimal diversidadeMinima,
 
         @NotNull(message = "O Antiviés é obrigatório")
-        Boolean antiVies
+        Boolean antiVies,
+
+        java.util.List<String> skills,
+
+        String descricao,
+
+        String modalidade,
+
+        String area,
+
+        Boolean prioridadeMulheres,
+
+        Boolean prioridadeNegros,
+
+        Boolean prioridadePcd,
+
+        Boolean prioridadeLgbt,
+
+        Integer esgMatch
 
 ) {
 }

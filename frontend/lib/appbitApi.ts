@@ -9,7 +9,28 @@ import type {
   MatchResponse,
   MentoriaMvp,
   AlertaEsg,
+  VagaBackend,
+  VagaCreateBackend,
 } from './appbitTypes';
+
+export async function buscarVagas(): Promise<VagaBackend[]> {
+  const response = await api.get<VagaBackend[]>('/vagas');
+  return response.data;
+}
+
+export async function buscarVagaPorId(id: number): Promise<VagaBackend> {
+  const response = await api.get<VagaBackend>(`/vagas/${id}`);
+  return response.data;
+}
+
+export async function criarVaga(vaga: VagaCreateBackend): Promise<VagaBackend> {
+  const response = await api.post<VagaBackend>('/vagas', vaga);
+  return response.data;
+}
+
+export async function deletarVaga(id: number): Promise<void> {
+  await api.delete(`/vagas/${id}`);
+}
 
 export async function executarMatch(request: MatchRequest = {}): Promise<MatchResponse> {
   const response = await api.post<MatchResponse>('/match', request);

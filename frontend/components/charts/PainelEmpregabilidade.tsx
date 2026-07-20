@@ -5,7 +5,7 @@ import VagaDetalhe from '../layout/VagaDetalhe';
 import ModalNovaVaga from '../layout/ModalNovaVaga';
 
 export default function PainelEmpregabilidade() {
-  const { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga } = useVagas();
+  const { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga, carregando, erro } = useVagas();
   const [modalAberto, setModalAberto] = useState(false);
 
   return (
@@ -31,7 +31,6 @@ export default function PainelEmpregabilidade() {
             Vagas publicadas{' '}
             <span style={{ color: '#9ca3af', fontWeight: 400 }}>({vagas.length})</span>
           </h3>
-          <span style={{ color: '#64748b', fontSize: 10 }}>Simulação local</span>
           <button
             onClick={() => setModalAberto(true)}
             style={{
@@ -46,7 +45,25 @@ export default function PainelEmpregabilidade() {
           </button>
         </div>
 
-        {vagas.map((vaga) => (
+        {carregando && (
+          <div style={{ padding: 20, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+            Carregando vagas...
+          </div>
+        )}
+
+        {!carregando && erro && (
+          <div style={{ padding: 20, textAlign: 'center', color: '#ef4444', fontSize: 13 }}>
+            ⚠️ {erro}
+          </div>
+        )}
+
+        {!carregando && !erro && vagas.length === 0 && (
+          <div style={{ padding: 20, textAlign: 'center', color: '#9ca3af', fontSize: 13 }}>
+            Nenhuma vaga cadastrada.
+          </div>
+        )}
+
+        {!carregando && vagas.map((vaga) => (
           <VagaCard
             key={vaga.id}
             vaga={vaga}

@@ -120,3 +120,42 @@ export interface AlertaEsg {
   regiao: string;
   acaoRecomendada: string;
 }
+
+export interface VagaBackend {
+  id: number;
+  empresaId: string;
+  titulo: string;
+  nivel: string;
+  regiaoAlvo?: { regiaoId: number; cluster: string; municipio: string } | null;
+  diversidadeMinima?: number | null;
+  antiVies: boolean;
+  skills?: string[];
+  descricao?: string;
+  modalidade?: string;
+  area?: string;
+  prioridadeMulheres?: boolean;
+  prioridadeNegros?: boolean;
+  prioridadePcd?: boolean;
+  prioridadeLgbt?: boolean;
+  esgMatch?: number;
+  criacao?: string;
+}
+
+export interface VagaCreateBackend {
+  empresaId: string;
+  titulo: string;
+  nivel: string;
+  regiaoAlvoId?: number | null;
+  diversidadeMinima?: number | null;
+  antiVies: boolean;
+  skills?: string[];
+  descricao?: string;
+  modalidade?: string;
+  area?: string;
+  prioridadeMulheres?: boolean;
+  prioridadeNegros?: boolean;
+  prioridadePcd?: boolean;
+  prioridadeLgbt?: boolean;
+  esgMatch?: number;
+}
+

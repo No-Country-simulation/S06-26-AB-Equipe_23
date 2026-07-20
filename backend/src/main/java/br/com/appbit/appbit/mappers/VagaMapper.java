@@ -16,6 +16,7 @@ public interface VagaMapper {
     @Mapping(target = "criacao", ignore = true)
     VagaEntity toEntity(VagaCreateDTO dto);
 
-    @Mapping(target = "regiaoAlvo", source = "regiaoAlvo")
-    VagaResponseDTO toResponseDTO(VagaEntity entity);
+    @Mapping(target = "regiaoAlvo", source = "entity.regiaoAlvo")
+    @Mapping(target = "skills", source = "skills")
+    VagaResponseDTO toResponseDTO(VagaEntity entity, java.util.List<String> skills);
 }

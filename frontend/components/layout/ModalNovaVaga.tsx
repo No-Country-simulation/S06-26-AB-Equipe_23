@@ -90,7 +90,7 @@ export default function ModalNovaVaga({ onClose, onPublicar }: ModalNovaVagaProp
         }}>
           <div>
             <h2 style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Publicar nova vaga</h2>
-            <small style={{ color: '#64748b' }}>Simulação local; não será gravada no backend.</small>
+            <small style={{ color: '#64748b' }}>Vaga será salva no banco de dados.</small>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: '#6b7280', lineHeight: 1 }}>✕</button>
         </div>

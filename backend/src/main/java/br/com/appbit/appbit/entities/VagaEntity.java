@@ -51,6 +51,30 @@ public class VagaEntity {
     @Column(name = "anti_vies", nullable = false)
     private Boolean antiVies;
 
+    @Column(name = "descricao", length = 1000)
+    private String descricao;
+
+    @Column(name = "modalidade", length = 50)
+    private String modalidade;
+
+    @Column(name = "area", length = 100)
+    private String area;
+
+    @Column(name = "prioridade_mulheres")
+    private Boolean prioridadeMulheres;
+
+    @Column(name = "prioridade_negros")
+    private Boolean prioridadeNegros;
+
+    @Column(name = "prioridade_pcd")
+    private Boolean prioridadePcd;
+
+    @Column(name = "prioridade_lgbt")
+    private Boolean prioridadeLgbt;
+
+    @Column(name = "esg_match")
+    private Integer esgMatch;
+
     @CreationTimestamp
     @Column(name = "criada_em", nullable = false, insertable = false, updatable = false)
     private LocalDateTime criacao;

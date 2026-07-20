@@ -1,37 +1,113 @@
-import { useState } from 'react';
-import type { Vaga } from "../features/jobs/components/type/index.ts";
-import type { NovaVagaForm } from "../features/jobs/components/type/index.ts";
-import { VAGAS_MOCK } from '../stores/data/vagasMock';
+import { useEffect, useState } from 'react';
+import type { Vaga, NovaVagaForm } from "../features/jobs/components/type/index.ts";
+import { buscarVagas, criarVaga as apiCriarVaga } from '../lib/appbitApi';
+import type { VagaBackend, VagaCreateBackend } from '../lib/appbitTypes';
+
+function formatarNivelFrontend(nivelRaw: string): Vaga['nivel'] {
+  const norm = (nivelRaw || '').toLowerCase();
+  if (norm.includes('senior') || norm.includes('sênior')) return 'Sênior';
+  if (norm.includes('pleno')) return 'Pleno';
+  if (norm.includes('lideranca') || norm.includes('liderança')) return 'Liderança';
+  return 'Júnior';
+}
+
+function backendToFrontendVaga(bv: VagaBackend): Vaga {
+  return {
+    id: bv.id,
+    titulo: bv.titulo,
+    area: bv.area || 'Tecnologia',
+    nivel: formatarNivelFrontend(bv.nivel),
+    modalidade: (bv.modalidade || 'Híbrido') as Vaga['modalidade'],
+    regiao: bv.regiaoAlvo?.municipio || 'Brasil',
+    descricao: bv.descricao || 'Descrição a ser preenchida.',
+    skills: bv.skills && bv.skills.length > 0 ? bv.skills : ['Geral'],
+    filtrosDiversidade: {
+      antivies: bv.antiVies ?? true,
+      mulheres: bv.prioridadeMulheres ?? false,
+      pessoasNegras: bv.prioridadeNegros ?? false,
+      pcd: bv.prioridadePcd ?? false,
+      lgbtqia: bv.prioridadeLgbt ?? false,
+    },
+    scoreMinDiversidade: bv.diversidadeMinima ? Number(bv.diversidadeMinima) : 40,
+    esgMatch: bv.esgMatch ?? 85,
+    publicadaEm: bv.criacao ? bv.criacao.split('T')[0] : new Date().toISOString().split('T')[0],
+  };
+}
 
 export default function useVagas() {
-  const [vagas, setVagas] = useState<Vaga[]>(VAGAS_MOCK);
+  const [vagas, setVagas] = useState<Vaga[]>([]);
   const [vagaSelecionadaId, setVagaSelecionadaId] = useState<number | null>(null);
+  const [carregando, setCarregando] = useState<boolean>(true);
+  const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregar() {
+      try {
+        setCarregando(true);
+        const dados = await buscarVagas();
+        if (ativo) {
+          const convertidas = dados.map(backendToFrontendVaga);
+          setVagas(convertidas);
+          if (convertidas.length > 0) {
+            setVagaSelecionadaId((prev) => prev ?? convertidas[0].id);
+          }
+          setErro(null);
+        }
+      } catch (err) {
+        if (ativo) {
+          console.error('Erro ao carregar vagas do backend:', err);
+          setErro('Não foi possível carregar as vagas do servidor.');
+        }
+      } finally {
+        if (ativo) setCarregando(false);
+      }
+    }
+
+    carregar();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   const vagaSelecionada = vagas.find((v) => v.id === vagaSelecionadaId) ?? null;
 
-  function publicarVaga(form: NovaVagaForm) {
+  async function publicarVaga(form: NovaVagaForm) {
     const skills = form.skills
       .map((s: string) => s.trim())
       .filter(Boolean);
 
-    const nova: Vaga = {
-      id: Date.now(),
+    const payload: VagaCreateBackend = {
+      empresaId: 'emp_001',
       titulo: form.titulo || 'Nova vaga',
-      area: form.area,
-      nivel: form.nivel as Vaga['nivel'],
-      modalidade: form.modalidade as Vaga['modalidade'],
-      regiao: form.regiao || 'Brasil',
+      area: form.area || 'Tecnologia',
+      nivel: form.nivel ? form.nivel.toLowerCase() : 'junior',
+      modalidade: form.modalidade || 'Híbrido',
       descricao: form.descricao || 'Descrição a ser preenchida.',
-      skills: skills.length ? skills : ['A definir'],
-      filtrosDiversidade: form.filtros,
-      scoreMinDiversidade: form.scoreMin,
-      esgMatch: Math.min(100, form.scoreMin + Math.floor(Math.random() * 20) + 5),
-      publicadaEm: new Date().toISOString().split('T')[0],
+      skills: skills.length ? skills : ['sql', 'python'],
+      antiVies: form.filtros?.antivies ?? true,
+      prioridadeMulheres: form.filtros?.mulheres ?? false,
+      prioridadeNegros: form.filtros?.pessoasNegras ?? false,
+      prioridadePcd: form.filtros?.pcd ?? false,
+      prioridadeLgbt: form.filtros?.lgbtqia ?? false,
+      diversidadeMinima: form.scoreMin ?? 40,
+      esgMatch: Math.min(100, (form.scoreMin || 40) + Math.floor(Math.random() * 20) + 5),
     };
 
-    setVagas((prev) => [nova, ...prev]);
-    setVagaSelecionadaId(nova.id);
+    try {
+      setCarregando(true);
+      const criada = await apiCriarVaga(payload);
+      const vagaFe = backendToFrontendVaga(criada);
+      setVagas((prev) => [vagaFe, ...prev]);
+      setVagaSelecionadaId(vagaFe.id);
+    } catch (err) {
+      console.error('Erro ao publicar vaga no backend:', err);
+    } finally {
+      setCarregando(false);
+    }
   }
 
-  return { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga };
+  return { vagas, vagaSelecionada, vagaSelecionadaId, setVagaSelecionadaId, publicarVaga, carregando, erro };
 }
