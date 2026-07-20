@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../lib/axios';
@@ -34,6 +34,11 @@ export default function LoginPage() {
     metaEsgStatus: 'Atingida'
   });
 
+  // Acorda o servidor no Render assim que a página de login carrega
+  useEffect(() => {
+    api.get('/actuator/health').catch(() => {});
+  }, []);
+
   // Função para aplicar máscara de telefone (00) 00000-0000
   const formatarTelefone = (value: string) => {
     const apenasNumeros = value.replace(/\D/g, '').slice(0, 11);
@@ -68,7 +73,7 @@ export default function LoginPage() {
     return regexForca.test(senha);
   };
 
-  // --- LÓGICA DE LOGIN ---
+  // --- LÓGICA DE LOGIN COM SUPORTE A RECONEXÃO / COLD START ---
   const handleLoginSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -84,21 +89,33 @@ export default function LoginPage() {
 
     setErrors({});
     setAuthMessage('');
-    setIsSubmitting(true);
-    api.post('/login', { email: formData.email, senha: formData.password })
-      .then((response) => {
-        localStorage.setItem('token', response.data.token);
-        navigate('/', { replace: true });
-      })
-      .catch((error) => {
-        const status = error.response?.status;
-        setAuthMessage(status === 401 || status === 403
-          ? 'E-mail ou senha inválidos.'
-          : error.code === 'ECONNABORTED' || !error.response
-            ? 'Serviço temporariamente indisponível. Tente novamente.'
-            : 'Não foi possível concluir o login. Tente novamente.');
-      })
-      .finally(() => setIsSubmitting(false));
+
+    const tentarLogin = (retryCount = 0) => {
+      setIsSubmitting(true);
+      api.post('/login', { email: formData.email, senha: formData.password })
+        .then((response) => {
+          localStorage.setItem('token', response.data.token);
+          navigate('/', { replace: true });
+        })
+        .catch((error) => {
+          const status = error.response?.status;
+          if (status === 401 || status === 403) {
+            setAuthMessage('E-mail ou senha inválidos.');
+            setIsSubmitting(false);
+          } else if ((error.code === 'ECONNABORTED' || !error.response) && retryCount < 1) {
+            setAuthMessage('Conectando ao servidor (inicialização no Render)... Reenviando em instantes.');
+            setTimeout(() => tentarLogin(retryCount + 1), 3000);
+          } else if (error.code === 'ECONNABORTED' || !error.response) {
+            setAuthMessage('O servidor está inicializando na nuvem (Cold Start). Por favor, aguarde alguns segundos e tente entrar novamente.');
+            setIsSubmitting(false);
+          } else {
+            setAuthMessage('Não foi possível concluir o login. Tente novamente.');
+            setIsSubmitting(false);
+          }
+        });
+    };
+
+    tentarLogin(0);
   };
 
   // --- VALIDAÇÕES DO MULTI-STEP DE CADASTRO ---
@@ -269,7 +286,7 @@ export default function LoginPage() {
                 type="button"
                 className="googleLoginButton"
                 onClick={() => {
-                  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+                  const apiUrl = import.meta.env.VITE_API_URL || 'https://appbit-backend-0v3u.onrender.com';
                   window.location.href = `${apiUrl}/oauth2/authorization/google`;
                 }}
               >
