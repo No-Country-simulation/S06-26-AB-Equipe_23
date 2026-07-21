@@ -47,6 +47,14 @@ public class GlobalExceptionHandler {
                         "Erro de Validação", errors.toString()));
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        log.warn("Rota ou recurso não encontrado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(),
+                        "Recurso Não Encontrado", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         log.error("Erro genérico", ex);

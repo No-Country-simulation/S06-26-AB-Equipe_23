@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../../../lib/axios';
 import './Login.css';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   
   // Estados de Controle
   const [isCadastro, setIsCadastro] = useState(false);
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authMessage, setAuthMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [googleOAuthEnabled, setGoogleOAuthEnabled] = useState<boolean | null>(null);
   
   // Estado para capturar quais campos estão com erro visual (borda vermelha)
   const [errors, setErrors] = useState<Record<string, boolean>>({});
@@ -34,10 +36,24 @@ export default function LoginPage() {
     metaEsgStatus: 'Atingida'
   });
 
-  // Acorda o servidor no Render assim que a página de login carrega
+  // Acorda o servidor no Render e verifica suporte a OAuth2 ao carregar
   useEffect(() => {
     api.get('/actuator/health').catch(() => {});
-  }, []);
+    api.get('/api/auth/config')
+      .then((res) => setGoogleOAuthEnabled(Boolean(res.data?.googleOAuth2Enabled)))
+      .catch(() => setGoogleOAuthEnabled(false));
+
+    const errorParam = searchParams.get('error');
+    if (errorParam === 'user_inactive') {
+      setAuthMessage('Sua conta de usuário está inativa no sistema.');
+    } else if (errorParam === 'email_not_provided') {
+      setAuthMessage('O Google não forneceu o e-mail necessário para o login.');
+    } else if (errorParam === 'oauth2_disabled') {
+      setAuthMessage('O login com Google não está habilitado no servidor.');
+    } else if (errorParam) {
+      setAuthMessage('Ocorreu uma falha ao realizar login com o Google.');
+    }
+  }, [searchParams]);
 
   // Função para aplicar máscara de telefone (00) 00000-0000
   const formatarTelefone = (value: string) => {
@@ -286,6 +302,10 @@ export default function LoginPage() {
                 type="button"
                 className="googleLoginButton"
                 onClick={() => {
+                  if (googleOAuthEnabled === false) {
+                    setAuthMessage('Login com Google não está configurado no servidor (requer GOOGLE_CLIENT_ID).');
+                    return;
+                  }
                   const apiUrl = import.meta.env.VITE_API_URL || 'https://appbit-backend-0v3u.onrender.com';
                   window.location.href = `${apiUrl}/oauth2/authorization/google`;
                 }}

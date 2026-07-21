@@ -29,6 +29,7 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id:disabled}")
     private String googleClientId;
@@ -81,7 +82,12 @@ public class SecurityConfig {
                 && !googleClientId.equals("disabled");
 
         if (oauth2Enabled) {
-            http.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2SuccessHandler));
+            http.oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(authorization -> authorization
+                    .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+                )
+                .successHandler(oAuth2SuccessHandler)
+            );
         }
 
         return http.build();
