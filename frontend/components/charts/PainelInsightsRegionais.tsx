@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
-import { buscarInsightsRegioes, buscarAlertasEsg } from '../../lib/appbitApi';
+import { buscarInsightsRegioes, buscarAlertasEsg, downloadRelatorioPdf, downloadRelatorioExcel } from '../../lib/appbitApi';
 import type { RegiaoInsight, AlertaEsg } from '../../lib/appbitTypes';
 import { formatarClusterMvp, formatarTextoMvp } from '../../lib/formatarTextoMvp';
 
@@ -43,9 +43,36 @@ export default function PainelInsightsRegionais() {
   const [municipio, setMunicipio] = useState('');
   const [tecnologia, setTecnologia] = useState('');
   const [cluster, setCluster] = useState('');
+  const [exportandoPdf, setExportandoPdf] = useState(false);
+  const [exportandoExcel, setExportandoExcel] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
+
+  const handleExportarPdf = async () => {
+    try {
+      setExportandoPdf(true);
+      await downloadRelatorioPdf();
+    } catch (err) {
+      alert('Erro ao exportar PDF de auditoria ESG.');
+      console.error(err);
+    } finally {
+      setExportandoPdf(false);
+    }
+  };
+
+  const handleExportarExcel = async () => {
+    try {
+      setExportandoExcel(true);
+      await downloadRelatorioExcel();
+    } catch (err) {
+      alert('Erro ao exportar planilha Excel de ESG.');
+      console.error(err);
+    } finally {
+      setExportandoExcel(false);
+    }
+  };
+
 
   const municipios = useMemo(() => [...new Set(regioes.map((r) => r.municipio))].sort(), [regioes]);
   const tecnologias = useMemo(
@@ -169,13 +196,59 @@ export default function PainelInsightsRegionais() {
 
   return (
     <div className="responsive-panel" style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: 24 }}>
-      <div style={{ marginBottom: 18 }}>
-        <h1 style={{ fontSize: 24, margin: 0, color: '#111827' }}>Insights Regionais</h1>
-        <p style={{ color: '#6b7280', fontSize: 13, margin: '6px 0 0' }}>
-          Antenas da Anatel e sessões 3G, 4G e 5G observadas no dataset Vísent.
-        </p>
-        {erro && <p style={{ color: '#b91c1c', fontSize: 13 }}>{erro}</p>}
+      <div style={{ marginBottom: 18, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
+        <div>
+          <h1 style={{ fontSize: 24, margin: 0, color: '#111827' }}>Insights Regionais</h1>
+          <p style={{ color: '#6b7280', fontSize: 13, margin: '6px 0 0' }}>
+            Antenas da Anatel e sessões 3G, 4G e 5G observadas no dataset Vísent.
+          </p>
+          {erro && <p style={{ color: '#b91c1c', fontSize: 13 }}>{erro}</p>}
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button
+            onClick={handleExportarPdf}
+            disabled={exportandoPdf}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '8px 14px',
+              background: '#4F46E5',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: exportandoPdf ? 'not-allowed' : 'pointer',
+              opacity: exportandoPdf ? 0.7 : 1,
+            }}
+          >
+            {exportandoPdf ? 'Gerando PDF...' : '📄 Exportar PDF (Auditado)'}
+          </button>
+          <button
+            onClick={handleExportarExcel}
+            disabled={exportandoExcel}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '8px 14px',
+              background: '#059669',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: exportandoExcel ? 'not-allowed' : 'pointer',
+              opacity: exportandoExcel ? 0.7 : 1,
+            }}
+          >
+            {exportandoExcel ? 'Gerando Excel...' : '📊 Exportar Planilha (Excel)'}
+          </button>
+        </div>
       </div>
+
 
       <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
         <Card label="Regiões Derivadas" value={filtradas.length} />

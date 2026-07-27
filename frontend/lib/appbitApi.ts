@@ -71,3 +71,32 @@ export async function buscarAlertasEsg(): Promise<AlertaEsg[]> {
   const response = await api.get<AlertaEsg[]>('/insights/esg');
   return response.data;
 }
+
+export async function downloadRelatorioPdf(): Promise<void> {
+  const response = await api.get('/insights/exportar/pdf', { responseType: 'blob' });
+  const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'relatorio_auditado_esg.pdf');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+}
+
+export async function downloadRelatorioExcel(): Promise<void> {
+  const response = await api.get('/insights/exportar/excel', { responseType: 'blob' });
+  const url = window.URL.createObjectURL(
+    new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    })
+  );
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'relatorio_auditado_esg.xlsx');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(url);
+}
+

@@ -156,12 +156,40 @@ export default function ShortList() {
     }
   }, [vagaId]);
 
+  const [filtroMinScore, setFiltroMinScore] = useState<number>(0);
+  const [filtroBadge, setFiltroBadge] = useState<string>('');
+  const [filtroModelo, setFiltroModelo] = useState<string>('');
+  const [ordenacao, setOrdenacao] = useState<string>('score_desc');
+
   const candidatos = useMemo(() => match?.candidatos ?? [], [match]);
 
+  const candidatosFiltrados = useMemo(() => {
+    return candidatos
+      .filter((c) => {
+        if (filtroMinScore > 0 && c.score_match < filtroMinScore) return false;
+        if (filtroBadge && c.badge_diversidade !== filtroBadge) return false;
+        if (
+          filtroModelo &&
+          c.modelo_trabalho_preferido &&
+          !c.modelo_trabalho_preferido.toLowerCase().includes(filtroModelo.toLowerCase())
+        ) {
+          return false;
+        }
+        return true;
+      })
+      .sort((a, b) => {
+        if (ordenacao === 'score_desc') return b.score_match - a.score_match;
+        if (ordenacao === 'score_asc') return a.score_match - b.score_match;
+        if (ordenacao === 'exp_desc') return (b.anos_experiencia ?? 0) - (a.anos_experiencia ?? 0);
+        return 0;
+      });
+  }, [candidatos, filtroMinScore, filtroBadge, filtroModelo, ordenacao]);
+
   const averageScore = useMemo(() => {
-    if (!candidatos.length) return 0;
-    return Math.round(candidatos.reduce((sum, item) => sum + item.score_match, 0) / candidatos.length);
-  }, [candidatos]);
+    if (!candidatosFiltrados.length) return 0;
+    return Math.round(candidatosFiltrados.reduce((sum, item) => sum + item.score_match, 0) / candidatosFiltrados.length);
+  }, [candidatosFiltrados]);
+
 
   async function handleAprovar(candidateId: string) {
     setRevealing(candidateId);
@@ -207,7 +235,7 @@ export default function ShortList() {
             </nav>
             <h1 className="sl-topbar__title">
               Lista de triagem
-              <span className="sl-topbar__count">{candidatos.length} candidatos oficiais</span>
+              <span className="sl-topbar__count">{candidatosFiltrados.length} de {candidatos.length} candidatos</span>
             </h1>
           </div>
         </div>
@@ -247,6 +275,104 @@ export default function ShortList() {
             </button>
           </div>
 
+          {/* Barra de Filtros Avançados */}
+          <div style={{
+            background: '#fff',
+            border: '1px solid #e2e8f0',
+            borderRadius: 8,
+            padding: '10px 14px',
+            marginBottom: 16,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            flexWrap: 'wrap',
+            fontSize: 12,
+          }}>
+            <span style={{ fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: 4 }}>
+              ⚡ Filtros Rápidos:
+            </span>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <label style={{ color: '#64748b', fontWeight: 500 }}>Score Mínimo:</label>
+              <select
+                value={filtroMinScore}
+                onChange={(e) => setFiltroMinScore(Number(e.target.value))}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+              >
+                <option value={0}>Todos os Scores</option>
+                <option value={70}>70%+ (Alta similaridade)</option>
+                <option value={80}>80%+ (Excelente match)</option>
+                <option value={90}>90%+ (Top Match)</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <label style={{ color: '#64748b', fontWeight: 500 }}>Diversidade:</label>
+              <select
+                value={filtroBadge}
+                onChange={(e) => setFiltroBadge(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+              >
+                <option value="">Todas as Badges</option>
+                <option value="Mulher">Mulher</option>
+                <option value="Mulher negra em tecnologia">Mulher Negra em Tecnologia</option>
+                <option value="Pessoa com deficiencia">Pessoa com Deficiência (PCD)</option>
+                <option value="Primeira geracao no ensino superior">1ª Geração Ensino Superior</option>
+                <option value="Talento de baixa renda">Talento de Baixa Renda</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <label style={{ color: '#64748b', fontWeight: 500 }}>Modelo:</label>
+              <select
+                value={filtroModelo}
+                onChange={(e) => setFiltroModelo(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+              >
+                <option value="">Todos</option>
+                <option value="hibrido">Híbrido</option>
+                <option value="remoto">Remoto</option>
+                <option value="presencial">Presencial</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <label style={{ color: '#64748b', fontWeight: 500 }}>Ordenar por:</label>
+              <select
+                value={ordenacao}
+                onChange={(e) => setOrdenacao(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+              >
+                <option value="score_desc">Maior Score Match</option>
+                <option value="score_asc">Menor Score Match</option>
+                <option value="exp_desc">Mais Experiência</option>
+              </select>
+            </div>
+
+            {(filtroMinScore > 0 || filtroBadge || filtroModelo || ordenacao !== 'score_desc') && (
+              <button
+                onClick={() => {
+                  setFiltroMinScore(0);
+                  setFiltroBadge('');
+                  setFiltroModelo('');
+                  setOrdenacao('score_desc');
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#6366f1',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: 11,
+                  padding: 0,
+                  marginLeft: 'auto',
+                }}
+              >
+                Limpar filtros ✕
+              </button>
+            )}
+          </div>
+
           {error ? (
             <div className="sl-empty">
               👥
@@ -257,14 +383,15 @@ export default function ShortList() {
               👥
               <p>Carregando shortlist oficial...</p>
             </div>
-          ) : candidatos.length === 0 ? (
+          ) : candidatosFiltrados.length === 0 ? (
             <div className="sl-empty">
               👥
-              <p>Nenhum candidato retornado pelo contrato oficial.</p>
+              <p>Nenhum candidato atende aos filtros selecionados.</p>
             </div>
           ) : (
             <div className="sl-grid">
-              {candidatos.map((candidate) => {
+              {candidatosFiltrados.map((candidate) => {
+
                 const approved = isContatoAprovado(approvedContacts[candidate.candidato_id])
                   ? approvedContacts[candidate.candidato_id]
                   : null;

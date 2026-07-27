@@ -45,6 +45,7 @@ export default function LoginPage() {
 
     const errorParam = searchParams.get('error');
     if (errorParam === 'user_inactive') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAuthMessage('Sua conta de usuário está inativa no sistema.');
     } else if (errorParam === 'email_not_provided') {
       setAuthMessage('O Google não forneceu o e-mail necessário para o login.');
@@ -54,6 +55,8 @@ export default function LoginPage() {
       setAuthMessage('Ocorreu uma falha ao realizar login com o Google.');
     }
   }, [searchParams]);
+
+
 
   // Função para aplicar máscara de telefone (00) 00000-0000
   const formatarTelefone = (value: string) => {
