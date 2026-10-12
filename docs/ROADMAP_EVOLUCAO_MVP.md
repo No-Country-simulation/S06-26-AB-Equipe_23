@@ -13,9 +13,9 @@ Para atender às exigências de segurança de grandes empresas (B2B) e conformid
 - `[x]` **Criptografia de Dados Pessoais (Conformidade LGPD):**
   - **O quê:** Garantir que informações de identificação pessoal (PII) dos candidatos (como CPF, e-mail, telefone e nome completo) não fiquem salvas em texto claro no banco de dados.
   - **Como:** Implementar criptografia simétrica AES-256 transparente na camada do JPA (utilizando conversores Hibernate `@Convert(AttributeConverter.class)` ou Spring Data JPA Encryption).
-- `[ ]` **Integração com Provedores de Identidade (SSO/OAuth2):**
-  - **O quê:** Permitir que recrutadores façam login usando contas corporativas existentes (Google Workspace, Microsoft Entra ID/Office 365, LinkedIn).
-  - **Como:** Integrar o módulo `spring-boot-starter-oauth2-client` nas configurações do Spring Security.
+- `[x]` **Integração com Provedores de Identidade (SSO/OAuth2):**
+  - **O quê:** Permitir que recrutadores façam login usando contas corporativas existentes (Google Workspace / Google Identity).
+  - **Como:** Integrado via `spring-boot-starter-oauth2-client` com persistência de sessão e estado OAuth2 via cookies HttpOnly (`HttpCookieOAuth2AuthorizationRequestRepository`), retorno gracioso via `OAuth2SuccessHandler` e callback no frontend (`/oauth2/redirect`).
 
 ---
 

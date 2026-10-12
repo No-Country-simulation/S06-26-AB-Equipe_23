@@ -1,6 +1,6 @@
 # QUICK REFERENCE — App BiT Backend
 
-**Status:** ✅ APROVADO | **Data:** 2026-07-08 | **Testes:** 28 Java + 7 Python
+**Status:** ✅ APROVADO | **Testes:** 52 Java + 7 Python
 
 ---
 
@@ -8,10 +8,18 @@
 
 | Endpoint | Método | Auth | Descrição |
 |----------|--------|------|-----------|
-| /login | POST | ❌ | Autenticação JWT |
+| /login | POST | ❌ | Autenticação JWT (e-mail e senha) |
+| /cadastro | POST | ❌ | Cadastro de novo usuário recrutador |
+| /api/auth/config | GET | ❌ | Configurações públicas de autenticação (OAuth2) |
 | /match | POST | ✅ | Motor de match candidatos × vaga |
 | /match/aprovar-candidato | POST | ✅ | Libera dados de contato |
-| /insights/regioes | GET | ✅ | 24 regiões com conectividade |
+| /vagas | GET/POST | ✅ | Listagem (paginada) e cadastro relacional de vagas |
+| /vagas/{id} | GET/PUT/DELETE | ✅ | Detalhes, edição e exclusão de vagas |
+| /candidatos | GET/POST | ✅ | Listagem paginada e cadastro de candidatos |
+| /insights/regioes | GET | ✅ | 24 regiões com conectividade (Anatel / Vísent) |
+| /insights/esg | GET | ✅ | Alertas e recomendações de impacto ESG |
+| /insights/exportar/pdf | GET | ✅ | Relatório ESG em PDF assinado digitalmente |
+| /insights/exportar/excel | GET | ✅ | Planilha formatada de métricas ESG (.xlsx) |
 | /api/formacoes | GET | ✅ | 6 trilhas de capacitação |
 | /api/experiencias | GET | ✅ | 24 eventos estruturantes |
 | /api/mentorias | GET | ✅ | 10 mentores de diversidade |
@@ -86,14 +94,14 @@ cd backend
 npm run dev
 ```
 
-Flyway aplica V1–V6 automaticamente na primeira execução.
+Flyway aplica V1–V9 automaticamente na primeira execução.
 
 ---
 
 ## TESTES
 
 ```bash
-# Todos os testes Java (28)
+# Todos os testes Java (52)
 cd backend && .\mvnw.cmd test
 
 # Testes Python (7)
@@ -115,10 +123,13 @@ python scripts/valida_integracao_bi.py
 | V4 | Autenticação (dim_usuario) |
 | V5 | Serviços MVP (trilhas, eventos, mentores) |
 | V6 | anos_experiencia em dim_candidato |
+| V7 | Normalização de tipos de geolocalização |
+| V8 | Atualização e hash seguro de senha demo |
+| V9 | Persistência de vagas (dim_vaga), bridge_vaga_skill e seed ESG |
 
 ---
 
-**Versão:** 2026-07-08 | **Status:** ✅ PRONTO PARA DEMO
+**Status:** ✅ PRONTO PARA DEMO & PRODUÇÃO
 
 ---
 

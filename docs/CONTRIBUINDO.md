@@ -85,11 +85,11 @@ cd backend
 ./mvnw spring-boot:run            # Linux/Mac
 ```
 
-Na primeira execução o Flyway cria todas as tabelas e insere os dados automaticamente (migrations V1 a V8).
+Na primeira execução o Flyway cria todas as tabelas e insere os dados automaticamente (migrations V1 a V9).
 
 Saída esperada:
 ```
-Successfully validated 8 migrations
+Successfully validated 9 migrations
 Tomcat started on port 8080
 Started AppbitApplication in X seconds
 ```

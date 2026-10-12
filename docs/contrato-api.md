@@ -30,6 +30,65 @@ Resposta mínima:
 
 `contato_pos_aprovacao` nunca integra esta resposta. Sua liberação exige endpoint autenticado, autorização e ID específico.
 
+## `POST /match/aprovar-candidato`
+
+Endpoint autenticado (`Authorization: Bearer <token>`) para liberação de dados de contato do candidato aprovado na triagem.
+
+Request:
+```json
+{
+  "candidato_id": "cand_001",
+  "empresa_id": "emp_001"
+}
+```
+
+Resposta:
+```json
+{
+  "candidato_id": "cand_001",
+  "apelido_exibicao": "Candidato 1",
+  "contato_liberado": {
+    "nome": "Ana Souza",
+    "email": "ana.souza@example.com",
+    "telefone": "+55 48 99999-0000",
+    "linkedin": "https://linkedin.com/in/ana-souza"
+  }
+}
+```
+
+---
+
+## `GET /vagas` & CRUD de Vagas
+
+Persistência relacional de vagas no banco de dados (Flyway Migration V9).
+
+| Método | Endpoint | Descrição |
+|---|---|---|
+| `GET` | `/vagas` | Lista vagas cadastradas (suporta paginação `?page=0&size=20`) |
+| `GET` | `/vagas/{id}` | Detalhes de uma vaga por ID |
+| `POST` | `/vagas` | Criação de nova vaga (com flags afirmativas ESG e skills) |
+| `PUT` | `/vagas/{id}` | Atualização completa de vaga existente |
+| `DELETE` | `/vagas/{id}` | Exclusão de vaga |
+
+Exemplo de payload de criação (`POST /vagas`):
+```json
+{
+  "titulo": "Engenheiro de Dados Pleno",
+  "descricao": "Atuação com pipelines ETL, Python, SQL e Databricks.",
+  "nivel": "Pleno",
+  "modalidade": "Híbrido",
+  "area": "Dados",
+  "prioridadeMulheres": true,
+  "prioridadeNegros": false,
+  "prioridadePcd": false,
+  "prioridadeLgbt": false,
+  "esgMatch": 85,
+  "skills": ["python", "sql", "etl"]
+}
+```
+
+---
+
 ## `GET /insights/regioes`
 
 Fontes: cadastro de antenas Anatel e tensor de mobilidade do Vísent.
@@ -73,4 +132,22 @@ Fontes: cadastro de antenas Anatel e tensor de mobilidade do Vísent.
 }
 ```
 
-Os valores do exemplo ilustram o formato; o endpoint deve servir os números gerados pelos arquivos processados, sem hardcode. Sessões não equivalem a velocidade ou garantia de cobertura. `usuarios_observados_total` agrega observações do tensor e não representa população única.
+---
+
+## `GET /insights/esg` e Exportações
+
+- **`GET /insights/esg`**: Lista alertas analíticos e sugestões automáticas de diversidade e conectividade regional.
+- **`GET /insights/exportar/pdf`**: Download de relatório executivo em PDF com assinatura digital SHA-256 (`application/pdf`).
+- **`GET /insights/exportar/excel`**: Download de planilha consolidada em Excel (`.xlsx`).
+
+---
+
+## Autenticação e Provedores de Identidade
+
+| Método | Endpoint | Auth | Descrição |
+|---|---|---|---|
+| `POST` | `/login` | Público | Autenticação com e-mail/senha, retornando token JWT |
+| `POST` | `/cadastro` | Público | Cadastro de novo usuário recrutador |
+| `GET` | `/api/auth/config` | Público | Retorna flags de configuração pública (ex: `googleClientId`) |
+| `GET` | `/oauth2/**` | Público | Fluxo de autorização Google OAuth2 |
+| `GET` | `/.well-known/jwks.json` | Público | Chaves públicas para validação assimétrica de JWT |

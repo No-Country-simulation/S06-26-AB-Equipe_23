@@ -35,20 +35,33 @@ No MVP, a shortlist deve nascer anonimizada para reduzir vies e proteger dados s
 
 ## Payload apos aprovacao
 
-Endpoint futuro sugerido:
+Endpoint oficial implementado:
 
 ```text
-GET /candidatos/:id/contato
+POST /match/aprovar-candidato
+Header: Authorization: Bearer <token>
+Content-Type: application/json
 ```
 
+Request body:
 ```json
 {
   "candidato_id": "cand_001",
-  "status_identificacao": "liberado_apos_aprovacao",
-  "nome": "Ana Souza",
-  "email": "ana.souza@example.com",
-  "telefone": "+55 48 99999-0000",
-  "linkedin": "https://linkedin.com/in/ana-souza"
+  "empresa_id": "emp_001"
+}
+```
+
+Response (`ContatoAprovadoDTO`):
+```json
+{
+  "candidato_id": "cand_001",
+  "apelido_exibicao": "Candidato 1",
+  "contato_liberado": {
+    "nome": "Ana Souza",
+    "email": "ana.souza@example.com",
+    "telefone": "+55 48 99999-0000",
+    "linkedin": "https://linkedin.com/in/ana-souza"
+  }
 }
 ```
 

@@ -184,13 +184,13 @@ Open a terminal in the `backend/` folder:
 .\mvnw.cmd spring-boot:run
 ```
 
-On first run, Flyway applies all migrations automatically (V1 to V8).
-This creates all tables and seeds the demo data — candidates, regions, training tracks, events, mentors and authentication.
+On first run, Flyway applies all migrations automatically (V1 to V9).
+This creates all tables and seeds the demo data — candidates, regions, training tracks, events, mentors, jobs and authentication.
 
 Expected output when ready:
 
 ```
-Successfully validated 8 migrations to schema "appbit"
+Successfully validated 9 migrations to schema "appbit"
 Tomcat started on port 8080
 Started AppbitApplication in X seconds
 ```
@@ -250,7 +250,7 @@ OK: artefatos artificiais de candidatos ausentes
 ### Run backend tests
 
 ```bash
-# All tests (50)
+# All tests (52)
 .\mvnw.cmd test
 
 # Matching logic only
