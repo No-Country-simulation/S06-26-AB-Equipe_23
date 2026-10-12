@@ -13,6 +13,7 @@ import { clearAppSession } from '../../../lib/session';
  
 const ROTAS_EXTERNAS: Record<string, string> = {
   'Shortlist': '/shortlist',
+  'Candidatos': '/shortlist',
 };
 
 const PAINEL_POR_ROTA: Record<string, string> = {

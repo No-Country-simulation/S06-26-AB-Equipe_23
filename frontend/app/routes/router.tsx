@@ -53,7 +53,7 @@ export default function App() {
           <Route path="/eventos" element={<ProtectedRoute><EventosCorporativosPage /></ProtectedRoute>} />
           <Route path="/mentorias" element={<ProtectedRoute><MentoriasPage /></ProtectedRoute>} />
           <Route path="/vagas" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/candidatos" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/candidatos" element={<ProtectedRoute><Navigate to="/shortlist" replace /></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/insights/regioes" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/insights-regionais" element={<ProtectedRoute><Home /></ProtectedRoute>} />
