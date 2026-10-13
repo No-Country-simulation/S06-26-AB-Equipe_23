@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import Header from '../../../components/ui/Header.tsx';
+import { clearAppSession } from '../../../lib/session';
 import { aprovarCandidato, executarMatch, buscarVagaPorId, buscarVagas } from '../../../lib/appbitApi';
 import type { CandidatoMatch, ContatoAprovado, MatchResponse, MatchRequest, VagaBackend } from '../../../lib/appbitTypes';
 import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
@@ -309,9 +311,27 @@ export default function ShortList() {
     setOrdenacao('score_desc');
   }
 
+  const handleLogout = () => {
+    clearAppSession();
+    navigate('/login', { replace: true });
+  };
+
   return (
-    <div className="sl-shell">
-      <header className="sl-topbar">
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%', overflow: 'hidden' }}>
+      <Header
+        activeNav="Empregabilidade"
+        onNavChange={(nav) => {
+          if (nav === 'Formações') navigate('/trilhas-capacitacoes');
+          else if (nav === 'Eventos') navigate('/eventos');
+          else if (nav === 'Mentorias') navigate('/mentorias');
+          else if (nav === 'Métricas ESG') navigate('/relatorio-esg');
+          else if (nav === 'Insights') navigate('/insights/regioes');
+          else if (nav === 'Empregabilidade') navigate('/vagas');
+        }}
+        onLogout={handleLogout}
+      />
+      <div className="sl-shell" style={{ flex: 1, minHeight: 0, height: 'auto' }}>
+        <header className="sl-topbar">
         <div className="sl-topbar__left">
           <button className="sl-back-btn" onClick={() => navigate('/vagas')} aria-label="Voltar para Minhas Vagas">
             ←
@@ -732,5 +752,7 @@ export default function ShortList() {
         </main>
       </div>
     </div>
+    </div>
   );
 }
+

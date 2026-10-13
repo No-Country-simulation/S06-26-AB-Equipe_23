@@ -52,7 +52,7 @@ export default function PainelEmpregabilidade() {
         flexDirection: 'column',
         flexShrink: 0,
         overflowY: 'auto',
-        height: 'calc(100vh - 57px)',
+        height: '100%',
       }}>
         <div style={{
           padding: '14px 16px',
@@ -79,8 +79,14 @@ export default function PainelEmpregabilidade() {
         </div>
 
         {carregando && (
-          <div style={{ padding: 20, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
-            Carregando vagas...
+          <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {[1, 2, 3].map((i) => (
+              <div key={i} style={{ padding: 14, borderRadius: 8, border: '1px solid #e5e7eb', background: '#fff', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div className="skeleton" style={{ width: '70%', height: 16 }} />
+                <div className="skeleton" style={{ width: '45%', height: 12 }} />
+                <div className="skeleton" style={{ width: '30%', height: 10 }} />
+              </div>
+            ))}
           </div>
         )}
 
@@ -111,7 +117,7 @@ export default function PainelEmpregabilidade() {
         flex: 1,
         overflowY: 'auto',
         padding: 24,
-        height: 'calc(100vh - 57px)',
+        height: '100%',
         background: '#f9fafb',
       }}>
         {vagaSelecionada ? (

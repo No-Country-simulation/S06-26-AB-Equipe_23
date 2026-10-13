@@ -1,128 +1,108 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../ui/Header';
+import Sidebar from '../ui/Sidebar';
 import { clearAppSession } from '../../lib/session';
 
 interface AppLayoutProps {
-  activeNav: string;
+  activeNav?: string;
+  activeSidebarItem?: string;
   children: React.ReactNode;
 }
 
-const NAV_ROUTES: Record<string, string> = {
-  'Formações': '/trilhas-capacitacoes',
-  'Eventos': '/eventos',
-  'Empregabilidade': '/vagas',
-  'Mentorias': '/mentorias',
-  'Métricas ESG': '/relatorio-esg',
-  'Insights': '/insights/regioes',
-};
-
-const DRAWER_NAV_ITEMS = [
-  'Formações',
-  'Eventos',
-  'Mentorias',
-  'Métricas ESG',
-  'Insights',
-] as const;
-
-export default function AppLayout({ activeNav, children }: AppLayoutProps) {
+export default function AppLayout({ activeNav = 'Empregabilidade', activeSidebarItem, children }: AppLayoutProps) {
   const navigate = useNavigate();
-  const [sidebarAberta, setSidebarAberta] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 900);
+  const [sidebarAberta, setSidebarAberta] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 900);
 
-  const handleNavChange = (nav: string) => {
-    const route = NAV_ROUTES[nav];
-    if (route) {
-      navigate(route);
-      setSidebarAberta(false);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 900;
+      setIsMobile(mobile);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLogout = () => {
     clearAppSession();
     navigate('/login', { replace: true });
   };
 
+  const handleCloseMobileDrawer = () => {
+    if (isMobile) {
+      setSidebarAberta(false);
+    }
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', width: '100%', overflow: 'hidden', fontFamily: 'Inter, system-ui, sans-serif' }}>
       <Header
         activeNav={activeNav}
-        onNavChange={handleNavChange}
+        onNavChange={(nav) => {
+          if (nav === 'Formações') navigate('/trilhas-capacitacoes');
+          else if (nav === 'Eventos') navigate('/eventos');
+          else if (nav === 'Mentorias') navigate('/mentorias');
+          else if (nav === 'Métricas ESG') navigate('/relatorio-esg');
+          else if (nav === 'Insights') navigate('/insights/regioes');
+          else if (nav === 'Empregabilidade') navigate('/vagas');
+        }}
         sidebarAberta={sidebarAberta}
         onToggleSidebar={() => setSidebarAberta((prev) => !prev)}
         onLogout={handleLogout}
       />
-      {sidebarAberta && (
-        <>
-          <button
-            type="button"
-            aria-label="Fechar menu lateral"
-            onClick={() => setSidebarAberta(false)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              border: 0,
-              background: 'rgba(15, 23, 42, 0.12)',
-              zIndex: 40,
-              cursor: 'default',
-            }}
-          />
-          <aside
-            aria-label="Menu lateral"
-            style={{
-              position: 'fixed',
-              top: 57,
-              left: 0,
-              bottom: 0,
-              width: 220,
-              background: '#fff',
-              borderRight: '0.5px solid #e5e7eb',
-              zIndex: 45,
-              padding: '16px 12px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-              flexShrink: 0,
-              height: 'calc(100vh - 57px)',
-              overflowY: 'auto',
-            }}
-          >
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {DRAWER_NAV_ITEMS.map((nav) => {
-                const route = NAV_ROUTES[nav];
-                const isActive = activeNav === nav;
 
-                return (
-                  <button
-                    key={route}
-                    type="button"
-                    onClick={() => handleNavChange(nav)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      width: '100%',
-                      border: 'none',
-                      borderRadius: 8,
-                      background: isActive ? '#EEE9FC' : 'transparent',
-                      color: isActive ? '#6C3FC5' : '#4b5563',
-                      cursor: 'pointer',
-                      fontWeight: isActive ? 500 : 400,
-                      padding: '8px 10px',
-                      textAlign: 'left',
-                      fontSize: 13,
-                    }}
-                  >
-                    {nav}
-                  </button>
-                );
-              })}
-            </nav>
-          </aside>
-        </>
-      )}
-      <main style={{ flex: 1, minHeight: 0, display: 'flex' }}>
-        {children}
-      </main>
+      <div style={{ display: 'flex', flex: 1, minHeight: 0, overflow: 'hidden', position: 'relative' }}>
+        {/* Desktop Sidebar */}
+        {!isMobile && sidebarAberta && (
+          <Sidebar
+            activeItem={activeSidebarItem}
+          />
+        )}
+
+        {/* Mobile Sidebar (Drawer + Overlay) */}
+        {isMobile && sidebarAberta && (
+          <>
+            <button
+              type="button"
+              aria-label="Fechar menu lateral"
+              onClick={() => setSidebarAberta(false)}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                border: 0,
+                background: 'rgba(15, 23, 42, 0.4)',
+                backdropFilter: 'blur(2px)',
+                zIndex: 40,
+                cursor: 'default',
+              }}
+            />
+            <div
+              style={{
+                position: 'fixed',
+                top: 57,
+                left: 0,
+                bottom: 0,
+                width: 250,
+                zIndex: 45,
+                boxShadow: '4px 0 24px rgba(0, 0, 0, 0.15)',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Sidebar
+                activeItem={activeSidebarItem}
+                onNavigate={handleCloseMobileDrawer}
+                style={{ width: '100%', height: '100%', borderRight: 'none' }}
+              />
+            </div>
+          </>
+        )}
+
+        <main style={{ flex: 1, minWidth: 0, minHeight: 0, display: 'flex', overflow: 'hidden' }}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

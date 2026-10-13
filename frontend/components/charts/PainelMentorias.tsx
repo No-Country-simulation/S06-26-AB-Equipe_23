@@ -39,24 +39,27 @@ export default function PainelMentorias() {
 
   if (loading) {
     return (
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexDirection: 'column', gap: 12, color: '#6C3FC5', background: '#f8fafc', height: '100%'
-      }}>
-        <div style={{
-          width: 32, height: 32,
-          border: '4px solid #ede9fe',
-          borderTop: '4px solid #6C3FC5',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-        <p style={{ fontSize: 14, fontWeight: 500 }}>Carregando rede de mentores...</p>
-        <style>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
+      <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: '24px 32px' }}>
+        <div style={{ marginBottom: 28 }}>
+          <div className="skeleton" style={{ width: 160, height: 22, marginBottom: 12 }} />
+          <div className="skeleton" style={{ width: 320, height: 28, marginBottom: 8 }} />
+          <div className="skeleton" style={{ width: 420, height: 16 }} />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', gap: 12 }}>
+                <div className="skeleton" style={{ width: 44, height: 44, borderRadius: '50%' }} />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div className="skeleton" style={{ width: '60%', height: 16 }} />
+                  <div className="skeleton" style={{ width: '80%', height: 12 }} />
+                </div>
+              </div>
+              <div className="skeleton" style={{ width: '45%', height: 20, borderRadius: 6 }} />
+              <div className="skeleton" style={{ width: '100%', height: 34, borderRadius: 8 }} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -74,7 +77,7 @@ export default function PainelMentorias() {
   }
 
   return (
-    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: '24px 32px', height: 'calc(100vh - 57px)' }}>
+    <div style={{ flex: 1, overflowY: 'auto', background: '#f8fafc', padding: '24px 32px' }}>
       {/* Top Section */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'inline-block', background: '#E0F2FE', color: '#0369a1', borderRadius: 6, padding: '5px 10px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>
@@ -164,36 +167,38 @@ export default function PainelMentorias() {
                 </div>
 
                 {/* Footer with availability and action */}
-                <div style={{ borderTop: '0.5px solid #f1f5f9', paddingTop: 14, marginTop: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span style={{ fontSize: 10, color: '#94a3b8', textTransform: 'uppercase' }}>Disponibilidade</span>
-                    <span style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      color: mentor.disponibilidade === 'Quinzenal' ? '#16a34a' : '#2563eb'
-                    }}>
-                      🗓️ {mentor.disponibilidade}
-                    </span>
-                  </div>
+                <div style={{ borderTop: '0.5px solid #f1f5f9', paddingTop: 14, marginTop: 10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <span style={{ fontSize: 10, color: '#94a3b8', textTransform: 'uppercase' }}>Disponibilidade</span>
+                      <span style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: mentor.disponibilidade === 'Quinzenal' ? '#16a34a' : '#2563eb'
+                      }}>
+                        🗓️ {mentor.disponibilidade}
+                      </span>
+                    </div>
 
-                  <button
-                    onClick={() => handleAgendar(mentor.mentor_id)}
-                    style={{
-                      padding: '7px 12px',
-                      background: isAgendado ? '#10b981' : (isHovered ? '#6C3FC5' : '#7c3aed'),
-                      color: '#fff',
-                      borderRadius: 8,
-                      fontSize: 11,
-                      fontWeight: 500,
-                      border: 'none',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s, transform 0.1s',
-                      transform: isHovered ? 'scale(1.02)' : 'none',
-                    }}
-                  >
-                    {isAgendado ? 'Simulação local' : 'Simular solicitação'}
-                  </button>
-                  <small style={{ display: 'block', marginTop: 6, color: '#64748b', fontSize: 10 }}>
+                    <button
+                      onClick={() => handleAgendar(mentor.mentor_id)}
+                      style={{
+                        padding: '7px 12px',
+                        background: isAgendado ? '#10b981' : (isHovered ? '#6C3FC5' : '#7c3aed'),
+                        color: '#fff',
+                        borderRadius: 8,
+                        fontSize: 11,
+                        fontWeight: 500,
+                        border: 'none',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s, transform 0.1s',
+                        transform: isHovered ? 'scale(1.02)' : 'none',
+                      }}
+                    >
+                      {isAgendado ? 'Simulação local' : 'Simular solicitação'}
+                    </button>
+                  </div>
+                  <small style={{ display: 'block', color: '#64748b', fontSize: 10 }}>
                     Demonstração local; nenhum agendamento foi persistido.
                   </small>
                 </div>

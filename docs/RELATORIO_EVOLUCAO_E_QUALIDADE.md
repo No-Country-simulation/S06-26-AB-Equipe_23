@@ -8,8 +8,9 @@ Este documento detalha o conjunto de melhorias técnicas, resolução de gargalo
 1. [Visão Geral do Salto de Qualidade](#1-visão-geral-do-salto-de-qualidade)
 2. [Persistência Relacional de Vagas no Backend](#2-persistência-relacional-de-vagas-no-backend)
 3. [Diagnóstico e Resolução de Indisponibilidade no Login (Render Cold Start)](#3-diagnóstico-e-resolução-de-indisponibilidade-no-login-render-cold-start)
-4. [Métricas de Validação e Cobertura de Testes](#4-métricas-de-validação-e-cobertura-de-testes)
-5. [Próximos Passos Recomendados](#5-próximos-passos-recomendados)
+4. [Refatoração, Modernização e Padronização do Layout (Frontend)](#4-refatoração-modernização-e-padronização-do-layout-frontend)
+5. [Métricas de Validação e Cobertura de Testes](#5-métricas-de-validação-e-cobertura-de-testes)
+6. [Próximos Passos Recomendados](#6-próximos-passos-recomendados)
 
 ---
 
@@ -70,7 +71,30 @@ Ao tentar efetuar login na plataforma hospedada no Render (plano gratuito), usu�
 
 ---
 
-## 4. Métricas de Validação e Cobertura de Testes
+## 4. Refatoração, Modernização e Padronização do Layout (Frontend)
+
+Com a consolidação do backend e dos fluxos essenciais, foi realizada uma refatoração arquitetural no layout do cliente web para eliminar inconsistências visuais, unificar a navegação e aprimorar a experiência corporativa (B2B SaaS):
+
+### 4.1. Limpeza e Modernização do CSS Global (`index.css`)
+- **Remoção de Resquícios do Vite:** Eliminado o `text-align: center;` e as bordas laterais (`border-inline`) no elemento raiz `#root`, restabelecendo o alinhamento à esquerda e ocupação fluida de 100% da tela.
+- **Tipografia Proporcional:** Padronizada a escala de fontes para `14px` base (em vez de `18px`), com hierarquia visual consistente para títulos (`h1` a 24px, `h2` a 18px e `h3` a 15px), eliminando cabeçalhos gigantescos herdados do template inicial.
+- **Animações Shimmer (`.skeleton`):** Adicionada classe e keyframes utilitários para feedback de carregamento estruturado sem bibliotecas pesadas de terceiros.
+
+### 4.2. Unificação da Estrutura de Navegação (`AppLayout.tsx`)
+- **Shell Único Responsivo:** Todas as páginas autenticadas passam a compartilhar uma estrutura limpa e centralizada com barra lateral persistente no desktop (largura ≥ 900px) e gaveta deslizante (*drawer*) com efeito translúcido (*backdrop blur*) em telas menores (< 900px).
+- **Consistência Institucional:** O cabeçalho corporativo (`Header.tsx`) agora está presente de forma contínua, inclusive na tela de `Shortlist`, garantindo acesso permanente ao perfil, identificação da empresa e botão de encerramento de sessão (*Sair*).
+
+### 4.3. Design System: Ícones Vetoriais e Estados Interativos (`Sidebar.tsx`)
+- **Substituição de Emojis por SVGs:** Menus agora utilizam ícones vetoriais SVG monocromáticos (`vagas`, `candidatos`, `dashboard`, `esg`, `saúde`, `formações`, `eventos`, `mentorias`), eliminando variações visuais entre sistemas operacionais (Windows, Mac, Linux).
+- **Microinterações:** Adicionados estados de hover suaves, anéis de foco para acessibilidade de teclado (`:focus-visible`) e destaque roxo (`#EEE9FC` / `#6C3FC5`) sincronizado automaticamente com a rota atual via `useLocation()`.
+
+### 4.4. Eliminação de Alturas Rígidas e Implementação de Skeletons
+- Substituição de regras rígidas `calc(100vh - 57px)` por containers flexíveis `height: 100%`, prevenindo duplicação de barras de rolagem ou quebras de overflow.
+- Implementação de *Skeleton Loaders* estruturados em `PainelEmpregabilidade`, `PainelMentorias`, `Trilhas` e `Eventos`, reduzindo o salto de layout (Cumulative Layout Shift - CLS).
+
+---
+
+## 5. Métricas de Validação e Cobertura de Testes
 
 Todas as alterações passaram por uma bateria de validação contínua:
 
@@ -80,11 +104,11 @@ Todas as alterações passaram por uma bateria de validação contínua:
 | **Python CI/CD (Pytest)** | Reconciliação BI e contratos | **7 / 7 Aprovados** (100%) ✅ |
 | **Validação BI (`valida_integracao_bi.py`)** | Antenas, Regiões e Candidatos | **Contratos Reconciliados** ✅ |
 | **ESLint Frontend (`npm run lint`)** | Análise estática de código React/TS | **0 Erros / 0 Avisos** ✅ |
-| **Vite Build (`npm run build`)** | Compilação de produção do frontend | **Sucesso em 3.62s** ✅ |
+| **Vite Build (`npm run build`)** | Compilação de produção do frontend | **Sucesso em 3.63s** ✅ |
 
 ---
 
-## 5. Próximos Passos Recomendados
+## 6. Próximos Passos Recomendados
 
 1. **Dashboard de Métricas ESG:** Expandir os gráficos do painel de empregabilidade para exibir o alinhamento ESG em tempo real baseado no banco de dados.
 2. **Ping Periódico (Keep-Alive Cron):** Configurar um ping HTTP simples (via GitHub Actions ou UptimeRobot) no endpoint `/actuator/health` a cada 10 minutos para manter o backend no Render permanentemente aquecido durante o horário comercial.

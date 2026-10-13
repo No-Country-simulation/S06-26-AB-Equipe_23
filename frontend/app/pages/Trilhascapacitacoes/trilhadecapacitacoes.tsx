@@ -35,7 +35,21 @@ export default function TrilhasCapacitacaoPage() {
           </p>
         </div>
 
-        {loading && <p style={{ color: '#6C3FC5', fontWeight: 500 }}>Carregando trilhas de capacitação...</p>}
+        {loading && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+            {[1, 2, 3].map((i) => (
+              <article key={i} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div className="skeleton" style={{ width: 60, height: 20 }} />
+                  <div className="skeleton" style={{ width: 80, height: 18 }} />
+                </div>
+                <div className="skeleton" style={{ width: '85%', height: 20 }} />
+                <div className="skeleton" style={{ width: '100%', height: 48 }} />
+                <div className="skeleton" style={{ width: '100%', height: 36, borderRadius: 8 }} />
+              </article>
+            ))}
+          </div>
+        )}
         {error && <p style={{ color: '#dc2626', fontWeight: 600 }}>{error}</p>}
 
         {!loading && !error && (

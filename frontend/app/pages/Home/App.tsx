@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from '../../../components/ui/Header.tsx';
-import Sidebar from '../../../components/ui/Sidebar.tsx';
+import AppLayout from '../../../components/layout/AppLayout';
 import PainelEmpregabilidade from '../../../components/charts/PainelEmpregabilidade';
 import PainelInsightsRegionais from '../../../components/charts/PainelInsightsRegionais';
 import DashboardExecutivo from '../../../components/charts/DashboardExecutivo';
 import PainelRelatorioESG from '../../../components/charts/PainelRelatorioESG';
 import PainelSaudeTime from '../../../components/charts/PainelSaudeTime';
-import PainelFormacoes from '../../../components/charts/PainelFormacoes';
-import PainelMentorias from '../../../components/charts/PainelMentorias';
-import { clearAppSession } from '../../../lib/session';
- 
+
 const ROTAS_EXTERNAS: Record<string, string> = {
-  'Shortlist': '/shortlist',
-  'Candidatos': '/shortlist',
+  Shortlist: '/shortlist',
+  Candidatos: '/shortlist',
 };
 
 const PAINEL_POR_ROTA: Record<string, string> = {
@@ -26,7 +22,7 @@ const PAINEL_POR_ROTA: Record<string, string> = {
   '/saude-time': 'Saúde do time',
   '/saude-do-time': 'Saúde do time',
 };
- 
+
 const PAINEIS_LOCAIS = [
   'Minhas vagas',
   'Dashboard executivo',
@@ -34,98 +30,58 @@ const PAINEIS_LOCAIS = [
   'Relatório ESG',
   'Saúde do time',
 ];
- 
-// Tudo que tem destino (local ou externo) — EmptyState só aparece para o resto
+
 const ITENS_CONHECIDOS = [...PAINEIS_LOCAIS, ...Object.keys(ROTAS_EXTERNAS)];
- 
+
 function EmptyState({ label }: { label: string }) {
   return (
-    <div style={{
-      flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      flexDirection: 'column', gap: 12, color: '#9ca3af',
-    }}>
+    <div
+      style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        gap: 12,
+        color: '#9ca3af',
+      }}
+    >
       <span style={{ fontSize: 40 }}>🚧</span>
       <p style={{ fontSize: 14, fontWeight: 500 }}>{label}</p>
       <p style={{ fontSize: 13 }}>Módulo em desenvolvimento</p>
     </div>
   );
 }
- 
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeNav, setActiveNav] = useState('Empregabilidade');
-  const [activeSidebarItem, setActiveSidebarItem] = useState('Minhas vagas');
-  const [sidebarAberta, setSidebarAberta] = useState(() => window.innerWidth >= 900);
+  const [activeSidebarItem] = useState('Minhas vagas');
 
   const painelRoteado = PAINEL_POR_ROTA[location.pathname];
-  const navExibido = painelRoteado ? 'Empregabilidade' : activeNav;
   const sidebarItemExibido = painelRoteado ?? activeSidebarItem;
- 
+
   useEffect(() => {
     const rota = ROTAS_EXTERNAS[activeSidebarItem];
     if (rota) navigate(rota);
   }, [activeSidebarItem, navigate]);
- 
-  const isRotaExterna = sidebarItemExibido in ROTAS_EXTERNAS;
- 
-  const handleNavChange = (nav: string) => {
-    setActiveNav(nav);
-    if (nav === 'Formações') {
-      navigate('/trilhas-capacitacoes');
-    } else if (nav === 'Eventos') {
-      navigate('/eventos');
-    } else if (nav === 'Mentorias') {
-      navigate('/mentorias');
-    } else if (nav === 'Métricas ESG') {
-      setActiveNav('Empregabilidade');
-      setActiveSidebarItem('Relatório ESG');
-    } else if (nav === 'Insights') {
-      setActiveNav('Empregabilidade');
-      setActiveSidebarItem('Insights regionais');
-    } else if (nav === 'Empregabilidade') {
-      setActiveSidebarItem('Minhas vagas');
-    }
-  };
 
-  const handleLogout = () => {
-    clearAppSession();
-    navigate('/login', { replace: true });
-  };
+  const isRotaExterna = sidebarItemExibido in ROTAS_EXTERNAS;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <Header
-        activeNav={navExibido}
-        onNavChange={handleNavChange}
-        sidebarAberta={sidebarAberta}
-        onToggleSidebar={() => setSidebarAberta((aberta) => !aberta)}
-        onLogout={handleLogout}
-      />
- 
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {navExibido === 'Empregabilidade' && sidebarAberta && (
-          <Sidebar activeItem={sidebarItemExibido} onItemChange={setActiveSidebarItem} />
-        )}
- 
-        <main style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
-          {navExibido === 'Formações' && <PainelFormacoes />}
-          {navExibido === 'Mentorias' && <PainelMentorias />}
- 
-          {navExibido === 'Empregabilidade' && !isRotaExterna && (
-            <>
-              {sidebarItemExibido === 'Minhas vagas'        && <PainelEmpregabilidade />}
-              {sidebarItemExibido === 'Dashboard executivo' && <DashboardExecutivo />}
-              {sidebarItemExibido === 'Insights regionais'  && <PainelInsightsRegionais />}
-              {sidebarItemExibido === 'Relatório ESG'       && <PainelRelatorioESG />}
-              {sidebarItemExibido === 'Saúde do time'       && <PainelSaudeTime />}
-              {/* EmptyState só para itens sem destino definido */}
-              {!ITENS_CONHECIDOS.includes(sidebarItemExibido) && (
-                <EmptyState label={sidebarItemExibido} />
-              )}
-            </>
+    <AppLayout activeSidebarItem={sidebarItemExibido}>
+      {!isRotaExterna && (
+        <>
+          {sidebarItemExibido === 'Minhas vagas' && <PainelEmpregabilidade />}
+          {sidebarItemExibido === 'Dashboard executivo' && <DashboardExecutivo />}
+          {sidebarItemExibido === 'Insights regionais' && <PainelInsightsRegionais />}
+          {sidebarItemExibido === 'Relatório ESG' && <PainelRelatorioESG />}
+          {sidebarItemExibido === 'Saúde do time' && <PainelSaudeTime />}
+          {!ITENS_CONHECIDOS.includes(sidebarItemExibido) && (
+            <EmptyState label={sidebarItemExibido} />
           )}
-        </main>
-      </div>
-    </div>
+        </>
+      )}
+    </AppLayout>
   );
 }

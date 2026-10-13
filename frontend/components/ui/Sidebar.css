@@ -1,0 +1,71 @@
+.appbit-sidebar {
+  width: 230px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.appbit-sidebar__section-title {
+  font-size: 10px;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 14px 10px 4px;
+  display: block;
+}
+
+.appbit-sidebar__btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s ease-in-out;
+  outline: none;
+}
+
+.appbit-sidebar__btn:hover {
+  background: #f8fafc;
+  color: #111827;
+}
+
+.appbit-sidebar__btn:focus-visible {
+  box-shadow: 0 0 0 2px #c084fc;
+}
+
+.appbit-sidebar__btn--active {
+  background: #EEE9FC;
+  color: #6C3FC5;
+  font-weight: 600;
+}
+
+.appbit-sidebar__btn--active:hover {
+  background: #e7e0f9;
+  color: #5b21b6;
+}
+
+.appbit-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: currentColor;
+}
