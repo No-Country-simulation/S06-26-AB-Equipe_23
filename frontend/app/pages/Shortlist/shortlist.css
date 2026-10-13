@@ -138,11 +138,10 @@ a:hover {
 }
 
 .sl-topbar__title {
-  display: grid;
-  grid-template-columns: minmax(0, max-content) auto;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  column-gap: 10px;
-  row-gap: 4px;
+  gap: 8px 12px;
   font-size: 15px;
   font-weight: 600;
   color: var(--sl-ink);
@@ -261,18 +260,24 @@ a:hover {
 .sl-vaga-item__bar-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 5px;
+  gap: 8px;
+  margin-top: 6px;
 }
-.sl-vaga-item__bar {
+.sl-vaga-item__bar-track {
   flex: 1;
   height: 5px;
+  background: #e2e8f0;
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.sl-vaga-item__bar-fill {
+  height: 100%;
   background: var(--sl-purple);
   border-radius: var(--r-full);
   transition: width 0.4s ease;
 }
-.sl-vaga-item--active .sl-vaga-item__bar {
-  background: var(--sl-green);
+.sl-vaga-item--active .sl-vaga-item__bar-fill {
+  background: var(--sl-purple);
 }
 .sl-vaga-item__pct {
   font-size: 10px;
@@ -386,18 +391,21 @@ a:hover {
   box-shadow: 0 4px 16px rgba(22, 163, 74, 0.1);
 }
 
-/* Ribbon */
-.sl-card__ribbon {
-  position: absolute;
-  top: 14px;
-  right: -26px;
-  background: var(--sl-green);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 34px;
-  transform: rotate(35deg);
-  letter-spacing: 0.04em;
+/* Status badge do candidato aprovado */
+.sl-card__status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--sl-green-light);
+  color: var(--sl-green-dark);
+  border: 1px solid #86efac;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  margin-bottom: 12px;
+  align-self: flex-start;
+  line-height: 1.2;
 }
 
 /* Header */

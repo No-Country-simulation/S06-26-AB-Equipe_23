@@ -371,7 +371,9 @@ export default function ShortList() {
               📍 {formatarTextoMvp(VAGA_OFICIAL.modelo)} · {VAGA_OFICIAL.local}
             </span>
             <div className="sl-vaga-item__bar-wrap">
-              <div className="sl-vaga-item__bar" style={{ width: `${VAGA_OFICIAL.scoreESG}%` }} />
+              <div className="sl-vaga-item__bar-track">
+                <div className="sl-vaga-item__bar-fill" style={{ width: `${VAGA_OFICIAL.scoreESG}%` }} />
+              </div>
               <span className="sl-vaga-item__pct">{VAGA_OFICIAL.scoreESG}%</span>
             </div>
           </button>
@@ -397,7 +399,9 @@ export default function ShortList() {
                       📍 {formatarTextoMvp(v.modalidade || 'Híbrido')} · {v.regiaoAlvo?.municipio || 'Brasil'}
                     </span>
                     <div className="sl-vaga-item__bar-wrap">
-                      <div className="sl-vaga-item__bar" style={{ width: `${esg}%` }} />
+                      <div className="sl-vaga-item__bar-track">
+                        <div className="sl-vaga-item__bar-fill" style={{ width: `${esg}%` }} />
+                      </div>
                       <span className="sl-vaga-item__pct">{esg}%</span>
                     </div>
                   </button>
@@ -614,7 +618,7 @@ export default function ShortList() {
 
                 return (
                   <article key={candidate.candidato_id} className={`sl-card${approved ? ' sl-card--aprovado' : ''}`}>
-                    {approved && <div className="sl-card__ribbon">✓ Aprovado</div>}
+                    {approved && <div className="sl-card__status-badge">✓ Candidato aprovado</div>}
 
                     <div className="sl-card__header">
                       <div className="sl-card__avatar">
