@@ -643,10 +643,12 @@ a:hover {
   color: var(--sl-green-dark);
   font-size: 13px;
   font-weight: 600;
+  text-decoration: none;
   transition: background 0.15s;
 }
 .sl-btn-aprovado:hover {
   background: #bbf7d0;
+  text-decoration: none;
 }
 
 /* Spinner */

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { aprovarCandidato, executarMatch, buscarVagaPorId } from '../../../lib/appbitApi';
-import type { CandidatoMatch, ContatoAprovado, MatchResponse, MatchRequest } from '../../../lib/appbitTypes';
+import { aprovarCandidato, executarMatch, buscarVagaPorId, buscarVagas } from '../../../lib/appbitApi';
+import type { CandidatoMatch, ContatoAprovado, MatchResponse, MatchRequest, VagaBackend } from '../../../lib/appbitTypes';
 import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
 import './shortlist.css';
 
@@ -36,6 +36,9 @@ const BADGE_COLORS: Record<string, { bg: string; color: string }> = {
   'Pessoa com deficiencia': { bg: '#FEF3C7', color: '#92400E' },
   'Primeira geracao no ensino superior': { bg: '#DCFCE7', color: '#166534' },
   'Talento de baixa renda': { bg: '#FCE7F3', color: '#9D174D' },
+  'Talento de regiao com menor acesso': { bg: '#FEF3C7', color: '#92400E' },
+  'Perfil junior em formacao tecnica': { bg: '#E0F2FE', color: '#0369A1' },
+  'Mulher em transicao de carreira para tecnologia': { bg: '#FCE7F3', color: '#9D174D' },
 };
 
 function scoreStyle(s: number) {
@@ -97,6 +100,9 @@ export default function ShortList() {
   const [searchParams] = useSearchParams();
   const vagaId = searchParams.get('vaga') ?? paramVagaId ?? 'mvp-oficial';
   const approvedContactsStorageKey = useMemo(() => getApprovedContactsStorageKey(vagaId), [vagaId]);
+
+  const [todasVagas, setTodasVagas] = useState<VagaBackend[]>([]);
+  const [carregando, setCarregando] = useState(true);
   const [vagaAtual, setVagaAtual] = useState({
     titulo: VAGA_OFICIAL.titulo,
     area: VAGA_OFICIAL.area,
@@ -114,6 +120,19 @@ export default function ShortList() {
     loadApprovedContacts(approvedContactsStorageKey)
   );
 
+  // Carrega lista de vagas cadastradas para a sidebar e mobile select
+  useEffect(() => {
+    let ativo = true;
+    buscarVagas()
+      .then((vagas) => {
+        if (ativo) setTodasVagas(vagas);
+      })
+      .catch(() => {});
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
   useEffect(() => {
     // The query parameter can change while this component stays mounted.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -121,6 +140,8 @@ export default function ShortList() {
   }, [approvedContactsStorageKey]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCarregando(true);
     const idNum = Number(vagaId);
     if (!isNaN(idNum) && idNum > 0) {
       buscarVagaPorId(idNum)
@@ -172,6 +193,9 @@ export default function ShortList() {
             .catch(() => {
               setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
             });
+        })
+        .finally(() => {
+          setCarregando(false);
         });
     } else {
       setVagaAtual({
@@ -190,10 +214,14 @@ export default function ShortList() {
         })
         .catch(() => {
           setError('Não foi possível carregar o POST /match. A shortlist oficial depende do backend.');
+        })
+        .finally(() => {
+          setCarregando(false);
         });
     }
   }, [vagaId]);
 
+  const [filtroStatus, setFiltroStatus] = useState<'todos' | 'aprovados' | 'pendentes'>('todos');
   const [filtroMinScore, setFiltroMinScore] = useState<number>(0);
   const [filtroBadge, setFiltroBadge] = useState<string>('');
   const [filtroModelo, setFiltroModelo] = useState<string>('');
@@ -201,9 +229,26 @@ export default function ShortList() {
 
   const candidatos = useMemo(() => match?.candidatos ?? [], [match]);
 
+  const totalAprovados = useMemo(() => {
+    return candidatos.filter((c) => isContatoAprovado(approvedContacts[c.candidato_id])).length;
+  }, [candidatos, approvedContacts]);
+
+  const badgesDisponiveis = useMemo(() => {
+    const set = new Set<string>();
+    candidatos.forEach((c) => {
+      if (c.badge_diversidade && c.badge_diversidade !== 'Sem badge informada' && c.badge_diversidade !== 'Nenhum') {
+        set.add(c.badge_diversidade);
+      }
+    });
+    return Array.from(set);
+  }, [candidatos]);
+
   const candidatosFiltrados = useMemo(() => {
     return candidatos
       .filter((c) => {
+        const aprovado = isContatoAprovado(approvedContacts[c.candidato_id]);
+        if (filtroStatus === 'aprovados' && !aprovado) return false;
+        if (filtroStatus === 'pendentes' && aprovado) return false;
         if (filtroMinScore > 0 && c.score_match < filtroMinScore) return false;
         if (filtroBadge && c.badge_diversidade !== filtroBadge) return false;
         if (
@@ -221,13 +266,12 @@ export default function ShortList() {
         if (ordenacao === 'exp_desc') return (b.anos_experiencia ?? 0) - (a.anos_experiencia ?? 0);
         return 0;
       });
-  }, [candidatos, filtroMinScore, filtroBadge, filtroModelo, ordenacao]);
+  }, [candidatos, approvedContacts, filtroStatus, filtroMinScore, filtroBadge, filtroModelo, ordenacao]);
 
   const averageScore = useMemo(() => {
     if (!candidatosFiltrados.length) return 0;
     return Math.round(candidatosFiltrados.reduce((sum, item) => sum + item.score_match, 0) / candidatosFiltrados.length);
   }, [candidatosFiltrados]);
-
 
   async function handleAprovar(candidateId: string) {
     setRevealing(candidateId);
@@ -250,21 +294,36 @@ export default function ShortList() {
     }
   }
 
+  const temFiltroAtivo =
+    filtroStatus !== 'todos' ||
+    filtroMinScore > 0 ||
+    Boolean(filtroBadge) ||
+    Boolean(filtroModelo) ||
+    ordenacao !== 'score_desc';
+
+  function limparFiltros() {
+    setFiltroStatus('todos');
+    setFiltroMinScore(0);
+    setFiltroBadge('');
+    setFiltroModelo('');
+    setOrdenacao('score_desc');
+  }
+
   return (
     <div className="sl-shell">
       <header className="sl-topbar">
         <div className="sl-topbar__left">
-          <button className="sl-back-btn" onClick={() => navigate('/')} aria-label="Voltar">
+          <button className="sl-back-btn" onClick={() => navigate('/vagas')} aria-label="Voltar para Minhas Vagas">
             ←
           </button>
           <div>
             <nav className="sl-breadcrumb">
               <span
                 className="sl-breadcrumb__link"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/vagas')}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && navigate('/')}
+                onKeyDown={(e) => e.key === 'Enter' && navigate('/vagas')}
               >
                 Minhas vagas
               </span>
@@ -277,22 +336,75 @@ export default function ShortList() {
             </h1>
           </div>
         </div>
+
+        <div className="sl-topbar__right">
+          <select
+            className="sl-vaga-select"
+            value={vagaId}
+            onChange={(e) => {
+              const val = e.target.value;
+              navigate(val === 'mvp-oficial' ? '/shortlist' : `/shortlist?vaga=${val}`);
+            }}
+            aria-label="Selecionar vaga"
+          >
+            <option value="mvp-oficial">⭐ Vaga MVP: {VAGA_OFICIAL.titulo}</option>
+            {todasVagas.map((v) => (
+              <option key={v.id} value={String(v.id)}>
+                {v.titulo} ({v.nivel ?? 'Júnior'})
+              </option>
+            ))}
+          </select>
+        </div>
       </header>
 
       <div className="sl-body">
         <aside className="sl-sidebar">
-          <p className="sl-sidebar__heading">{vagaAtual.isCustom ? 'Vaga selecionada' : 'Vaga oficial do MVP'}</p>
-          <button className="sl-vaga-item sl-vaga-item--active">
-            <span className="sl-vaga-item__titulo">{formatarTextoMvp(vagaAtual.titulo)}</span>
-            <span className="sl-vaga-item__area">{vagaAtual.area} · {vagaAtual.nivel}</span>
+          <p className="sl-sidebar__heading">Vaga oficial do MVP</p>
+          <button
+            type="button"
+            className={`sl-vaga-item ${vagaId === 'mvp-oficial' ? 'sl-vaga-item--active' : ''}`}
+            onClick={() => navigate('/shortlist')}
+          >
+            <span className="sl-vaga-item__titulo">{formatarTextoMvp(VAGA_OFICIAL.titulo)}</span>
+            <span className="sl-vaga-item__area">{VAGA_OFICIAL.area} · {VAGA_OFICIAL.nivel}</span>
             <span className="sl-vaga-item__local">
-              📍 {formatarTextoMvp(vagaAtual.modelo)} · {vagaAtual.local}
+              📍 {formatarTextoMvp(VAGA_OFICIAL.modelo)} · {VAGA_OFICIAL.local}
             </span>
             <div className="sl-vaga-item__bar-wrap">
-              <div className="sl-vaga-item__bar" style={{ width: `${vagaAtual.scoreESG}%` }} />
-              <span className="sl-vaga-item__pct">{vagaAtual.scoreESG}%</span>
+              <div className="sl-vaga-item__bar" style={{ width: `${VAGA_OFICIAL.scoreESG}%` }} />
+              <span className="sl-vaga-item__pct">{VAGA_OFICIAL.scoreESG}%</span>
             </div>
           </button>
+
+          {todasVagas.length > 0 && (
+            <>
+              <p className="sl-sidebar__heading" style={{ marginTop: 16 }}>Vagas da empresa ({todasVagas.length})</p>
+              {todasVagas.map((v) => {
+                const isActive = vagaId === String(v.id);
+                const esg = v.esgMatch ?? 85;
+                return (
+                  <button
+                    key={v.id}
+                    type="button"
+                    className={`sl-vaga-item ${isActive ? 'sl-vaga-item--active' : ''}`}
+                    onClick={() => navigate(`/shortlist?vaga=${v.id}`)}
+                  >
+                    <span className="sl-vaga-item__titulo">{formatarTextoMvp(v.titulo)}</span>
+                    <span className="sl-vaga-item__area">
+                      {v.area || 'Dados'} · {v.nivel ? formatarNivelMvp(v.nivel) : 'Júnior'}
+                    </span>
+                    <span className="sl-vaga-item__local">
+                      📍 {formatarTextoMvp(v.modalidade || 'Híbrido')} · {v.regiaoAlvo?.municipio || 'Brasil'}
+                    </span>
+                    <div className="sl-vaga-item__bar-wrap">
+                      <div className="sl-vaga-item__bar" style={{ width: `${esg}%` }} />
+                      <span className="sl-vaga-item__pct">{esg}%</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </>
+          )}
         </aside>
 
         <main className="sl-main">
@@ -313,23 +425,40 @@ export default function ShortList() {
             </button>
           </div>
 
-          {/* Barra de Filtros Avançados */}
-          <div style={{
-            background: '#fff',
-            border: '1px solid #e2e8f0',
-            borderRadius: 8,
-            padding: '10px 14px',
-            marginBottom: 16,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            flexWrap: 'wrap',
-            fontSize: 12,
-          }}>
+          {/* Barra de Filtros Rápidos */}
+          <div
+            style={{
+              background: '#fff',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: '10px 14px',
+              marginBottom: 16,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              flexWrap: 'wrap',
+              fontSize: 12,
+            }}
+          >
             <span style={{ fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: 4 }}>
               ⚡ Filtros Rápidos:
             </span>
 
+            {/* Status (Todos / Aprovados / Pendentes) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <label style={{ color: '#64748b', fontWeight: 500 }}>Status:</label>
+              <select
+                value={filtroStatus}
+                onChange={(e) => setFiltroStatus(e.target.value as 'todos' | 'aprovados' | 'pendentes')}
+                style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+              >
+                <option value="todos">Todos ({candidatos.length})</option>
+                <option value="aprovados">Aprovados ({totalAprovados})</option>
+                <option value="pendentes">Pendentes ({Math.max(0, candidatos.length - totalAprovados)})</option>
+              </select>
+            </div>
+
+            {/* Score Mínimo */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <label style={{ color: '#64748b', fontWeight: 500 }}>Score Mínimo:</label>
               <select
@@ -344,6 +473,7 @@ export default function ShortList() {
               </select>
             </div>
 
+            {/* Diversidade */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <label style={{ color: '#64748b', fontWeight: 500 }}>Diversidade:</label>
               <select
@@ -352,14 +482,15 @@ export default function ShortList() {
                 style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
               >
                 <option value="">Todas as Badges</option>
-                <option value="Mulher">Mulher</option>
-                <option value="Mulher negra em tecnologia">Mulher Negra em Tecnologia</option>
-                <option value="Pessoa com deficiencia">Pessoa com Deficiência (PCD)</option>
-                <option value="Primeira geracao no ensino superior">1ª Geração Ensino Superior</option>
-                <option value="Talento de baixa renda">Talento de Baixa Renda</option>
+                {badgesDisponiveis.map((b) => (
+                  <option key={b} value={b}>
+                    {formatarTextoMvp(b)}
+                  </option>
+                ))}
               </select>
             </div>
 
+            {/* Modelo */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <label style={{ color: '#64748b', fontWeight: 500 }}>Modelo:</label>
               <select
@@ -374,6 +505,7 @@ export default function ShortList() {
               </select>
             </div>
 
+            {/* Ordenar por */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <label style={{ color: '#64748b', fontWeight: 500 }}>Ordenar por:</label>
               <select
@@ -387,14 +519,10 @@ export default function ShortList() {
               </select>
             </div>
 
-            {(filtroMinScore > 0 || filtroBadge || filtroModelo || ordenacao !== 'score_desc') && (
+            {temFiltroAtivo && (
               <button
-                onClick={() => {
-                  setFiltroMinScore(0);
-                  setFiltroBadge('');
-                  setFiltroModelo('');
-                  setOrdenacao('score_desc');
-                }}
+                type="button"
+                onClick={limparFiltros}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -416,10 +544,20 @@ export default function ShortList() {
               👥
               <p>{error}</p>
             </div>
-          ) : !match ? (
+          ) : carregando ? (
             <div className="sl-empty">
-              👥
-              <p>Carregando shortlist oficial...</p>
+              <span
+                className="sl-spinner"
+                style={{
+                  width: 30,
+                  height: 30,
+                  border: '3px solid rgba(108, 63, 197, 0.2)',
+                  borderTopColor: '#6C3FC5',
+                }}
+              />
+              <p style={{ marginTop: 10, fontWeight: 500, color: '#475569' }}>
+                Carregando candidatos da shortlist...
+              </p>
             </div>
           ) : candidatosFiltrados.length === 0 ? (
             <div className="sl-empty">
@@ -455,18 +593,23 @@ export default function ShortList() {
           ) : (
             <div className="sl-grid">
               {candidatosFiltrados.map((candidate) => {
-
                 const approved = isContatoAprovado(approvedContacts[candidate.candidato_id])
                   ? approvedContacts[candidate.candidato_id]
                   : null;
                 const isRevealing = revealing === candidate.candidato_id;
                 const sc = scoreStyle(candidate.score_match);
-                const badge = candidate.badge_diversidade;
-                const badgeStyle = badge ? BADGE_COLORS[badge] ?? { bg: '#F3F4F6', color: '#6B7280' } : null;
+                const rawBadge = candidate.badge_diversidade;
+                const hasValidBadge =
+                  rawBadge &&
+                  rawBadge !== 'Sem badge informada' &&
+                  rawBadge !== 'Nenhum';
+                const badgeStyle = hasValidBadge
+                  ? BADGE_COLORS[rawBadge] ?? { bg: '#F3F4F6', color: '#6B7280' }
+                  : null;
                 const regiao = formatarTextoMvp(candidate.regiao);
                 const nivel = formatarNivelMvp(candidate.nivel);
                 const modelo = formatarTextoMvp(candidate.modelo_trabalho_preferido ?? 'Não informado');
-                const badgeLabel = badge ? formatarTextoMvp(badge) : '';
+                const badgeLabel = hasValidBadge ? formatarTextoMvp(rawBadge) : '';
                 const skills = getCandidateSkills(candidate);
 
                 return (
@@ -491,7 +634,7 @@ export default function ShortList() {
                       </div>
                     </div>
 
-                    {badge && badgeStyle && (
+                    {hasValidBadge && badgeStyle && (
                       <div className="sl-card__badges">
                         <span className="sl-badge" style={{ background: badgeStyle.bg, color: badgeStyle.color }}>
                           {badgeLabel}
@@ -555,13 +698,27 @@ export default function ShortList() {
                     )}
 
                     {!approved ? (
-                      <button className="sl-btn-aprovar" onClick={() => handleAprovar(candidate.candidato_id)} disabled={isRevealing}>
-                        {isRevealing ? <><span className="sl-spinner" /> Aprovando...</> : <>✓ Aprovar para entrevista</>}
+                      <button
+                        type="button"
+                        className="sl-btn-aprovar"
+                        onClick={() => handleAprovar(candidate.candidato_id)}
+                        disabled={Boolean(revealing)}
+                      >
+                        {isRevealing ? (
+                          <>
+                            <span className="sl-spinner" /> Aprovando...
+                          </>
+                        ) : (
+                          <>✓ Aprovar para entrevista</>
+                        )}
                       </button>
                     ) : (
-                      <button className="sl-btn-aprovado" onClick={() => navigate('/')}>
-                        Ver pré-aprovados →
-                      </button>
+                      <a
+                        className="sl-btn-aprovado"
+                        href={`mailto:${approved.contato_liberado.email}?subject=Processo%20Seletivo%20appBiT%20-%20${encodeURIComponent(vagaAtual.titulo)}`}
+                      >
+                        ✉️ Convidar por e-mail
+                      </a>
                     )}
                   </article>
                 );
