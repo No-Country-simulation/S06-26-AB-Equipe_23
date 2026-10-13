@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { aprovarCandidato, executarMatch, buscarVagaPorId } from '../../../lib/appbitApi';
 import type { CandidatoMatch, ContatoAprovado, MatchResponse, MatchRequest } from '../../../lib/appbitTypes';
 import { formatarNivelMvp, formatarSkillMvp, formatarTextoMvp } from '../../../lib/formatarTextoMvp';
@@ -27,6 +27,7 @@ const VAGA_OFICIAL = {
   modelo: 'Híbrido',
   local: 'Brasil',
   scoreESG: 92,
+  nivel: 'Júnior',
 };
 
 const BADGE_COLORS: Record<string, { bg: string; color: string }> = {
@@ -92,9 +93,19 @@ function saveApprovedContacts(storageKey: string, contacts: Record<string, Conta
 
 export default function ShortList() {
   const navigate = useNavigate();
+  const { vagaId: paramVagaId } = useParams();
   const [searchParams] = useSearchParams();
-  const vagaId = searchParams.get('vaga') ?? 'mvp-oficial';
+  const vagaId = searchParams.get('vaga') ?? paramVagaId ?? 'mvp-oficial';
   const approvedContactsStorageKey = useMemo(() => getApprovedContactsStorageKey(vagaId), [vagaId]);
+  const [vagaAtual, setVagaAtual] = useState({
+    titulo: VAGA_OFICIAL.titulo,
+    area: VAGA_OFICIAL.area,
+    modelo: VAGA_OFICIAL.modelo,
+    local: VAGA_OFICIAL.local,
+    scoreESG: VAGA_OFICIAL.scoreESG,
+    nivel: VAGA_OFICIAL.nivel,
+    isCustom: false,
+  });
   const [match, setMatch] = useState<MatchResponse | null>(null);
   const [error, setError] = useState('');
   const [revealing, setRevealing] = useState<string | null>(null);
@@ -114,6 +125,15 @@ export default function ShortList() {
     if (!isNaN(idNum) && idNum > 0) {
       buscarVagaPorId(idNum)
         .then((vagaBackend) => {
+          setVagaAtual({
+            titulo: vagaBackend.titulo,
+            area: vagaBackend.area || 'Dados',
+            modelo: vagaBackend.modalidade || 'Híbrido',
+            local: vagaBackend.regiaoAlvo?.municipio || 'Brasil',
+            scoreESG: vagaBackend.esgMatch ?? 85,
+            nivel: vagaBackend.nivel ? formatarNivelMvp(vagaBackend.nivel) : 'Júnior',
+            isCustom: true,
+          });
           const req: MatchRequest = {
             empresa_id: EMPRESA_ID,
             vaga: {
@@ -135,6 +155,15 @@ export default function ShortList() {
           setError('');
         })
         .catch(() => {
+          setVagaAtual({
+            titulo: VAGA_OFICIAL.titulo,
+            area: VAGA_OFICIAL.area,
+            modelo: VAGA_OFICIAL.modelo,
+            local: VAGA_OFICIAL.local,
+            scoreESG: VAGA_OFICIAL.scoreESG,
+            nivel: VAGA_OFICIAL.nivel,
+            isCustom: false,
+          });
           executarMatch(MATCH_REQUEST)
             .then((res) => {
               setMatch(res);
@@ -145,6 +174,15 @@ export default function ShortList() {
             });
         });
     } else {
+      setVagaAtual({
+        titulo: VAGA_OFICIAL.titulo,
+        area: VAGA_OFICIAL.area,
+        modelo: VAGA_OFICIAL.modelo,
+        local: VAGA_OFICIAL.local,
+        scoreESG: VAGA_OFICIAL.scoreESG,
+        nivel: VAGA_OFICIAL.nivel,
+        isCustom: false,
+      });
       executarMatch(MATCH_REQUEST)
         .then((response) => {
           setMatch(response);
@@ -231,7 +269,7 @@ export default function ShortList() {
                 Minhas vagas
               </span>
               <span className="sl-breadcrumb__sep">›</span>
-              <span className="sl-breadcrumb__current">Shortlist — {formatarTextoMvp(VAGA_OFICIAL.titulo)}</span>
+              <span className="sl-breadcrumb__current">Shortlist — {formatarTextoMvp(vagaAtual.titulo)}</span>
             </nav>
             <h1 className="sl-topbar__title">
               Lista de triagem
@@ -243,16 +281,16 @@ export default function ShortList() {
 
       <div className="sl-body">
         <aside className="sl-sidebar">
-          <p className="sl-sidebar__heading">Vaga oficial do MVP</p>
+          <p className="sl-sidebar__heading">{vagaAtual.isCustom ? 'Vaga selecionada' : 'Vaga oficial do MVP'}</p>
           <button className="sl-vaga-item sl-vaga-item--active">
-            <span className="sl-vaga-item__titulo">{formatarTextoMvp(VAGA_OFICIAL.titulo)}</span>
-            <span className="sl-vaga-item__area">{VAGA_OFICIAL.area}</span>
+            <span className="sl-vaga-item__titulo">{formatarTextoMvp(vagaAtual.titulo)}</span>
+            <span className="sl-vaga-item__area">{vagaAtual.area} · {vagaAtual.nivel}</span>
             <span className="sl-vaga-item__local">
-              📍 {formatarTextoMvp(VAGA_OFICIAL.modelo)} · {VAGA_OFICIAL.local}
+              📍 {formatarTextoMvp(vagaAtual.modelo)} · {vagaAtual.local}
             </span>
             <div className="sl-vaga-item__bar-wrap">
-              <div className="sl-vaga-item__bar" style={{ width: `${VAGA_OFICIAL.scoreESG}%` }} />
-              <span className="sl-vaga-item__pct">{VAGA_OFICIAL.scoreESG}%</span>
+              <div className="sl-vaga-item__bar" style={{ width: `${vagaAtual.scoreESG}%` }} />
+              <span className="sl-vaga-item__pct">{vagaAtual.scoreESG}%</span>
             </div>
           </button>
         </aside>
@@ -386,7 +424,33 @@ export default function ShortList() {
           ) : candidatosFiltrados.length === 0 ? (
             <div className="sl-empty">
               👥
-              <p>Nenhum candidato atende aos filtros selecionados.</p>
+              <p style={{ fontWeight: 600, color: '#1e1b4b', margin: '8px 0 4px' }}>
+                Nenhum candidato atende aos filtros {vagaAtual.isCustom ? `ou requisitos desta vaga (${vagaAtual.titulo})` : 'selecionados'}.
+              </p>
+              {vagaAtual.isCustom && match?.candidatos.length === 0 && (
+                <p style={{ fontSize: 13, color: '#64748b', maxWidth: 480, margin: '6px auto 14px', lineHeight: 1.4 }}>
+                  O dataset de demonstração do MVP possui 8 perfis em Dados no nível Júnior. Vagas com outros níveis ou skills retornam triagem zerada.
+                </p>
+              )}
+              {vagaAtual.isCustom && (
+                <button
+                  type="button"
+                  onClick={() => navigate('/shortlist')}
+                  style={{
+                    background: '#6C3FC5',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: 99,
+                    padding: '8px 18px',
+                    fontSize: 13,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    marginTop: 4,
+                  }}
+                >
+                  Ver shortlist oficial do MVP (8 candidatos) →
+                </button>
+              )}
             </div>
           ) : (
             <div className="sl-grid">
