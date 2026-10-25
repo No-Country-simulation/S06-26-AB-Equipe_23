@@ -275,14 +275,15 @@ VITE_API_URL=http://localhost:8080
 
 ## Documentation
 
-Additional project documentation is available in the docs/ directory, including:
+Additional project documentation is available in the `docs/` directory, including:
 
-- Match score calculation
-- Power BI support
-- Data storytelling
-- BI validation
-- Candidate anonymization flow
-- Backend and frontend integration notes
+- [Checklist Operacional — Próximos Passos (Pós-MVP)](docs/CHECKLIST_PROXIMOS_PASSOS.md) — Tarefas práticas, prioridades e critérios de aceite pós-MVP.
+- [Roadmap de Evolução Técnica](docs/ROADMAP_EVOLUCAO_MVP.md) — Evolução arquitetural, infraestrutura e produto.
+- [Relatório de Evolução e Qualidade](docs/RELATORIO_EVOLUCAO_E_QUALIDADE.md) — Métricas de teste, diagnóstico de cold start e qualidade.
+- [Contrato da API](docs/contrato-api.md) — Especificação dos endpoints e payloads REST.
+- [Cálculo do Score de Match](docs/score-match.md) — Regras de pontuação, pesos e anonimização de candidatos.
+- [Dashboards e Medidas DAX do Power BI](docs/power-bi-medidas-dax.md) — Documentação da camada analítica e BI.
+
 
 ## Team Project and Contributions
 

@@ -110,5 +110,11 @@ Todas as alterações passaram por uma bateria de validação contínua:
 
 ## 6. Próximos Passos Recomendados
 
-1. **Dashboard de Métricas ESG:** Expandir os gráficos do painel de empregabilidade para exibir o alinhamento ESG em tempo real baseado no banco de dados.
-2. **Ping Periódico (Keep-Alive Cron):** Configurar um ping HTTP simples (via GitHub Actions ou UptimeRobot) no endpoint `/actuator/health` a cada 10 minutos para manter o backend no Render permanentemente aquecido durante o horário comercial.
+Para a transição completa do MVP para produção comercial, consulte o plano detalhado em [CHECKLIST_PROXIMOS_PASSOS.md](file:///c:/Repositorio/S06-26-AB-Equipe_23/docs/CHECKLIST_PROXIMOS_PASSOS.md). Principais itens de ação imediata:
+
+- [ ] **Mitigação do Cold Start (Render):** Configurar ping HTTP automatizado a cada 10 minutos ou migrar para instância contínua para eliminar esperas de inicialização.
+- [ ] **Portal de Entrada do Candidato:** Criar fluxo público para cadastro direto de candidatos, habilidades e consentimento explícito LGPD.
+- [ ] **Criptografia de PII em Repouso:** Implementar conversor JPA AES-256 para campos sensíveis (CPF, telefone, e-mail) dos candidatos no MySQL.
+- [ ] **Paginação no Frontend:** Integrar paginação visual nas listas de vagas e candidatos consumindo os parâmetros `page` e `size` da API REST.
+- [ ] **Ciclo de Feedback na Shortlist:** Registrar justificativa de aprovação/rejeição para retroalimentar o algoritmo de score.
+- [ ] **Piloto B2B com Empresas:** Executar testes fechados com recrutadores e gestores de RH parceiros para validação de mercado.

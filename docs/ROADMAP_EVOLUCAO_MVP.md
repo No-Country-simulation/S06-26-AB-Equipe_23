@@ -61,3 +61,24 @@ Adicionar valor tecnológico e diferenciais competitivos ao ecossistema do **App
 - `[x]` **Relatórios e Auditoria ESG (Exportação):**
   - **O quê:** Permitir a exportação dos dados e gráficos gerados pela plataforma.
   - **Como:** Rota para download de PDFs assinados digitalmente e planilhas formatadas (.xlsx) dos indicadores de diversidade, saúde do time e impacto de capacitações regionais para fins de compliance das empresas.
+
+---
+
+## 5. Próximos Passos Prioritários (Checklist Operacional)
+
+Para o acompanhamento detalhado de execução, prazos e responsáveis, consulte o [CHECKLIST_PROXIMOS_PASSOS.md](file:///c:/Repositorio/S06-26-AB-Equipe_23/docs/CHECKLIST_PROXIMOS_PASSOS.md).
+
+- [ ] **Curto Prazo (1 a 2 semanas):**
+  - [ ] Mitigar cold start no Render com ping de 10 min ou migração para plano contínuo.
+  - [ ] Configurar monitoramento de erros em tempo real (Sentry) no frontend e backend.
+  - [ ] Incluir testes E2E com Playwright na esteira de CI do GitHub Actions.
+- [ ] **Médio Prazo (2 a 4 semanas):**
+  - [ ] Implementar o Portal do Candidato com formulário de cadastro e consentimento LGPD.
+  - [ ] Integrar paginação visual no frontend para grandes volumes de vagas e candidatos.
+  - [ ] Implementar criptografia AES-256 no JPA para dados sensíveis em repouso.
+  - [ ] Adicionar coleta de justificativa no fluxo de reprovação de candidatos da shortlist.
+- [ ] **Longo Prazo:**
+  - [ ] Executar programa de testes piloto com 3 a 5 empresas parceiras.
+  - [ ] Integrar notificações transacionais automáticas por e-mail (candidatos e mentores).
+  - [ ] Implementar embeddings vetoriais de IA para matching semântico avançado.
+
