@@ -57,6 +57,9 @@ jobs:
             npm install
           fi
 
+      - name: Lint frontend
+        run: npm run lint
+
       - name: Build frontend
         run: npm run build
 
@@ -85,3 +88,44 @@ jobs:
         run: |
           python -m pytest tests/test_score_match.py tests/test_score_regression.py tests/test_anonymization.py -q
           python scripts/valida_integracao_bi.py
+
+  e2e:
+    name: E2E Responsivo (Playwright)
+    runs-on: ubuntu-latest
+    needs: [frontend]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Playwright E2E Tests
+        run: npm run test:e2e
+        env:
+          APPBIT_TEST_EMAIL: recrutador@appbit.com.br
+          APPBIT_TEST_PASSWORD: Recrutador@Bit2026!
+
+      - name: Upload E2E Results Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: docs/validacao/responsividade/results.json
+          if-no-files-found: ignore
+

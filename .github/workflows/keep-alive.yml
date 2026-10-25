@@ -1,15 +1,30 @@
-name: Keep Alive Database
+name: Keep Alive Services (Render & Database)
 
 on:
   schedule:
-    # Roda a cada 6 horas para garantir que o banco Aiven não entre em modo suspenso
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Permite executar o ping manualmente pelo painel do GitHub Actions
+    # Executa a cada 14 minutos para evitar que o Render entre em suspensao (cold start apos 15 min de inatividade)
+    # e manter tanto o backend Spring Boot quanto o banco Aiven MySQL aquecidos.
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Permite disparar o ping manualmente pelo painel do GitHub Actions
 
 jobs:
-  ping-backend:
+  ping-services:
+    name: Ping Render & Database
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Actuator Health Endpoint
+      - name: Ping Backend Health Endpoint
         run: |
-          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://appbit-backend-0v3u.onrender.com/actuator/health
+          echo "Disparando ping para o backend Spring Boot..."
+          curl -s -S --max-time 90 --retry 2 \
+            -o /dev/null \
+            -w "Backend Actuator Health: HTTP %{http_code} | Tempo de resposta: %{time_total}s\n" \
+            https://appbit-backend-0v3u.onrender.com/actuator/health
+
+      - name: Ping Frontend Live Demo
+        run: |
+          echo "Disparando ping para o frontend Web..."
+          curl -s -S --max-time 60 --retry 2 \
+            -o /dev/null \
+            -w "Frontend Live Demo: HTTP %{http_code} | Tempo de resposta: %{time_total}s\n" \
+            https://appbit-frontend.onrender.com
+

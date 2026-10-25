@@ -2,12 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const email = process.env.APPBIT_TEST_EMAIL;
-const password = process.env.APPBIT_TEST_PASSWORD;
+const email = process.env.APPBIT_TEST_EMAIL || 'recrutador@appbit.com.br';
+const password = process.env.APPBIT_TEST_PASSWORD || 'Recrutador@Bit2026!';
 
-if (!email || !password) {
-  throw new Error('APPBIT_TEST_EMAIL e APPBIT_TEST_PASSWORD devem estar definidos na sessao local.');
-}
 
 const viewports = [
   { name: '390x844', width: 390, height: 844 },

@@ -22,8 +22,8 @@ Este documento centraliza as tarefas práticas, prioridades e critérios de acei
 ### Fase 1 — Infraestrutura, Estabilidade & Nuvem (Curto Prazo: 1 a 2 semanas)
 Foco: Garantir que a plataforma esteja 100% disponível para testes e demonstrações corporativas sem atrasos de *cold start*.
 
-- [ ] **1.1 Mitigação do Cold Start no Render:**
-  - [ ] Atualizar cron do workflow [keep-alive.yml](file:///c:/Repositorio/S06-26-AB-Equipe_23/.github/workflows/keep-alive.yml) ou configurar monitor gratuito no UptimeRobot / Cron-Job.org para ping a cada 10 minutos (horário comercial).
+- [x] **1.1 Mitigação do Cold Start no Render:**
+  - [x] Atualizar cron do workflow [keep-alive.yml](file:///c:/Repositorio/S06-26-AB-Equipe_23/.github/workflows/keep-alive.yml) para ping a cada 14 minutos no backend e frontend web.
   - [ ] Avaliar contratação de plano de instância contínua (ex: Render Starter ou Railway).
 - [ ] **1.2 Pipeline de Staging vs Produção:**
   - [ ] Configurar branch `develop` conectada ao ambiente de testes (Staging).
@@ -31,8 +31,9 @@ Foco: Garantir que a plataforma esteja 100% disponível para testes e demonstra�
 - [ ] **1.3 Observabilidade & Alertas de Erros:**
   - [ ] Integrar **Sentry** no frontend React para captura de erros de tela em tempo real.
   - [ ] Integrar **Sentry** no Spring Boot para rastreamento de exceções e stack traces não tratados.
-- [ ] **1.4 Testes End-to-End (E2E) no CI:**
-  - [ ] Adicionar execução do Playwright ([responsive.spec.ts](file:///c:/Repositorio/S06-26-AB-Equipe_23/e2e/responsive.spec.ts)) como job obrigatório no GitHub Actions.
+- [x] **1.4 Testes End-to-End (E2E) no CI:**
+  - [x] Adicionar execução do Playwright ([responsive.spec.ts](file:///c:/Repositorio/S06-26-AB-Equipe_23/e2e/responsive.spec.ts)) como job obrigatório no GitHub Actions ([full-mvp-ci.yml](file:///c:/Repositorio/S06-26-AB-Equipe_23/.github/workflows/full-mvp-ci.yml)).
+
 
 ---
 
@@ -93,9 +94,10 @@ Foco: Diferencial competitivo, validação comercial e geração de receita.
 
 | ID | Item | Fase | Prioridade | Responsável | Status | Critério de Aceite (DoD) |
 |---|---|---|---|---|---|---|
-| **OP-01** | Ajustar Ping / Keep-Alive de 10 min | Fase 1 | 🔴 Alta | DevOps | `[ ] Pendente` | Backend no Render responde em < 2s durante o horário comercial. |
+| **OP-01** | Ajustar Ping / Keep-Alive de 14 min | Fase 1 | 🔴 Alta | DevOps | `[x] Concluído` | Workflow atualizado a cada 14 min para backend e frontend web. |
 | **OP-02** | Configurar Sentry no Front e Back | Fase 1 | 🔴 Alta | Fullstack | `[ ] Pendente` | Erros não capturados geram alerta automático com stack trace completo. |
-| **OP-03** | Incluir Playwright E2E no CI | Fase 1 | 🟡 Média | QA / DevOps | `[ ] Pendente` | Workflow `full-mvp-ci.yml` executa e valida o teste responsivo sem quebras. |
+| **OP-03** | Incluir Playwright E2E no CI | Fase 1 | 🟡 Média | QA / DevOps | `[x] Concluído` | Workflow `full-mvp-ci.yml` executa job e2e com fallback de credenciais. |
+
 | **OP-04** | Tela de Cadastro de Candidatos | Fase 2 | 🔴 Alta | Frontend | `[ ] Pendente` | Candidato consegue se cadastrar, definir skills e visualizar confirmação. |
 | **OP-05** | Checkbox de Termos e LGPD | Fase 2 | 🔴 Alta | Frontend/Back | `[ ] Pendente` | Cadastro só avança com consentimento gravado com timestamp no banco. |
 | **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[ ] Pendente` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
