@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import api from '../../../lib/axios';
 import './Login.css';
 
@@ -323,7 +323,7 @@ export default function LoginPage() {
               </button>
 
               <p className="footerText">
-                Ainda não tem uma conta?{' '}
+                Ainda não tem uma conta corporativa?{' '}
                 <button
                   type="button"
                   className="linkButton"
@@ -332,10 +332,28 @@ export default function LoginPage() {
                     setErrors({});
                   }}
                 >
-                  Cadastre-se
+                  Cadastre sua empresa
                 </button>
               </p>
+
+              <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid #E5E7EB', textAlign: 'center' }}>
+                <span style={{ fontSize: 13, color: '#6B7280' }}>É profissional ou candidato?</span>
+                <Link
+                  to="/candidato/cadastro"
+                  style={{
+                    display: 'block',
+                    marginTop: 6,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: '#6C3FC5',
+                    textDecoration: 'none',
+                  }}
+                >
+                  ✨ Acesse o Portal do Candidato e cadastre seu perfil →
+                </Link>
+              </div>
             </div>
+
           ) : (
             /* ================= CADASTRO MULTI-STEP ================= */
             <div className="cadastroMode">

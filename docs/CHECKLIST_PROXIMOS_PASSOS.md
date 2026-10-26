@@ -40,13 +40,15 @@ Foco: Garantir que a plataforma esteja 100% disponível para testes e demonstra�
 ### Fase 2 — Produto, Candidatos & Experiência de Uso (Médio Prazo: 2 a 4 semanas)
 Foco: Fechar o ciclo bidirecional da plataforma (Recrutador ⟷ Candidato).
 
-- [ ] **2.1 Portal do Candidato (Self-Service):**
-  - [ ] Criar tela pública de cadastro/login para candidatos.
-  - [ ] Formulário de preenchimento de perfil: formação, skills, localização (região/bairro) e pretensão.
-  - [ ] Upload de currículo em PDF com extração automática ou preenchimento manual guiado.
-- [ ] **2.2 Consentimento e Privacidade (LGPD do Candidato):**
-  - [ ] Checkbox obrigatório de aceite dos Termos de Uso e Política de Privacidade na inscrição.
-  - [ ] Explicação transparente sobre o processo de triagem cega e regras de liberação de contato.
+- [x] **2.1 Portal do Candidato (Self-Service):**
+  - [x] Criar tela pública de cadastro para candidatos ([CadastroCandidato.tsx](file:///c:/Repositorio/S06-26-AB-Equipe_23/frontend/app/pages/Candidato/CadastroCandidato.tsx)).
+  - [x] Formulário de preenchimento de perfil: cargo alvo, nível de senioridade, anos de experiência e modalidade de trabalho.
+  - [x] Multi-seleção de competências técnicas com chips interativos e adição de tags personalizadas.
+  - [x] Associação e persistência automática de skills no banco relacional via backend (`bridge_candidato_skill`).
+- [x] **2.2 Consentimento e Privacidade (LGPD do Candidato):**
+  - [x] Checkbox obrigatório de aceite dos Termos de Uso e Política de Privacidade na inscrição.
+  - [x] Explicação transparente sobre o processo de triagem cega (*Blind Screening*) e proteção de PII.
+
 - [ ] **2.3 Paginação Visual e Filtros Avançados no Frontend:**
   - [ ] Consumir parâmetros `page` e `size` do [VagaController.java](file:///c:/Repositorio/S06-26-AB-Equipe_23/backend/src/main/java/br/com/appbit/appbit/controllers/VagaController.java) na tela de listagem de vagas.
   - [ ] Implementar paginação ou rolagem infinita estruturada na visualização de candidatos da Shortlist.
@@ -98,8 +100,9 @@ Foco: Diferencial competitivo, validação comercial e geração de receita.
 | **OP-02** | Configurar Sentry no Front e Back | Fase 1 | 🔴 Alta | Fullstack | `[ ] Pendente` | Erros não capturados geram alerta automático com stack trace completo. |
 | **OP-03** | Incluir Playwright E2E no CI | Fase 1 | 🟡 Média | QA / DevOps | `[x] Concluído` | Workflow `full-mvp-ci.yml` executa job e2e com fallback de credenciais. |
 
-| **OP-04** | Tela de Cadastro de Candidatos | Fase 2 | 🔴 Alta | Frontend | `[ ] Pendente` | Candidato consegue se cadastrar, definir skills e visualizar confirmação. |
-| **OP-05** | Checkbox de Termos e LGPD | Fase 2 | 🔴 Alta | Frontend/Back | `[ ] Pendente` | Cadastro só avança com consentimento gravado com timestamp no banco. |
+| **OP-04** | Tela de Cadastro de Candidatos | Fase 2 | 🔴 Alta | Fullstack | `[x] Concluído` | Candidato cadastra perfil público com skills e recebe ID anônimo. |
+| **OP-05** | Checkbox de Termos e LGPD | Fase 2 | 🔴 Alta | Fullstack | `[x] Concluído` | Consentimento explícito e banner de Blind Screening integrados. |
+
 | **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[ ] Pendente` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
 | **OP-07** | Motivo de Rejeição na Shortlist | Fase 2 | 🟡 Média | Fullstack | `[ ] Pendente` | Ação de reprovação salva motivo no banco para análise de melhoria. |
 | **OP-08** | Criptografia AES-256 de PII | Fase 3 | 🔴 Alta | Backend | `[ ] Pendente` | Campos CPF/Email/Telefone ficam cifrados na tabela `dim_candidato`. |

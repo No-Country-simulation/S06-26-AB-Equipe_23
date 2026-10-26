@@ -7,7 +7,9 @@ import OAuth2RedirectPage from '../pages/Login/oauth2Redirect.tsx';
 import TrilhasCapacitacaoPage from '../pages/Trilhascapacitacoes/trilhadecapacitacoes.tsx';
 import EventosCorporativosPage from '../pages/Eventos/Eventoscorporativos.tsx';
 import MentoriasPage from '../pages/Mentorias/mentorias.tsx';
+import CadastroCandidatoPage from '../pages/Candidato/CadastroCandidato.tsx';
 import { hasValidSessionToken } from '../../lib/session';
+
 
 const SobreRoute = () => (
   <div>
@@ -47,7 +49,10 @@ export default function App() {
           <Route path="/" element={<DefaultRoute />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/oauth2/redirect" element={<OAuth2RedirectPage />} />
+          <Route path="/candidato/cadastro" element={<CadastroCandidatoPage />} />
+          <Route path="/cadastro-candidato" element={<CadastroCandidatoPage />} />
           <Route path="/formacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
+
           <Route path="/trilhas-capacitacoes" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
           <Route path="/trilhas" element={<ProtectedRoute><TrilhasCapacitacaoPage /></ProtectedRoute>} />
           <Route path="/eventos" element={<ProtectedRoute><EventosCorporativosPage /></ProtectedRoute>} />

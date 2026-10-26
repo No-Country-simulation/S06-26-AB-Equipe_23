@@ -100,3 +100,14 @@ export async function downloadRelatorioExcel(): Promise<void> {
   window.URL.revokeObjectURL(url);
 }
 
+export async function cadastrarCandidato(payload: import('./appbitTypes').CandidatoCadastroPayload): Promise<import('./appbitTypes').CandidatoCadastroResponse> {
+  const response = await api.post<import('./appbitTypes').CandidatoCadastroResponse>('/candidatos', payload);
+  return response.data;
+}
+
+export async function buscarRegioes(): Promise<import('./appbitTypes').RegiaoItem[]> {
+  const response = await api.get<import('./appbitTypes').RegiaoItem[]>('/regioes');
+  return response.data;
+}
+
+

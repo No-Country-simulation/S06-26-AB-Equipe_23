@@ -159,3 +159,43 @@ export interface VagaCreateBackend {
   esgMatch?: number;
 }
 
+export interface RegiaoItem {
+  id: number;
+  municipio: string;
+  cluster: string;
+}
+
+export interface CandidatoCadastroPayload {
+  nome: string;
+  cargo: string;
+  nivel: string;
+  cluster?: string;
+  municipio?: string;
+  cep?: string;
+  lat?: number;
+  lon?: number;
+  grupo?: string;
+  diversidade?: string;
+  disponibilidade?: string;
+  anosExperiencia?: number;
+  ativo?: boolean;
+  regiaoId?: number;
+  skills?: string[];
+  email?: string;
+  telefone?: string;
+  linkedin?: string;
+  consentimentoLgpd: boolean;
+}
+
+export interface CandidatoCadastroResponse {
+  id: number;
+  nome: string;
+  cargo: string;
+  nivel: string;
+  cluster?: string;
+  municipio?: string;
+  regiaoId?: number;
+  ativo: boolean;
+}
+
+
