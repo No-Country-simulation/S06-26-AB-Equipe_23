@@ -19,7 +19,7 @@ public interface CandidatoMapper {
     @Mapping(target = "regiao", ignore = true)
     @Mapping(target = "candidatoSkills", ignore = true)
     @Mapping(target = "modeloTrabalhoPreferido", source = "disponibilidade")
-    @Mapping(target = "anosExperiencia", ignore = true)
+    @Mapping(target = "anosExperiencia", source = "anosExperiencia")
     CandidatoEntity toEntity(CandidatoCreateDTO dto);
 
     @Mapping(target = "regiaoId", source = "regiao.id")

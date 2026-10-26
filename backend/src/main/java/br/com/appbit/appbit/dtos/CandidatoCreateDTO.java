@@ -1,7 +1,7 @@
 package br.com.appbit.appbit.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 public record CandidatoCreateDTO(
 
@@ -17,22 +17,50 @@ public record CandidatoCreateDTO(
 
         String municipio,
 
-         String cep,
+        String cep,
 
         Double lat,
 
         Double lon,
-        
+
         String grupo,
 
         String diversidade,
 
         String disponibilidade,
 
-        @NotNull(message = "O status é obrigatório")
         Boolean ativo,
 
-        @NotNull(message = "A região é obrigatória")
-        Integer regiaoId
+        Integer regiaoId,
+
+        Integer anosExperiencia,
+
+        List<String> skills,
+
+        String email,
+
+        String telefone,
+
+        String linkedin,
+
+        Boolean consentimentoLgpd
 ) {
+    public CandidatoCreateDTO(
+            String nome,
+            String cargo,
+            String nivel,
+            String cluster,
+            String municipio,
+            String cep,
+            Double lat,
+            Double lon,
+            String grupo,
+            String diversidade,
+            String disponibilidade,
+            Boolean ativo,
+            Integer regiaoId
+    ) {
+        this(nome, cargo, nivel, cluster, municipio, cep, lat, lon, grupo, diversidade, disponibilidade, ativo, regiaoId, null, null, null, null, null, true);
+    }
 }
+

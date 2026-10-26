@@ -6,7 +6,10 @@ import br.com.appbit.appbit.entities.RegiaoEntity;
 import br.com.appbit.appbit.exceptions.ResourceNotFoundException;
 import br.com.appbit.appbit.mappers.CandidatoMapper;
 import br.com.appbit.appbit.repositories.CandidatoRepository;
+import br.com.appbit.appbit.repositories.CandidatoSkillRepository;
 import br.com.appbit.appbit.repositories.RegiaoRepository;
+import br.com.appbit.appbit.repositories.SkillRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,24 +26,62 @@ public class CandidatoService {
 
     private final CandidatoRepository candidatoRepository;
     private final RegiaoRepository regiaoRepository;
+    private final CandidatoSkillRepository candidatoSkillRepository;
+    private final SkillRepository skillRepository;
     private final CandidatoMapper candidatoMapper;
 
     @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoResponseDTO createCandidato(CandidatoCreateDTO createDTO) {
         log.info("Criando novo candidato: {}", createDTO.nome());
 
-        RegiaoEntity regiao = regiaoRepository.findById(createDTO.regiaoId())
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("Região não encontrada com ID: " + createDTO.regiaoId()));
+        Integer regiaoId = createDTO.regiaoId() != null ? createDTO.regiaoId() : 1;
+        RegiaoEntity regiao = regiaoRepository.findById(regiaoId)
+                .orElseGet(() -> regiaoRepository.findAll().stream().findFirst()
+                        .orElseThrow(() -> new ResourceNotFoundException("Nenhuma região disponível para cadastro.")));
 
         CandidatoEntity candidato = candidatoMapper.toEntity(createDTO);
         candidato.setRegiao(regiao);
+        candidato.setAtivo(createDTO.ativo() != null ? createDTO.ativo() : true);
+        if (createDTO.anosExperiencia() != null) {
+            candidato.setAnosExperiencia(createDTO.anosExperiencia());
+        }
 
         CandidatoEntity candidatoSave = candidatoRepository.save(candidato);
         log.info("Candidato criado com sucesso. ID: {}", candidatoSave.getId());
 
+        salvarSkillsCandidato(candidatoSave, createDTO.skills());
+
         return candidatoMapper.toResponseDTO(candidatoSave);
     }
+
+    private void salvarSkillsCandidato(CandidatoEntity candidato, List<String> skills) {
+        if (skills == null || skills.isEmpty()) return;
+        for (String skillName : skills) {
+            if (skillName == null || skillName.isBlank()) continue;
+            String cleanName = skillName.trim();
+            br.com.appbit.appbit.entities.SkillEntity skill = skillRepository.findByNome(cleanName)
+                    .orElseGet(() -> {
+                        br.com.appbit.appbit.entities.SkillEntity s = new br.com.appbit.appbit.entities.SkillEntity();
+                        s.setNome(cleanName);
+                        s.setCategoria("geral");
+                        return skillRepository.save(s);
+                    });
+
+            br.com.appbit.appbit.entities.CandidatoSkillId id =
+                    new br.com.appbit.appbit.entities.CandidatoSkillId(candidato.getId(), skill.getId());
+
+            if (!candidatoSkillRepository.existsById(id)) {
+                br.com.appbit.appbit.entities.CandidatoSkillEntity cs =
+                        new br.com.appbit.appbit.entities.CandidatoSkillEntity();
+                cs.setId(id);
+                cs.setCandidato(candidato);
+                cs.setSkill(skill);
+                cs.setNivelSkill("Intermediário");
+                candidatoSkillRepository.save(cs);
+            }
+        }
+    }
+
 
     @Transactional(readOnly = true)
     public List<CandidatoResponseDTO> listAllCandidato() {
