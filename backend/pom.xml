@@ -118,7 +118,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.2.5</version>
+			<version>5.4.1</version>
 		</dependency>
 
 		<!-- ── Lombok ─────────────────────────────────────────────── -->
@@ -132,7 +132,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.18.2</version>
+			<version>2.18.12</version>
 		</dependency>
 
 		<!-- ── Testes ─────────────────────────────────────────────── -->
