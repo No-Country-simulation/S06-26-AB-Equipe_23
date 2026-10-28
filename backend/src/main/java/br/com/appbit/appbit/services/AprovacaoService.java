@@ -60,7 +60,7 @@ public class AprovacaoService {
             if (candId != null) {
                 CandidatoEntity entity = candidatoRepository.findById(candId).orElse(null);
                 if (entity != null) {
-                    ContatoDTO contatoDto = new ContatoDTO(
+                    ContatoAprovadoDTO.ContatoDTO contatoDto = new ContatoAprovadoDTO.ContatoDTO(
                             entity.getNome(),
                             entity.getEmail() != null ? entity.getEmail() : "contato." + candId + "@appbit.com.br",
                             entity.getTelefone() != null ? entity.getTelefone() : "+55 48 99999-0000",
@@ -70,6 +70,7 @@ public class AprovacaoService {
                             request.candidatoId(),
                             "Candidato A-" + String.format("%03d", candId),
                             "identificado",
+                            null, // clusterResidencia não disponível na entity
                             contatoDto
                     );
                 }
