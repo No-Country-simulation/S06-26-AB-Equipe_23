@@ -32,7 +32,7 @@ public class CandidatoService {
 
     @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoResponseDTO createCandidato(CandidatoCreateDTO createDTO) {
-        log.info("Criando novo candidato: {}", createDTO.nome());
+        log.info("Criando novo candidato com criptografia PII e consentimento LGPD: {}", createDTO.nome());
 
         Integer regiaoId = createDTO.regiaoId() != null ? createDTO.regiaoId() : 1;
         RegiaoEntity regiao = regiaoRepository.findById(regiaoId)
@@ -44,6 +44,20 @@ public class CandidatoService {
         candidato.setAtivo(createDTO.ativo() != null ? createDTO.ativo() : true);
         if (createDTO.anosExperiencia() != null) {
             candidato.setAnosExperiencia(createDTO.anosExperiencia());
+        }
+        if (createDTO.email() != null && !createDTO.email().isBlank()) {
+            candidato.setEmail(createDTO.email().trim());
+        }
+        if (createDTO.telefone() != null && !createDTO.telefone().isBlank()) {
+            candidato.setTelefone(createDTO.telefone().trim());
+        }
+        if (createDTO.linkedin() != null && !createDTO.linkedin().isBlank()) {
+            candidato.setLinkedin(createDTO.linkedin().trim());
+        }
+        if (createDTO.consentimentoLgpd() != null) {
+            candidato.setConsentimentoLgpd(createDTO.consentimentoLgpd());
+        } else {
+            candidato.setConsentimentoLgpd(true);
         }
 
         CandidatoEntity candidatoSave = candidatoRepository.save(candidato);

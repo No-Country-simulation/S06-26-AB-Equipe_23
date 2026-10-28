@@ -1,7 +1,9 @@
 package br.com.appbit.appbit.services;
 
 import br.com.appbit.appbit.dtos.*;
+import br.com.appbit.appbit.entities.CandidatoEntity;
 import br.com.appbit.appbit.entities.FeedbackCandidatoEntity;
+import br.com.appbit.appbit.repositories.CandidatoRepository;
 import br.com.appbit.appbit.repositories.FeedbackCandidatoRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,14 +29,20 @@ public class AprovacaoService {
 
     private final List<CandidatoCompletoDTO> candidatosCompletos;
     private final FeedbackCandidatoRepository feedbackRepository;
+    private final CandidatoRepository candidatoRepository;
 
     public AprovacaoService() {
-        this(null);
+        this(null, null);
+    }
+
+    public AprovacaoService(FeedbackCandidatoRepository feedbackRepository) {
+        this(feedbackRepository, null);
     }
 
     @Autowired
-    public AprovacaoService(FeedbackCandidatoRepository feedbackRepository) {
+    public AprovacaoService(FeedbackCandidatoRepository feedbackRepository, CandidatoRepository candidatoRepository) {
         this.feedbackRepository = feedbackRepository;
+        this.candidatoRepository = candidatoRepository;
         this.candidatosCompletos = carregarCandidatos(new ObjectMapper());
     }
 
@@ -44,10 +52,36 @@ public class AprovacaoService {
         CandidatoCompletoDTO candidato = candidatosCompletos.stream()
                 .filter(c -> c.candidatoId().equals(request.candidatoId()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Candidato não encontrado: " + request.candidatoId()
-                ));
+                .orElse(null);
+
+        // Se o candidato não estiver no mock estático, busca na base relacional
+        if (candidato == null && candidatoRepository != null) {
+            Integer candId = extrairIdNumerico(request.candidatoId());
+            if (candId != null) {
+                CandidatoEntity entity = candidatoRepository.findById(candId).orElse(null);
+                if (entity != null) {
+                    ContatoDTO contatoDto = new ContatoDTO(
+                            entity.getNome(),
+                            entity.getEmail() != null ? entity.getEmail() : "contato." + candId + "@appbit.com.br",
+                            entity.getTelefone() != null ? entity.getTelefone() : "+55 48 99999-0000",
+                            entity.getLinkedin() != null ? entity.getLinkedin() : "https://linkedin.com/in/" + request.candidatoId()
+                    );
+                    candidato = new CandidatoCompletoDTO(
+                            request.candidatoId(),
+                            "Candidato A-" + String.format("%03d", candId),
+                            "identificado",
+                            contatoDto
+                    );
+                }
+            }
+        }
+
+        if (candidato == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Candidato não encontrado: " + request.candidatoId()
+            );
+        }
 
         if (candidato.contatoPosAprovacao() == null) {
             throw new ResponseStatusException(
@@ -73,6 +107,18 @@ public class AprovacaoService {
                 candidato.apelidoExibicao(),
                 candidato.contatoPosAprovacao()
         );
+    }
+
+    private Integer extrairIdNumerico(String candidatoId) {
+        if (candidatoId == null) return null;
+        try {
+            String digits = candidatoId.replaceAll("\\D+", "");
+            if (!digits.isBlank()) {
+                return Integer.parseInt(digits);
+            }
+        } catch (NumberFormatException ignored) {
+        }
+        return null;
     }
 
     public ReprovacaoResponseDTO reprovarCandidato(ReprovacaoRequestDTO request) {
@@ -139,4 +185,3 @@ public class AprovacaoService {
     private record Payload(List<CandidatoCompletoDTO> candidatos) {
     }
 }
-

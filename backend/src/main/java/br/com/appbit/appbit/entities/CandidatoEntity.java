@@ -1,5 +1,6 @@
 package br.com.appbit.appbit.entities;
 
+import br.com.appbit.appbit.config.AesEncryptor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +34,8 @@ public class CandidatoEntity {
     private Integer id;
 
     @NotBlank(message = "O nome é obrigatório")
-    @Column(name = "nome", nullable = false)
-    @Convert(converter = br.com.appbit.appbit.config.AesEncryptor.class)
+    @Column(name = "nome", nullable = false, length = 255)
+    @Convert(converter = AesEncryptor.class)
     private String nome;
 
     @Column(name = "cargo_alvo")
@@ -70,6 +71,24 @@ public class CandidatoEntity {
 
     @Column(name = "anos_experiencia")
     private Integer anosExperiencia;
+
+    @Column(name = "email", length = 255)
+    @Convert(converter = AesEncryptor.class)
+    private String email;
+
+    @Column(name = "telefone", length = 255)
+    @Convert(converter = AesEncryptor.class)
+    private String telefone;
+
+    @Column(name = "cpf", length = 255)
+    @Convert(converter = AesEncryptor.class)
+    private String cpf;
+
+    @Column(name = "linkedin", length = 500)
+    private String linkedin;
+
+    @Column(name = "consentimento_lgpd")
+    private Boolean consentimentoLgpd;
 
     @NotNull(message = "O status é obrigatório")
     @Column(nullable = false)

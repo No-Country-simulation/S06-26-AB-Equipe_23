@@ -2,12 +2,15 @@ package br.com.appbit.appbit.config;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Converter
+@Slf4j
 public class AesEncryptor implements AttributeConverter<String, String> {
 
     private static final String DEFAULT_KEY = "AppbitSecretKeyLGPDEncryption32c"; 
@@ -16,14 +19,32 @@ public class AesEncryptor implements AttributeConverter<String, String> {
     private final SecretKeySpec keySpec;
 
     public AesEncryptor() {
-        String keyEnv = System.getenv("APPBIT_CRYPTO_KEY");
-        String key = (keyEnv != null && keyEnv.length() >= 16) ? keyEnv : DEFAULT_KEY;
+        this(resolveMasterKey());
+    }
+
+    public AesEncryptor(String key) {
+        if (key == null || key.isBlank()) {
+            key = DEFAULT_KEY;
+        }
         
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
-        byte[] finalKeyBytes = new byte[32]; // AES-256
+        byte[] finalKeyBytes = new byte[32]; // AES-256 (256 bits)
         System.arraycopy(keyBytes, 0, finalKeyBytes, 0, Math.min(keyBytes.length, 32));
         
         this.keySpec = new SecretKeySpec(finalKeyBytes, ALGORITHM);
+    }
+
+    private static String resolveMasterKey() {
+        // Prioriza a variável de ambiente corporativa padrão ENCRYPTION_KEY ou APPBIT_CRYPTO_KEY
+        String keyEnv = System.getenv("ENCRYPTION_KEY");
+        if (keyEnv != null && !keyEnv.isBlank()) {
+            return keyEnv;
+        }
+        keyEnv = System.getenv("APPBIT_CRYPTO_KEY");
+        if (keyEnv != null && !keyEnv.isBlank()) {
+            return keyEnv;
+        }
+        return DEFAULT_KEY;
     }
 
     @Override
@@ -37,6 +58,7 @@ public class AesEncryptor implements AttributeConverter<String, String> {
             byte[] encrypted = cipher.doFinal(attribute.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
+            log.error("Erro ao criptografar atributo com AES-256: {}", e.getMessage());
             throw new IllegalStateException("Falha ao criptografar dados para o banco: " + e.getMessage(), e);
         }
     }
@@ -52,7 +74,7 @@ public class AesEncryptor implements AttributeConverter<String, String> {
             byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(dbData));
             return new String(decrypted, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            // Fallback resiliente para dados históricos gravados em texto claro
+            // Fallback resiliente para dados legados gravados em texto claro
             return dbData;
         }
     }

@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS dim_candidato (
     candidato_id BIGINT PRIMARY KEY,
-    nome VARCHAR(120),
+    nome VARCHAR(255),
     cargo_alvo VARCHAR(120),
     nivel VARCHAR(40),
     regiao_id INT,
@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS dim_candidato (
     lon DECIMAL(12,6),
     badge_diversidade VARCHAR(120),
     disponibilidade VARCHAR(40),
+    anos_experiencia INT DEFAULT 0,
+    email VARCHAR(255),
+    telefone VARCHAR(255),
+    cpf VARCHAR(255),
+    linkedin VARCHAR(500),
+    consentimento_lgpd BOOLEAN DEFAULT TRUE,
     ativo BOOLEAN DEFAULT TRUE
 );
 
