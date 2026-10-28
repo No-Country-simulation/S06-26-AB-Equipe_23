@@ -155,7 +155,7 @@ DB_PORT_APPBIT=3306
 DB_NAME_APPBIT=appbit
 DB_USER_APPBIT=root
 DB_PASSWORD_APPBIT=your_mysql_password
-ENCRYPTION_KEY=your_random_key_of_at_least_32_characters
+ENCRYPTION_KEY=replace_with_a_generated_random_key
 JWT_SECRET=97c4e511488e02bf17dbec1451d0879e64e526487e411ea3ad858db4d94cd2f3
 JWT_EXPIRATION_MS=86400000
 APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
@@ -166,11 +166,15 @@ APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
 >
 > ```powershell
 > $env:DB_PASSWORD_APPBIT="your_mysql_password"
-> $env:ENCRYPTION_KEY = [Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
+> $rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+> $keyBytes = New-Object byte[] 48
+> $rng.GetBytes($keyBytes)
+> $env:ENCRYPTION_KEY = [Convert]::ToBase64String($keyBytes)
+> $rng.Dispose()
 > ```
 >
 > Or configure them in your IDE run configuration.
-> `ENCRYPTION_KEY` is required and must be kept stable: changing it makes existing encrypted candidate data unreadable.
+> Replace the sample value with a generated key. `ENCRYPTION_KEY` is required and must be kept stable: changing it makes existing encrypted candidate data unreadable.
 
 ---
 

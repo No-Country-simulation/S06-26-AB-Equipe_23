@@ -6,6 +6,7 @@ import br.com.appbit.appbit.dtos.CadastroRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +21,17 @@ class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private Environment environment;
+
+    @Test
+    void productionDatasourceConfigurationIsLoadedFromApplicationYaml() {
+        String jdbcUrl = environment.getProperty("spring.datasource.primary.jdbc-url");
+
+        assertTrue(jdbcUrl != null && jdbcUrl.startsWith("jdbc:mysql://"));
+        assertTrue(jdbcUrl.contains("/appbit?"));
+    }
 
     @Test
     void seededRecruiterCanLogInWithConfiguredPassword() {
