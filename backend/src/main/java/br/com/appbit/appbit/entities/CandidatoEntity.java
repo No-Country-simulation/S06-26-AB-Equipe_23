@@ -34,7 +34,7 @@ public class CandidatoEntity {
     private Integer id;
 
     @NotBlank(message = "O nome é obrigatório")
-    @Column(name = "nome", nullable = false, length = 255)
+    @Column(name = "nome", nullable = false, length = 768)
     @Convert(converter = AesEncryptor.class)
     private String nome;
 
@@ -72,19 +72,20 @@ public class CandidatoEntity {
     @Column(name = "anos_experiencia")
     private Integer anosExperiencia;
 
-    @Column(name = "email", length = 255)
+    @Column(name = "email", length = 768)
     @Convert(converter = AesEncryptor.class)
     private String email;
 
-    @Column(name = "telefone", length = 255)
+    @Column(name = "telefone", length = 768)
     @Convert(converter = AesEncryptor.class)
     private String telefone;
 
-    @Column(name = "cpf", length = 255)
+    @Column(name = "cpf", length = 768)
     @Convert(converter = AesEncryptor.class)
     private String cpf;
 
-    @Column(name = "linkedin", length = 500)
+    @Column(name = "linkedin", length = 768)
+    @Convert(converter = AesEncryptor.class)
     private String linkedin;
 
     @Column(name = "consentimento_lgpd")

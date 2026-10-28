@@ -223,6 +223,15 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<appbit.encryption.key>appbit-test-only-encryption-key-not-for-production-2026</appbit.encryption.key>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
 			    <groupId>org.flywaydb</groupId>
             	<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>

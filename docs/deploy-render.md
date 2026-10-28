@@ -41,11 +41,25 @@ Este projeto ja esta preparado para deploy com o arquivo render.yaml na raiz.
 - DB_SSL_MODE: DISABLED ou REQUIRED conforme seu provedor
 - JWT_SECRET: segredo JWT (32+ caracteres)
 - JWT_EXPIRATION_MS: 86400000
+- ENCRYPTION_KEY: chave aleatoria obrigatoria para criptografia AES-256-GCM
+- GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET: credenciais OAuth do Google (necessarias para habilitar login Google)
+- APP_FRONTEND_URL: URL publica do frontend, usada no retorno do OAuth
 - APP_CORS_ALLOWED_ORIGINS: URL publica do frontend
 
 ### Frontend
 
 - VITE_API_URL: URL publica do backend
+
+## Login com Google
+
+Para habilitar o login Google, configure `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`
+nas variaveis de ambiente do servico backend no Render. Cadastre no Google Cloud Console
+o URI de redirecionamento autorizado:
+
+`https://appbit-backend-0v3u.onrender.com/login/oauth2/code/google`
+
+Mantenha `APP_FRONTEND_URL` apontando para a URL publica do frontend. As credenciais
+devem ser configuradas diretamente no Render, nunca commitadas no repositorio.
 
 ## Checklist rapido
 

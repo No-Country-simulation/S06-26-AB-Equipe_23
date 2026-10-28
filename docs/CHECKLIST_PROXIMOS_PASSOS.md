@@ -62,9 +62,9 @@ Foco: Fechar o ciclo bidirecional da plataforma (Recrutador ⟷ Candidato).
 ### Fase 3 — Segurança, Conformidade & Performance (Médio Prazo)
 Foco: Adequação a normas corporativas rigorosas e proteção contra vazamento de dados sensíveis.
 
-- [ ] **3.1 Criptografia em Repouso de Dados Pessoais (PII):**
-  - [ ] Criar conversor Hibernate `@Convert` com AES-256 para campos como CPF, telefone e e-mail.
-  - [ ] Configurar chave mestra de criptografia injetada exclusivamente por variável de ambiente (`ENCRYPTION_KEY`).
+- [x] **3.1 Criptografia em Repouso de Dados Pessoais (PII):**
+  - [x] Aplicar AES-256-GCM via `@Convert` a nome, e-mail, telefone, CPF e LinkedIn do candidato.
+  - [x] Exigir chave mestra (`ENCRYPTION_KEY`) fora do código e manter leitura dos dados legados.
 - [ ] **3.2 Rate Limiting e Proteção contra Abuso:**
   - [ ] Adicionar filtro de limitação de requisições (Bucket4j ou Spring Cloud Gateway) nos endpoints `/auth/login` e `POST /match`.
   - [ ] Configurar cabeçalhos de segurança HTTP (CSP, HSTS, X-Content-Type-Options).
@@ -105,7 +105,7 @@ Foco: Diferencial competitivo, validação comercial e geração de receita.
 
 | **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[x] Concluído` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
 | **OP-07** | Motivo de Rejeição na Shortlist | Fase 2 | 🟡 Média | Fullstack | `[x] Concluído` | Ação de reprovação salva motivo no banco para análise de melhoria. |
-| **OP-08** | Criptografia AES-256 de PII | Fase 3 | 🔴 Alta | Backend | `[ ] Pendente` | Campos CPF/Email/Telefone ficam cifrados na tabela `dim_candidato`. |
+| **OP-08** | Criptografia AES-256-GCM de PII | Fase 3 | 🔴 Alta | Backend | `[x] Concluído` | PII cifrada em `dim_candidato`; chave externa obrigatória e dados legados legíveis. |
 | **OP-09** | Rate Limiting em Login e Match | Fase 3 | 🟡 Média | Backend | `[ ] Pendente` | Mais de 10 tentativas de login por minuto por IP resultam em HTTP 429. |
 | **OP-10** | Piloto com 3 empresas parceiras | Fase 4 | 🔴 Alta | Produto / PO | `[ ] Pendente` | Ao menos 3 processos seletivos reais executados e avaliados na plataforma. |
 | **OP-11** | Envio de E-mails Transacionais | Fase 4 | 🟡 Média | Backend | `[ ] Pendente` | Candidato aprovado recebe e-mail automático com instruções da vaga. |

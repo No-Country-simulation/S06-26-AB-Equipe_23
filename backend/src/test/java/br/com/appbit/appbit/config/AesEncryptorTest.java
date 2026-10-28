@@ -3,13 +3,17 @@ package br.com.appbit.appbit.config;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AesEncryptorTest {
 
-    private final AesEncryptor encryptor = new AesEncryptor();
+    private static final String TEST_KEY = "appbit-unit-test-encryption-key-2026";
+    private final AesEncryptor encryptor = new AesEncryptor(TEST_KEY);
 
     @Test
     @DisplayName("Deve criptografar e descriptografar texto plano com sucesso (Roundtrip)")
@@ -19,10 +23,22 @@ class AesEncryptorTest {
 
         assertNotNull(cifrado);
         assertNotEquals(textoOriginal, cifrado);
-        assertDoesNotThrow(() -> Base64.getDecoder().decode(cifrado));
+        assertTrue(cifrado.startsWith("v1:"));
+        assertDoesNotThrow(() -> Base64.getDecoder().decode(cifrado.substring(3)));
 
         String decifrado = encryptor.convertToEntityAttribute(cifrado);
         assertEquals(textoOriginal, decifrado);
+    }
+
+    @Test
+    @DisplayName("Deve usar nonce diferente para cada criptografia")
+    void deveGerarCiphertextDiferenteParaMesmoTexto() {
+        String first = encryptor.convertToDatabaseColumn("mesmo dado");
+        String second = encryptor.convertToDatabaseColumn("mesmo dado");
+
+        assertNotEquals(first, second);
+        assertEquals("mesmo dado", encryptor.convertToEntityAttribute(first));
+        assertEquals("mesmo dado", encryptor.convertToEntityAttribute(second));
     }
 
     @Test
@@ -55,12 +71,39 @@ class AesEncryptorTest {
     }
 
     @Test
-    @DisplayName("Deve retornar o próprio texto plano como fallback para dados legados não criptografados")
+    @DisplayName("Deve manter compatibilidade de leitura com texto plano legado")
     void deveManterFallbackParaDadosLegadosTextoClaro() {
         String dadoLegado = "Ana Souza";
         String resultado = encryptor.convertToEntityAttribute(dadoLegado);
 
         assertEquals(dadoLegado, resultado);
+    }
+
+    @Test
+    @DisplayName("Deve descriptografar valores legados com o formato AES anterior")
+    void deveLerCifraLegada() throws Exception {
+        byte[] keyBytes = TEST_KEY.getBytes(StandardCharsets.UTF_8);
+        byte[] legacyKey = new byte[32];
+        System.arraycopy(keyBytes, 0, legacyKey, 0, Math.min(keyBytes.length, legacyKey.length));
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(legacyKey, "AES"));
+        String legacyCiphertext = Base64.getEncoder().encodeToString(
+                cipher.doFinal("Dado legado".getBytes(StandardCharsets.UTF_8))
+        );
+
+        assertEquals("Dado legado", encryptor.convertToEntityAttribute(legacyCiphertext));
+    }
+
+    @Test
+    @DisplayName("Deve rejeitar ciphertext adulterado e chaves fracas")
+    void deveRejeitarCiphertextAdulteradoEChaveFraca() {
+        String ciphertext = encryptor.convertToDatabaseColumn("dado protegido");
+        String firstPayloadCharacter = ciphertext.substring(3, 4);
+        String replacement = firstPayloadCharacter.equals("A") ? "B" : "A";
+        String tampered = "v1:" + replacement + ciphertext.substring(4);
+
+        assertThrows(IllegalStateException.class, () -> encryptor.convertToEntityAttribute(tampered));
+        assertThrows(IllegalArgumentException.class, () -> new AesEncryptor("chave-fraca"));
     }
 
     @Test
@@ -75,4 +118,3 @@ class AesEncryptorTest {
         assertEquals(texto, decifrado);
     }
 }
-

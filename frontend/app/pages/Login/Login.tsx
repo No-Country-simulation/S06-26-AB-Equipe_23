@@ -73,6 +73,9 @@ export default function LoginPage() {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    if (authMessage) {
+      setAuthMessage('');
+    }
     
     // Limpa o estado de erro assim que o usuário digita novamente no campo
     if (errors[name]) {
@@ -193,7 +196,11 @@ export default function LoginPage() {
   // --- SUBMISSÃO FINAL E CRIAÇÃO DE CONTA ---
   const handleCadastroSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
+    if (isSubmitting) return;
+
+    setAuthMessage('');
+    setIsSubmitting(true);
+
     const dadosParaEnvio = {
       email: formData.email,
       password: formData.password,
@@ -211,7 +218,6 @@ export default function LoginPage() {
     
     api.post('/cadastro', dadosParaEnvio)
       .then((response) => {
-        console.log('Cadastro realizado com sucesso:', response.data);
         localStorage.setItem('token', response.data.token);
 
         // Limpa os dados do formulário local
@@ -230,7 +236,16 @@ export default function LoginPage() {
         navigate('/vagas');
       })
       .catch((error) => {
-        console.error('Erro ao cadastrar:', error);
+        setIsSubmitting(false);
+        if (error.response?.status === 409) {
+          setAuthMessage('Este e-mail já possui uma conta. Faça login ou use outro e-mail.');
+        } else if (error.response?.status === 400) {
+          setAuthMessage('Confira os dados informados. A senha deve ter ao menos 8 caracteres, com maiúscula, minúscula e número.');
+        } else if (!error.response) {
+          setAuthMessage('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
+        } else {
+          setAuthMessage('Não foi possível criar a conta. Tente novamente.');
+        }
       });
   };
 
@@ -306,7 +321,7 @@ export default function LoginPage() {
                 className="googleLoginButton"
                 onClick={() => {
                   if (googleOAuthEnabled === false) {
-                    setAuthMessage('Login com Google não está configurado no servidor (requer GOOGLE_CLIENT_ID).');
+                    setAuthMessage('Login com Google não está configurado no servidor. Faltam as credenciais OAuth do Google.');
                     return;
                   }
                   const apiUrl = import.meta.env.VITE_API_URL || 'https://appbit-backend-0v3u.onrender.com';
@@ -330,6 +345,7 @@ export default function LoginPage() {
                   onClick={() => {
                     setIsCadastro(true);
                     setErrors({});
+                    setAuthMessage('');
                   }}
                 >
                   Cadastre sua empresa
@@ -364,6 +380,8 @@ export default function LoginPage() {
                   <div className={`progressFill step-${step}`}></div>
                 </div>
               </header>
+
+              {authMessage && <p className="errorHint" role="alert">{authMessage}</p>}
 
               <form onSubmit={handleCadastroSubmit} className="formElement">
                 
@@ -609,7 +627,9 @@ export default function LoginPage() {
 
                     <div className="buttonGroupRow">
                       <button type="button" className="backButton" onClick={prevStep}>Voltar</button>
-                      <button type="submit" className="submitButton activeSubmit">Concluir e Criar Conta</button>
+                      <button type="submit" className="submitButton activeSubmit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Criando conta...' : 'Concluir e Criar Conta'}
+                      </button>
                     </div>
                   </div>
                 )}
@@ -617,7 +637,7 @@ export default function LoginPage() {
 
               <p className="footerText">
                 Já possui uma conta?{' '}
-                <button type="button" className="linkButton" onClick={() => { setIsCadastro(false); setStep(1); setErrors({}); }}>
+                <button type="button" className="linkButton" onClick={() => { setIsCadastro(false); setStep(1); setErrors({}); setAuthMessage(''); }}>
                   Fazer Login
                 </button>
               </p>

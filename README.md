@@ -155,6 +155,7 @@ DB_PORT_APPBIT=3306
 DB_NAME_APPBIT=appbit
 DB_USER_APPBIT=root
 DB_PASSWORD_APPBIT=your_mysql_password
+ENCRYPTION_KEY=your_random_key_of_at_least_32_characters
 JWT_SECRET=97c4e511488e02bf17dbec1451d0879e64e526487e411ea3ad858db4d94cd2f3
 JWT_EXPIRATION_MS=86400000
 APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
@@ -165,10 +166,11 @@ APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
 >
 > ```powershell
 > $env:DB_PASSWORD_APPBIT="your_mysql_password"
+> $env:ENCRYPTION_KEY = [Convert]::ToBase64String([Security.Cryptography.RandomNumberGenerator]::GetBytes(48))
 > ```
 >
 > Or configure them in your IDE run configuration.
-> The defaults hardcoded in `application.yaml` are used if the variables are not set.
+> `ENCRYPTION_KEY` is required and must be kept stable: changing it makes existing encrypted candidate data unreadable.
 
 ---
 

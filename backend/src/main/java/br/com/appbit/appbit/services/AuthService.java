@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Locale;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,20 +23,18 @@ public class AuthService {
     private final JwtUtil           jwtUtil;
 
     public LoginResponseDTO login(LoginRequestDTO request) {
+        String email = normalizeEmail(request.email());
 
-        // 1. Busca o usuário ativo pelo e-mail
         UsuarioEntity usuario = usuarioRepository
-                .findByEmailAndAtivoTrue(request.email())
+                .findByEmailAndAtivoTrue(email)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED, "Credenciais inválidas"
                 ));
 
-        // 2. Valida a senha com PBKDF2
         if (!passwordEncoder.matches(request.senha(), usuario.getSenhaHash())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
         }
 
-        // 3. Gera o token JWT
         String token = jwtUtil.gerarToken(
                 usuario.getEmail(),
                 usuario.getNome(),
@@ -51,14 +51,15 @@ public class AuthService {
     }
 
     public LoginResponseDTO cadastrar(CadastroRequestDTO request) {
-        usuarioRepository.findByEmailAndAtivoTrue(request.email()).ifPresent(usuario -> {
+        String email = normalizeEmail(request.email());
+        if (usuarioRepository.findByEmail(email).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
-        });
+        }
 
         UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setEmail(request.email());
+        usuario.setEmail(email);
         usuario.setSenhaHash(passwordEncoder.encode(request.password()));
-        usuario.setNome(request.nomePessoa());
+        usuario.setNome(request.nomePessoa().trim());
         usuario.setEmpresaId(gerarEmpresaId(request.nomeEmpresa()));
         usuario.setAtivo(true);
 
@@ -74,8 +75,12 @@ public class AuthService {
         );
     }
 
+    private String normalizeEmail(String email) {
+        return email.trim().toLowerCase(Locale.ROOT);
+    }
+
     private String gerarEmpresaId(String nomeEmpresa) {
-        String base = nomeEmpresa == null ? "empresa" : nomeEmpresa;
+        String base = nomeEmpresa.trim();
         String slug = base.toLowerCase()
                 .replaceAll("[^a-z0-9]+", "_")
                 .replaceAll("^_+|_+$", "");

@@ -64,7 +64,8 @@ class CryptoValidationTest {
         );
         assertNotNull(dbName);
         assertNotEquals(rawName, dbName);
-        assertFalse(dbName.contains("João"));
+        assertTrue(dbName.startsWith("v1:"));
+        assertFalse(dbName.contains(rawName));
     }
 
     @Test
@@ -127,5 +128,13 @@ class CryptoValidationTest {
         assertNotNull(dbTelefone);
         assertNotEquals(rawTelefone, dbTelefone);
         assertFalse(dbTelefone.contains("98765"));
+
+        String dbLinkedin = jdbcTemplate.queryForObject(
+                "SELECT linkedin FROM dim_candidato WHERE candidato_id = ?",
+                String.class,
+                id
+        );
+        assertNotNull(dbLinkedin);
+        assertFalse(dbLinkedin.contains("beatriz-costa"));
     }
 }
