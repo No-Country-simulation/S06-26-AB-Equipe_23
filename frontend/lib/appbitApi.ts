@@ -11,10 +11,42 @@ import type {
   AlertaEsg,
   VagaBackend,
   VagaCreateBackend,
+  SpringPage,
+  CandidatoCadastroPayload,
+  CandidatoCadastroResponse,
+  RegiaoItem,
 } from './appbitTypes';
 
 export async function buscarVagas(): Promise<VagaBackend[]> {
   const response = await api.get<VagaBackend[]>('/vagas');
+  return response.data;
+}
+
+export async function buscarVagasPaginadas(
+  page: number = 0,
+  size: number = 10
+): Promise<SpringPage<VagaBackend>> {
+  const response = await api.get<SpringPage<VagaBackend> | VagaBackend[]>('/vagas', {
+    params: { page, size },
+  });
+
+  if (Array.isArray(response.data)) {
+    const total = response.data.length;
+    const start = page * size;
+    const content = response.data.slice(start, start + size);
+    return {
+      content,
+      totalPages: Math.ceil(total / size) || 1,
+      totalElements: total,
+      size,
+      number: page,
+      numberOfElements: content.length,
+      first: page === 0,
+      last: (page + 1) * size >= total,
+      empty: content.length === 0,
+    };
+  }
+
   return response.data;
 }
 
@@ -100,14 +132,40 @@ export async function downloadRelatorioExcel(): Promise<void> {
   window.URL.revokeObjectURL(url);
 }
 
-export async function cadastrarCandidato(payload: import('./appbitTypes').CandidatoCadastroPayload): Promise<import('./appbitTypes').CandidatoCadastroResponse> {
-  const response = await api.post<import('./appbitTypes').CandidatoCadastroResponse>('/candidatos', payload);
+export async function cadastrarCandidato(payload: CandidatoCadastroPayload): Promise<CandidatoCadastroResponse> {
+  const response = await api.post<CandidatoCadastroResponse>('/candidatos', payload);
   return response.data;
 }
 
-export async function buscarRegioes(): Promise<import('./appbitTypes').RegiaoItem[]> {
-  const response = await api.get<import('./appbitTypes').RegiaoItem[]>('/regioes');
+export async function buscarCandidatosPaginados(
+  page: number = 0,
+  size: number = 10
+): Promise<SpringPage<CandidatoCadastroResponse>> {
+  const response = await api.get<SpringPage<CandidatoCadastroResponse> | CandidatoCadastroResponse[]>('/candidatos', {
+    params: { page, size },
+  });
+
+  if (Array.isArray(response.data)) {
+    const total = response.data.length;
+    const start = page * size;
+    const content = response.data.slice(start, start + size);
+    return {
+      content,
+      totalPages: Math.ceil(total / size) || 1,
+      totalElements: total,
+      size,
+      number: page,
+      numberOfElements: content.length,
+      first: page === 0,
+      last: (page + 1) * size >= total,
+      empty: content.length === 0,
+    };
+  }
+
   return response.data;
 }
 
-
+export async function buscarRegioes(): Promise<RegiaoItem[]> {
+  const response = await api.get<RegiaoItem[]>('/regioes');
+  return response.data;
+}

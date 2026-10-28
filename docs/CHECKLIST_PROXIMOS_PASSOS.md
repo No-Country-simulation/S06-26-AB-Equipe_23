@@ -49,10 +49,10 @@ Foco: Fechar o ciclo bidirecional da plataforma (Recrutador ⟷ Candidato).
   - [x] Checkbox obrigatório de aceite dos Termos de Uso e Política de Privacidade na inscrição.
   - [x] Explicação transparente sobre o processo de triagem cega (*Blind Screening*) e proteção de PII.
 
-- [ ] **2.3 Paginação Visual e Filtros Avançados no Frontend:**
-  - [ ] Consumir parâmetros `page` e `size` do [VagaController.java](file:///c:/Repositorio/S06-26-AB-Equipe_23/backend/src/main/java/br/com/appbit/appbit/controllers/VagaController.java) na tela de listagem de vagas.
-  - [ ] Implementar paginação ou rolagem infinita estruturada na visualização de candidatos da Shortlist.
-  - [ ] Adicionar filtros por cluster regional, modalidade (remoto/híbrido) e score mínimo.
+- [x] **2.3 Paginação Visual e Filtros Avançados no Frontend:**
+  - [x] Consumir parâmetros `page` e `size` do [VagaController.java](file:///c:/Repositorio/S06-26-AB-Equipe_23/backend/src/main/java/br/com/appbit/appbit/controllers/VagaController.java) na tela de listagem de vagas.
+  - [x] Implementar paginação ou rolagem infinita estruturada na visualização de candidatos da Shortlist.
+  - [x] Adicionar filtros por cluster regional, modalidade (remoto/híbrido) e score mínimo.
 - [ ] **2.4 Ciclo de Feedback do Recrutador (Aprovação/Reprovação):**
   - [ ] Modal de aprovação com opção de inclusão de anotações internas pelo recrutador.
   - [ ] Botão de reprovação com coleta do motivo principal (ex: *fit técnico*, *salário*, *localidade*).
@@ -103,7 +103,7 @@ Foco: Diferencial competitivo, validação comercial e geração de receita.
 | **OP-04** | Tela de Cadastro de Candidatos | Fase 2 | 🔴 Alta | Fullstack | `[x] Concluído` | Candidato cadastra perfil público com skills e recebe ID anônimo. |
 | **OP-05** | Checkbox de Termos e LGPD | Fase 2 | 🔴 Alta | Fullstack | `[x] Concluído` | Consentimento explícito e banner de Blind Screening integrados. |
 
-| **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[ ] Pendente` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
+| **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[x] Concluído` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
 | **OP-07** | Motivo de Rejeição na Shortlist | Fase 2 | 🟡 Média | Fullstack | `[ ] Pendente` | Ação de reprovação salva motivo no banco para análise de melhoria. |
 | **OP-08** | Criptografia AES-256 de PII | Fase 3 | 🔴 Alta | Backend | `[ ] Pendente` | Campos CPF/Email/Telefone ficam cifrados na tabela `dim_candidato`. |
 | **OP-09** | Rate Limiting em Login e Match | Fase 3 | 🟡 Média | Backend | `[ ] Pendente` | Mais de 10 tentativas de login por minuto por IP resultam em HTTP 429. |

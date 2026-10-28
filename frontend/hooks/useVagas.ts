@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import type { Vaga, NovaVagaForm } from "../features/jobs/components/type/index.ts";
 import {
-  buscarVagas,
+  buscarVagasPaginadas,
   criarVaga as apiCriarVaga,
   atualizarVaga as apiAtualizarVaga,
   deletarVaga as apiDeletarVaga,
@@ -45,39 +45,112 @@ export default function useVagas() {
   const [carregando, setCarregando] = useState<boolean>(true);
   const [erro, setErro] = useState<string | null>(null);
 
+  // Estados de Paginação
+  const [pagina, setPagina] = useState<number>(0);
+  const [tamanhoPagina, setTamanhoPagina] = useState<number>(6);
+  const [totalPaginas, setTotalPaginas] = useState<number>(1);
+  const [totalElementos, setTotalElementos] = useState<number>(0);
+
+  // Estados de Filtros locais
+  const [busca, setBusca] = useState<string>('');
+  const [modalidadeFiltro, setModalidadeFiltro] = useState<string>('Todos');
+
+  const carregar = useCallback(async (pageTarget = pagina, sizeTarget = tamanhoPagina) => {
+    try {
+      setCarregando(true);
+      const pageData = await buscarVagasPaginadas(pageTarget, sizeTarget);
+      const convertidas = (pageData.content || []).map(backendToFrontendVaga);
+      setVagas(convertidas);
+      setTotalPaginas(Math.max(1, pageData.totalPages || 1));
+      setTotalElementos(pageData.totalElements ?? convertidas.length);
+      setPagina(pageData.number ?? pageTarget);
+
+      if (convertidas.length > 0) {
+        setVagaSelecionadaId((prev) => {
+          const existe = convertidas.some((v) => v.id === prev);
+          return existe ? prev : convertidas[0].id;
+        });
+      } else {
+        setVagaSelecionadaId(null);
+      }
+      setErro(null);
+    } catch (err) {
+      console.error('Erro ao carregar vagas paginadas do backend:', err);
+      setErro('Não foi possível carregar as vagas do servidor.');
+    } finally {
+      setCarregando(false);
+    }
+  }, [pagina, tamanhoPagina]);
+
   useEffect(() => {
     let ativo = true;
 
-    async function carregar() {
+    async function carregarDados() {
       try {
         setCarregando(true);
-        const dados = await buscarVagas();
-        if (ativo) {
-          const convertidas = dados.map(backendToFrontendVaga);
-          setVagas(convertidas);
-          if (convertidas.length > 0) {
-            setVagaSelecionadaId((prev) => prev ?? convertidas[0].id);
-          }
-          setErro(null);
+        const pageData = await buscarVagasPaginadas(pagina, tamanhoPagina);
+        if (!ativo) return;
+        const convertidas = (pageData.content || []).map(backendToFrontendVaga);
+        setVagas(convertidas);
+        setTotalPaginas(Math.max(1, pageData.totalPages || 1));
+        setTotalElementos(pageData.totalElements ?? convertidas.length);
+
+        if (convertidas.length > 0) {
+          setVagaSelecionadaId((prev) => {
+            const existe = convertidas.some((v) => v.id === prev);
+            return existe ? prev : convertidas[0].id;
+          });
+        } else {
+          setVagaSelecionadaId(null);
         }
+        setErro(null);
       } catch (err) {
-        if (ativo) {
-          console.error('Erro ao carregar vagas do backend:', err);
-          setErro('Não foi possível carregar as vagas do servidor.');
-        }
+        if (!ativo) return;
+        console.error('Erro ao carregar vagas paginadas do backend:', err);
+        setErro('Não foi possível carregar as vagas do servidor.');
       } finally {
         if (ativo) setCarregando(false);
       }
     }
 
-    carregar();
+    carregarDados();
 
     return () => {
       ativo = false;
     };
-  }, []);
+  }, [pagina, tamanhoPagina]);
 
-  const vagaSelecionada = vagas.find((v) => v.id === vagaSelecionadaId) ?? null;
+  const mudarPagina = (novaPagina: number) => {
+    if (novaPagina >= 0 && novaPagina < totalPaginas) {
+      setPagina(novaPagina);
+    }
+  };
+
+  const mudarTamanhoPagina = (novoTamanho: number) => {
+    setTamanhoPagina(novoTamanho);
+    setPagina(0);
+  };
+
+  // Vagas com filtro de busca e modalidade aplicado
+  const vagasExibidas = useMemo(() => {
+    return vagas.filter((v) => {
+      const termo = busca.trim().toLowerCase();
+      const matchBusca =
+        !termo ||
+        v.titulo.toLowerCase().includes(termo) ||
+        v.area.toLowerCase().includes(termo) ||
+        v.skills.some((s) => s.toLowerCase().includes(termo)) ||
+        v.regiao.toLowerCase().includes(termo);
+
+      const matchModalidade =
+        modalidadeFiltro === 'Todos' ||
+        v.modalidade.toLowerCase() === modalidadeFiltro.toLowerCase();
+
+      return matchBusca && matchModalidade;
+    });
+  }, [vagas, busca, modalidadeFiltro]);
+
+  const vagaSelecionada = vagas.find((v) => v.id === vagaSelecionadaId) ?? vagasExibidas[0] ?? null;
 
   async function publicarVaga(form: NovaVagaForm) {
     const skills = form.skills
@@ -103,10 +176,10 @@ export default function useVagas() {
 
     try {
       setCarregando(true);
-      const criada = await apiCriarVaga(payload);
-      const vagaFe = backendToFrontendVaga(criada);
-      setVagas((prev) => [vagaFe, ...prev]);
-      setVagaSelecionadaId(vagaFe.id);
+      await apiCriarVaga(payload);
+      // Volta para a primeira página para exibir a vaga criada
+      setPagina(0);
+      await carregar(0, tamanhoPagina);
     } catch (err) {
       console.error('Erro ao publicar vaga no backend:', err);
     } finally {
@@ -137,9 +210,8 @@ export default function useVagas() {
 
     try {
       setCarregando(true);
-      const atualizada = await apiAtualizarVaga(id, payload);
-      const vagaFe = backendToFrontendVaga(atualizada);
-      setVagas((prev) => prev.map((v) => (v.id === id ? vagaFe : v)));
+      await apiAtualizarVaga(id, payload);
+      await carregar(pagina, tamanhoPagina);
     } catch (err) {
       console.error('Erro ao atualizar vaga no backend:', err);
     } finally {
@@ -151,13 +223,10 @@ export default function useVagas() {
     try {
       setCarregando(true);
       await apiDeletarVaga(id);
-      setVagas((prev) => {
-        const filtradas = prev.filter((v) => v.id !== id);
-        if (vagaSelecionadaId === id) {
-          setVagaSelecionadaId(filtradas.length > 0 ? filtradas[0].id : null);
-        }
-        return filtradas;
-      });
+      // Se era o único elemento da página e não for a primeira, retrocede 1 página
+      const novaPagina = vagas.length === 1 && pagina > 0 ? pagina - 1 : pagina;
+      setPagina(novaPagina);
+      await carregar(novaPagina, tamanhoPagina);
     } catch (err) {
       console.error('Erro ao excluir vaga no backend:', err);
     } finally {
@@ -166,7 +235,8 @@ export default function useVagas() {
   }
 
   return {
-    vagas,
+    vagas: vagasExibidas,
+    todasVagasPagina: vagas,
     vagaSelecionada,
     vagaSelecionadaId,
     setVagaSelecionadaId,
@@ -175,5 +245,19 @@ export default function useVagas() {
     excluirVaga,
     carregando,
     erro,
+    // Controles de paginação
+    pagina,
+    tamanhoPagina,
+    totalPaginas,
+    totalElementos,
+    mudarPagina,
+    mudarTamanhoPagina,
+    // Controles de filtros
+    busca,
+    setBusca,
+    modalidadeFiltro,
+    setModalidadeFiltro,
+    recarregar: () => carregar(pagina, tamanhoPagina),
   };
 }
+

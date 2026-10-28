@@ -1,16 +1,11 @@
 // pages/Vagas/Vagas.tsx
-// Módulo isolado de gerenciamento de vagas.
-// Responsabilidade: listagem, seleção e detalhes das vagas publicadas.
+// Módulo isolado de gerenciamento de vagas com paginação visual.
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { buscarVagasPaginadas } from '../../../lib/appbitApi';
+import type { VagaBackend } from '../../../lib/appbitTypes';
 import './Vagas.css';
-
-// ── Config da API ───────────────────────────────────────────────────────────
-// TODO: ajustar para a URL real do backend (ex: via variável de ambiente)
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5173';
-const VAGAS_ENDPOINT = `${API_BASE_URL}/api/vagas`; // <-- rota do backend para listar vagas
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Vaga {
   id: number;
@@ -31,69 +26,93 @@ function scoreBadgeStyle(score: number): { background: string; color: string } {
   return { background: '#FEF3C7', color: '#92400E' };
 }
 
-// ── Componente ────────────────────────────────────────────────────────────────
+function backendToVaga(bv: VagaBackend): Vaga {
+  const badges: string[] = [];
+  if (bv.prioridadeMulheres) badges.push('Mulheres');
+  if (bv.prioridadeNegros) badges.push('Pessoas negras');
+  if (bv.prioridadePcd) badges.push('PcD');
+  if (bv.prioridadeLgbt) badges.push('LGBTQIA+');
+  if (badges.length === 0) badges.push('Inclusiva');
+
+  return {
+    id: bv.id,
+    titulo: bv.titulo,
+    area: bv.area || 'Tecnologia',
+    modelo: bv.modalidade || 'Híbrido',
+    local: bv.regiaoAlvo?.municipio || 'Brasil',
+    nivel: bv.nivel || 'Júnior',
+    scoreESG: bv.esgMatch ?? 85,
+    badges,
+    descricao: bv.descricao || 'Descrição da vaga a ser definida.',
+    skills: bv.skills && bv.skills.length > 0 ? bv.skills : ['Geral'],
+  };
+}
 
 export default function Vagas() {
+  const navigate = useNavigate();
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [vagaSelecionada, setVagaSelecionada] = useState<Vaga | null>(null);
   const [carregando, setCarregando] = useState<boolean>(true);
   const [erro, setErro] = useState<string | null>(null);
 
-  useEffect(() => {
-    let ativo = true; // evita atualizar estado se o componente já desmontou
+  const [pagina, setPagina] = useState<number>(0);
+  const [tamanhoPagina] = useState<number>(6);
+  const [totalPaginas, setTotalPaginas] = useState<number>(1);
+  const [totalElementos, setTotalElementos] = useState<number>(0);
 
-    async function buscarVagas() {
+  useEffect(() => {
+    let ativo = true;
+
+    async function buscar() {
       setCarregando(true);
       setErro(null);
 
       try {
-        const resposta = await fetch(VAGAS_ENDPOINT, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Authorization: `Bearer ${token}`, // se precisar de autenticação
-          },
-        });
+        const pageData = await buscarVagasPaginadas(pagina, tamanhoPagina);
+        if (!ativo) return;
+        const convertidas = (pageData.content || []).map(backendToVaga);
+        setVagas(convertidas);
+        setTotalPaginas(Math.max(1, pageData.totalPages || 1));
+        setTotalElementos(pageData.totalElements ?? convertidas.length);
 
-        if (!resposta.ok) {
-          throw new Error(`Erro ao buscar vagas: ${resposta.status}`);
-        }
-
-        const dados: Vaga[] = await resposta.json();
-
-        if (ativo) {
-          setVagas(dados);
+        if (convertidas.length > 0) {
+          setVagaSelecionada((prev) => {
+            const match = convertidas.find((v) => v.id === prev?.id);
+            return match ?? convertidas[0];
+          });
+        } else {
+          setVagaSelecionada(null);
         }
       } catch (err) {
-        if (ativo) {
-          setErro(
-            err instanceof Error ? err.message : 'Não foi possível carregar as vagas.'
-          );
-        }
+        if (!ativo) return;
+        console.error('Erro ao buscar vagas paginadas:', err);
+        setErro(err instanceof Error ? err.message : 'Não foi possível carregar as vagas.');
       } finally {
-        if (ativo) {
-          setCarregando(false);
-        }
+        if (ativo) setCarregando(false);
       }
     }
 
-    buscarVagas();
+    buscar();
 
     return () => {
       ativo = false;
     };
-  }, []);
+  }, [pagina, tamanhoPagina]);
+
 
   return (
     <div className="pv-shell">
-
       {/* ── Coluna esquerda: lista de vagas ── */}
       <div className="pv-lista">
         <div className="pv-lista__header">
-          <span className="pv-lista__titulo">
-            Vagas publicadas <span className="pv-lista__count">({vagas.length})</span>
-          </span>
-          <button className="pv-btn-nova">+ Nova vaga</button>
+          <div>
+            <span className="pv-lista__titulo">
+              Vagas publicadas <span className="pv-lista__count">({totalElementos})</span>
+            </span>
+          </div>
+          <button className="pv-btn-nova" onClick={() => navigate('/vagas')}>
+            + Nova vaga
+          </button>
         </div>
 
         <div className="pv-lista__itens">
@@ -118,7 +137,7 @@ export default function Vagas() {
 
           {!carregando &&
             !erro &&
-            vagas.map(vaga => (
+            vagas.map((vaga) => (
               <button
                 key={vaga.id}
                 className={`pv-vaga-card ${vagaSelecionada?.id === vaga.id ? 'pv-vaga-card--ativa' : ''}`}
@@ -130,7 +149,7 @@ export default function Vagas() {
 
                 <div className="pv-vaga-card__badges">
                   <span className="pv-badge pv-badge--nivel">{vaga.nivel}</span>
-                  {vaga.badges.map(b => (
+                  {vaga.badges.map((b) => (
                     <span key={b} className="pv-badge pv-badge--grupo">{b}</span>
                   ))}
                   <span
@@ -159,6 +178,29 @@ export default function Vagas() {
               </button>
             ))}
         </div>
+
+        {/* ── Barra de Paginação ── */}
+        <div className="pv-paginacao">
+          <button
+            type="button"
+            className="pv-paginacao__btn"
+            onClick={() => setPagina((prev) => Math.max(0, prev - 1))}
+            disabled={pagina <= 0 || carregando}
+          >
+            ‹ Anterior
+          </button>
+          <span className="pv-paginacao__info">
+            Pág. {pagina + 1} de {totalPaginas}
+          </span>
+          <button
+            type="button"
+            className="pv-paginacao__btn"
+            onClick={() => setPagina((prev) => Math.min(totalPaginas - 1, prev + 1))}
+            disabled={pagina >= totalPaginas - 1 || carregando}
+          >
+            Próxima ›
+          </button>
+        </div>
       </div>
 
       {/* ── Coluna direita: detalhe da vaga ou placeholder ── */}
@@ -176,7 +218,7 @@ export default function Vagas() {
             </div>
 
             <div className="pv-detalhe__badges">
-              {vagaSelecionada.badges.map(b => (
+              {vagaSelecionada.badges.map((b) => (
                 <span key={b} className="pv-badge pv-badge--grupo">{b}</span>
               ))}
               <span
@@ -192,7 +234,7 @@ export default function Vagas() {
             <button
               className="pv-btn-shortlist"
               onClick={() => {
-                window.location.href = `/shortlist?vaga=${vagaSelecionada.id}`;
+                navigate(`/shortlist?vaga=${vagaSelecionada.id}`);
               }}
             >
               👥 Ver shortlist de candidatos
@@ -208,7 +250,7 @@ export default function Vagas() {
             <section>
               <h3 className="pv-detalhe__section-title">Skills exigidas</h3>
               <div className="pv-detalhe__skills">
-                {vagaSelecionada.skills.map(s => (
+                {vagaSelecionada.skills.map((s) => (
                   <span key={s} className="pv-skill">{s}</span>
                 ))}
               </div>
@@ -221,7 +263,7 @@ export default function Vagas() {
           </div>
         )}
       </div>
-
     </div>
   );
 }
+

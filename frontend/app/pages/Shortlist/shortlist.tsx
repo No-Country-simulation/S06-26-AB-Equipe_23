@@ -226,8 +226,13 @@ export default function ShortList() {
   const [filtroStatus, setFiltroStatus] = useState<'todos' | 'aprovados' | 'pendentes'>('todos');
   const [filtroMinScore, setFiltroMinScore] = useState<number>(0);
   const [filtroBadge, setFiltroBadge] = useState<string>('');
+  const [filtroRegiao, setFiltroRegiao] = useState<string>('');
   const [filtroModelo, setFiltroModelo] = useState<string>('');
   const [ordenacao, setOrdenacao] = useState<string>('score_desc');
+
+  // Estados de paginação de candidatos
+  const [paginaCandidatos, setPaginaCandidatos] = useState<number>(0);
+  const [itensPorPagina, setItensPorPagina] = useState<number>(4);
 
   const candidatos = useMemo(() => match?.candidatos ?? [], [match]);
 
@@ -245,6 +250,16 @@ export default function ShortList() {
     return Array.from(set);
   }, [candidatos]);
 
+  const regioesDisponiveis = useMemo(() => {
+    const set = new Set<string>();
+    candidatos.forEach((c) => {
+      if (c.regiao && c.regiao.trim()) {
+        set.add(c.regiao.trim());
+      }
+    });
+    return Array.from(set).sort();
+  }, [candidatos]);
+
   const candidatosFiltrados = useMemo(() => {
     return candidatos
       .filter((c) => {
@@ -253,6 +268,7 @@ export default function ShortList() {
         if (filtroStatus === 'pendentes' && aprovado) return false;
         if (filtroMinScore > 0 && c.score_match < filtroMinScore) return false;
         if (filtroBadge && c.badge_diversidade !== filtroBadge) return false;
+        if (filtroRegiao && !c.regiao?.toLowerCase().includes(filtroRegiao.toLowerCase())) return false;
         if (
           filtroModelo &&
           c.modelo_trabalho_preferido &&
@@ -268,7 +284,18 @@ export default function ShortList() {
         if (ordenacao === 'exp_desc') return (b.anos_experiencia ?? 0) - (a.anos_experiencia ?? 0);
         return 0;
       });
-  }, [candidatos, approvedContacts, filtroStatus, filtroMinScore, filtroBadge, filtroModelo, ordenacao]);
+  }, [candidatos, approvedContacts, filtroStatus, filtroMinScore, filtroBadge, filtroRegiao, filtroModelo, ordenacao]);
+
+  const totalPaginasCandidatos = Math.max(1, Math.ceil(candidatosFiltrados.length / itensPorPagina));
+
+  const candidatosPaginados = useMemo(() => {
+    if (itensPorPagina >= 999) return candidatosFiltrados;
+    const inicio = paginaCandidatos * itensPorPagina;
+    return candidatosFiltrados.slice(inicio, inicio + itensPorPagina);
+  }, [candidatosFiltrados, paginaCandidatos, itensPorPagina]);
+
+  const indiceInicio = candidatosFiltrados.length === 0 ? 0 : paginaCandidatos * itensPorPagina + 1;
+  const indiceFim = Math.min((paginaCandidatos + 1) * itensPorPagina, candidatosFiltrados.length);
 
   const averageScore = useMemo(() => {
     if (!candidatosFiltrados.length) return 0;
@@ -300,6 +327,7 @@ export default function ShortList() {
     filtroStatus !== 'todos' ||
     filtroMinScore > 0 ||
     Boolean(filtroBadge) ||
+    Boolean(filtroRegiao) ||
     Boolean(filtroModelo) ||
     ordenacao !== 'score_desc';
 
@@ -307,9 +335,12 @@ export default function ShortList() {
     setFiltroStatus('todos');
     setFiltroMinScore(0);
     setFiltroBadge('');
+    setFiltroRegiao('');
     setFiltroModelo('');
     setOrdenacao('score_desc');
+    setPaginaCandidatos(0);
   }
+
 
   const handleLogout = () => {
     clearAppSession();
@@ -514,12 +545,37 @@ export default function ShortList() {
               </select>
             </div>
 
+            {/* Região / Cluster Regional */}
+            {regioesDisponiveis.length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <label style={{ color: '#64748b', fontWeight: 500 }}>Região:</label>
+                <select
+                  value={filtroRegiao}
+                  onChange={(e) => {
+                    setFiltroRegiao(e.target.value);
+                    setPaginaCandidatos(0);
+                  }}
+                  style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
+                >
+                  <option value="">Todas as Regiões</option>
+                  {regioesDisponiveis.map((r) => (
+                    <option key={r} value={r}>
+                      📍 {formatarTextoMvp(r)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             {/* Modelo */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <label style={{ color: '#64748b', fontWeight: 500 }}>Modelo:</label>
               <select
                 value={filtroModelo}
-                onChange={(e) => setFiltroModelo(e.target.value)}
+                onChange={(e) => {
+                  setFiltroModelo(e.target.value);
+                  setPaginaCandidatos(0);
+                }}
                 style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
               >
                 <option value="">Todos</option>
@@ -534,7 +590,10 @@ export default function ShortList() {
               <label style={{ color: '#64748b', fontWeight: 500 }}>Ordenar por:</label>
               <select
                 value={ordenacao}
-                onChange={(e) => setOrdenacao(e.target.value)}
+                onChange={(e) => {
+                  setOrdenacao(e.target.value);
+                  setPaginaCandidatos(0);
+                }}
                 style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 12 }}
               >
                 <option value="score_desc">Maior Score Match</option>
@@ -615,139 +674,188 @@ export default function ShortList() {
               )}
             </div>
           ) : (
-            <div className="sl-grid">
-              {candidatosFiltrados.map((candidate) => {
-                const approved = isContatoAprovado(approvedContacts[candidate.candidato_id])
-                  ? approvedContacts[candidate.candidato_id]
-                  : null;
-                const isRevealing = revealing === candidate.candidato_id;
-                const sc = scoreStyle(candidate.score_match);
-                const rawBadge = candidate.badge_diversidade;
-                const hasValidBadge =
-                  rawBadge &&
-                  rawBadge !== 'Sem badge informada' &&
-                  rawBadge !== 'Nenhum';
-                const badgeStyle = hasValidBadge
-                  ? BADGE_COLORS[rawBadge] ?? { bg: '#F3F4F6', color: '#6B7280' }
-                  : null;
-                const regiao = formatarTextoMvp(candidate.regiao);
-                const nivel = formatarNivelMvp(candidate.nivel);
-                const modelo = formatarTextoMvp(candidate.modelo_trabalho_preferido ?? 'Não informado');
-                const badgeLabel = hasValidBadge ? formatarTextoMvp(rawBadge) : '';
-                const skills = getCandidateSkills(candidate);
+            <>
+              <div className="sl-grid">
+                {candidatosPaginados.map((candidate) => {
+                  const approved = isContatoAprovado(approvedContacts[candidate.candidato_id])
+                    ? approvedContacts[candidate.candidato_id]
+                    : null;
+                  const isRevealing = revealing === candidate.candidato_id;
+                  const sc = scoreStyle(candidate.score_match);
+                  const rawBadge = candidate.badge_diversidade;
+                  const hasValidBadge =
+                    rawBadge &&
+                    rawBadge !== 'Sem badge informada' &&
+                    rawBadge !== 'Nenhum';
+                  const badgeStyle = hasValidBadge
+                    ? BADGE_COLORS[rawBadge] ?? { bg: '#F3F4F6', color: '#6B7280' }
+                    : null;
+                  const regiao = formatarTextoMvp(candidate.regiao);
+                  const nivel = formatarNivelMvp(candidate.nivel);
+                  const modelo = formatarTextoMvp(candidate.modelo_trabalho_preferido ?? 'Não informado');
+                  const badgeLabel = hasValidBadge ? formatarTextoMvp(rawBadge) : '';
+                  const skills = getCandidateSkills(candidate);
 
-                return (
-                  <article key={candidate.candidato_id} className={`sl-card${approved ? ' sl-card--aprovado' : ''}`}>
-                    {approved && <div className="sl-card__status-badge">✓ Candidato aprovado</div>}
+                  return (
+                    <article key={candidate.candidato_id} className={`sl-card${approved ? ' sl-card--aprovado' : ''}`}>
+                      {approved && <div className="sl-card__status-badge">✓ Candidato aprovado</div>}
 
-                    <div className="sl-card__header">
-                      <div className="sl-card__avatar">
-                        {approved ? <span className="sl-card__initial">{approved.contato_liberado.nome[0]}</span> : <span>👤</span>}
-                      </div>
-                      <div className="sl-card__id-block">
-                        <p className="sl-card__codinome">{approved ? approved.contato_liberado.nome : candidate.apelido_exibicao}</p>
-                        <div className="sl-card__meta">
-                          <span>📍 {regiao}</span>
-                          <span className="sl-dot" />
-                          <span>{nivel}</span>
+                      <div className="sl-card__header">
+                        <div className="sl-card__avatar">
+                          {approved ? <span className="sl-card__initial">{approved.contato_liberado.nome[0]}</span> : <span>👤</span>}
+                        </div>
+                        <div className="sl-card__id-block">
+                          <p className="sl-card__codinome">{approved ? approved.contato_liberado.nome : candidate.apelido_exibicao}</p>
+                          <div className="sl-card__meta">
+                            <span>📍 {regiao}</span>
+                            <span className="sl-dot" />
+                            <span>{nivel}</span>
+                          </div>
+                        </div>
+                        <div className="sl-score" style={{ background: sc.bg, borderColor: sc.ring, color: sc.color }}>
+                          <span className="sl-score__num">{candidate.score_match}</span>
+                          <span className="sl-score__pct">%</span>
                         </div>
                       </div>
-                      <div className="sl-score" style={{ background: sc.bg, borderColor: sc.ring, color: sc.color }}>
-                        <span className="sl-score__num">{candidate.score_match}</span>
-                        <span className="sl-score__pct">%</span>
-                      </div>
-                    </div>
 
-                    {hasValidBadge && badgeStyle && (
-                      <div className="sl-card__badges">
-                        <span className="sl-badge" style={{ background: badgeStyle.bg, color: badgeStyle.color }}>
-                          {badgeLabel}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="sl-card__divider" />
-
-                    <div className="sl-card__section">
-                      <p className="sl-card__section-label">Competências técnicas</p>
-                      <div className="sl-card__skills">
-                        {skills.map((skill) => (
-                          <span key={skill} className="sl-skill">
-                            {formatarSkillMvp(skill)}
+                      {hasValidBadge && badgeStyle && (
+                        <div className="sl-card__badges">
+                          <span className="sl-badge" style={{ background: badgeStyle.bg, color: badgeStyle.color }}>
+                            {badgeLabel}
                           </span>
-                        ))}
-                      </div>
-                    </div>
+                        </div>
+                      )}
 
-                    {candidate.justificativa_ai && (
-                      <div className="sl-card__section" style={{ background: '#f8fafc', padding: 8, borderRadius: 6, border: '1px solid #e2e8f0', marginTop: 8 }}>
-                        <p className="sl-card__section-label" style={{ display: 'flex', alignItems: 'center', gap: 4, margin: '0 0 4px', color: '#6366f1', fontWeight: 700 }}>
-                          🤖 Justificativa da IA
-                        </p>
-                        <p style={{ margin: 0, fontSize: 11, color: '#475569', lineHeight: 1.35 }}>
-                          {candidate.justificativa_ai}
-                        </p>
-                      </div>
-                    )}
+                      <div className="sl-card__divider" />
 
-                    <div className="sl-card__row">
-                      <div className="sl-card__detail">
-                        <span className="sl-card__detail-label">Experiência</span>
-                        <span className="sl-card__detail-value">{candidate.anos_experiencia ?? 0} ano(s)</span>
-                      </div>
-                      <div className="sl-card__detail">
-                        <span className="sl-card__detail-label">Modelo</span>
-                        <span className="sl-card__detail-value">{modelo}</span>
-                      </div>
-                    </div>
-
-                    {!approved && (
-                      <div className="sl-card__anon">
-                        🔒 Dados sensíveis ocultos. Skills: {firstSkillLabel(candidate)}
-                      </div>
-                    )}
-
-                    {approved && (
-                      <div className="sl-card__contact">
-                        <div className="sl-card__contact-item">✉️ <a href={`mailto:${approved.contato_liberado.email}`}>{approved.contato_liberado.email}</a></div>
-                        <div className="sl-card__contact-item">☎ {approved.contato_liberado.telefone}</div>
-                        <div className="sl-card__contact-item">
-                          🔗 <a href={approved.contato_liberado.linkedin} target="_blank" rel="noopener noreferrer">{approved.contato_liberado.linkedin}</a>
+                      <div className="sl-card__section">
+                        <p className="sl-card__section-label">Competências técnicas</p>
+                        <div className="sl-card__skills">
+                          {skills.map((skill) => (
+                            <span key={skill} className="sl-skill">
+                              {formatarSkillMvp(skill)}
+                            </span>
+                          ))}
                         </div>
                       </div>
-                    )}
 
-                    {approvalError[candidate.candidato_id] && (
-                      <div className="sl-card__anon">{approvalError[candidate.candidato_id]}</div>
-                    )}
+                      {candidate.justificativa_ai && (
+                        <div className="sl-card__section" style={{ background: '#f8fafc', padding: 8, borderRadius: 6, border: '1px solid #e2e8f0', marginTop: 8 }}>
+                          <p className="sl-card__section-label" style={{ display: 'flex', alignItems: 'center', gap: 4, margin: '0 0 4px', color: '#6366f1', fontWeight: 700 }}>
+                            🤖 Justificativa da IA
+                          </p>
+                          <p style={{ margin: 0, fontSize: 11, color: '#475569', lineHeight: 1.35 }}>
+                            {candidate.justificativa_ai}
+                          </p>
+                        </div>
+                      )}
 
-                    {!approved ? (
-                      <button
-                        type="button"
-                        className="sl-btn-aprovar"
-                        onClick={() => handleAprovar(candidate.candidato_id)}
-                        disabled={Boolean(revealing)}
-                      >
-                        {isRevealing ? (
-                          <>
-                            <span className="sl-spinner" /> Aprovando...
-                          </>
-                        ) : (
-                          <>✓ Aprovar para entrevista</>
-                        )}
-                      </button>
-                    ) : (
-                      <a
-                        className="sl-btn-aprovado"
-                        href={`mailto:${approved.contato_liberado.email}?subject=Processo%20Seletivo%20appBiT%20-%20${encodeURIComponent(vagaAtual.titulo)}`}
-                      >
-                        ✉️ Convidar por e-mail
-                      </a>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
+                      <div className="sl-card__row">
+                        <div className="sl-card__detail">
+                          <span className="sl-card__detail-label">Experiência</span>
+                          <span className="sl-card__detail-value">{candidate.anos_experiencia ?? 0} ano(s)</span>
+                        </div>
+                        <div className="sl-card__detail">
+                          <span className="sl-card__detail-label">Modelo</span>
+                          <span className="sl-card__detail-value">{modelo}</span>
+                        </div>
+                      </div>
+
+                      {!approved && (
+                        <div className="sl-card__anon">
+                          🔒 Dados sensíveis ocultos. Skills: {firstSkillLabel(candidate)}
+                        </div>
+                      )}
+
+                      {approved && (
+                        <div className="sl-card__contact">
+                          <div className="sl-card__contact-item">✉️ <a href={`mailto:${approved.contato_liberado.email}`}>{approved.contato_liberado.email}</a></div>
+                          <div className="sl-card__contact-item">☎ {approved.contato_liberado.telefone}</div>
+                          <div className="sl-card__contact-item">
+                            🔗 <a href={approved.contato_liberado.linkedin} target="_blank" rel="noopener noreferrer">{approved.contato_liberado.linkedin}</a>
+                          </div>
+                        </div>
+                      )}
+
+                      {approvalError[candidate.candidato_id] && (
+                        <div className="sl-card__anon">{approvalError[candidate.candidato_id]}</div>
+                      )}
+
+                      {!approved ? (
+                        <button
+                          type="button"
+                          className="sl-btn-aprovar"
+                          onClick={() => handleAprovar(candidate.candidato_id)}
+                          disabled={Boolean(revealing)}
+                        >
+                          {isRevealing ? (
+                            <>
+                              <span className="sl-spinner" /> Aprovando...
+                            </>
+                          ) : (
+                            <>✓ Aprovar para entrevista</>
+                          )}
+                        </button>
+                      ) : (
+                        <a
+                          className="sl-btn-aprovado"
+                          href={`mailto:${approved.contato_liberado.email}?subject=Processo%20Seletivo%20appBiT%20-%20${encodeURIComponent(vagaAtual.titulo)}`}
+                        >
+                          ✉️ Convidar por e-mail
+                        </a>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+
+              {/* Barra de Paginação da Shortlist */}
+              <div className="sl-pagination">
+                <div className="sl-pagination__info">
+                  Exibindo <strong>{indiceInicio}–{indiceFim}</strong> de <strong>{candidatosFiltrados.length}</strong> candidato{candidatosFiltrados.length !== 1 ? 's' : ''}
+                </div>
+
+                <div className="sl-pagination__size-select">
+                  <span>Por página:</span>
+                  <select
+                    value={itensPorPagina}
+                    onChange={(e) => {
+                      setItensPorPagina(Number(e.target.value));
+                      setPaginaCandidatos(0);
+                    }}
+                  >
+                    <option value={4}>4 candidatos</option>
+                    <option value={6}>6 candidatos</option>
+                    <option value={8}>8 candidatos</option>
+                    <option value={999}>Exibir todos</option>
+                  </select>
+                </div>
+
+                <div className="sl-pagination__controls">
+                  <button
+                    type="button"
+                    className="sl-pagination__btn"
+                    onClick={() => setPaginaCandidatos((prev) => Math.max(0, prev - 1))}
+                    disabled={paginaCandidatos <= 0}
+                  >
+                    ‹ Anterior
+                  </button>
+
+                  <span className="sl-pagination__page-indicator">
+                    Pág. {paginaCandidatos + 1} de {totalPaginasCandidatos}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="sl-pagination__btn"
+                    onClick={() => setPaginaCandidatos((prev) => Math.min(totalPaginasCandidatos - 1, prev + 1))}
+                    disabled={paginaCandidatos >= totalPaginasCandidatos - 1}
+                  >
+                    Próxima ›
+                  </button>
+                </div>
+              </div>
+            </>
           )}
         </main>
       </div>
