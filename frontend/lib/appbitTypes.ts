@@ -39,6 +39,42 @@ export interface MatchResponse {
 export interface AprovacaoRequest {
   candidato_id: string;
   empresa_id: string;
+  vaga_id?: number;
+  anotacoes?: string;
+}
+
+export interface ReprovacaoRequest {
+  candidato_id: string;
+  empresa_id: string;
+  vaga_id?: number;
+  motivo: string;
+  anotacoes?: string;
+}
+
+export interface ReprovacaoResponse {
+  status: string;
+  candidato_id: string;
+  motivo: string;
+  anotacoes?: string;
+  registrado_em: string;
+}
+
+export interface FeedbackResumo {
+  feedback_id: number;
+  empresa_id: string;
+  vaga_id?: number;
+  candidato_id: string;
+  decisao: 'APROVADO' | 'REPROVADO';
+  motivo_rejeicao?: string;
+  anotacoes_internas?: string;
+  criado_em: string;
+}
+
+export interface RejectedCandidateData {
+  candidato_id: string;
+  motivo: string;
+  anotacoes?: string;
+  registrado_em?: string;
 }
 
 export interface ContatoAprovado {

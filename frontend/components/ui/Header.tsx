@@ -1,6 +1,6 @@
 interface HeaderProps {
-  activeNav: string;
-  onNavChange: (nav: string) => void;
+  activeNav?: string;
+  onNavChange?: (nav: string) => void;
   sidebarAberta?: boolean;
   onToggleSidebar?: () => void;
   onLogout?: () => void;

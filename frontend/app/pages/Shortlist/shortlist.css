@@ -801,3 +801,412 @@ a:hover {
   color: var(--sl-ink);
 }
 
+
+
+/* ── Ciclo de Feedback (Aprovação / Reprovação) ────────────────────────── */
+
+/* Card Reprovado */
+.sl-card--reprovado {
+  border-color: #f87171;
+  background-color: #fffaf9;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.08);
+}
+
+.sl-card--reprovado .sl-card__avatar {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.sl-card__status-badge--reprovado {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+/* Card Actions Container */
+.sl-card__actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.sl-card__actions .sl-btn-aprovar {
+  flex: 1;
+}
+
+.sl-btn-reprovar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: var(--r-lg);
+  border: 1.5px solid #fca5a5;
+  background: #ffffff;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.15s;
+  flex: 1;
+}
+
+.sl-btn-reprovar:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+
+.sl-btn-reprovar:active {
+  transform: scale(0.98);
+}
+
+.sl-btn-reprovar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sl-btn-reavaliar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: var(--r-lg);
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.sl-btn-reavaliar:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
+}
+
+/* Rejeição info no card */
+.sl-card__rejeicao {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.sl-card__rejeicao-motivo {
+  display: block;
+  font-weight: 700;
+  color: #991b1b;
+  margin-bottom: 2px;
+}
+
+.sl-card__rejeicao-nota {
+  color: #7f1d1d;
+  font-style: italic;
+  font-size: 11.5px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Anotação interna do recrutador no card */
+.sl-card__anotacao {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: #475569;
+}
+
+.sl-card__anotacao-label {
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+/* ── Modais de Avaliação ─────────────────────────────────────────────────── */
+.sl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: sl-fade-in 0.2s ease-out;
+}
+
+.sl-modal {
+  background: #ffffff;
+  border-radius: var(--r-xl);
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  animation: sl-scale-up 0.2s ease-out;
+}
+
+@keyframes sl-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sl-scale-up {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.sl-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sl-modal__header--reprovar {
+  background: #fffdfd;
+}
+
+.sl-modal__header--aprovar {
+  background: #fdfefe;
+}
+
+.sl-modal__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sl-modal__close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #94a3b8;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sl-modal__close:hover {
+  color: #1e293b;
+  background: #f1f5f9;
+}
+
+.sl-modal__body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sl-modal__candidate-info {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sl-modal__candidate-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.sl-modal__candidate-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.sl-modal__candidate-score {
+  font-weight: 700;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.sl-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sl-modal__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.sl-modal__required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.sl-modal__select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  background: #ffffff;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sl-modal__select:focus {
+  border-color: var(--sl-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.sl-modal__textarea {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-family: var(--font);
+  background: #ffffff;
+  color: #1e293b;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s;
+}
+
+.sl-modal__textarea:focus {
+  border-color: var(--sl-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.sl-modal__notice {
+  font-size: 11.5px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  line-height: 1.4;
+}
+
+.sl-modal__footer {
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.sl-modal__btn-cancelar {
+  padding: 9px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--r-md);
+  background: #ffffff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sl-modal__btn-cancelar:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+.sl-modal__btn-confirmar-aprovar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: var(--r-md);
+  border: none;
+  background: var(--sl-purple);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sl-modal__btn-confirmar-aprovar:hover:not(:disabled) {
+  background: var(--sl-purple-dark);
+}
+
+.sl-modal__btn-confirmar-aprovar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sl-modal__btn-confirmar-reprovar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: var(--r-md);
+  border: none;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sl-modal__btn-confirmar-reprovar:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.sl-modal__btn-confirmar-reprovar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Toast de Feedback temporário */
+.sl-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1050;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: sl-fade-in 0.2s ease-out;
+}
+
+.sl-toast--sucesso {
+  background: #166534;
+  color: #ffffff;
+}
+
+.sl-toast--erro {
+  background: #991b1b;
+  color: #ffffff;
+}

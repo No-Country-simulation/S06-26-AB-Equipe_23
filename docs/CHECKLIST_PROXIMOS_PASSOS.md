@@ -53,9 +53,9 @@ Foco: Fechar o ciclo bidirecional da plataforma (Recrutador ⟷ Candidato).
   - [x] Consumir parâmetros `page` e `size` do [VagaController.java](file:///c:/Repositorio/S06-26-AB-Equipe_23/backend/src/main/java/br/com/appbit/appbit/controllers/VagaController.java) na tela de listagem de vagas.
   - [x] Implementar paginação ou rolagem infinita estruturada na visualização de candidatos da Shortlist.
   - [x] Adicionar filtros por cluster regional, modalidade (remoto/híbrido) e score mínimo.
-- [ ] **2.4 Ciclo de Feedback do Recrutador (Aprovação/Reprovação):**
-  - [ ] Modal de aprovação com opção de inclusão de anotações internas pelo recrutador.
-  - [ ] Botão de reprovação com coleta do motivo principal (ex: *fit técnico*, *salário*, *localidade*).
+- [x] **2.4 Ciclo de Feedback do Recrutador (Aprovação/Reprovação):**
+  - [x] Modal de aprovação com opção de inclusão de anotações internas pelo recrutador.
+  - [x] Botão de reprovação com coleta do motivo principal (ex: *fit técnico*, *salário*, *localidade*).
 
 ---
 
@@ -104,7 +104,7 @@ Foco: Diferencial competitivo, validação comercial e geração de receita.
 | **OP-05** | Checkbox de Termos e LGPD | Fase 2 | 🔴 Alta | Fullstack | `[x] Concluído` | Consentimento explícito e banner de Blind Screening integrados. |
 
 | **OP-06** | Paginação no Frontend de Vagas | Fase 2 | 🟡 Média | Frontend | `[x] Concluído` | Listagem consome `GET /vagas?page=X&size=Y` com navegação visual fluida. |
-| **OP-07** | Motivo de Rejeição na Shortlist | Fase 2 | 🟡 Média | Fullstack | `[ ] Pendente` | Ação de reprovação salva motivo no banco para análise de melhoria. |
+| **OP-07** | Motivo de Rejeição na Shortlist | Fase 2 | 🟡 Média | Fullstack | `[x] Concluído` | Ação de reprovação salva motivo no banco para análise de melhoria. |
 | **OP-08** | Criptografia AES-256 de PII | Fase 3 | 🔴 Alta | Backend | `[ ] Pendente` | Campos CPF/Email/Telefone ficam cifrados na tabela `dim_candidato`. |
 | **OP-09** | Rate Limiting em Login e Match | Fase 3 | 🟡 Média | Backend | `[ ] Pendente` | Mais de 10 tentativas de login por minuto por IP resultam em HTTP 429. |
 | **OP-10** | Piloto com 3 empresas parceiras | Fase 4 | 🔴 Alta | Produto / PO | `[ ] Pendente` | Ao menos 3 processos seletivos reais executados e avaliados na plataforma. |

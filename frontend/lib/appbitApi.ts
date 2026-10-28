@@ -1,6 +1,9 @@
 import api from './axios';
 import type {
   AprovacaoRequest,
+  ReprovacaoRequest,
+  ReprovacaoResponse,
+  FeedbackResumo,
   ContatoAprovado,
   ExperienciaEstruturanteMvp,
   FormacaoMvp,
@@ -76,6 +79,20 @@ export async function executarMatch(request: MatchRequest = {}): Promise<MatchRe
 
 export async function aprovarCandidato(request: AprovacaoRequest): Promise<ContatoAprovado> {
   const response = await api.post<ContatoAprovado>('/match/aprovar-candidato', request);
+  return response.data;
+}
+
+export async function reprovarCandidato(request: ReprovacaoRequest): Promise<ReprovacaoResponse> {
+  const response = await api.post<ReprovacaoResponse>('/match/reprovar-candidato', request);
+  return response.data;
+}
+
+export async function buscarFeedbacksVaga(empresaId: string = 'emp_001', vagaId?: number): Promise<FeedbackResumo[]> {
+  const params: Record<string, unknown> = { empresa_id: empresaId };
+  if (vagaId !== undefined && !isNaN(vagaId)) {
+    params.vaga_id = vagaId;
+  }
+  const response = await api.get<FeedbackResumo[]>('/match/feedbacks', { params });
   return response.data;
 }
 
