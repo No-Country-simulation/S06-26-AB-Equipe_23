@@ -61,4 +61,35 @@ public class MatchingController {
         ContatoAprovadoDTO contato = aprovacaoService.aprovarCandidato(request);
         return ResponseEntity.ok(contato);
     }
+
+    /**
+     * POST /match/reprovar-candidato
+     * Exemplo de body:
+     * {
+     *   "candidato_id": "cand_001",
+     *   "empresa_id": "emp_001",
+     *   "vaga_id": 1,
+     *   "motivo": "FIT_TECNICO",
+     *   "anotacoes": "Falta conhecimento em SQL avançado"
+     * }
+     */
+    @PostMapping("/reprovar-candidato")
+    public ResponseEntity<br.com.appbit.appbit.dtos.ReprovacaoResponseDTO> reprovarCandidato(
+            @Valid @RequestBody br.com.appbit.appbit.dtos.ReprovacaoRequestDTO request
+    ) {
+        br.com.appbit.appbit.dtos.ReprovacaoResponseDTO response = aprovacaoService.reprovarCandidato(request);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * GET /match/feedbacks?empresa_id=emp_001&vaga_id=1
+     */
+    @org.springframework.web.bind.annotation.GetMapping("/feedbacks")
+    public ResponseEntity<java.util.List<br.com.appbit.appbit.dtos.FeedbackResumoDTO>> listarFeedbacks(
+            @org.springframework.web.bind.annotation.RequestParam(name = "empresa_id", defaultValue = "emp_001") String empresaId,
+            @org.springframework.web.bind.annotation.RequestParam(name = "vaga_id", required = false) Integer vagaId
+    ) {
+        return ResponseEntity.ok(aprovacaoService.listarFeedbacksPorVaga(empresaId, vagaId));
+    }
 }
+

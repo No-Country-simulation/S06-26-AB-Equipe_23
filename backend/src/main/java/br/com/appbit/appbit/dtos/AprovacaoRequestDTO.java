@@ -11,6 +11,13 @@ public record AprovacaoRequestDTO(
 
         @NotBlank(message = "O empresa_id é obrigatório")
         @JsonProperty("empresa_id")
-        String empresaId
+        String empresaId,
+
+        @JsonProperty("vaga_id")
+        Integer vagaId,
+
+        @JsonProperty("anotacoes")
+        String anotacoes
 ) {
 }
+
