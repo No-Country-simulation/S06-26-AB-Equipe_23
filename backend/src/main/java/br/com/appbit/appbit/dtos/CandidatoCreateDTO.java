@@ -45,6 +45,14 @@ public record CandidatoCreateDTO(
 
         Boolean consentimentoLgpd
 ) {
+    public CandidatoCreateDTO withEmail(String normalizedEmail) {
+        return new CandidatoCreateDTO(
+                nome, cargo, nivel, cluster, municipio, cep, lat, lon, grupo, diversidade,
+                disponibilidade, ativo, regiaoId, anosExperiencia, skills, normalizedEmail,
+                telefone, linkedin, consentimentoLgpd
+        );
+    }
+
     public CandidatoCreateDTO(
             String nome,
             String cargo,
@@ -63,4 +71,3 @@ public record CandidatoCreateDTO(
         this(nome, cargo, nivel, cluster, municipio, cep, lat, lon, grupo, diversidade, disponibilidade, ativo, regiaoId, null, null, null, null, null, true);
     }
 }
-

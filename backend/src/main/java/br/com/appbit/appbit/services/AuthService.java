@@ -26,7 +26,7 @@ public class AuthService {
         String email = normalizeEmail(request.email());
 
         UsuarioEntity usuario = usuarioRepository
-                .findByEmailAndAtivoTrue(email)
+                .findByEmailIgnoreCaseAndAtivoTrue(email)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED, "Credenciais inválidas"
                 ));
@@ -35,10 +35,13 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
         }
 
+        String tipoUsuario = usuario.getTipoUsuario() == null ? "RECRUTADOR" : usuario.getTipoUsuario();
         String token = jwtUtil.gerarToken(
                 usuario.getEmail(),
                 usuario.getNome(),
-                usuario.getEmpresaId()
+                usuario.getEmpresaId(),
+                tipoUsuario,
+                usuario.getCandidatoId()
         );
 
         return new LoginResponseDTO(
@@ -46,13 +49,15 @@ public class AuthService {
                 jwtUtil.getExpirationMs() / 1000,   // segundos (para o front)
                 usuario.getNome(),
                 usuario.getEmail(),
-                usuario.getEmpresaId()
+                usuario.getEmpresaId(),
+                tipoUsuario,
+                usuario.getCandidatoId()
         );
     }
 
     public LoginResponseDTO cadastrar(CadastroRequestDTO request) {
         String email = normalizeEmail(request.email());
-        if (usuarioRepository.findByEmail(email).isPresent()) {
+        if (usuarioRepository.findByEmailIgnoreCase(email).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
         }
 
@@ -61,17 +66,20 @@ public class AuthService {
         usuario.setSenhaHash(passwordEncoder.encode(request.password()));
         usuario.setNome(request.nomePessoa().trim());
         usuario.setEmpresaId(gerarEmpresaId(request.nomeEmpresa()));
+        usuario.setTipoUsuario("RECRUTADOR");
         usuario.setAtivo(true);
 
         UsuarioEntity salvo = usuarioRepository.save(usuario);
-        String token = jwtUtil.gerarToken(salvo.getEmail(), salvo.getNome(), salvo.getEmpresaId());
+        String token = jwtUtil.gerarToken(
+                salvo.getEmail(), salvo.getNome(), salvo.getEmpresaId(), salvo.getTipoUsuario(), null);
 
         return new LoginResponseDTO(
                 token,
                 jwtUtil.getExpirationMs() / 1000,
                 salvo.getNome(),
                 salvo.getEmail(),
-                salvo.getEmpresaId()
+                salvo.getEmpresaId(),
+                salvo.getTipoUsuario()
         );
     }
 

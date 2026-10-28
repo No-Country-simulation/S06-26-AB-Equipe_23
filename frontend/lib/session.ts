@@ -27,3 +27,23 @@ export function hasValidSessionToken() {
     return false;
   }
 }
+
+export function getSessionType(): 'RECRUTADOR' | 'CANDIDATO' | null {
+  if (typeof window === 'undefined') return null;
+
+  const token = window.localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const encodedPayload = token.split('.')[1];
+    if (!encodedPayload) return null;
+    const base64Payload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(
+      window.atob(base64Payload.padEnd(Math.ceil(base64Payload.length / 4) * 4, '='))
+    ) as { tipo_usuario?: string };
+
+    return payload.tipo_usuario === 'CANDIDATO' ? 'CANDIDATO' : 'RECRUTADOR';
+  } catch {
+    return null;
+  }
+}

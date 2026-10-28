@@ -117,7 +117,10 @@ export default function LoginPage() {
       api.post('/login', { email: formData.email, senha: formData.password })
         .then((response) => {
           localStorage.setItem('token', response.data.token);
-          navigate('/', { replace: true });
+          navigate(
+            response.data.tipo_usuario === 'CANDIDATO' ? '/candidato/perfil' : '/vagas',
+            { replace: true }
+          );
         })
         .catch((error) => {
           const status = error.response?.status;
@@ -367,6 +370,9 @@ export default function LoginPage() {
                 >
                   ✨ Acesse o Portal do Candidato e cadastre seu perfil →
                 </Link>
+                <p style={{ margin: '10px 0 0', fontSize: 13, color: '#6B7280' }}>
+                  Já tem uma conta de candidato? Entre com seu e-mail e senha acima para gerenciar seu perfil.
+                </p>
               </div>
             </div>
 

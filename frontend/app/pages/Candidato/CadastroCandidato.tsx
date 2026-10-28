@@ -1,5 +1,6 @@
 import { useState, useEffect, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { cadastrarCandidato, buscarRegioes } from '../../../lib/appbitApi';
 import type { RegiaoItem, CandidatoCadastroPayload, CandidatoCadastroResponse } from '../../../lib/appbitTypes';
 import './CadastroCandidato.css';
@@ -41,6 +42,8 @@ export default function CadastroCandidato() {
   // Estados do formulário
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [telefone, setTelefone] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [cargo, setCargo] = useState('');
@@ -114,6 +117,21 @@ export default function CadastroCandidato() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setErro('Informe um e-mail válido para acessar sua conta.');
+      return;
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+      setErro('A senha deve ter ao menos 8 caracteres, com maiúscula, minúscula e número.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErro('As senhas informadas não combinam.');
+      return;
+    }
+
     if (!cargo.trim()) {
       setErro('Por favor, informe o cargo desejado.');
       return;
@@ -141,17 +159,37 @@ export default function CadastroCandidato() {
         skills,
         grupo: diversidade !== 'Nenhuma / Prefiro não informar' ? diversidade : undefined,
         diversidade: diversidade !== 'Nenhuma / Prefiro não informar' ? diversidade : undefined,
-        email: email.trim() || undefined,
+        email: email.trim(),
         telefone: telefone.trim() || undefined,
         linkedin: linkedin.trim() || undefined,
         ativo: true,
         consentimentoLgpd: true,
       };
 
-      const resultado = await cadastrarCandidato(payload);
-      setSucesso(resultado);
+      const resultado = await cadastrarCandidato({
+        perfil: payload,
+        password,
+        confirmPassword,
+      });
+      if (resultado.candidato_id == null) {
+        throw new Error('A conta foi criada, mas não foi possível carregar o identificador do perfil.');
+      }
+      localStorage.setItem('token', resultado.token);
+      setSucesso({
+        id: resultado.candidato_id,
+        nome: nome.trim(),
+        cargo: cargo.trim(),
+        nivel,
+        ativo: true,
+      });
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Falha ao cadastrar perfil. Verifique sua conexão e tente novamente.';
+      const msg = axios.isAxiosError(err) && err.response?.status === 409
+        ? 'Este e-mail já possui uma conta. Entre ou use outro e-mail.'
+        : axios.isAxiosError(err) && err.response?.status === 400
+          ? 'Confira os dados e a senha informados.'
+          : err instanceof Error
+            ? err.message
+            : 'Falha ao cadastrar perfil. Verifique sua conexão e tente novamente.';
       setErro(msg);
     } finally {
       setLoading(false);
@@ -211,16 +249,11 @@ export default function CadastroCandidato() {
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
               <button
                 type="button"
-                onClick={() => {
-                  setSucesso(null);
-                  setNome('');
-                  setCargo('');
-                  setSkills(['React', 'TypeScript']);
-                }}
+                onClick={() => navigate('/candidato/perfil', { replace: true })}
                 className="portal-quick-skill-btn"
                 style={{ padding: '10px 20px', fontSize: 14 }}
               >
-                Cadastrar Outro Perfil
+                Acessar meu perfil
               </button>
               <button
                 type="button"
@@ -288,7 +321,9 @@ export default function CadastroCandidato() {
 
                 <div className="portal-grid-2">
                   <div className="portal-field">
-                    <label htmlFor="cand-email">E-mail corporativo / pessoal</label>
+                    <label htmlFor="cand-email">
+                      E-mail para acessar sua conta <span className="required">*</span>
+                    </label>
                     <input
                       id="cand-email"
                       type="email"
@@ -296,6 +331,8 @@ export default function CadastroCandidato() {
                       placeholder="seu.email@exemplo.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      autoComplete="email"
+                      required
                     />
                   </div>
                   <div className="portal-field">
@@ -307,6 +344,39 @@ export default function CadastroCandidato() {
                       placeholder="+55 (48) 99999-9999"
                       value={telefone}
                       onChange={(e) => setTelefone(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="portal-grid-2">
+                  <div className="portal-field">
+                    <label htmlFor="cand-password">
+                      Crie uma senha <span className="required">*</span>
+                    </label>
+                    <input
+                      id="cand-password"
+                      type="password"
+                      className="portal-input"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="new-password"
+                      minLength={8}
+                      required
+                    />
+                    <span className="optional">Mínimo de 8 caracteres, com maiúscula, minúscula e número.</span>
+                  </div>
+                  <div className="portal-field">
+                    <label htmlFor="cand-confirm-password">
+                      Confirme sua senha <span className="required">*</span>
+                    </label>
+                    <input
+                      id="cand-confirm-password"
+                      type="password"
+                      className="portal-input"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      autoComplete="new-password"
+                      required
                     />
                   </div>
                 </div>
@@ -534,7 +604,7 @@ export default function CadastroCandidato() {
                   className="portal-submit-btn"
                   disabled={loading}
                 >
-                  {loading ? 'Cadastrando seu perfil...' : 'Concluir Cadastro no App BiT →'}
+                  {loading ? 'Criando sua conta e perfil...' : 'Criar conta e concluir cadastro →'}
                 </button>
               </div>
             </form>

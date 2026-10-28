@@ -15,8 +15,11 @@ import type {
   VagaBackend,
   VagaCreateBackend,
   SpringPage,
-  CandidatoCadastroPayload,
   CandidatoCadastroResponse,
+  CandidatoAccountRegistrationPayload,
+  CandidatoPerfil,
+  CandidatoPerfilUpdate,
+  AuthResponse,
   RegiaoItem,
 } from './appbitTypes';
 
@@ -149,8 +152,18 @@ export async function downloadRelatorioExcel(): Promise<void> {
   window.URL.revokeObjectURL(url);
 }
 
-export async function cadastrarCandidato(payload: CandidatoCadastroPayload): Promise<CandidatoCadastroResponse> {
-  const response = await api.post<CandidatoCadastroResponse>('/candidatos', payload);
+export async function cadastrarCandidato(payload: CandidatoAccountRegistrationPayload): Promise<AuthResponse> {
+  const response = await api.post<AuthResponse>('/cadastro-candidato', payload);
+  return response.data;
+}
+
+export async function buscarMeuPerfilCandidato(): Promise<CandidatoPerfil> {
+  const response = await api.get<CandidatoPerfil>('/candidato/me');
+  return response.data;
+}
+
+export async function atualizarMeuPerfilCandidato(payload: CandidatoPerfilUpdate): Promise<CandidatoPerfil> {
+  const response = await api.put<CandidatoPerfil>('/candidato/me', payload);
   return response.data;
 }
 

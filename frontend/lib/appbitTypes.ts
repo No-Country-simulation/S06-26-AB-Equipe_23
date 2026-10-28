@@ -217,10 +217,22 @@ export interface CandidatoCadastroPayload {
   ativo?: boolean;
   regiaoId?: number;
   skills?: string[];
-  email?: string;
+  email: string;
   telefone?: string;
   linkedin?: string;
   consentimentoLgpd: boolean;
+}
+
+export interface AuthResponse {
+  token: string;
+  tipo_usuario: 'RECRUTADOR' | 'CANDIDATO';
+  candidato_id?: number;
+}
+
+export interface CandidatoAccountRegistrationPayload {
+  perfil: CandidatoCadastroPayload;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface CandidatoCadastroResponse {
@@ -232,6 +244,38 @@ export interface CandidatoCadastroResponse {
   municipio?: string;
   regiaoId?: number;
   ativo: boolean;
+}
+
+export interface CandidatoPerfil {
+  id: number;
+  nome: string;
+  email: string;
+  telefone?: string;
+  linkedin?: string;
+  cargo: string;
+  nivel: string;
+  anosExperiencia: number;
+  disponibilidade: string;
+  regiaoId: number;
+  municipio?: string;
+  cluster?: string;
+  grupo?: string;
+  diversidade?: string;
+  skills: string[];
+}
+
+export interface CandidatoPerfilUpdate {
+  nome: string;
+  cargo: string;
+  nivel: string;
+  anosExperiencia: number;
+  disponibilidade: string;
+  regiaoId: number;
+  telefone?: string;
+  linkedin?: string;
+  grupo?: string;
+  diversidade?: string;
+  skills: string[];
 }
 
 export interface SpringPage<T> {

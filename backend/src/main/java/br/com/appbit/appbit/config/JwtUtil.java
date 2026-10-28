@@ -53,18 +53,26 @@ public class JwtUtil {
     // ---------------------------------------------------------------
 
     public String gerarToken(String email, String nome, String empresaId) {
+        return gerarToken(email, nome, empresaId, "RECRUTADOR", null);
+    }
+
+    public String gerarToken(String email, String nome, String empresaId,
+                             String tipoUsuario, Integer candidatoId) {
         long agora = System.currentTimeMillis();
-        return Jwts.builder()
+        var token = Jwts.builder()
                 .header()
                 .keyId(keyId)
                 .and()
                 .subject(email)
                 .claim("nome", nome)
                 .claim("empresa_id", empresaId)
+                .claim("tipo_usuario", tipoUsuario)
                 .issuedAt(new Date(agora))
-                .expiration(new Date(agora + expirationMs))
-                .signWith(privateKey, Jwts.SIG.RS256)
-                .compact();
+                .expiration(new Date(agora + expirationMs));
+        if (candidatoId != null) {
+            token.claim("candidato_id", candidatoId);
+        }
+        return token.signWith(privateKey, Jwts.SIG.RS256).compact();
     }
 
     // ---------------------------------------------------------------

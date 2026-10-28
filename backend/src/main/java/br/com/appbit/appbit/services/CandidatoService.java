@@ -122,6 +122,75 @@ public class CandidatoService {
         return candidatoMapper.toResponseDTO(candidato);
     }
 
+    @Transactional(readOnly = true)
+    public CandidatoPerfilDTO getPerfilCandidato(Integer candidatoId, String email) {
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Perfil de candidato não encontrado."));
+        List<String> skills = candidatoSkillRepository.findSkillsByCandidate(candidatoId)
+                .stream()
+                .map(candidateSkill -> candidateSkill.getSkill().getNome())
+                .toList();
+
+        return toPerfilDTO(candidato, email, skills);
+    }
+
+    @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
+    public CandidatoPerfilDTO atualizarPerfilCandidato(
+            Integer candidatoId, String email, CandidatoPerfilUpdateDTO updateDTO) {
+        CandidatoEntity candidato = candidatoRepository.findById(candidatoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Perfil de candidato não encontrado."));
+        RegiaoEntity regiao = regiaoRepository.findById(updateDTO.regiaoId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Região não encontrada com ID: " + updateDTO.regiaoId()));
+
+        candidato.setNome(updateDTO.nome().trim());
+        candidato.setCargo(updateDTO.cargo().trim());
+        candidato.setNivel(updateDTO.nivel());
+        candidato.setAnosExperiencia(updateDTO.anosExperiencia());
+        candidato.setModeloTrabalhoPreferido(updateDTO.disponibilidade());
+        candidato.setRegiao(regiao);
+        candidato.setMunicipio(regiao.getMunicipio());
+        candidato.setCluster(regiao.getCluster());
+        candidato.setTelefone(blankToNull(updateDTO.telefone()));
+        candidato.setLinkedin(blankToNull(updateDTO.linkedin()));
+        candidato.setGrupo(blankToNull(updateDTO.grupo()));
+        candidato.setDiversidade(blankToNull(updateDTO.diversidade()));
+
+        candidatoSkillRepository.deleteAllInBatch(candidatoSkillRepository.findByCandidato(candidato));
+        salvarSkillsCandidato(candidato, updateDTO.skills());
+
+        CandidatoEntity salvo = candidatoRepository.save(candidato);
+        List<String> skills = candidatoSkillRepository.findSkillsByCandidate(candidatoId)
+                .stream()
+                .map(candidateSkill -> candidateSkill.getSkill().getNome())
+                .toList();
+        return toPerfilDTO(salvo, email, skills);
+    }
+
+    private CandidatoPerfilDTO toPerfilDTO(CandidatoEntity candidato, String email, List<String> skills) {
+        return new CandidatoPerfilDTO(
+                candidato.getId(),
+                candidato.getNome(),
+                email,
+                candidato.getTelefone(),
+                candidato.getLinkedin(),
+                candidato.getCargo(),
+                candidato.getNivel(),
+                candidato.getAnosExperiencia(),
+                candidato.getModeloTrabalhoPreferido(),
+                candidato.getRegiao().getId(),
+                candidato.getMunicipio(),
+                candidato.getCluster(),
+                candidato.getGrupo(),
+                candidato.getDiversidade(),
+                skills
+        );
+    }
+
+    private String blankToNull(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
+    }
+
     @org.springframework.cache.annotation.CacheEvict(value = {"matching", "esgInsights"}, allEntries = true)
     public CandidatoResponseDTO updateCandidatoById(CandidatoUpdateDTO updateDTO, Integer candidatoId) {
         log.info("Atualizando candidato com ID: {}", candidatoId);

@@ -56,6 +56,15 @@ Related BI assets:
 - BI-ready datasets for Power BI dashboards.
 - Turnover, ESG and Team Health indicators for business analysis.
 - Validation scripts to keep score, shortlist and BI outputs consistent.
+- Candidate accounts with password-protected sign-in and self-service profile updates.
+
+### Candidate portal
+
+Candidate registration now creates both a talent profile and a secure account. Candidates
+must provide an email and a password with at least 8 characters, including uppercase,
+lowercase and a number. The same email and password can be used on the sign-in page to
+view and update the candidate's own profile; candidate accounts cannot access recruiter
+screens or recruiter APIs.
 
 ## Architecture
 

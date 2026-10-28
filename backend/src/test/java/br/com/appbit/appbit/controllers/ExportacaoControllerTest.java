@@ -32,7 +32,7 @@ class ExportacaoControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "recrutador")
+    @WithMockUser(username = "recrutador", roles = "RECRUTADOR")
     void exportarPdfShouldReturnPdfAttachment() throws Exception {
         mockMvc.perform(get("/insights/exportar/pdf"))
                 .andExpect(status().isOk())
@@ -41,7 +41,7 @@ class ExportacaoControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "recrutador")
+    @WithMockUser(username = "recrutador", roles = "RECRUTADOR")
     void exportarExcelShouldReturnExcelAttachment() throws Exception {
         mockMvc.perform(get("/insights/exportar/excel"))
                 .andExpect(status().isOk())

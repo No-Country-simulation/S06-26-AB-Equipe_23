@@ -36,6 +36,12 @@ public class UsuarioEntity {
     @Column(name = "empresa_id", length = 60)
     private String empresaId;
 
+    @Column(name = "tipo_usuario", nullable = false, length = 20)
+    private String tipoUsuario = "RECRUTADOR";
+
+    @Column(name = "candidato_id", unique = true)
+    private Integer candidatoId;
+
     @NotNull
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;

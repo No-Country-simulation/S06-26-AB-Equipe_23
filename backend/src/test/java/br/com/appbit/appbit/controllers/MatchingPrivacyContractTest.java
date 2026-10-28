@@ -57,7 +57,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "privacy-reviewer")
+    @WithMockUser(username = "privacy-reviewer", roles = "RECRUTADOR")
     void matchReturnsStableAliasWithoutPersonalData() throws Exception {
         JsonNode first = executeMatch();
         JsonNode second = executeMatch();
@@ -98,7 +98,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "privacy-reviewer")
+    @WithMockUser(username = "privacy-reviewer", roles = "RECRUTADOR")
     void contactsAppearOnlyAfterAuthorizedApproval() throws Exception {
         mockMvc.perform(post("/match/aprovar-candidato")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "testuser")
+    @WithMockUser(username = "testuser", roles = "RECRUTADOR")
     void candidatosEndpointReturnsClassicArrayWhenNotPaged() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/candidatos"))
                 .andExpect(status().isOk())
@@ -137,7 +137,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "testuser")
+    @WithMockUser(username = "testuser", roles = "RECRUTADOR")
     void candidatosEndpointReturnsPageObjectWhenPaged() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/candidatos?page=0&size=2"))
                 .andExpect(status().isOk())
@@ -146,7 +146,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "testuser")
+    @WithMockUser(username = "testuser", roles = "RECRUTADOR")
     void vagasEndpointReturnsClassicArrayWhenNotPaged() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/vagas"))
                 .andExpect(status().isOk())
@@ -154,7 +154,7 @@ class MatchingPrivacyContractTest {
     }
 
     @Test
-    @WithMockUser(username = "testuser")
+    @WithMockUser(username = "testuser", roles = "RECRUTADOR")
     void vagasEndpointReturnsPageObjectWhenPaged() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/vagas?page=0&size=2"))
                 .andExpect(status().isOk())
