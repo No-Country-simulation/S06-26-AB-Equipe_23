@@ -57,7 +57,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             return;
         }
 
-        UsuarioEntity usuario = usuarioRepository.findByEmail(email)
+        if (!Boolean.TRUE.equals(oAuth2User.getAttribute("email_verified"))) {
+            log.warn("O Google não confirmou o e-mail da conta OAuth2");
+            response.sendRedirect(frontendUrl + "/login?error=email_not_verified");
+            return;
+        }
+
+        UsuarioEntity usuario = usuarioRepository.findByEmailIgnoreCase(email)
                 .orElseGet(() -> {
                     log.info("Usuário corporativo não encontrado. Cadastrando automaticamente: {}", email);
                     UsuarioEntity novo = new UsuarioEntity();
@@ -74,7 +80,16 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             return;
         }
 
-        String jwtToken = jwtUtil.gerarToken(usuario.getEmail(), usuario.getNome(), usuario.getEmpresaId());
+        String tipoUsuario = usuario.getTipoUsuario() == null
+                ? "RECRUTADOR"
+                : usuario.getTipoUsuario();
+        String jwtToken = jwtUtil.gerarToken(
+                usuario.getEmail(),
+                usuario.getNome(),
+                usuario.getEmpresaId(),
+                tipoUsuario,
+                usuario.getCandidatoId()
+        );
         
         String targetUrl = frontendUrl + "/oauth2/redirect?token=" + jwtToken;
         log.info("Autenticação OAuth2 de sucesso para {}. Redirecionando para o frontend.", email);
